@@ -1,0 +1,34 @@
+<style type="text/css">
+    div.oa-nav ul.nav.navbar-nav > li.active > a {
+        background-color: #b74635;
+    }
+
+    div.oa-nav ul.nav.navbar-nav > li.active > a:hover {
+        background-color: #a34335;
+    }
+    div.oa-nav a.navbar-brand{
+        padding-left: 12px;padding-top: 5px;padding-right: 12px
+    }
+</style>
+<div class="navbar navbar-fixed-top navbar-inverse oa-nav" role="navigation" ng-controller="navbarCtrl">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#one-app-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand txt-color-white"
+               href="#/"><img src="images/pmamicon.png" alt="Logo"/> PM-Ammo Deliverables</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="one-app-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="{{getClass(nav)}}" ng-repeat="nav in navLocations">
+                    <a href="{{nav.link}}"><i class="fa {{nav.iconClass}}"></i> {{nav.label}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

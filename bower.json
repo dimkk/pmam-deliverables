@@ -1,0 +1,44 @@
+{
+  "name": "pmam-deliverables",
+  "version": "0.1.0",
+  "appPath": "app",
+  "main": "./dist/index.html",
+  "dependencies": {
+    "angular": "~1.2.23",
+    "angular-animate": "~1.2.23",
+    "angular-sanitize": "~1.2.23",
+    "angular-touch": "~1.2.23",
+    "angular-ui-select": "^0.7.0",
+    "angular-spinner": "^0.5",
+    "angular-ui-date": "^0.0.4",
+    "angular-ui-router": "^0.2.10",
+    "angular-ui-sortable": "^0.12.8",
+    "angular-ui-utils": "^0.1.1",
+    "angular-loading-bar": "~0.6.0",
+    "bootstrap": "^3.2.0",
+    "font-awesome": "^4.1.0",
+    "jquery": "1.11.1",
+    "jquery-ui": "1.11.0",
+    "ng-table": "0.3.2",
+    "angular-bootstrap": "^0.11.2",
+    "moment": "^2.8.3",
+    "angular-point": "latest",
+    "angular-point-attachments": "latest",
+    "angular-point-modal": "latest",
+    "angular-point-form-control": "latest",
+    "angular-point-group-manager": "master",
+    "angular-point-styles": "https://github.com/scatcher/angular-point-styles.git#master",
+    "angular-point-offline-generator": "https://github.com/scatcher/angular-point-offline-generator.git#master",
+    "angular-point-sync": "https://github.com/scatcher/angular-point-sync.git#master",
+    "angular-point-ie-safe": "https://github.com/scatcher/angular-point-ie-safe.git#master",
+    "angular-filter": "~0.4.7"
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.2.23",
+    "angular-scenario": "~1.2.23",
+    "chance": "~0.6.1"
+  },
+  "resolutions": {
+    "angular-point": "master"
+  }
+}

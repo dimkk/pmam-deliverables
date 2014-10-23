@@ -1,0 +1,67 @@
+<style>
+    .listBox {
+        border: 1px solid #CCCCFF;
+        margin: 10px;
+        padding: 5px;
+    }
+</style>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-7">
+                        <h4>Deliverable Definitions</h4>
+                    </div>
+                    <div class="col-xs-5">
+                        <button class="btn btn-link btn-sm pull-right" ng-click="openDefinitionsForm()"
+                                popover="Add a new Deliverable Definition"
+                                popover-title="New"
+                                popover-placement="bottom"
+                                popover-trigger="mouseenter">
+                            <i class="panel-title fa fa-plus green"></i>
+                            </i> Create
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div ng-if="state.validChartData">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-2"><strong>Title</strong></div>
+                            <div class="col-sm-2"><strong>Deliverable Number</strong></div>
+                            <div class="col-sm-1"><strong>Frequency</strong></div>
+                            <div class="col-sm-2"><strong>Frequency Description</strong></div>
+                            <div class="col-sm-1"><strong>HardDate</strong></div>
+                            <div class="col-sm-2"><strong>To</strong></div>
+                            <div class="col-sm-2"><strong>CC</strong></div>
+                        </div>
+                        <div class="listBox" ng-repeat="item in state.definitions">
+                            <div class="row">
+                                <div class="col-sm-2"><a href ng-click="showDefinitionsDeliverables(item)">{{item.title}}</a>
+                                </div>
+                                <div class="col-sm-2">{{item.deliverablenumber}}</div>
+                                <div class="col-sm-1">{{item.frequency.lookupValue}}</div>
+                                <div class="col-sm-2">{{item.FrequencyDescription}}</div>
+                                <div class="col-sm-1">{{item.formattedharddate}}</div>
+                                <div class="col-sm-2">{{item.to.lookupValue}}</div>
+                                <div class="col-sm-2">{{item.cc.lookupValue}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-warning alert-panel ng-cloak" ng-if="!state.validChartData">There isn't
+                    sufficient
+                    data
+                    to display
+                    a visualization.
+                </div>
+                <div ng-if="validChartData">
+                    <div ng-include="state.activeChartType.template"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,123 @@
+<div class="container">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Deliverable Details</h3>
+        </div>
+        <div class="modal-body">
+            <form role="form" class="form" name="form">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <h6 class="bold">Title</h6>
+                            <input type="text" class="form-control" ng-model="deliverableRecord.title" name="title"/>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-2">
+                        <div class="form-group">
+                            <h6 class="bold">Type</h6>
+                            <select ng-model="deliverableRecord.type.lookupId" class="form-control"
+                                    data-ng-options="def.id as def.deliverablenumber for def in deliverableDefinitions">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-2">
+                        <div class="form-group">
+                            <h6 class="bold">FY</h6>
+                            <input type="text" class="form-control" ng-model="deliverableRecord.fy" name="fy"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div class="form-group">
+                            <h6 class="bold">Month</h6>
+                            <select ng-model="deliverableRecord.month" class="form-control">
+                                <option value="1">Jan</option>
+                                <option value="2">Feb</option>
+                                <option value="3">Mar</option>
+                                <option value="4">Apr</option>
+                                <option value="5">May</option>
+                                <option value="6">Jun</option>
+                                <option value="7">Jul</option>
+                                <option value="8">Aug</option>
+                                <option value="9">Sep</option>
+                                <option value="10">Oct</option>
+                                <option value="11">Nov</option>
+                                <option value="12">Dec</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2">
+                        <div class="form-group">
+                            <h6 class="bold">Start Date</h6>
+                            <input type="text" class="form-control" ng-model="deliverableRecord.startdate"
+                                   name="startdate"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div class="form-group">
+                            <h6 class="bold">Submission Date</h6>
+                            <input type="text" class="form-control" ng-model="deliverableRecord.submissiondate"
+                                   name="submissiondate"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <h6 class="bold">Details</h6>
+                            <textarea rows="4" class="form-control" ng-model="deliverableRecord.details"
+                                      name="details"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <h6 class="bold">Justification</h6>
+                            <textarea rows="4" class="form-control" ng-model="deliverableRecord.justification"
+                                      name="justification"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <h6 class="bold">To</h6>
+
+                            <div ng-if="state.dataReady">
+
+                                <div ap-select arr="state.personnelArray" multi="true"
+                                     data-target="deliverableRecord.to" lookup-value="'Name'" name="to"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <h6 class="bold">CC</h6>
+
+                            <div ng-if="state.dataReady">
+                                <div ap-select arr="state.personnelArray" multi="true"
+                                     data-target="deliverableRecord.cc" lookup-value="'Name'" name="cc"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <div class="pull-left">
+                <button class="btn btn-danger" ng-click="deleteRecord()" ng-show="deliverable.id"
+                        title="Delete this muster record">
+                    <i class="fa fa-trash-o"></i>
+                </button>
+            </div>
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+        </div>
+    </div>
+</div>
