@@ -1,34 +1,26 @@
-<style type="text/css">
-    div.oa-nav ul.nav.navbar-nav > li.active > a {
-        background-color: #b74635;
-    }
 
-    div.oa-nav ul.nav.navbar-nav > li.active > a:hover {
-        background-color: #a34335;
-    }
-    div.oa-nav a.navbar-brand{
-        padding-left: 12px;padding-top: 5px;padding-right: 12px
-    }
-</style>
-<div class="navbar navbar-fixed-top navbar-inverse oa-nav" role="navigation" ng-controller="navbarCtrl">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#one-app-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand txt-color-white"
-               href="#/"><img src="images/pmamicon.png" alt="Logo"/> PM-Ammo Deliverables</a>
-        </div>
+<div class="navbar navbar-inverse navbar-default" role="navigation" ng-controller="navbarCtrl">
+   <div class="navbar-inner">
+        <a class="brand pull-left">
+           <img src="images/usmc_40-inverse.png" alt="Logo"/>
+           <span class="title">ESED Deliverables</span>
+        </a>
+
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="one-app-collapse-1">
+        <div class="navbar-collapse">
             <ul class="nav navbar-nav">
                 <li class="{{getClass(nav)}}" ng-repeat="nav in navLocations">
                     <a href="{{nav.link}}"><i class="fa {{nav.iconClass}}"></i> {{nav.label}}</a>
                 </li>
+
+            </ul>
+            <ul title="Add a new deliverable." class="nav navbar-nav pull-right">
+                <li>
+                    <a href="#" title="Add a new deliverable." ng-click="openDeliverablesForm()">
+                        <i class="fa fa-plus"></i>
+                    </a>
+                </li>
             </ul>
         </div>
-    </div>
+   </div>
 </div>
