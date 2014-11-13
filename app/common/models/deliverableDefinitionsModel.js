@@ -129,8 +129,12 @@
             '   </OrderBy>' +
             '</Query>'
         });
-        
-        model.getFYDefinitions = function(fy) {
+
+        model.getFyDefinitions = getFyDefinitions;
+
+        /********************* Model Specific Shared Functions ***************************************/
+
+        function getFyDefinitions (fy) {
             /** Unique query name (ex: fy2013) */
             var fyCacheKey = 'fy' + fy;
 
@@ -157,9 +161,6 @@
 
             return model.executeQuery(fyCacheKey);
         };
-
-        /********************* Model Specific Shared Functions ***************************************/
-
 
         return model;
     }

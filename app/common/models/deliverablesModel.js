@@ -50,7 +50,12 @@
                     {staticName: "Title", objectType: "Text", mappedName: "title", readOnly: false},
                     {staticName: "Type", objectType: "Lookup", mappedName: "type", readOnly: false},
                     {staticName: "StartDate", objectType: "DateTime", mappedName: "startDate", readOnly: false},
-                    {staticName: "SubmissionDate", objectType: "DateTime", mappedName: "submissionDate", readOnly: false},
+                    {
+                        staticName: "SubmissionDate",
+                        objectType: "DateTime",
+                        mappedName: "submissionDate",
+                        readOnly: false
+                    },
                     {staticName: "FY", objectType: "text", mappedName: "fy", readOnly: false},
                     {staticName: "Month", objectType: "text", mappedName: "month", readOnly: false},
                     {staticName: "Details", objectType: "Text", mappedName: "details", readOnly: false},
@@ -114,7 +119,14 @@
         });
 
 
-        model.getFYDeliverables = function(fy) {
+        model.getFyDeliverables = getFyDeliverables;
+
+        return model;
+
+
+        /********************* Model Specific Shared Functions ***************************************/
+
+        function getFyDeliverables(fy) {
             /** Unique query name (ex: fy2013) */
             var fyCacheKey = 'fy' + fy;
 
@@ -139,12 +151,6 @@
             }
 
             return model.executeQuery(fyCacheKey);
-        };
-
-
-        /********************* Model Specific Shared Functions ***************************************/
-
-
-        return model;
+        }
     }
 })();
