@@ -49,8 +49,8 @@
                  /*  each field to quickly map with available options */
                     {staticName: "Title", objectType: "Text", mappedName: "title", readOnly: false},
                     {staticName: "Type", objectType: "Lookup", mappedName: "type", readOnly: false},
-                    {staticName: "StartDate", objectType: "Date", mappedName: "startdate", readOnly: false},
-                    {staticName: "SubmissionDate", objectType: "Date", mappedName: "submissiondate", readOnly: false},
+                    {staticName: "StartDate", objectType: "DateTime", mappedName: "startDate", readOnly: false},
+                    {staticName: "SubmissionDate", objectType: "DateTime", mappedName: "submissionDate", readOnly: false},
                     {staticName: "FY", objectType: "text", mappedName: "fy", readOnly: false},
                     {staticName: "Month", objectType: "text", mappedName: "month", readOnly: false},
                     {staticName: "Details", objectType: "Text", mappedName: "details", readOnly: false},
@@ -112,6 +112,35 @@
             '   </OrderBy>' +
             '</Query>'
         });
+
+
+        model.getFYDeliverables = function(fy) {
+            /** Unique query name (ex: fy2013) */
+            var fyCacheKey = 'fy' + fy;
+
+            /** Register fy query if it doesn't exist */
+            if (!_.isObject(model.queries[fyCacheKey])) {
+                model.registerQuery({
+                    name: fyCacheKey,
+                    query: '' +
+                    '<Query>' +
+                    '   <OrderBy>' +
+                    '       <FieldRef Name="ID" Ascending="TRUE"/>' +
+                    '   </OrderBy>' +
+                    '   <Where>' +
+                    /** Return all records for this FY */
+                    '       <Eq>' +
+                    '           <FieldRef Name="FY"/>' +
+                    '           <Value>' + fy + '</Value>' +
+                    '       </Eq>' +
+                    '   </Where>' +
+                    '</Query>'
+                });
+            }
+
+            return model.executeQuery(fyCacheKey);
+        };
+
 
         /********************* Model Specific Shared Functions ***************************************/
 
