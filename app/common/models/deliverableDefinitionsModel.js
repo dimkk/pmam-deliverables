@@ -51,28 +51,28 @@
                     {
                         staticName: "DeliverableNumber",
                         objectType: "Text",
-                        mappedName: "deliverablenumber",
+                        mappedName: "deliverableNumber",
                         readOnly: false
                     },
                     {staticName: "Frequency", objectType: "Lookup", mappedName: "frequency", readOnly: false},
                     {
                         staticName: "DateIdentifier",
                         objectType: "Number",
-                        mappedName: "dateidentifier",
+                        mappedName: "dateIdentifier",
                         readOnly: false
                     },
-                    {staticName: "HardDate", objectType: "Date", mappedName: "harddate", readOnly: false},
+                    {staticName: "HardDate", objectType: "Date", mappedName: "hardDate", readOnly: false},
                     {staticName: "FY", objectType: "text", mappedName: "fy", readOnly: false},
                     {
                         staticName: "Frequency_x003a_Acronym",
                         objectType: "Lookup",
-                        mappedName: "frequencyacronym",
+                        mappedName: "frequencyAcronym",
                         readOnly: false
                     },
                     {
                         staticName: "FrequencyDescription",
                         objectType: "Text",
-                        mappedName: "frequencydescription",
+                        mappedName: "frequencyDescription",
                         readOnly: false
                     },
                     {staticName: "To", objectType: "User", mappedName: "to", readOnly: false},
@@ -121,6 +121,7 @@
          */
         model.registerQuery({
             name: 'primary',
+            operation: 'GetListItems',
             query: '' +
             '<Query>' +
             '   <OrderBy>' +
@@ -129,8 +130,37 @@
             '</Query>'
         });
 
+        model.getFyDefinitions = getFyDefinitions;
+
         /********************* Model Specific Shared Functions ***************************************/
 
+        function getFyDefinitions (fy) {
+            /** Unique query name (ex: fy2013) */
+            var fyCacheKey = 'fy' + fy;
+
+            /** Register fy query if it doesn't exist */
+            if (!_.isObject(model.queries[fyCacheKey])) {
+                model.registerQuery({
+                    name: fyCacheKey,
+                    operation: 'GetListItems',
+                    query: '' +
+                    '<Query>' +
+                    '   <OrderBy>' +
+                    '       <FieldRef Name="ID" Ascending="TRUE"/>' +
+                    '   </OrderBy>' +
+                    '   <Where>' +
+                    /** Return all records for this FY */
+                    '       <Eq>' +
+                    '           <FieldRef Name="FY"/>' +
+                    '           <Value>' + fy + '</Value>' +
+                    '       </Eq>' +
+                    '   </Where>' +
+                    '</Query>'
+                });
+            }
+
+            return model.executeQuery(fyCacheKey);
+        };
 
         return model;
     }
