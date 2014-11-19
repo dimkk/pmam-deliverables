@@ -1,104 +1,95 @@
-<style>
-    .listBox {
-        border: 1px solid #CCCCFF;
-        margin: 10px;
-        padding: 5px;
-    }
-</style>
-<div class="well well-sm">
-    <div class="btn-toolbar" role="toolbar">
-        <div class="btn-group pull-left">
-            <button class="btn btn-light" type="button" ng-click="openDefinitionsForm()">
-                Deliverable Definitions
-            </button>
-        </div>
-        <div class="btn-group pull-right">
-            <button class="btn btn-light pull-left" type="button" ng-click="decreaseDate()">
-                <i class="fa fa-arrow-left"></i>
-            </button>
-            <button class="pull-left btn btn-white bold" style="width: 75px" disabled>{{state.displayDate}}
-            </button>
-            <button class="btn btn-light pull-left" type="button" ng-click="increaseDate()">
-                <i class="fa fa-arrow-right"></i>
-            </button>
-        </div>
-    </div>
-</div>
-</div>
-<div class="row">
-    <div class="col-lg-10">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-7">
-                        <h4>{{state.title}}</h4>
-                    </div>
-                    <div class="col-xs-5">
-                        <button class="btn btn-link btn-sm pull-right" ng-click="openDeliverablesForm()"
-                                popover="Add a new Deliverable"
-                                popover-title="New"
-                                popover-placement="bottom"
-                                popover-trigger="mouseenter">
-                            <i class="panel-title fa fa-plus green"></i>
-                            </i> Create
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-10">
+            <div class="row deliverables-paged">
+                <div class="col-lg-1"><i class="fa fa-calendar"></i></div>
+                <div class="col-lg-8">ACTIVE DELIVERABLES</div>
+                <div class="col-lg-3">
+                    <div class="btn-group">
+                        <button class="btn btn-light pull-left" type="button" ng-click="decreaseDate()">
+                            <i class="fa fa-arrow-left"></i>
+                        </button>
+                        <button class="pull-left btn btn-white bold" style="width: 75px" disabled>{{ displayDate }}
+                        </button>
+                        <button class="btn btn-light pull-left" type="button" ng-click="increaseDate()">
+                            <i class="fa fa-arrow-right"></i>
                         </button>
                     </div>
                 </div>
             </div>
-            <div class="panel-body">
-                <div ng-if="state.validChartData">
-                    <div class="col-sm-12">
-                        <div class="row">
-                            <div class="col-sm-2"><strong>Deliverable</strong></div>
-                            <div class="col-sm-1"><strong>Start Date</strong></div>
-                            <div class="col-sm-1"><strong>Submission Date</strong></div>
-                            <div class="col-sm-8"><strong>Details</strong></div>
-                        </div>
-                        <div class="listBox" ng-repeat="item in deliverablesByMonth[state.displayDate]">
+            <hr/>
+            <div class="row deliverables-header">
+                <div class="col-sm-5"><strong>Title</strong></div>
+                <div class="col-sm-2"><strong>Submitted</strong></div>
+                <div class="col-sm-2"><strong>Due</strong></div>
+                <div class="col-sm-1"><strong>Frequency</strong></div>
+                <div class="col-sm-2"><strong>Details</strong></div>
+            </div>
+
+            <div class="row deliverables-data" ng-repeat="item in deliverablesByMonth[displayDate]">
+                <div class="col-sm-5"><a href ng-click="openDeliverablesForm(item)">{{ item.title }}</a>
+                </div>
+                <div class="col-sm-2">{{ item.submissionDate | date:'shortDate' }}</div>
+                <div class="col-sm-2">{{ item.startDate | date:'shortDate' }}</div>
+                <div class="col-sm-1">MO</div>
+                <div class="col-sm-2">
+                    <div ratings-directive data-deliverable="item" data-feedback="groupedFeedbackParams[item.id]">
+                    </div>
+                </div>
+            </div>
+
+            <hr/>
+            <hr/>
+
+            <div class="row deliverables-paged">
+                <div class="col-lg-1"><i class="fa fa-calendar"></i></div>
+                <div class="col-lg-11">PENDING DELIVERABLES</div>
+            </div>
+            <hr/>
+            <div class="row deliverables-header">
+                <div class="col-sm-3"><strong>Reference Number</strong></div>
+                <div class="col-sm-5"><strong>Title</strong></div>
+                <div class="col-sm-3"><strong>Frequency</strong></div>
+                <div class="col-sm-1"><strong>Add</strong></div>
+            </div>
+
+            <div class="row deliverables-data" ng-repeat="item in deliverableDefinitions">
+                <div class="col-sm-3">{{ item.deliverableNumber }}</div>
+                <div class="col-sm-5">{{ item.title }}</div>
+                <div class="col-sm-3">{{ item.frequency.lookupValue }}</div>
+                <div class="col-sm-1">
+                    <a href="#" title="Add a new deliverable." ng-click="openDeliverablesForm()">
+                        <i class="fa fa-plus"></i>
+                    </a>
+                </div>
+            </div>
+
+            <hr/>
+            <hr/>
+
+        </div>
+        <div class="col-lg-2">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
                             <div class="row">
-                                <div class="col-sm-2"><a href ng-click="openDeliverablesForm(item)">{{item.title}}</a>
+                                <div class="col-xs-12">
+                                    <h4>Metrics</h4>
                                 </div>
-                                <div class="col-sm-1">{{item.formattedstartdate}}</div>
-                                <div class="col-sm-1">{{item.formattedsubmissiondate}}</div>
-                                <div class="col-sm-8">{{item.details}}</div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="alert alert-warning alert-panel ng-cloak" ng-if="!state.validChartData">There isn't
-                    sufficient
-                    data
-                    to display
-                    a visualization.
-                </div>
-                <div ng-if="validChartData">
-                    <div ng-include="state.activeChartType.template"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-2">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <h4>Metrics</h4>
-                            </div>
+                        <div class="panel-body">
+                            <div google-chart chart="Gauge1"
+                                 style="width: 200px; height: 200px; display: inline-block; vertical-align: top; position: relative;"></div>
+                            <div google-chart chart="Gauge2"
+                                 style="width: 200px; height: 200px; display: inline-block; vertical-align: top; position: relative;"></div>
+                            <div google-chart chart="Gauge3"
+                                 style="width: 200px; height: 200px; display: inline-block; vertical-align: top; position: relative;"></div>
                         </div>
-                    </div>
-                    <div class="panel-body">
-
-                        <div google-chart chart="Gauge1"
-                             style="width: 200px; height: 200px; display: inline-block; vertical-align: top; position: relative;"></div>
-                        <div google-chart chart="Gauge2"
-                             style="width: 200px; height: 200px; display: inline-block; vertical-align: top; position: relative;"></div>
-                        <div google-chart chart="Gauge3"
-                             style="width: 200px; height: 200px; display: inline-block; vertical-align: top; position: relative;"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+</div>
