@@ -18,9 +18,9 @@ angular.module('pmam-deliverables')
             })
 
             .state('deliverables.main', {
-                url: '/main',
+                url: '/main?fy',
                 templateUrl: 'modules/deliverables/views/deliverables.view.html',
-                controller: 'deliverablesCtrl'
+                controller: 'deliverablesController'
             })
 
             .state('deliverables.definitions', {
