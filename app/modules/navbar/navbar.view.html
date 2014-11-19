@@ -1,5 +1,5 @@
 
-<div class="navbar navbar-inverse navbar-default" role="navigation" ng-controller="navbarCtrl">
+<div class="navbar navbar-inverse" role="navigation" ng-controller="navbarCtrl">
    <div class="navbar-inner">
         <a class="brand pull-left">
            <img src="images/usmc_40-inverse.png" alt="Logo"/>
@@ -12,7 +12,6 @@
                 <li class="{{getClass(nav)}}" ng-repeat="nav in navLocations">
                     <a href="{{nav.link}}"><i class="fa {{nav.iconClass}}"></i> {{nav.label}}</a>
                 </li>
-
             </ul>
             <ul title="Add a new deliverable." class="nav navbar-nav pull-right">
                 <li>
