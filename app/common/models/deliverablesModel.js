@@ -79,14 +79,13 @@
         function Deliverable(obj) {
             var self = this;
             _.extend(self, obj);
-            self.displayDate = moment(self.submissiondate).format('MMM YY');
-            self.formattedstartdate = moment(self.startdate).format('MM/DD/YYYY')
-            self.formattedsubmissiondate = moment(self.submissiondate).format('MM/DD/YYYY')
+            self.displayDate = moment(self.submissionDate).format('MMM YY');
+            self.formattedstartdate = moment(self.startDate).format('MM/DD/YYYY')
+            self.formattedsubmissiondate = moment(self.submissionDate).format('MM/DD/YYYY')
 
         }
 
         Deliverable.prototype.openModal = openModal;
-
 
         /** Optionally add a modal form **/
         model.openModal = apModalService.modalModelProvider({
