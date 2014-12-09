@@ -5,8 +5,12 @@ angular.module('pmam-deliverables')
 
         // For any unmatched url, redirect to /state1
         $urlRouterProvider
-            //Default Phasing Plan View
+            //Default deliverables view
             .when('/deliverables', '/deliverables/main')
+            //Default instances view
+            .when('/detail', '/detail/instances')
+            //Default instances view
+            .when('/definitions', '/definitions/types')
             //Default Route
             .otherwise('/deliverables');
 
@@ -17,22 +21,40 @@ angular.module('pmam-deliverables')
                 template: '<div ui-view></div>'
             })
 
+            .state('definitions', {
+                url: '/definitions',
+                abstract: true,
+                template: '<div ui-view></div>'
+            })
+
+            .state('definitions.types', {
+                url: '/types',
+                templateUrl: 'modules/definitions/deliverable-definitions.view.html',
+                controller: 'definitionsController'
+            })
+
+            .state('deliverable', {
+                url: '/deliverable/:id',
+                templateUrl: 'modules/deliverables/views/deliverable-form.view.html',
+                controller: 'deliverableFormController'
+            })
+
+            .state('newInstance', {
+                url: '/deliverable?fy&deliverableTypeId',
+                templateUrl: 'modules/deliverables/views/deliverableFormNewView.html',
+                controller: 'newDeliverableFormController'
+            })
+
             .state('deliverables.main', {
-                url: '/main?fy',
+                url: '/main?fy&mo',
                 templateUrl: 'modules/deliverables/views/deliverables.view.html',
                 controller: 'deliverablesController'
             })
 
-            .state('deliverables.definitions', {
-                url: '/definitions?fy',
-                templateUrl: 'modules/deliverables/views/deliverable-definitions.view.html',
-                controller: 'deliverableDefinitionsCtrl'
-            })
-
-            .state('deliverables.definitions.detail', {
-                url: '/:id',
-                templateUrl: 'modules/deliverables/views/deliverable-form.view.html',
-                controller: 'deliverableDefinitionsCtrl'
+            .state('instances', {
+                url: '/instances?fy&id',
+                templateUrl: 'modules/detail/deliverable-instances.view.html',
+                controller: 'deliverableInstancesController'
             })
 
             //Group Manager
