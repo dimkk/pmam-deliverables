@@ -1,0 +1,42 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row deliverables-paged">
+                <div class="col-lg-1"><i class="fa fa-check-square"></i></div>
+                <div class="col-lg-8">DELIVERABLES</div>
+                <div class="col-lg-3">
+                    <select ng-model="random.selectedDeliverable" ng-change="getUpdateRandom()" class="form-control"
+                            data-ng-options="deliverableDefinition as deliverableDefinition.title for deliverableDefinition in deliverableDefinitions | orderBy: 'title' track by deliverableDefinition.id">
+                    </select>
+                </div>
+            </div>
+
+            <hr/>
+            <div class="nga-default nga-stagger nga-fade">
+                <div class="row deliverables-header">
+                    <div class="col-sm-5"><strong>Title</strong></div>
+                    <div class="col-sm-2"><strong>Submitted</strong></div>
+                    <div class="col-sm-2"><strong>Due</strong></div>
+                    <div class="col-sm-1"><strong>Frequency</strong></div>
+                    <div class="col-sm-2"><strong>Details</strong></div>
+                </div>
+
+                <div class="row deliverables-data" ng-repeat="item in deliverableInstances track by item.id">
+                    <div class="col-sm-5"><a ui-sref="deliverable({id:item.id})">{{ item.title }}</a>
+                    </div>
+                    <div class="col-sm-2">{{ item.submissionDate | date:'shortDate' }}</div>
+                    <div class="col-sm-2">{{ item.startDate | date:'shortDate' }}</div>
+                    <div class="col-sm-1">{{ frequency }}</div>
+                    <div class="col-sm-2">
+                        <div ratings-directive data-deliverable="item" data-feedback="groupedFeedbackParams[ item.id ]">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr/>
+            <hr/>
+        </div>
+    </div>
+</div>
+
