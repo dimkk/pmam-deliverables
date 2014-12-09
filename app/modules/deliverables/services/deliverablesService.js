@@ -13,26 +13,12 @@
      */
     function deliverablesService(_, $q, deliverablesModel, deliverableDefinitionsModel, deliverableFrequenciesModel, deliverableFeedbackModel) {
 
-
-        var state = {
-            displayDate: 'loading',
-            selectedDivision: '',
-            selectedTeam: '',
-            showDivisions: false,
-            viewModeMonth: true,
-            displayMode: "displayDate",
-            title: "Deliverables",
-            monthActive: 'active',
-            qtrActive: null,
-            displayedTitle: '',
-            validChartData: false,
-            availableMonths: []
-        };
-
         var service = {
-            getDeliverables: getDeliverables,
+            getDeliverablesForMonth: getDeliverablesForMonth,
             getDeliverableFrequencies: getDeliverableFrequencies,
-            getDeliverableDefinitions: getDeliverableDefinitions
+            getDeliverableDefinitionsForMonth: getDeliverableDefinitionsForMonth,
+            getDeliverablesByType: getDeliverablesByType,
+            getDeliverableCountByDefinition: getDeliverableCountByDefinition
         };
 
         return service;
@@ -45,15 +31,6 @@
         /**==================PRIVATE==================*/
 
 
-//    1.  make a request to the server for all available deliverables for the current FY
-
-        function getDeliverables() {
-
-            return prepareMetrics(deliverablesModel.executeQuery());
-
-        }
-
-
 //    2.  make a request to the server for all available deliverable frequencies
 
         function getDeliverableFrequencies() {
@@ -61,8 +38,9 @@
             var deferred = $q.defer();
 
             deliverableFrequenciesModel.executeQuery()
-                .then(function(deliverableFrequencies){
-                    deferred.resolve(deliverableFrequencies);
+                .then(function( deliverableFrequencies ){
+
+                    deferred.resolve( deliverableFrequencies );
                 });
 
             return deferred.promise;
@@ -70,71 +48,124 @@
 
 //    3. TODO:  create a function that accepts a month and year and returns applicable definitions for a given month/year
 
-        function getDeliverableDefinitions() {
+        function getDeliverableDefinitionsForMonth( fy, mo ) {
 
             var deferred = $q.defer();
 
-            deliverableDefinitionsModel.executeQuery()
-                .then(function(deliverableDefinitions){
-                    deferred.resolve(deliverableDefinitions);
+            deliverableDefinitionsModel.getFyDefinitions(fy)
+                .then(function( deliverableDefinitions ){
+
+                    var deliverableDefinitionsByMonth = {};
+
+                    _.each(deliverableDefinitions, function( deliverableDefinition ) {
+
+                        var activeDefinition = filterDefinitionsByFrequency( deliverableDefinition, mo );
+
+                        if( activeDefinition ) {
+                            deliverableDefinitionsByMonth[ deliverableDefinition.id ] = deliverableDefinition;
+                        }
+
+                    } );
+
+                    deferred.resolve( { deliverableDefinitions: deliverableDefinitions, deliverableDefinitionsByMonth: deliverableDefinitionsByMonth } );
                 });
 
             return deferred.promise;
         }
 
+        function filterDefinitionsByFrequency( deliverableDefinition, mo ) {
 
-        function prepareMetrics( deliverablesPromise ) {
+            var result = false;
+
+            // check for eligible frequencies
+            switch( deliverableDefinition.frequency.lookupId.toString() ) {
+
+                case "1":   // monthly
+                    result = true;
+                    break;
+
+                case "3":  // bi-monthly
+                    if( parseInt(mo) % 2 ){
+                        result = true;
+                        break;
+                    }
+
+                case "4":  // one off
+                    if( deliverableDefinition.hardDate.length ){
+                        var dateToParse = new Date( deliverableDefinition.hardDate );
+                        var hardDateMonth = dateToParse.getMonth();
+                        if( hardDateMonth === mo ) {
+                            result = true;
+                            break;
+                        }
+                    }
+            }
+
+            return result;
+        }
+
+// year / mo combination
+
+//  function to return promise for month
+
+        function getDeliverablesForMonth( fy, month ) {
 
             var deferred = $q.defer();
-            var deliverablesByMonth = {};
 
-            deliverablesPromise
-                .then(function(deliverables){
-
-                    //Clear out any monthly data
-                    state.availableMonths.length = 0;
-
-                    //Add references to each metric broken out by date
-                    _.each(deliverables, function (deliverable) {
-
-                        //Sets initial date to the most recent display date
-                        state.displayDate = deliverable.displayDate;
-
-                        //Create array to hold metrics for this month if it doesn't exist
-                        deliverablesByMonth[deliverable[state.displayMode]] = deliverablesByMonth[deliverable[state.displayMode]] || [];
-                        deliverablesByMonth[deliverable[state.displayMode]].push(deliverable);
-
+            deliverablesModel.getFyDeliverables(fy)
+                .then(function (indexedCache) {
+                    var deliverablesForMonth = _.where(indexedCache, function(deliverable) {
+                        return deliverable.month === month.toString();
                     });
+                    deferred.resolve(deliverablesForMonth);
+                });
+            return deferred.promise;
+        }
 
-                    _.each(deliverablesByMonth, function (monthMetrics, monthLabel) {
-                        state.availableMonths.push(monthLabel);
+        // a function that returns just the detail instances of a particular deliverable
+
+        function getDeliverablesByType(fy, typeId) {
+
+            var deferred = $q.defer();
+
+            deliverablesModel.getFyDeliverables(fy)
+                .then(function (indexedCache) {
+                    var deliverablesByType = _.where(indexedCache, function(deliverable) {
+                        return deliverable.deliverableType.lookupId === typeId;
                     });
+                    deferred.resolve(deliverablesByType);
+                });
+            return deferred.promise;
+        }
 
-                    state.validChartData = true;
-                    deliverablesByMonth.state = state;
+        function getDeliverableCountByDefinition(fy) {
 
-                    deferred.resolve(deliverablesByMonth);
+            var deferred = $q.defer();
 
-                })
+            deliverablesModel.getFyDeliverables(fy)
+                .then(function (indexedCache) {
+                   var deliverableCountByDefinition = {};
+                    _.each(indexedCache,function(deliverable){
+                        deliverableCountByDefinition[deliverable.deliverableType.lookupId] = deliverableCountByDefinition[deliverable.deliverableType.lookupId] || 0;
+                        deliverableCountByDefinition[deliverable.deliverableType.lookupId]++;
+                    })
+                    deferred.resolve(deliverableCountByDefinition);
+                });
 
             return deferred.promise;
         }
 
+        function getDeliverableDefinitions(fy) {
 
-        function getDeliverablesData() {
+            var deferred = $q.defer();
 
-            var deliverables = {};
-            var deliverableFrequencies = {};
-            var deliverableDefinitions = {};
+            deliverableDefinitionsModel.getFyDefinitions(fy)
+                .then(function( indexedCache ){
 
-            $q.all([deliverablesModel.executeQuery(), deliverableFrequenciesModel.executeQuery(), deliverableDefinitionsModel.executeQuery()])
-                .then(function (resolvedPromises) {
-
-                    deliverables = resolvedPromises[0];
-                    deliverableFrequencies = resolvedPromises[1];
-                    deliverableDefinitions = resolvedPromises[2];
-                    return deliverables;
+                    deferred.resolve( indexedCache );
                 });
+
+            return deferred.promise;
         }
 
     }
