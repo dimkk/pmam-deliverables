@@ -3,9 +3,9 @@
 angular.module('pmam-deliverables')
     .controller('navbarCtrl', function ($scope, $state, $location, _) {
         $scope.navLocations = [
-           {label: 'Monthly', link: '#/deliverables', iconClass: 'fa-calendar'},
-           {label: 'Detail', link: '#/detail', iconClass: 'fa-search'},
-           {label: 'Types', link: '#/types', iconClass: 'fa-navicon'}
+           {label: 'Monthly', state: 'deliverables.main', iconClass: 'fa-calendar'},
+           {label: 'Deliverables', state: 'instances', iconClass: 'fa-search'},
+           {label: 'Deliverable Types', state: 'definitions.types', iconClass: 'fa-navicon'}
         ];
 
         $scope.navByType = function (type) {
