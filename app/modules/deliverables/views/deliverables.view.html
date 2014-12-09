@@ -9,61 +9,63 @@
                         <button class="btn btn-light pull-left" type="button" ng-click="decreaseDate()">
                             <i class="fa fa-arrow-left"></i>
                         </button>
-                        <button class="pull-left btn btn-white bold" style="width: 75px" disabled>{{ displayDate }}
-                        </button>
+                        <button class="pull-left btn btn-white bold" style="width: 75px" disabled>{{ displayPeriod }}</button>
                         <button class="btn btn-light pull-left" type="button" ng-click="increaseDate()">
                             <i class="fa fa-arrow-right"></i>
                         </button>
                     </div>
                 </div>
             </div>
-            <hr/>
-            <div class="row deliverables-header">
-                <div class="col-sm-5"><strong>Title</strong></div>
-                <div class="col-sm-2"><strong>Submitted</strong></div>
-                <div class="col-sm-2"><strong>Due</strong></div>
-                <div class="col-sm-1"><strong>Frequency</strong></div>
-                <div class="col-sm-2"><strong>Details</strong></div>
-            </div>
 
-            <div class="row deliverables-data" ng-repeat="item in deliverablesByMonth[displayDate]">
-                <div class="col-sm-5"><a href ng-click="openDeliverablesForm(item)">{{ item.title }}</a>
+            <hr/>
+            <div class="nga-default nga-stagger-slow nga-fade" ng-if="gotData">
+                <div class="row deliverables-header">
+                    <div class="col-sm-5"><strong>Title</strong></div>
+                    <div class="col-sm-2"><strong>Submitted</strong></div>
+                    <div class="col-sm-2"><strong>Due</strong></div>
+                    <div class="col-sm-1"><strong>Frequency</strong></div>
+                    <div class="col-sm-2"><strong>Details</strong></div>
                 </div>
-                <div class="col-sm-2">{{ item.submissionDate | date:'shortDate' }}</div>
-                <div class="col-sm-2">{{ item.startDate | date:'shortDate' }}</div>
-                <div class="col-sm-1">MO</div>
-                <div class="col-sm-2">
-                    <div ratings-directive data-deliverable="item" data-feedback="groupedFeedbackParams[item.id]">
+
+                <div class="row deliverables-data" ng-repeat="item in deliverablesByMonth track by item.id">
+                    <div class="col-sm-5"><a ui-sref="deliverable({id:item.id})">{{ item.title }}</a>
+                    </div>
+                    <div class="col-sm-2">{{ item.submissionDate | date:'shortDate' }}</div>
+                    <div class="col-sm-2">{{ item.startDate | date:'shortDate' }}</div>
+                    <div class="col-sm-1">{{ deliverableFrequencyFilter( item.deliverableType ) }}</div>
+                    <div class="col-sm-2">
+                        <div ratings-directive data-deliverable="item" data-feedback="groupedFeedbackParams[item.id]">
+                        </div>
                     </div>
                 </div>
             </div>
 
             <hr/>
             <hr/>
+            <!--ng-show when the data is available / ng-hide when not-->
 
             <div class="row deliverables-paged">
                 <div class="col-lg-1"><i class="fa fa-calendar"></i></div>
                 <div class="col-lg-11">PENDING DELIVERABLES</div>
             </div>
             <hr/>
-            <div class="row deliverables-header">
-                <div class="col-sm-3"><strong>Reference Number</strong></div>
-                <div class="col-sm-5"><strong>Title</strong></div>
-                <div class="col-sm-3"><strong>Frequency</strong></div>
-                <div class="col-sm-1"><strong>Add</strong></div>
-            </div>
+            <div class="nga-default nga-stagger-slow nga-fade" ng-if="gotData">
+                <div class="row deliverables-header">
+                    <div class="col-sm-3"><strong>Reference Number</strong></div>
+                    <div class="col-sm-5"><strong>Title</strong></div>
+                    <div class="col-sm-3"><strong>Frequency</strong></div>
+                    <div class="col-sm-1"><strong>Add</strong></div>
+                </div>
 
-            <div class="row deliverables-data" ng-repeat="item in deliverableDefinitions">
-                <div class="col-sm-3">{{ item.deliverableNumber }}</div>
-                <div class="col-sm-5">{{ item.title }}</div>
-                <div class="col-sm-3">{{ item.frequency.lookupValue }}</div>
-                <div class="col-sm-1">
-                    <a href="#" title="Add a new deliverable." ng-click="openDeliverablesForm()">
-                        <i class="fa fa-plus"></i>
-                    </a>
+                <div class="row deliverables-data" ng-repeat="item in deliverableDefinitionsByMonth">
+                    <div class="col-sm-3"><a ui-sref="instances({fy:fiscalYear,id:item.id})">{{ item.deliverableNumber }}</a></div>
+                    <div class="col-sm-5">{{ item.title }}</div>
+                    <div class="col-sm-3">{{ item.frequency.lookupValue }}</div>
+                    <div class="col-sm-1">
+                        <a ui-sref="newInstance({fy:fiscalYear,deliverableTypeId:item.id})"><i class="fa fa-plus"></i></a>
+                    </div>
                 </div>
             </div>
-
             <hr/>
             <hr/>
 
@@ -71,23 +73,23 @@
         <div class="col-lg-2">
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <h4>Metrics</h4>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel-body">
-                            <div google-chart chart="Gauge1"
-                                 style="width: 200px; height: 200px; display: inline-block; vertical-align: top; position: relative;"></div>
-                            <div google-chart chart="Gauge2"
-                                 style="width: 200px; height: 200px; display: inline-block; vertical-align: top; position: relative;"></div>
-                            <div google-chart chart="Gauge3"
-                                 style="width: 200px; height: 200px; display: inline-block; vertical-align: top; position: relative;"></div>
-                        </div>
-                    </div>
+                    <!--<div class="panel panel-default">-->
+                        <!--<div class="panel-heading">-->
+                            <!--<div class="row">-->
+                                <!--<div class="col-xs-12">-->
+                                    <!--<h4>Metrics</h4>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="panel-body">-->
+                            <!--<div google-chart chart="Gauge1"-->
+                                 <!--style="width: 200px; height: 200px; display: inline-block; vertical-align: top; position: relative;"></div>-->
+                            <!--<div google-chart chart="Gauge2"-->
+                                 <!--style="width: 200px; height: 200px; display: inline-block; vertical-align: top; position: relative;"></div>-->
+                            <!--<div google-chart chart="Gauge3"-->
+                                 <!--style="width: 200px; height: 200px; display: inline-block; vertical-align: top; position: relative;"></div>-->
+                        <!--</div>-->
+                    <!--</div>-->
                 </div>
             </div>
         </div>

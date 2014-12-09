@@ -2,20 +2,16 @@
 
     <div  class="row deliverables-paged">
         <div class="col-lg-1"><i class="fa fa-check-square"></i></div>
-        <div class="col-lg-11">EDIT DELIVERABLE</div>
+        <div class="col-lg-11">CREATE A NEW DELIVERABLE</div>
     </div>
     <hr/>
     <form role="form" class="form" name="form">
-
         <div ng-include="'modules/deliverables/views/deliverableFormTemplate.html'"></div>
-        <span data-ap-attachments data-list-item="deliverableRecord"></span>
-
     </form>
 
-    <div class="row">
+    <div class="deliverables-data">
         <button class="btn btn-primary" ng-click="save()">Save</button>
         <button class="btn btn-default" ng-click="cancel()">Cancel</button>
-        <button class="btn btn-default" ng-click="deleteRecord()">Delete</button>
     </div>
 
 </div>

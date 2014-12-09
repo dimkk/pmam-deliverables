@@ -1,0 +1,116 @@
+<div class="row">
+    <div class="col-xs-6">
+        <div class="form-group">
+            <div class="deliverables-header">Title</div>
+            <input type="text" ng-required="true" class="form-control" ng-model="deliverableRecord.title" name="title"/>
+        </div>
+    </div>
+
+    <div class="col-xs-2">
+        <div class="form-group" ng-form="fy" ng-class="{'has-error':fy.$invalid}">
+            <div class="deliverables-header">Fiscal Year</div>
+            <input type="number" maxlength="4" ng-required="true" ng-minlength="4" class="form-control" ng-model="deliverableRecord.fy" name="fy"/>
+        </div>
+    </div>
+
+    <div class="col-xs-2">
+        <div class="form-group">
+            <div class="deliverables-header">Type</div>
+            <select ng-required="true" ng-model="deliverableRecord.deliverableType"
+                    ng-options="{lookupId: deliverableType.id, lookupValue: deliverableType.title} as deliverableType.title for deliverableType
+                                    in deliverableTypes track by deliverableType.lookupId || deliverableType.id"
+                    class="form-control">
+            </select>
+        </div>
+    </div>
+
+    <div class="col-xs-2">
+        <div class="form-group">
+            <div class="deliverables-header">Month</div>
+            <select ng-required="true" ng-model="deliverableRecord.month" class="form-control">
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-2">
+        <div class="form-group">
+            <div class="deliverables-header">Start Date</div>
+            <input ng-required="true" ui-date class="form-control" ng-model="deliverableRecord.startDate"
+                   name="startDate"/>
+        </div>
+    </div>
+    <div class="col-xs-2">
+        <div class="form-group">
+            <div class="deliverables-header">Submission Date</div>
+            <input ng-required="true" ui-date class="form-control" ng-model="deliverableRecord.submissionDate"
+                   name="submissionDate"/>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="form-group">
+            <div class="deliverables-header">Details</div>
+            <textarea rows="4" class="form-control" ng-model="deliverableRecord.details"
+                      name="details"/>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="form-group">
+            <div class="deliverables-header">Justification</div>
+            <textarea rows="4" class="form-control" ng-model="deliverableRecord.justification"
+                      name="justification"/>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="form-group">
+            <div class="deliverables-header">To</div>
+
+            <div ng-if="state.dataReady">
+
+                <ui-select ng-model="deliverableRecord.to" multiple>
+                    <ui-select-match>{{$item.lookupValue }}</ui-select-match>
+                    <ui-select-choices
+                        repeat="{lookupId:person.ID,lookupValue:person.Name} as person in personnelArray | filter: $select.search track by person.lookupId || person.ID">
+                        <div ng-bind-html="person.Name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--<div class="row">-->
+    <!--<div class="col-xs-12">-->
+        <!--<div class="form-group">-->
+            <!--<div class="deliverables-header">CC</div>-->
+
+            <!--<div ng-if="state.dataReady">-->
+                <!--<ui-select ng-model="deliverableRecord.cc" multiple>-->
+                    <!--<ui-select-match>{{$item.lookupValue }}</ui-select-match>-->
+                    <!--<ui-select-choices-->
+                        <!--repeat="person in personnelArray | filter: $select.search track by person.lookupId || person.id">-->
+                        <!--<div ng-bind-html="person.lookupValue | highlight: $select.search"></div>-->
+                    <!--</ui-select-choices>-->
+                <!--</ui-select>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
