@@ -48,7 +48,7 @@
                 /** If OneApp live templates have been imported type 'oafield' followed by the tab key for
                  /*  each field to quickly map with available options */
                     {staticName: "Title", objectType: "Text", mappedName: "title", readOnly: false},
-                    {staticName: "Type", objectType: "Lookup", mappedName: "type", readOnly: false},
+                    {staticName: "Type", objectType: "Lookup", mappedName: "deliverableType", readOnly: false},
                     {staticName: "StartDate", objectType: "DateTime", mappedName: "startDate", readOnly: false},
                     {
                         staticName: "SubmissionDate",
@@ -151,5 +151,8 @@
 
             return model.executeQuery(fyCacheKey);
         }
+
+
+
     }
 })();
