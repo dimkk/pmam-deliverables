@@ -1,8 +1,3 @@
-<!--[if lt IE 7]>
-<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html class="no-js lt-ie9"> <![endif]-->
@@ -12,7 +7,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>PM Ammo Deliverables Dashboard</title>
+    <title>ESED Deliverables Dashboard</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
 
@@ -32,6 +27,7 @@
 
     <!-- build:css styles/main.css -->
     <!-- inject-projectcss:css -->
+    <link rel="stylesheet" href="styles/css/animate.css">
     <link rel="stylesheet" href="styles/css/custom.css">
     <link rel="stylesheet" href="styles/css/main.css">
     <link rel="stylesheet" href="styles/css/overrides.css">
@@ -59,7 +55,7 @@
     <div ui-view>
         <div class="splash">
             <div class="message">
-                Deliverables Dashboard
+                ESED Deliverables Dashboard
             </div>
             <img src="images/Preloader.gif" alt="Preloader">
         </div>
@@ -120,13 +116,20 @@
 <!-- endinject -->
 
 <!-- inject-projectjs:js -->
+<script src="modules/deliverables/services/userService.js"></script>
+<script src="modules/deliverables/services/deliverablesService.js"></script>
+<script src="modules/deliverables/services/deliverableDefinitionsService.js"></script>
 <script src="modules/deliverables/services/chartService.js"></script>
-<script src="modules/deliverables/controllersOld/deliverablesCtrl.js"></script>
-<script src="modules/deliverables/controllersOld/deliverableFormCtrl.js"></script>
-<script src="modules/deliverables/controllersOld/deliverableDefinitionsCtrl.js"></script>
+<script src="modules/deliverables/directives/ratingsDirective.js"></script>
 <script src="modules/deliverables/controllers/deliverablesCtrl.js"></script>
+<script src="modules/deliverables/controllers/deliverablesController.js"></script>
+<script src="modules/deliverables/controllers/deliverableFormCtrl.js"></script>
 <script src="modules/deliverables/controllers/deliverableDefinitionsCtrl.js"></script>
 <script src="modules/navbar/navbarCtrl.js"></script>
+<script src="modules/detail/newDeliverableFormController.js"></script>
+<script src="modules/detail/deliverableInstancesController.js"></script>
+<script src="modules/detail/deliverableFormController.js"></script>
+<script src="modules/definitions/definitionsController.js"></script>
 <script src="common/models/userSettingsModel.js"></script>
 <script src="common/models/deliverablesModel.js"></script>
 <script src="common/models/deliverableFrequenciesModel.js"></script>
