@@ -58,7 +58,7 @@
                 </div>
 
                 <div class="row deliverables-data" ng-repeat="item in deliverableDefinitionsByMonth">
-                    <div class="col-sm-3"><a ui-sref="instances({fy:fiscalYear,id:item.id})">{{ item.deliverableNumber }}</a></div>
+                    <div class="col-sm-3"><a ui-sref="deliverables.instances({fy:fiscalYear,id:item.id})">{{ item.deliverableNumber }}</a></div>
                     <div class="col-sm-5">{{ item.title }}</div>
                     <div class="col-sm-3">{{ item.frequency.lookupValue }}</div>
                     <div class="col-sm-1">

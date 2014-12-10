@@ -3,7 +3,7 @@
         <div class="col-sm-1"><i class="fa fa-check-square"></i></div>
         <div class="col-sm-7">DELIVERABLE TYPES</div>
         <div class="col-sm-4">
-            <i class="fa fa-search"></i><input type="text" ng-model="state.searchString" >
+            <input type="text" class="" ng-model="state.searchString"><i class="fa fa-search search-padding"></i>
         </div>
     </div>
     <hr/>
@@ -19,13 +19,13 @@
         <div class="deliverables-data" ng-repeat="item in deliverableDefinitions | filter:state.searchString">
             <div class="row">
                 <div class="col-sm-3">
-                    <a ui-sref="instances({fy:fiscalYear,id:item.id})">{{ item.deliverableNumber }}</a>
+                    <a ui-sref="deliverables.instances({ fy:fiscalYear, id:item.id })">{{ item.deliverableNumber }}</a>
                 </div>
-                <div class="col-sm-3">{{item.title}}</div>
-                <div class="col-sm-2">{{item.frequency.lookupValue}}</div>
-                <div class="col-sm-2"><a ui-sref="instances({fy:fiscalYear,id:item.id})"><span class="badge">{{deliverableCountByDefinition[item.id] || 0}}</span></a></div>
+                <div class="col-sm-3">{{ item.title }}</div>
+                <div class="col-sm-2">{{ item.frequency.lookupValue }}</div>
+                <div class="col-sm-2"><a ui-sref="deliverables.instances({ fy:fiscalYear, id:item.id })"><span class="badge">{{ deliverableCountByDefinition[item.id] || 0 }}</span></a></div>
 
-                <div class="col-sm-2"><a ui-sref="newInstance({fy:fiscalYear,deliverableTypeId:item.id})"><i class="fa fa-plus"></i></a></div>
+                <div class="col-sm-2"><a ui-sref="newInstance({ fy:fiscalYear, deliverableTypeId:item.id })"><i class="fa fa-plus"></i></a></div>
             </div>
         </div>
 
