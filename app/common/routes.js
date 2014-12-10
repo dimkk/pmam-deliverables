@@ -7,10 +7,6 @@ angular.module('pmam-deliverables')
         $urlRouterProvider
             //Default deliverables view
             .when('/deliverables', '/deliverables/main')
-            //Default instances view
-            .when('/detail', '/detail/instances')
-            //Default instances view
-            .when('/definitions', '/definitions/types')
             //Default Route
             .otherwise('/deliverables');
 
@@ -21,21 +17,15 @@ angular.module('pmam-deliverables')
                 template: '<div ui-view></div>'
             })
 
-            .state('definitions', {
-                url: '/definitions',
-                abstract: true,
-                template: '<div ui-view></div>'
-            })
-
-            .state('definitions.types', {
+            .state('deliverables.types', {
                 url: '/types',
-                templateUrl: 'modules/definitions/deliverable-definitions.view.html',
+                templateUrl: 'modules/deliverables/views/deliverableDefinitionsView.html',
                 controller: 'definitionsController'
             })
 
             .state('deliverable', {
                 url: '/deliverable/:id',
-                templateUrl: 'modules/deliverables/views/deliverable-form.view.html',
+                templateUrl: 'modules/deliverables/views/deliverableFormView.html',
                 controller: 'deliverableFormController'
             })
 
@@ -47,13 +37,13 @@ angular.module('pmam-deliverables')
 
             .state('deliverables.main', {
                 url: '/main?fy&mo',
-                templateUrl: 'modules/deliverables/views/deliverables.view.html',
+                templateUrl: 'modules/deliverables/views/deliverablesView.html',
                 controller: 'deliverablesController'
             })
 
-            .state('instances', {
+            .state('deliverables.instances', {
                 url: '/instances?fy&id',
-                templateUrl: 'modules/detail/deliverable-instances.view.html',
+                templateUrl: 'modules/deliverables/views/deliverableInstancesView.html',
                 controller: 'deliverableInstancesController'
             })
 
