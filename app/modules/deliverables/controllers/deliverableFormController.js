@@ -63,7 +63,7 @@
         function save() {
             $scope.deliverableRecord.saveChanges().then(function() {
                 toastr.success("Deliverable updated");
-                $state.go('instances',{ id:$scope.deliverableRecord.deliverableType.lookupId, fy:$scope.deliverableRecord.fy});
+                $state.go('deliverables.instances',{ id:$scope.deliverableRecord.deliverableType.lookupId, fy:$scope.deliverableRecord.fy});
             }, function () {
                 toastr.error("There was a problem updating this deliverable record");
             });
@@ -78,7 +78,7 @@
 
                 $scope.deliverableRecord.deleteItem().then(function () {
                     toastr.success("Deliverable successfully deleted");
-                    $state.go('instances', {id: deliverableTypeId, fy: deliverableFiscalYear});
+                    $state.go('deliverables.instances', {id: deliverableTypeId, fy: deliverableFiscalYear});
                 }, function () {
                     toastr.error("There was a problem deleting this deliverable record");
                 });
@@ -86,7 +86,7 @@
         }
 
         function cancel() {
-            $state.go('instances',{ id:$scope.deliverableRecord.deliverableType.lookupId, fy:$scope.deliverableRecord.fy});
+            $state.go('deliverables.instances',{ id:$scope.deliverableRecord.deliverableType.lookupId, fy:$scope.deliverableRecord.fy});
         }
 
 

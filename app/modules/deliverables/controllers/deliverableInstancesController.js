@@ -44,7 +44,7 @@
         }
 
         function getUpdateRandom(){
-            $state.go('instances',{ fy: fy, id: $scope.random.selectedDeliverable.id } )
+            $state.go('deliverables.instances',{ fy: fy, id: $scope.random.selectedDeliverable.id } )
         }
 
 
