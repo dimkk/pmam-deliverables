@@ -31,11 +31,10 @@
                         $scope.deliverableInstances = indexedCached;
                     })
                 } else {
+
                     $scope.state.selectedDeliverable = indexedCache[ parseInt(activeId) ];
-                    $scope.frequency = $scope.state.selectedDeliverable.frequency.lookupValue;
-
                 }
-
+                $scope.frequency = $scope.state.selectedDeliverable.frequency.lookupValue;
                 $scope.deliverableDefinitions = indexedCache.toArray();
 
                 if(activeId) {
