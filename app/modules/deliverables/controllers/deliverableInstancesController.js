@@ -27,6 +27,9 @@
 
                 if(!activeId){
                     $scope.state.selectedDeliverable = indexedCache.first();
+                    deliverablesService.getDeliverablesByType(fy,parseInt($scope.state.selectedDeliverable.id)).then(function(indexedCached){
+                        $scope.deliverableInstances = indexedCached;
+                    })
                 } else {
                     $scope.state.selectedDeliverable = indexedCache[ parseInt(activeId) ];
                     $scope.frequency = $scope.state.selectedDeliverable.frequency.lookupValue;
@@ -35,9 +38,11 @@
 
                 $scope.deliverableDefinitions = indexedCache.toArray();
 
-                deliverablesService.getDeliverablesByType(fy,parseInt(activeId)).then(function(indexedCached){
-                    $scope.deliverableInstances = indexedCached;
-                })
+                if(activeId) {
+                    deliverablesService.getDeliverablesByType(fy,parseInt(activeId)).then(function(indexedCached){
+                        $scope.deliverableInstances = indexedCached;
+                    })
+                }
             });
 
 
