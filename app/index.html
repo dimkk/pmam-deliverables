@@ -16,6 +16,7 @@
     <!-- build:css styles/vendor.css -->
     <!-- inject-vendorcss:css -->
     <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css">
+    <link rel="stylesheet" href="bower_components/animate.css/animate.css">
     <link rel="stylesheet" href="bower_components/angular-toastr/dist/angular-toastr.css">
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css">
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
@@ -49,7 +50,7 @@
 </head>
 <body ng-app="pmam-deliverables" id="ng-app">
 
-<div ng-include="'modules/navbar/navbar.view.html'"></div>
+<div ng-include="'modules/navbar/navbarView.html'"></div>
 
 <div class="application-content">
     <div ui-view>
@@ -120,16 +121,12 @@
 <script src="modules/deliverables/services/deliverablesService.js"></script>
 <script src="modules/deliverables/services/deliverableDefinitionsService.js"></script>
 <script src="modules/deliverables/services/chartService.js"></script>
-<script src="modules/deliverables/directives/ratingsDirective.js"></script>
-<script src="modules/deliverables/controllers/deliverablesCtrl.js"></script>
+<script src="modules/deliverables/controllers/newDeliverableFormController.js"></script>
 <script src="modules/deliverables/controllers/deliverablesController.js"></script>
-<script src="modules/deliverables/controllers/deliverableFormCtrl.js"></script>
-<script src="modules/deliverables/controllers/deliverableDefinitionsCtrl.js"></script>
+<script src="modules/deliverables/controllers/deliverableInstancesController.js"></script>
+<script src="modules/deliverables/controllers/deliverableFormController.js"></script>
+<script src="modules/deliverables/controllers/definitionsController.js"></script>
 <script src="modules/navbar/navbarCtrl.js"></script>
-<script src="modules/detail/newDeliverableFormController.js"></script>
-<script src="modules/detail/deliverableInstancesController.js"></script>
-<script src="modules/detail/deliverableFormController.js"></script>
-<script src="modules/definitions/definitionsController.js"></script>
 <script src="common/models/userSettingsModel.js"></script>
 <script src="common/models/deliverablesModel.js"></script>
 <script src="common/models/deliverableFrequenciesModel.js"></script>
