@@ -3,7 +3,7 @@
 angular.module('pmam-deliverables')
     .controller('navbarCtrl', function ($scope, $state, $location, _) {
         $scope.navLocations = [
-           {label: 'Monthly', state: 'deliverables.main', iconClass: 'fa-calendar'},
+           {label: 'Schedule', state: 'deliverables.main', iconClass: 'fa-calendar'},
            {label: 'Deliverables', state: 'deliverables.instances', iconClass: 'fa-search'},
            {label: 'Deliverable Types', state: 'deliverables.types', iconClass: 'fa-navicon'}
         ];
@@ -13,8 +13,8 @@ angular.module('pmam-deliverables')
         };
 
         $scope.queueCount = 0;
-
         $scope.activeNav = false;
+
         $scope.locateActiveNav = function () {
             var nav = _.find($scope.navLocations, function (nav) {
                 return $scope.isActive(nav.link);
