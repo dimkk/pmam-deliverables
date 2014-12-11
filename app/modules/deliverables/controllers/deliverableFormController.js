@@ -21,7 +21,7 @@
         function activate() {
 
             var deliverableId = $state.params.id;
-
+            var calendarMonth;
             var deliverableRecord = deliverablesModel.getCachedEntity(parseInt(deliverableId));
 
             var requestQueue = [userService.getUserLookupValues()];
@@ -46,6 +46,13 @@
                     $scope.deliverableRecord = deliverableRecord;
                     getDeliverableTypes();
                 }
+
+                // convert fiscal year month to calendar month
+                calendarMonth = deliverableRecord.month - 3;
+                if(calendarMonth <= 0) {
+                    calendarMonth = calendarMonth + 12;
+                }
+                $scope.deliverableRecord.month = calendarMonth.toString();
 
                 $scope.state.dataReady = true;
             });
