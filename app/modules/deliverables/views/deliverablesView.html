@@ -18,7 +18,9 @@
             </div>
 
             <hr/>
-            <div class="nga-default nga-stagger-slow nga-fade" ng-if="gotData">
+
+            <!-- Animate in once we have data -->
+            <div class="fadeIn" ng-if="gotData">
                 <div class="row deliverables-header">
                     <div class="col-sm-5"><strong>Title</strong></div>
                     <div class="col-sm-2"><strong>Submitted</strong></div>
@@ -38,26 +40,24 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <hr/>
-            <hr/>
-            <!--ng-show when the data is available / ng-hide when not-->
+                <hr/>
+                <hr/>
 
-            <div class="row deliverables-paged">
-                <div class="col-lg-1"><i class="fa fa-calendar"></i></div>
-                <div class="col-lg-11">PENDING DELIVERABLES</div>
-            </div>
-            <hr/>
-            <div class="nga-default nga-stagger-slow nga-fade" ng-if="gotData">
+                <div class="row deliverables-paged">
+                    <div class="col-lg-1"><i class="fa fa-calendar"></i></div>
+                    <div class="col-lg-11">PENDING DELIVERABLES</div>
+                </div>
+
+                <hr/>
+
                 <div class="row deliverables-header">
                     <div class="col-sm-3"><strong>Reference Number</strong></div>
                     <div class="col-sm-5"><strong>Title</strong></div>
                     <div class="col-sm-3"><strong>Frequency</strong></div>
                     <div class="col-sm-1"><strong>Add</strong></div>
                 </div>
-
-                <div class="row deliverables-data" ng-repeat="item in deliverableDefinitionsByMonth">
+                <div class="row deliverables-data fadeIn" ng-repeat="item in deliverableDefinitionsByMonth">
                     <div class="col-sm-3"><a ui-sref="deliverables.instances({fy:fiscalYear,id:item.id})">{{ item.deliverableNumber }}</a></div>
                     <div class="col-sm-5">{{ item.title }}</div>
                     <div class="col-sm-3">{{ item.frequency.lookupValue }}</div>
@@ -65,9 +65,9 @@
                         <a ui-sref="newInstance({fy:fiscalYear,deliverableTypeId:item.id})"><i class="fa fa-plus"></i></a>
                     </div>
                 </div>
+
+
             </div>
-            <hr/>
-            <hr/>
 
         </div>
         <div class="col-lg-2">
