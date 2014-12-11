@@ -87,8 +87,8 @@
                 <ui-select ng-model="deliverableRecord.to" multiple>
                     <ui-select-match>{{$item.lookupValue }}</ui-select-match>
                     <ui-select-choices
-                        repeat="{lookupId:person.ID,lookupValue:person.Name} as person in personnelArray | filter: $select.search track by person.lookupId || person.ID">
-                        <div ng-bind-html="person.Name | highlight: $select.search"></div>
+                        repeat="person in personnelArray | filter: $select.search track by person.lookupId">
+                        <div ng-bind-html="person.lookupValue | highlight: $select.search"></div>
                     </ui-select-choices>
                 </ui-select>
 

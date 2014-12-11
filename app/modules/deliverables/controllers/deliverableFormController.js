@@ -24,7 +24,7 @@
 
             var deliverableRecord = deliverablesModel.getCachedEntity(parseInt(deliverableId));
 
-            var requestQueue = [userService.getUsers()];
+            var requestQueue = [userService.getUserLookupValues()];
 
             if( !deliverableRecord ) {
                 requestQueue.push(deliverablesModel.getListItemById(parseInt(deliverableId)));
