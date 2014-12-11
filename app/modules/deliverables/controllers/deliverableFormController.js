@@ -48,7 +48,7 @@
                 }
 
                 // convert fiscal year month to calendar month
-                calendarMonth = deliverableRecord.month - 3;
+                calendarMonth = $scope.deliverableRecord.month - 3;
                 if(calendarMonth <= 0) {
                     calendarMonth = calendarMonth + 12;
                 }
