@@ -11,8 +11,8 @@
         var fy = $state.params.fy || '2013';
         var activeId = $state.params.id;
 
-        $scope.random = {selectedDeliverable: null};
-        $scope.getUpdateRandom = getUpdateRandom;
+        $scope.state = {selectedDeliverable: null};
+        $scope.getUpdateState = getUpdateState;
 
         $scope.gotData = false;
 
@@ -26,10 +26,10 @@
             deliverableDefinitionsModel.getFyDefinitions(fy).then(function(indexedCache){
 
                 if(!activeId){
-                    $scope.random.selectedDeliverable = indexedCache.first();
+                    $scope.state.selectedDeliverable = indexedCache.first();
                 } else {
-                    $scope.random.selectedDeliverable = indexedCache[ parseInt(activeId) ];
-                    $scope.frequency = $scope.random.selectedDeliverable.frequency.lookupValue;
+                    $scope.state.selectedDeliverable = indexedCache[ parseInt(activeId) ];
+                    $scope.frequency = $scope.state.selectedDeliverable.frequency.lookupValue;
 
                 }
 
@@ -43,8 +43,8 @@
 
         }
 
-        function getUpdateRandom(){
-            $state.go('deliverables.instances',{ fy: fy, id: $scope.random.selectedDeliverable.id } )
+        function getUpdateState(){
+            $state.go('deliverables.instances',{ fy: fy, id: $scope.state.selectedDeliverable.id } )
         }
 
 
