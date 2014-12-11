@@ -1,10 +1,10 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-10">
+        <div class="col-sm-10">
             <div class="row deliverables-paged">
-                <div class="col-lg-1"><i class="fa fa-calendar"></i></div>
-                <div class="col-lg-8">ACTIVE DELIVERABLES</div>
-                <div class="col-lg-3">
+                <div class="col-sm-1"><i class="fa fa-calendar"></i></div>
+                <div class="col-sm-8">ACTIVE DELIVERABLES</div>
+                <div class="col-sm-3">
                     <div class="btn-group">
                         <button class="btn btn-light pull-left" type="button" ng-click="decreaseDate()">
                             <i class="fa fa-arrow-left"></i>
@@ -25,7 +25,7 @@
                     <div class="col-sm-5"><strong>Title</strong></div>
                     <div class="col-sm-2"><strong>Submitted</strong></div>
                     <div class="col-sm-2"><strong>Due</strong></div>
-                    <div class="col-sm-1"><strong>Frequency</strong></div>
+                    <div class="col-sm-1"><strong>Scheduling</strong></div>
                     <div class="col-sm-2"><strong>Details</strong></div>
                 </div>
 
@@ -45,8 +45,8 @@
                 <hr/>
 
                 <div class="row deliverables-paged">
-                    <div class="col-lg-1"><i class="fa fa-calendar"></i></div>
-                    <div class="col-lg-11">PENDING DELIVERABLES</div>
+                    <div class="col-sm-1"><i class="fa fa-calendar"></i></div>
+                    <div class="col-sm-11">PENDING DELIVERABLES</div>
                 </div>
 
                 <hr/>
@@ -54,7 +54,7 @@
                 <div class="row deliverables-header">
                     <div class="col-sm-3"><strong>Reference Number</strong></div>
                     <div class="col-sm-5"><strong>Title</strong></div>
-                    <div class="col-sm-3"><strong>Frequency</strong></div>
+                    <div class="col-sm-3"><strong>Scheduling</strong></div>
                     <div class="col-sm-1"><strong>Add</strong></div>
                 </div>
                 <div class="row deliverables-data fadeIn" ng-repeat="item in deliverableDefinitionsByMonth">
@@ -66,11 +66,10 @@
                     </div>
                 </div>
 
-
             </div>
 
         </div>
-        <div class="col-lg-2">
+        <div class="col-sm-2">
             <div class="row">
                 <div class="col-sm-12">
                     <!--<div class="panel panel-default">-->
