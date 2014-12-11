@@ -1,33 +1,33 @@
 <div class="row">
     <div class="col-xs-6">
         <div class="form-group">
-            <div class="deliverables-header">Title</div>
-            <input type="text" ng-required="true" class="form-control" ng-model="deliverableRecord.title" name="title"/>
+            <label class="deliverables-header" for="title">Title</label>
+            <input type="text" class="form-control" id="title" placeholder="Title" ng-model="deliverableRecord.title" name="title" required/>
         </div>
     </div>
-
+    <!---->
     <div class="col-xs-2">
-        <div class="form-group" ng-form="fy" ng-class="{'has-error':fy.$invalid}">
-            <div class="deliverables-header">Fiscal Year</div>
-            <input type="number" maxlength="4" ng-required="true" ng-minlength="4" class="form-control" ng-model="deliverableRecord.fy" name="fy"/>
+        <div class="form-group" ng-form="fy">
+            <label class="deliverables-header" for="fy">Fiscal Year</label>
+            <input ng-class="{'has-error':fy.$invalid}" ng-maxlength="4" ng-required="true" id="fy" ng-minlength="4" class="form-control" ng-model="deliverableRecord.fy" name="fy"/>
         </div>
     </div>
 
     <div class="col-xs-2">
         <div class="form-group">
-            <div class="deliverables-header">Type</div>
+            <label class="deliverables-header" for="deliverableType">Type</label>
             <select ng-required="true" ng-model="deliverableRecord.deliverableType"
                     ng-options="{lookupId: deliverableType.id, lookupValue: deliverableType.title} as deliverableType.title for deliverableType
                                     in deliverableTypes track by deliverableType.lookupId || deliverableType.id"
-                    class="form-control">
+                    class="form-control" id="deliverableType" name="deliverableType">
             </select>
         </div>
     </div>
 
     <div class="col-xs-2">
         <div class="form-group">
-            <div class="deliverables-header">Month</div>
-            <select ng-required="true" ng-model="deliverableRecord.month" class="form-control">
+            <label class="deliverables-header" for="month">Month</label>
+            <select ng-required="true" name="month" id="month" ng-model="deliverableRecord.month" class="form-control">
                 <option value="1">January</option>
                 <option value="2">February</option>
                 <option value="3">March</option>
@@ -47,15 +47,14 @@
 <div class="row">
     <div class="col-xs-2">
         <div class="form-group">
-            <div class="deliverables-header">Start Date</div>
-            <input ng-required="true" ui-date class="form-control" ng-model="deliverableRecord.startDate"
-                   name="startDate"/>
+            <label class="deliverables-header" for="startDate">Start Date</label>
+            <input ng-required="true" placeholder="Start Date" name="startDate" id="startDate" ui-date class="form-control" ng-model="deliverableRecord.startDate"/>
         </div>
     </div>
     <div class="col-xs-2">
         <div class="form-group">
-            <div class="deliverables-header">Submission Date</div>
-            <input ng-required="true" ui-date class="form-control" ng-model="deliverableRecord.submissionDate"
+            <label class="deliverables-header" for="submissionDate">Submission Date</label>
+            <input ng-required="true"  placeholder="Submission Date" name="submissionDate" id="submissionDate" ui-date class="form-control" ng-model="deliverableRecord.submissionDate"
                    name="submissionDate"/>
         </div>
     </div>
@@ -63,25 +62,25 @@
 <div class="row">
     <div class="col-xs-12">
         <div class="form-group">
-            <div class="deliverables-header">Details</div>
-            <textarea rows="4" class="form-control" ng-model="deliverableRecord.details"
-                      name="details"/>
+            <label for="details" class="deliverables-header">Details</div>
+            <textarea rows="4" placeholder="Details" class="form-control" ng-model="deliverableRecord.details"
+                      name="details" id="details"/>
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
         <div class="form-group">
-            <div class="deliverables-header">Justification</div>
-            <textarea rows="4" class="form-control" ng-model="deliverableRecord.justification"
-                      name="justification"/>
+            <label for="justification" class="deliverables-header">Justification</label>
+            <textarea rows="4" placeholder="Justification" class="form-control" ng-model="deliverableRecord.justification"
+                      name="justification" id="justification"/>
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
         <div class="form-group">
-            <div class="deliverables-header">To</div>
+            <label for="justification" class="deliverables-header">To</label>
 
             <div ng-if="state.dataReady">
 
@@ -100,7 +99,7 @@
 <!--<div class="row">-->
     <!--<div class="col-xs-12">-->
         <!--<div class="form-group">-->
-            <!--<div class="deliverables-header">CC</div>-->
+            <!--<label for="justification" class="deliverables-header">CC</label>-->
 
             <!--<div ng-if="state.dataReady">-->
                 <!--<ui-select ng-model="deliverableRecord.cc" multiple>-->
