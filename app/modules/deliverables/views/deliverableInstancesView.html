@@ -4,12 +4,11 @@
             <div class="row deliverables-paged">
                 <div class="col-sm-1"><i class="fa fa-check-square"></i></div>
                 <div class="col-sm-9">DELIVERABLES</div>
-                <div class="col-xs-2">
+                <div class="col-sm-2">
                     Deliverable Type:
                     <select ng-model="state.selectedDeliverable" ng-change="getUpdateState()" class="form-control"
                             data-ng-options="deliverableDefinition as deliverableDefinition.title for deliverableDefinition in deliverableDefinitions | orderBy: 'title' track by deliverableDefinition.id">
                     </select>
-
                 </div>
             </div>
             <hr/>
@@ -18,7 +17,7 @@
                     <div class="col-sm-5"><strong>Title</strong></div>
                     <div class="col-sm-2"><strong>Submitted</strong></div>
                     <div class="col-sm-2"><strong>Due</strong></div>
-                    <div class="col-sm-1"><strong>Scheduling</strong></div>
+                    <div class="col-sm-1"><strong>Schedule</strong></div>
                     <div class="col-sm-2"><strong>Details</strong></div>
                 </div>
                 <div class="row deliverables-data" ng-repeat="item in deliverableInstances track by item.id">
