@@ -34,12 +34,6 @@
                 }
             });
 
-            $scope.$watch('deliverableRecord.deliverableType',function(newVal,oldVal){
-                if(newVal && newVal !== oldVal) {
-                    // do something
-                }
-            })
-
             userService.getUserLookupValues()
                 .then(function (result) {
                     $scope.personnelArray = result;
