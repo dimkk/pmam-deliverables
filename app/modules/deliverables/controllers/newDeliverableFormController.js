@@ -17,8 +17,11 @@
         function activate() {
 
             var fy = $state.params.fy || '2013';
+            var currentMonth = $state.params.mo || '11';
 
             $scope.deliverableRecord = deliverablesModel.createEmptyItem({fy:fy});
+            $scope.deliverableRecord.month = currentMonth;
+
             getDeliverableTypes().then(function(){
                 if($state.params.deliverableTypeId) {
                     var selectedDeliverableType = _.find($scope.deliverableTypes,{id:parseInt($state.params.deliverableTypeId)})
