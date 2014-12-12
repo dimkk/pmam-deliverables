@@ -1,17 +1,18 @@
-<div class="container-fluid">
-
-    <div  class="row deliverables-paged">
-        <div class="col-lg-1"><i class="fa fa-check-square"></i></div>
-        <div class="col-lg-11">CREATE A NEW DELIVERABLE</div>
+<fieldset>
+    <div class="container-fluid">
+        <legend>
+            <div  class="row deliverables-paged">
+                <div class="col-lg-1"><i class="fa fa-check-square"></i></div>
+                <div class="col-lg-11">CREATE A NEW DELIVERABLE</div>
+            </div>
+        </legend>
+        <hr/>
+        <form>
+            <div ng-include="'modules/deliverables/views/deliverableFormTemplate.html'"></div>
+        </form>
+        <div class="deliverables-data">
+            <button class="btn btn-primary" ng-click="save()">Save</button>
+            <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+        </div>
     </div>
-    <hr/>
-    <form>
-        <div ng-include="'modules/deliverables/views/deliverableFormTemplate.html'"></div>
-    </form>
-
-    <div class="deliverables-data">
-        <button class="btn btn-primary" ng-click="save()">Save</button>
-        <button class="btn btn-default" ng-click="cancel()">Cancel</button>
-    </div>
-
-</div>
+</fieldset>
