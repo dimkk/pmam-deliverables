@@ -8,18 +8,29 @@
     /* @ngInject */
     function deliverablesController( $location, $scope, toastr, $state, deliverablesService ) {
 
-        var fy = $state.params.fy || '2013';
-        var mo = $state.params.mo || '7';
-
+        var yearPart;
         var currentFiscalYear = 0;
-        var currentMonth = 0;
+
+        // uncomment below to use current year and month
+        //var fiscalYear = moment().format('YYYY');
+        //var currentMonth = moment().format('MM');
+
+        var fiscalYear = '2013';
+        var currentMonth = '7';
+
+        if(currentMonth > 8) {
+            fiscalYear++;
+        }
+
+        var fy = $state.params.fy || fiscalYear;
+        var mo = $state.params.mo || currentMonth;
         var deliverableDefinitions;
 
         $scope.gotData = false;
 
         var monthNames = ["SEP","OCT","NOV","DEC","JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG"];
 
-        var fiscalYear = fy.substr(fy.length - 2);
+        fiscalYear = fy.substr(fy.length - 2);
 
         if( mo < 0 ) {
             mo = 11;
@@ -43,8 +54,8 @@
 
                     if($scope.deliverablesByMonth[0] !== undefined) {
 
-                        var fiscalYear = $scope.deliverablesByMonth[0].fy;
-                        var yearPart = fiscalYear.substr(fiscalYear.length - 2);
+                        fiscalYear = $scope.deliverablesByMonth[0].fy;
+                        yearPart = fiscalYear.substr(fiscalYear.length - 2);
                         $scope.fiscalYear = fiscalYear;
                         $scope.displayPeriod = monthNames[$scope.deliverablesByMonth[0].month] + " " + yearPart;
                         currentMonth = $scope.deliverablesByMonth[0].month;
