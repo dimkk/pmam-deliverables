@@ -1,9 +1,9 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-10">
+
             <div class="row deliverables-paged">
-                <div class="col-sm-1"><i class="fa fa-calendar"></i></div>
-                <div class="col-sm-8">ACTIVE DELIVERABLES</div>
+                <div class="col-sm-9"><i class="fa fa-calendar icon-padding"></i>ACTIVE DELIVERABLES</div>
                 <div class="col-sm-3">
                     <div class="btn-group">
                         <button class="btn btn-light pull-left" type="button" ng-click="decreaseDate()">
@@ -19,56 +19,63 @@
 
             <hr/>
 
-            <!-- Animate in once we have data -->
+            <!-- Animate once we have data -->
             <div class="fadeIn" ng-if="gotData">
-                <div class="row deliverables-header">
-                    <div class="col-sm-5"><strong>Title</strong></div>
-                    <div class="col-sm-2"><strong>Submitted</strong></div>
-                    <div class="col-sm-2"><strong>Due</strong></div>
-                    <div class="col-sm-1"><strong>Scheduling</strong></div>
-                    <div class="col-sm-2"><strong>Details</strong></div>
-                </div>
-
-                <div class="row deliverables-data" ng-repeat="item in deliverablesByMonth track by item.id">
-                    <div class="col-sm-5"><a ui-sref="deliverable({id:item.id})">{{ item.title }}</a>
-                    </div>
-                    <div class="col-sm-2">{{ item.submissionDate | date:'shortDate' }}</div>
-                    <div class="col-sm-2">{{ item.startDate | date:'shortDate' }}</div>
-                    <div class="col-sm-1">{{ deliverableFrequencyFilter( item.deliverableType ) }}</div>
-                    <div class="col-sm-2">
-                        <div ratings-directive data-deliverable="item" data-feedback="groupedFeedbackParams[item.id]">
-                        </div>
-                    </div>
-                </div>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Submitted</th>
+                        <th>Due</th>
+                        <th>Schedule</th>
+                        <th>Details</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in deliverablesByMonth track by item.id">
+                        <td><a ui-sref="deliverable({id:item.id})">{{ item.title }}</a>
+                        </td>
+                        <td>{{ item.submissionDate | date:'shortDate' }}</td>
+                        <td>{{ item.startDate | date:'shortDate' }}</td>
+                        <td>{{ deliverableFrequencyFilter( item.deliverableType ) }}</td>
+                        <td>
+                            <div ratings-directive data-deliverable="item" data-feedback="groupedFeedbackParams[item.id]">
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
 
                 <hr/>
                 <hr/>
 
                 <div class="row deliverables-paged">
-                    <div class="col-sm-1"><i class="fa fa-calendar"></i></div>
-                    <div class="col-sm-11">PENDING DELIVERABLES</div>
+                    <div class="col-sm-12"><i class="fa fa-calendar icon-padding"></i>PENDING DELIVERABLES</div>
                 </div>
 
                 <hr/>
 
-                <div class="row deliverables-header">
-                    <div class="col-sm-3"><strong>Reference Number</strong></div>
-                    <div class="col-sm-5"><strong>Title</strong></div>
-                    <div class="col-sm-3"><strong>Scheduling</strong></div>
-                    <div class="col-sm-1"><strong>Add</strong></div>
-                </div>
-                <div class="row deliverables-data fadeIn" ng-repeat="item in deliverableDefinitionsByMonth">
-                    <div class="col-sm-3"><a ui-sref="deliverables.instances({fy:fiscalYear,id:item.id})">{{ item.deliverableNumber }}</a></div>
-                    <div class="col-sm-5">{{ item.title }}</div>
-                    <div class="col-sm-3">{{ item.frequency.lookupValue }}</div>
-                    <div class="col-sm-1">
-                        <a ui-sref="newInstance({fy:fiscalYear,deliverableTypeId:item.id})"><i class="fa fa-plus"></i></a>
-                    </div>
-                </div>
-
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Reference Number</th>
+                        <th>Title</th>
+                        <th>Schedule</th>
+                        <th>Add</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="fadeIn" ng-repeat="item in deliverableDefinitionsByMonth">
+                        <td><a ui-sref="deliverables.instances({fy:fiscalYear,id:item.id})">{{ item.deliverableNumber }}</a></td>
+                        <td>{{ item.title }}</td>
+                        <td>{{ item.frequency.lookupValue }}</td>
+                        <td>
+                            <a ui-sref="newInstance({fy:fiscalYear,deliverableTypeId:item.id})"><i class="fa fa-plus"></i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
-
-        </div>
         <div class="col-sm-2">
             <div class="row">
                 <div class="col-sm-12">
