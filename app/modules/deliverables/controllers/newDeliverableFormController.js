@@ -6,20 +6,23 @@
         .controller('newDeliverableFormController', newDeliverableFormController);
 
     /* @ngInject */
-    function newDeliverableFormController($state, $scope, deliverableDefinitionsModel, deliverablesModel) {
-
+    function newDeliverableFormController($state, $scope, deliverableDefinitionsModel, deliverablesModel, userService) {
 
         activate();
-
 
         /**==================PRIVATE==================*/
 
         function activate() {
 
-            var fy = $state.params.fy || '2013';
-            var currentMonth = $state.params.mo || '11';
+            var fiscalYear = moment().format('YYYY');
+            var currentMonth = moment().format('MM');
 
-            $scope.deliverableRecord = deliverablesModel.createEmptyItem({fy:fy});
+            if(currentMonth > 8) {
+                fiscalYear++;
+            }
+
+            $scope.state = {dataReady:false};
+            $scope.deliverableRecord = deliverablesModel.createEmptyItem({fy:fiscalYear});
             $scope.deliverableRecord.month = currentMonth;
 
             getDeliverableTypes().then(function(){
@@ -37,8 +40,15 @@
                 }
             })
 
+            userService.getUserLookupValues()
+                .then(function (result) {
+                    $scope.personnelArray = result;
+                    $scope.state.dataReady = true;
+                }),
+                function(err) {
+                    console.log(err);
+                }
         }
-
 
         function getDeliverableTypes() {
 
@@ -48,7 +58,6 @@
             });
 
         }
-
 
         function save() {
             $scope.deliverableRecord.saveChanges().then(function() {
