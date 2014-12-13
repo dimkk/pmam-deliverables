@@ -1,11 +1,13 @@
+
 <div class="container-fluid">
     <div class="row deliverables-paged">
         <div class="col-sm-8"><i class="fa fa-check-square icon-padding"></i>DELIVERABLE TYPES</div>
         <div class="col-sm-4">
-            <input type="text" class="" ng-model="state.searchString" placeholder=" Enter Search Term"><i class="fa fa-search search-padding"></i>
+            <input type="text" ng-model="state.searchString" placeholder=" Enter Search Term"><i class="fa fa-search search-padding"></i>
         </div>
     </div>
     <hr/>
+    <!-- Animate once we have data -->
     <div ng-if="state.validChartData">
         <table class="table table-striped">
             <thead>
@@ -18,15 +20,18 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="deliverables-data" ng-repeat="item in deliverableDefinitions | filter:state.searchString">
+            <tr class="deliverables-data fadeIn" ng-repeat="item in deliverableDefinitions | filter:state.searchString">
                 <td>
                     <a ui-sref="deliverables.instances({ fy:fiscalYear, id:item.id })">{{ item.deliverableNumber }}</a>
                 </td>
                 <td>{{ item.title }}</td>
                 <td>{{ item.frequency.lookupValue }}</td>
-                <td><a ui-sref="deliverables.instances({ fy:fiscalYear, id:item.id })"><span class="badge">{{ deliverableCountByDefinition[item.id] || 0 }}</span></a></td>
-
-                <td><a ui-sref="newInstance({ fy:fiscalYear, deliverableTypeId:item.id })"><i class="fa fa-plus"></i></a></td>
+                <td>
+                    <a ui-sref="deliverables.instances({ fy:fiscalYear, id:item.id })"><span class="badge">{{ deliverableCountByDefinition[item.id] || 0 }}</span></a>
+                </td>
+                <td>
+                    <a ui-sref="newInstance({ fy:fiscalYear, deliverableTypeId:item.id })"><i class="fa fa-plus"></i></a>
+                </td>
             </tr>
             </tbody>
         </table>
