@@ -10,29 +10,34 @@
                 </div>
             </div>
             <hr/>
-            <div>
-                <div class="row deliverables-header">
-                    <div class="col-sm-5"><strong>Title</strong></div>
-                    <div class="col-sm-2"><strong>Submitted</strong></div>
-                    <div class="col-sm-2"><strong>Due</strong></div>
-                    <div class="col-sm-1"><strong>Schedule</strong></div>
-                    <div class="col-sm-2"><strong>Details</strong></div>
-                </div>
-                <div class="row deliverables-data" ng-repeat="item in deliverableInstances track by item.id">
-                    <div class="col-sm-5"><a ui-sref="deliverable({id:item.id})">{{ item.title }}</a>
-                    </div>
-                    <div class="col-sm-2">{{ item.submissionDate | date:'shortDate' }}</div>
-                    <div class="col-sm-2">{{ item.startDate | date:'shortDate' }}</div>
-                    <div class="col-sm-1">{{ frequency }}</div>
-                    <div class="col-sm-2">
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Submitted</th>
+                    <th>Due</th>
+                    <th>Schedule</th>
+                    <th>Details</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in deliverableInstances track by item.id">
+                    <td><a ui-sref="deliverable({id:item.id})">{{ item.title }}</a>
+                    </td>
+                    <td>{{ item.submissionDate | date:'shortDate' }}</td>
+                    <td>{{ item.startDate | date:'shortDate' }}</td>
+                    <td>{{ frequency }}</td>
+                    <td>
                         <div ratings-directive data-deliverable="item" data-feedback="groupedFeedbackParams[ item.id ]">
                         </div>
-                    </div>
-                </div>
-            </div>
-            <hr/>
-            <hr/>
-        </div>
-    </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+    <hr/>
+    <hr/>
+</div>
+</div>
 </div>
 
