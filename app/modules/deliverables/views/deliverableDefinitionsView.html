@@ -1,34 +1,35 @@
 <div class="container-fluid">
     <div class="row deliverables-paged">
-        <div class="col-sm-1"><i class="fa fa-check-square"></i></div>
-        <div class="col-sm-7">DELIVERABLE TYPES</div>
+        <div class="col-sm-8"><i class="fa fa-check-square icon-padding"></i>DELIVERABLE TYPES</div>
         <div class="col-sm-4">
             <input type="text" class="" ng-model="state.searchString" placeholder=" Enter Search Term"><i class="fa fa-search search-padding"></i>
         </div>
     </div>
     <hr/>
     <div ng-if="state.validChartData">
-
-        <div class="row deliverables-header">
-            <div class="col-sm-3">Reference Number</div>
-            <div class="col-sm-3">Title</div>
-            <div class="col-sm-2">Schedule</div>
-            <div class="col-sm-2">Count</div>
-            <div class="col-sm-2">New</div>
-        </div>
-        <div class="deliverables-data" ng-repeat="item in deliverableDefinitions | filter:state.searchString">
-            <div class="row">
-                <div class="col-sm-3">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Reference Number</th>
+                <th>Title</th>
+                <th>Schedule</th>
+                <th>Count</th>
+                <th>New</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="deliverables-data" ng-repeat="item in deliverableDefinitions | filter:state.searchString">
+                <td>
                     <a ui-sref="deliverables.instances({ fy:fiscalYear, id:item.id })">{{ item.deliverableNumber }}</a>
-                </div>
-                <div class="col-sm-3">{{ item.title }}</div>
-                <div class="col-sm-2">{{ item.frequency.lookupValue }}</div>
-                <div class="col-sm-2"><a ui-sref="deliverables.instances({ fy:fiscalYear, id:item.id })"><span class="badge">{{ deliverableCountByDefinition[item.id] || 0 }}</span></a></div>
+                </td>
+                <td>{{ item.title }}</td>
+                <td>{{ item.frequency.lookupValue }}</td>
+                <td><a ui-sref="deliverables.instances({ fy:fiscalYear, id:item.id })"><span class="badge">{{ deliverableCountByDefinition[item.id] || 0 }}</span></a></td>
 
-                <div class="col-sm-2"><a ui-sref="newInstance({ fy:fiscalYear, deliverableTypeId:item.id })"><i class="fa fa-plus"></i></a></div>
-            </div>
-        </div>
-
+                <td><a ui-sref="newInstance({ fy:fiscalYear, deliverableTypeId:item.id })"><i class="fa fa-plus"></i></a></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 
     <!--<div class="alert alert-warning alert-panel ng-cloak" ng-if="!state.validChartData">no data found!-->
