@@ -22,7 +22,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in deliverableInstances track by item.id">
+                <tr class="fadeIn" ng-repeat="item in deliverableInstances track by item.id">
                     <td><a ui-sref="deliverable({id:item.id})">{{ item.title }}</a>
                     </td>
                     <td>{{ item.submissionDate | date:'shortDate' }}</td>
