@@ -24,6 +24,7 @@
             $scope.state = {dataReady:false};
             $scope.deliverableRecord = deliverablesModel.createEmptyItem({fy:fiscalYear});
             $scope.deliverableRecord.month = currentMonth;
+            $scope.cancel = cancel;
 
             getDeliverableTypes().then(function(){
                 if($state.params.deliverableTypeId) {
@@ -61,6 +62,11 @@
                 toastr.error("There was a problem updating this deliverable record");
             });
         }
+
+        function cancel() {
+            $state.go('deliverables.instances',{ id:$scope.deliverableRecord.deliverableType.lookupId, fy:$scope.deliverableRecord.fy});
+        }
+
 
     }
 })();
