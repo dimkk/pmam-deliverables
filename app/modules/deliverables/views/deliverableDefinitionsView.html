@@ -27,7 +27,7 @@
                 <td>{{ item.title }}</td>
                 <td>{{ item.frequency.lookupValue }}</td>
                 <td>
-                    <a ui-sref="deliverables.instances({ fy:fiscalYear, id:item.id })"><span class="badge">{{ deliverableCountByDefinition[item.id] || 0 }}</span></a>
+                    <a ui-sref="deliverables.instances({ fy:fiscalYear, id:item.id })"><span class="badge badge-info">{{ deliverableCountByDefinition[item.id] || 0 }}</span></a>
                 </td>
                 <td>
                     <a ui-sref="newInstance({ fy:fiscalYear, deliverableTypeId:item.id })"><i class="fa fa-plus"></i></a>
