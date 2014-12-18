@@ -1,7 +1,7 @@
 
 <div class="row">
     <div class="col-sm-6">
-        <div class="form-group">
+        <div class="form-group" ng-class="{ 'has-error': editDeliverable.title.$invalid }">
             <label class="deliverables-header" for="title">Title*</label>
             <input type="text" class="form-control" placeholder="Enter a Title" ng-model="deliverableRecord.title" name="title" ng-minlength="1" ng-maxlength="500" required/>
             <div ng-messages="editDeliverable.title.$error" class="has-error" style="color:maroon">
@@ -16,7 +16,7 @@
 
 
     <div class="col-sm-2">
-        <div class="form-group" ng-form="fy">
+        <div class="form-group" ng-class="{ 'has-error': editDeliverable.fy.$invalid }">
             <label class="deliverables-header" for="fy">Fiscal Year*</label>
             <input type="text" ng-maxlength="4" ng-required="true" ng-minlength="4" class="form-control" ng-model="deliverableRecord.fy" name="fy"/>
             <div ng-messages="editDeliverable.fy.$error" class="has-error" style="color:maroon">
@@ -63,7 +63,7 @@
 </div>
 <div class="row">
     <div class="col-sm-2">
-        <div class="form-group">
+        <div class="form-group" ng-class="{ 'has-error': editDeliverable.startDate.$invalid }">
             <label class="deliverables-header" for="startDate">Start Date*</label>
             <input ng-required="true" placeholder="Enter a Start Date" name="startDate" ui-date class="form-control" ng-model="deliverableRecord.startDate"/>
             <div ng-messages="editDeliverable.startDate.$error" class="has-error" style="color:maroon">
@@ -74,7 +74,7 @@
 
 
     <div class="col-sm-2">
-        <div class="form-group">
+        <div class="form-group" ng-class="{ 'has-error': editDeliverable.submissionDate.$invalid }">
             <label class="deliverables-header" for="submissionDate">Submission Date*</label>
             <input ng-required="true"  placeholder="Enter a Submission Date" name="submissionDate" ui-date class="form-control" ng-model="deliverableRecord.submissionDate"
                    name="submissionDate"/>
