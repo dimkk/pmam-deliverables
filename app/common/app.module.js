@@ -4,6 +4,7 @@ angular.module('pmam-deliverables', [
     //Angular Components
     'ngSanitize',
     'ngAnimate',
+    'ngMessages',
 
     //Angular UI
     'ui.router',
