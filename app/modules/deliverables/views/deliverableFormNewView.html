@@ -6,12 +6,8 @@
             </div>
         </legend>
         <hr/>
-        <form>
+        <form name="editDeliverable" ng-submit="save()">
             <div ng-include="'modules/deliverables/views/deliverableFormTemplate.html'"></div>
         </form>
-        <div class="deliverables-data">
-            <button class="btn btn-primary" ng-click="save()">Save</button>
-            <button class="btn btn-default" ng-click="cancel()">Cancel</button>
-        </div>
     </div>
 </fieldset>
