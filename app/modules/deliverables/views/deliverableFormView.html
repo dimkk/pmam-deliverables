@@ -2,24 +2,13 @@
     <div class="container-fluid">
         <legend>
             <div  class="row deliverables-paged">
-                <div class="col-lg-1"><i class="fa fa-check-square"></i></div>
-                <div class="col-lg-11">EDIT DELIVERABLE</div>
+                <div class="col-sm-1"><i class="fa fa-check-square"></i></div>
+                <div class="col-sm-11">EDIT DELIVERABLE</div>
             </div>
         </legend>
         <hr/>
         <form name="editDeliverable" ng-submit="save()">
             <div ng-include="'modules/deliverables/views/deliverableFormTemplate.html'"></div>
-            <span data-ap-attachments data-list-item="deliverableRecord"></span>
-
-            <div class="row">
-                <button class="btn btn-primary" type="submit">Save</button>
-                <button class="btn btn-default" ng-click="cancel()">Cancel</button>
-                <button class="btn btn-default" ng-click="deleteRecord()">Delete</button>
-            </div>
-            </hr>
-            <div class="row">
-                <span>*Denotes required field</span>
-            </div>
         </form>
     </div>
 </fieldset>
