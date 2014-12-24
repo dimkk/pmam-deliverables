@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-10">
             <div class="row deliverables-paged">
                 <div class="col-sm-9"><i class="fa fa-check-square icon-padding"></i>DELIVERABLES</div>
                 <div class="col-sm-3">
@@ -10,33 +10,56 @@
                 </div>
             </div>
             <hr/>
-
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Submitted</th>
-                    <th>Due</th>
-                    <th>Schedule</th>
-                    <th>Details</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="fadeIn" ng-repeat="item in deliverableInstances track by item.id">
-                    <td><a ui-sref="deliverable({id:item.id})">{{ item.title }}</a>
-                    </td>
-                    <td>{{ item.submissionDate | date:'shortDate' }}</td>
-                    <td>{{ item.startDate | date:'shortDate' }}</td>
-                    <td>{{ frequency }}</td>
-                    <td>
-                        <div ratings-directive data-deliverable="item" data-feedback="groupedFeedbackParams[ item.id ]">
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <!-- Animate once we have data -->
+            <div ng-if="gotData">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Submitted</th>
+                        <th>Due</th>
+                        <th>Schedule</th>
+                        <th>Details</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in deliverableInstances track by item.id">
+                        <td><a ui-sref="deliverable({id:item.id})">{{ item.title }}</a>
+                        </td>
+                        <td>{{ item.submissionDate | date:'shortDate' }}</td>
+                        <td>{{ item.startDate | date:'shortDate' }}</td>
+                        <td>{{ frequency }}</td>
+                        <td>
+                            <div ratings-directive data-deliverable="item"
+                                 data-feedback="groupedFeedbackParams[ item.id ]">
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
             <hr/>
             <hr/>
+        </div>
+        <div class="col-sm-2">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row text-center metrics-header">
+                        <i class="fa fa-check-square icon-padding"></i>METRICS
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <div google-chart chart="Gauge1"
+                         style="width: 200px; height: 200px; display: inline-block; vertical-align: top; position: relative;"></div>
+                    <div google-chart chart="Gauge2"
+                         style="width: 200px; height: 200px; display: inline-block; vertical-align: top; position: relative;"></div>
+                    <div google-chart chart="Gauge3"
+                         style="width: 200px; height: 200px; display: inline-block; vertical-align: top; position: relative;"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
