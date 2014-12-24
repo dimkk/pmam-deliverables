@@ -6,7 +6,7 @@
         .controller('newDeliverableFormController', newDeliverableFormController);
 
     /* @ngInject */
-    function newDeliverableFormController($state, $scope, deliverableDefinitionsModel, deliverablesModel, userService) {
+    function newDeliverableFormController(toastr, $state, $scope, deliverableDefinitionsModel, deliverablesModel, userService) {
 
         activate();
 
@@ -25,6 +25,7 @@
             $scope.deliverableRecord = deliverablesModel.createEmptyItem({fy:fiscalYear});
             $scope.deliverableRecord.month = currentMonth;
             $scope.cancel = cancel;
+            $scope.save = save;
 
             getDeliverableTypes().then(function(){
                 if($state.params.deliverableTypeId) {
@@ -57,7 +58,7 @@
         function save() {
             $scope.deliverableRecord.saveChanges().then(function() {
                 toastr.success("Deliverable updated");
-                $state.go('deliverables.instances',{id:$scope.deliverableRecord.deliverableType.lookupId,fy:$scope.deliverableRecord.fy});
+                $state.go('deliverable', {id: $scope.deliverableRecord.deliverableType.lookupId});
             }, function () {
                 toastr.error("There was a problem updating this deliverable record");
             });
