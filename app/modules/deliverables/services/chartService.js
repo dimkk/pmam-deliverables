@@ -18,17 +18,61 @@
         var service = {
             ComboChart: ComboChart,
             ColumnChart: ColumnChart,
-            GaugeChart: GaugeChart
+            GaugeChart: GaugeChart,
+            Gauge: Gauge
         };
 
         return service;
 
 
-
         /**==================PRIVATE==================*/
+        function Gauge(label) {
+            var self = this;
+            _.extend(self, {
+                'type': 'Gauge',
+                'displayed': true,
+                'data': {
+                    'cols': [
+                        {
+                            'id': 'label',
+                            'type': 'string'
+                        },
+                        {
+                            'id': 'value',
+                            'type': 'number'
+                        }
+                    ],
+                    'rows': [
+                        {
+                            'c': [
+                                {'v': label},
+                                {'v': 0, 'f': '0%'}
+                            ]
+                        }
+                    ]
+                },
+                options: {
+                    animation: {
+                        duration: 1000,
+                        easing: 'inAndOut'
+                    },
+                    max: 100,
+                    fontName: '"Arial"',
+                    fontSize: 10,
+                    majorTicks: [0, 20, 40, 60, 80, 100]
+                }
+            });
 
+            self.updateGaugeValue = function (percent) {
+                /* Pause prior to triggering animation */
+                $timeout(function () {
+                    self.data.rows[0].c[1].v = percent;
+                    self.data.rows[0].c[1].f = percent + '%';
+                }, 1000);
+            };
+        }
 
-        function GaugeChart (options) {
+        function GaugeChart(options) {
             var chart = this;
 
             var defaults = {
@@ -67,7 +111,7 @@
             return chart;
         }
 
-        function ColumnChart (options) {
+        function ColumnChart(options) {
             var chart = this;
 
             var defaults = {
@@ -119,7 +163,7 @@
             return chart;
         }
 
-        function ComboChart (options) {
+        function ComboChart(options) {
             var chart = this;
 
             var defaults = {
