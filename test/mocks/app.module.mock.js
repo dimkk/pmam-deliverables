@@ -7,6 +7,7 @@
             'ngSanitize',
             'ngAnimate',
             'ngMessages',
+            'googlechart',
 
             //Angular UI
             'ui.router',
