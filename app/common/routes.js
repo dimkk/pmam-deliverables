@@ -14,7 +14,7 @@ angular.module('pmam-deliverables')
             .state('deliverables', {
                 url: '/deliverables',
                 abstract: true,
-                template: '<div ui-view></div>'
+                template: '<div ui-view class="fadeIn"></div>'
             })
 
             .state('deliverables.types', {
