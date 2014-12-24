@@ -20,7 +20,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="deliverables-data fadeIn" ng-repeat="item in deliverableDefinitions | filter:state.searchString">
+            <tr class="deliverables-data" ng-repeat="item in deliverableDefinitions | filter:state.searchString">
                 <td>
                     <a ui-sref="deliverables.instances({ fy:fiscalYear, id:item.id })">{{ item.deliverableNumber }}</a>
                 </td>
