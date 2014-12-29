@@ -16,11 +16,27 @@
             '#C0C0C0', '#9C2A00', '#663300'];
 
         var service = {
-            ComboChart: ComboChart,
-            ColumnChart: ColumnChart,
             GaugeChart: GaugeChart,
-            Gauge: Gauge
+            Gauge: Gauge,
+            prepareMetrics: prepareMetrics,
+            buildGauges: buildGauges,
+            getRandom: getRandom
         };
+
+        var state = {
+            displayDate: 'loading',
+            selectedDivision: '',
+            selectedTeam: '',
+            showDivisions: false,
+            viewModeMonth: true,
+            displayMode: "displayDate",
+            title: "Deliverables",
+            monthActive: 'active',
+            qtrActive: null,
+            displayedTitle: '',
+            validChartData: false,
+            availableMonths: []
+        }
 
         return service;
 
@@ -111,106 +127,78 @@
             return chart;
         }
 
-        function ColumnChart(options) {
-            var chart = this;
+        function prepareMetrics(deliverablesByMonth) {
+            var metricsByMonth = {};
+            //Clear out any monthly data
+            state.availableMonths.length = 0;
+            //Add references to each metric broken out by date
+            _.each(deliverablesByMonth, function (deliverable) {
 
-            var defaults = {
-                'type': 'ColumnChart',
-                'displayed': true,
-                'cssStyle': 'height:300px; width:100%;',
-                'data': {
-                    'cols': [],
-                    'rows': []
-                },
-                'options': {
-                    animation: {
-                        duration: 500
-                    },
-                    colors: palette,
-                    focusTarget: 'category',
-                    vAxis: {
-                        title: 'Health',
-                        minValue: 0,
-                        maxValue: 5,
-                        gridlines: {
-                            count: 3
-                        },
-                        minorGridlines: {
-                            count: 1,
-                            color: '#CCC'
-                        },
-                        viewWindowMode: 'pretty'
-                    },
-                    hAxis: {
-                        title: 'Actions'
+                //Sets initial date to the most recent display date
+                state.displayDate = deliverable.displayDate;
 
-                    },
-                    seriesType: 'bars',
-                    chartArea: {
-                        left: 60,
-                        top: 20,
-                        width: '80%',
-                        height: '90%'
-                    },
-                    fontName: '"Georgia"',
-                    fontSize: 14
-                },
-                'formatters': {},
-                'view': {}
-            };
-            //Deep merge
-            jQuery.extend(true, chart, options, defaults);
-            return chart;
+                //Create array to hold metrics for this month if it doesn't exist
+                metricsByMonth[deliverable[state.displayMode]] = metricsByMonth[deliverable[state.displayMode]] || []
+                metricsByMonth[deliverable[state.displayMode]].push(deliverable);
+
+            });
+            _.each(metricsByMonth, function (monthMetrics, monthLabel) {
+                state.availableMonths.push(monthLabel);
+            });
+
+            state.validChartData = true;
         }
 
-        function ComboChart(options) {
-            var chart = this;
-
-            var defaults = {
-                'type': 'ComboChart',
-                'displayed': true,
-                'cssStyle': 'height:400px; width:100%;',
-                'data': {
-                    'cols': [],
-                    'rows': []
-                },
-                'options': {
+        function buildGauges() {
+            //Create initial gauge objects if not already defined
+            var Gauge1 = new GaugeChart({
+                options: {
                     animation: {
-                        duration: 500
-                    },
-                    colors: palette,
-                    focusTarget: 'category',
-                    vAxis: {
-                        title: 'Actions',
-                        minValue: 0,
-                        maxValue: 5,
-                        gridlines: {
-                            count: 3
-                        },
-                        minorGridlines: {
-                            count: 1,
-                            color: '#CCC'
-                        },
-                        viewWindowMode: 'pretty'
-                    },
-                    seriesType: 'bars',
-                    chartArea: {
-                        left: 90,
-                        top: 20,
-                        width: '75%',
-                        height: '90%'
-                    },
-                    fontName: '"Georgia"',
-                    fontSize: 14
+                        easing: 'out',
+                        duration: 1000
+                    }
                 },
-                'formatters': {},
-                'view': {}
+                data: {
+                    rows: [
+                        {
+                            "c": [
+                                {"v": 'Satisfaction', "p": {}},
+                                {"v": 0, "p": {}}
+                            ]
+                        }
+                    ]
+                }
+            });
+            var Gauge2 = new GaugeChart({
+                options: {
+                    animation: {
+                        easing: 'out',
+                        duration: 1000
+                    }
+                },
+                data: {
+                    rows: [
+                        {
+                            "c": [
+                                {"v": 'OTD', "p": {}},
+                                {"v": 0, "p": {}}
+                            ]
+                        }
+                    ]
+                }
+            });
+
+            var gauges = {
+                Gauge1: Gauge1,
+                Gauge2: Gauge2
             };
-            //Deep merge
-            jQuery.extend(true, chart, options, defaults);
-            return chart;
+
+            return gauges;
         }
 
+        function getRandom() {
+            return Math.floor(Math.random() * 5) + 1;
+        }
 
     }
 })();
