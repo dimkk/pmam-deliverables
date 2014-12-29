@@ -110,13 +110,13 @@
 
         function initializeMetricsGauages() {
 
-            var metricsData = doPrepareMetrics();
+            $scope.metricsByMonth = doPrepareMetrics();
 
-            // faking the gauge data for now; it should run off the values returned in metricsData
+            // faking the gauge data for now; it should run off the values returned in metricsByMonth
             $scope.Gauge1.data.rows[0].c[1].v = chartService.getRandom();
             $scope.Gauge2.data.rows[0].c[1].v = chartService.getRandom();
         }
-        
+
         function doBuildGauges() {
 
             var gauges = chartService.buildGauges();
@@ -128,7 +128,7 @@
 
         function doPrepareMetrics() {
 
-            $scope.metricsByMonth = chartService.prepareMetrics($scope.deliverablesByMonth);
+            return chartService.prepareMetrics($scope.deliverablesByMonth);
 
         }
 
