@@ -1,8 +1,8 @@
 <fieldset>
     <div class="container-fluid">
         <legend>
-            <div  class="row deliverables-paged">
-                <div class="col-sm-12"><i class="fa fa-check-square icon-padding"></i>CREATE A NEW DELIVERABLE</div>
+            <div class="row deliverables-paged fadeInDown">
+                <div class="col-sm-12"><i class="fa fa-check-square icon-padding"></i>ADD DELIVERABLE</div>
             </div>
         </legend>
         <hr/>
@@ -25,7 +25,6 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
-
                         <label for="cc" class="deliverables-header">CC</label>
                         <div ng-if="state.dataReady">
                             <ui-select ng-model="deliverableRecord.cc" multiple>
