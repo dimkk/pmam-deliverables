@@ -7,14 +7,27 @@
         </legend>
         <hr/>
         <form name="editDeliverable" ng-submit="save()">
-            <div ng-include="'modules/deliverables/views/deliverableFormTemplate.html'"></div>
-            <div class="row">
+            <div ui-view class="row fadeIn">
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="attachments" class="deliverables-header">Attachments</label>
                         <span data-ap-attachments data-list-item="deliverableRecord"></span>
                     </div>
                 </div>
+                <div class="col-sm-6">
+                    <div class="pull-right">
+                        <div class="content-group">
+                            <button class="btn btn-primary" type="submit">Save</button>
+                            <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+                            <button class="btn btn-default" ng-click="deleteRecord()">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-include="'modules/deliverables/views/deliverableFormTemplate.html'"></div>
+
+            <div class="row">
+
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="to" class="deliverables-header">To</label>
@@ -27,7 +40,10 @@
                                 </ui-select-choices>
                             </ui-select>
                         </div>
-                        <div class="hr-sm"/>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
                         <label for="cc" class="deliverables-header">CC</label>
                         <div ng-if="state.dataReady">
                             <ui-select ng-model="deliverableRecord.cc" multiple>
@@ -38,15 +54,6 @@
                                 </ui-select-choices>
                             </ui-select>
                         </div>
-                        <div class="pull-right">
-                            <div class="content-group">
-                                <button class="btn btn-primary" type="submit">Save</button>
-                                <button class="btn btn-default" ng-click="cancel()">Cancel</button>
-                                <button class="btn btn-default" ng-click="deleteRecord()">Delete</button>
-                            </div>
-                            <span>*Denotes required field</span>
-                        </div>
-
                     </div>
                 </div>
 
