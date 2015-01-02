@@ -3,6 +3,7 @@
         <legend>
             <div  class="row deliverables-paged">
                 <div class="col-sm-12"><i class="fa fa-check-square icon-padding"></i>EDIT DELIVERABLE</div>
+
             </div>
         </legend>
         <hr/>
@@ -21,6 +22,24 @@
                             <button class="btn btn-default" ng-click="cancel()">Cancel</button>
                             <button class="btn btn-default" ng-click="deleteRecord()">Delete</button>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="rating" class="deliverables-header">Rate this deliverable:</label>
+                        <rating ng-model="rate" max="5" readonly="isReadonly" on-hover="hoveringOver(value)"
+                                on-leave="overStar = null"></rating>
+                        <span class="label"
+                              ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}"
+                              ng-show="overStar && !isReadonly">{{percent}}%</span>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="deliverables-header" for="comment">Add a comment with your rating: </label>
+                        <input type="text" class="form-control" placeholder="Enter a Rating Comment" name="comment"/>
                     </div>
                 </div>
             </div>
