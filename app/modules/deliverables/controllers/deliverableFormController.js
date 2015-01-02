@@ -5,6 +5,7 @@
         .module('pmam-deliverables')
         .controller('deliverableFormController', deliverableFormController);
 
+
     /* @ngInject */
     function deliverableFormController(toastr, _, $state, $scope, deliverablesModel, deliverableDefinitionsModel, userService, $q ) {
 
@@ -56,6 +57,57 @@
 
                 $scope.state.dataReady = true;
             });
+
+            // rating settings
+            $scope.rate = 5;
+            $scope.max = 5;
+            $scope.isReadonly = false;
+
+            $scope.hoveringOver = function (value) {
+                $scope.overStar = value;
+                $scope.percent = 100 * (value / $scope.max);
+            };
+
+            $scope.ratingStates = [
+                {stateOn: 'glyphicon-ok-sign', stateOff: 'glyphicon-ok-circle'},
+                {stateOn: 'glyphicon-star', stateOff: 'glyphicon-star-empty'},
+                {stateOn: 'glyphicon-heart', stateOff: 'glyphicon-ban-circle'},
+                {stateOn: 'glyphicon-heart'},
+                {stateOff: 'glyphicon-off'}
+            ];
+
+            $scope.$watch('rate', function (val) {
+
+                function success(data) {
+
+                    console.log(data);
+
+                };
+
+                function error(response) {
+
+                    console.log(response)
+
+                    alert("Can't post " + response.data + " Error:" + response.status);
+
+                }
+
+
+                if (val) {
+
+                    var data = {
+                        rating: val,
+                        user: "userId" // I'm not sure where is your userId
+
+                    }
+
+                    // here we can update the data source with the rating but then what about the optional comment?
+                    console.log("post this: " + val);
+                    // $http.post("yourUrl", data).then(success, error);
+
+
+                }
+            })
 
         }
 
