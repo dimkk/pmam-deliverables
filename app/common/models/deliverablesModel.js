@@ -15,7 +15,7 @@
         .module('pmam-deliverables')
         .service('deliverablesModel', deliverablesModel);
 
-    function deliverablesModel(_, apModelFactory, apModalService) {
+    function deliverablesModel(_, apModelFactory, apModalService, deliverableFeedbackModel) {
 
         /********************* Model Definition ***************************************/
 
@@ -93,6 +93,12 @@
             controller: '',
             expectedArguments: ['entity']
         });
+
+        function getCachedFeedbackByDeliverableId() {
+            var self = this;
+            return deliverableFeedbackModel.getCachedFeedbackByDeliverableId(self.id);
+        }
+
 
         function openModal() {
             var listItem = this;
