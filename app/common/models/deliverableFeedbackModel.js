@@ -71,7 +71,7 @@
                         mappedName: 'deliverablesubmission',
                         readOnly: false
                     },
-                    {staticName: 'Rating', objectType: 'Integer', mappedName: 'rating', readOnly: false},
+                    {staticName: 'Rating', objectType: 'Integer', mappedName: 'rating', readOnly: false}
 
                 ]
             }
