@@ -18,7 +18,6 @@
 
         activate();
 
-
         /**==================PRIVATE==================*/
 
         function activate() {
@@ -45,9 +44,9 @@
                         $scope.deliverableInstances = indexedCached;
                     })
                 }
-                initializeMetricsGauages();
-            });
 
+                initializeMetricsGauages();
+            })
 
         }
 

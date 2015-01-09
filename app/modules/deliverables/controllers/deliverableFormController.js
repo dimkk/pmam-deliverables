@@ -122,7 +122,10 @@
         function save() {
             $scope.deliverableRecord.saveChanges().then(function() {
                 toastr.success("Deliverable updated");
-                $state.go('deliverables.instances',{ id:$scope.deliverableRecord.deliverableType.lookupId, fy:$scope.deliverableRecord.fy});
+                $state.go('deliverables.instances', {
+                    id: $scope.deliverableRecord.deliverableType.lookupId,
+                    fy: $scope.deliverableRecord.fy
+                });
             }, function () {
                 toastr.error("There was a problem updating this deliverable record");
             });

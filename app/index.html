@@ -53,7 +53,7 @@
 <div ng-include="'modules/navbar/navbarView.html'"></div>
 
 <div class="application-content">
-    <div ui-view>
+    <div ui-view class="fadeIn">
         <div class="splash">
             <div class="message">
                 ESED Deliverables Dashboard
@@ -67,6 +67,7 @@
 <!-- inject-cdnjs:js -->
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-messages/angular-messages.js"></script>
 <script src="bower_components/jquery-ui/jquery-ui.js"></script>
 <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 <script src="bower_components/angular-animate/angular-animate.js"></script>
@@ -77,6 +78,7 @@
 <!-- build:js scripts/vendor.js -->
 <!-- inject-vendorjs:js -->
 <script src="bower_components/moment/moment.js"></script>
+<script src="bower_components/angular-google-chart/ng-google-chart.js"></script>
 <script src="bower_components/lodash/dist/lodash.js"></script>
 <script src="bower_components/lodash-deep/lodash-deep.js"></script>
 <script src="bower_components/firebase/firebase.js"></script>
@@ -94,8 +96,6 @@
 <script src="bower_components/angular-filter/dist/angular-filter.js"></script>
 <!-- endinject -->
 <!-- endbuild -->
-
-
 
 <!-- build:js scripts/scripts.js -->
 <!-- inject-modules:js -->
@@ -117,8 +117,10 @@
 <!-- endinject -->
 
 <!-- inject-projectjs:js -->
+<script src="modules/deliverables/directives/ratingsDirective.js"></script>
 <script src="modules/deliverables/services/userService.js"></script>
 <script src="modules/deliverables/services/deliverablesService.js"></script>
+<script src="modules/deliverables/services/deliverableFeedbackService.js"></script>
 <script src="modules/deliverables/services/deliverableDefinitionsService.js"></script>
 <script src="modules/deliverables/services/chartService.js"></script>
 <script src="modules/deliverables/controllers/newDeliverableFormController.js"></script>
@@ -126,12 +128,12 @@
 <script src="modules/deliverables/controllers/deliverableInstancesController.js"></script>
 <script src="modules/deliverables/controllers/deliverableFormController.js"></script>
 <script src="modules/deliverables/controllers/definitionsController.js"></script>
-<script src="modules/navbar/navbarCtrl.js"></script>
 <script src="common/models/userSettingsModel.js"></script>
 <script src="common/models/deliverablesModel.js"></script>
 <script src="common/models/deliverableFrequenciesModel.js"></script>
 <script src="common/models/deliverableFeedbackModel.js"></script>
 <script src="common/models/deliverableDefinitionsModel.js"></script>
+<script src="modules/navbar/navbarCtrl.js"></script>
 <script src="common/run.js"></script>
 <script src="common/routes.js"></script>
 <script src="common/constants.js"></script>

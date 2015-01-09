@@ -6,7 +6,7 @@
         .controller( 'deliverablesController', deliverablesController );
 
     /* @ngInject */
-    function deliverablesController(chartService, $location, $scope, toastr, $state, deliverablesService) {
+    function deliverablesController(deliverableFeedbackModel, deliverableFeedbackService, chartService, $location, $scope, toastr, $state, deliverablesService) {
 
         var yearPart;
         var currentFiscalYear = 0;
@@ -39,13 +39,25 @@
         $scope.deliverableFrequencyFilter = deliverableFrequencyFilter;
         $scope.decreaseDate = decreaseDate;
         $scope.increaseDate = increaseDate;
+        $scope.dataCheck;
 
         activate();
 
         /**==================PRIVATE==================*/
 
         function activate() {
+
+            deliverableFeedbackModel.executeQuery().then(function (indexedCache) {
+                    $scope.dataCheck = indexedCache;
+
+                },
+                function (err) {
+                    console.log(err);
+                }
+            );
+
             doBuildGauges();
+
             deliverablesService.getDeliverablesForMonth( fy, mo ).then(
 
                 function( results ) {
@@ -61,6 +73,7 @@
                         currentMonth = $scope.deliverablesByMonth[0].month;
                         initializeMetricsGauages();
                     }
+
                     // this is where we handle increments and decrements when there's no data
                     else {
 
@@ -99,6 +112,16 @@
 
                 function(results) {
                     $scope.deliverableFrequencies = results;
+
+                },
+                function (err) {
+                    console.log(err);
+                }
+            );
+
+            deliverableFeedbackService.getDeliverableFeedback().then(
+                function (results) {
+                    $scope.deliverableFeedback = results;
 
                 },
                 function(err) {
