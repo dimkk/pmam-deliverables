@@ -5,7 +5,7 @@
         .module('pmam-deliverables')
         .factory('userSettingsModel', userSettingsModel);
 
-    function userSettingsModel(_, apModelFactory, $modal) {
+    function userSettingsModel(_, apModelFactory, $modal, user) {
 
         /** Object Constructor (class)*/
         function UserSettings(obj) {
@@ -60,18 +60,31 @@
             '</Query>'
         });
 
-        model.executeQuery()
-            .then(function (entities) {
-                /** Create new record if it doesn't already exist */
-                if (!entities.count()) {
-                    //Newly created list item is processed and added to model.data
-                    model.addNewItem({title: '1App', preferences: {}})
-                        .then(function () {
-                            //Identify current user
+        var deferred = $q.defer();
+        model.ready = deferred.promise;
 
+
+        model.executeQuery('primary')
+            .then(function (response) {
+                //Create new record if it doesn't already exist
+                if (response.count() === 0) {
+                    //Newly created list item is processed and added to model.data
+                    apDataService.createListItem(model, {title: '1App', preferences: {}})
+                        .then(function (newItemCache) {
+                            updateReference(newItemCache.first());
                         });
+                } else {
+                    updateReference(response.first());
                 }
             });
+
+        /** Creates a reference to the current user on the model */
+        function updateReference(userPreferences) {
+            //Resolve this model
+            deferred.resolve(userPreferences);
+            _.extend(user, userPreferences.author);
+        }
+
 
         /********************* Model Specific Shared Functions ***************************************/
             //Allows storage and retrieval of page states between sessions

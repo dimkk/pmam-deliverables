@@ -15,7 +15,7 @@
         .module('pmam-deliverables')
         .service('deliverablesModel', deliverablesModel);
 
-    function deliverablesModel(_, apModelFactory, apModalService, deliverableFeedbackModel) {
+    function deliverablesModel(_, apModelFactory, apModalService, deliverableFeedbackModel, user) {
 
         /********************* Model Definition ***************************************/
 
@@ -80,12 +80,14 @@
             var self = this;
             _.extend(self, obj);
             self.displayDate = moment(self.submissionDate).format('MMM YY');
-            self.formattedstartdate = moment(self.startDate).format('MM/DD/YYYY')
-            self.formattedsubmissiondate = moment(self.submissionDate).format('MM/DD/YYYY')
+            self.formattedstartdate = moment(self.startDate).format('MM/DD/YYYY');
+            self.formattedsubmissiondate = moment(self.submissionDate).format('MM/DD/YYYY');
 
         }
 
         Deliverable.prototype.openModal = openModal;
+        Deliverable.prototype.getCachedFeedbackByDeliverableId = getCachedFeedbackByDeliverableId;
+        Deliverable.prototype.getCachedFeedbackForCurrentUser = getCachedFeedbackForCurrentUser;
 
         /** Optionally add a modal form **/
         model.openModal = apModalService.modalModelProvider({
@@ -97,6 +99,23 @@
         function getCachedFeedbackByDeliverableId() {
             var self = this;
             return deliverableFeedbackModel.getCachedFeedbackByDeliverableId(self.id);
+        }
+
+        function getCachedFeedbackForCurrentUser() {
+            var self = this, feedbackForUser,
+                feedbackForDeliverable = self.getCachedFeedbackByDeliverableId();
+            if(feedbackForDeliverable) {
+                _.each(feedbackForDeliverable, function(feedback) {
+                    if(feedback.author.lookupId === user.lookupId) {
+                        feedbackForUser = feedback;
+                    }
+                });
+            }
+            /** Create a placeholder if one is found */
+            if(!feedbackForUser) {
+                feedbackForUser = deliverableFeedbackModel.createEmptyItem({rating: 5});
+            }
+            return feedbackForUser;
         }
 
 
