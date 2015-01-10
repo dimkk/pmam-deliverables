@@ -2,82 +2,101 @@
     <div class="container-fluid">
         <legend>
             <div  class="row deliverables-paged">
-                <div class="col-sm-12"><i class="fa fa-check-square icon-padding"></i>EDIT DELIVERABLE</div>
-
+                <div class="col-sm-10"><i class="fa fa-check-square icon-padding"></i>EDIT DELIVERABLE</div>
+                <div class="col-sm-2"><i class="fa fa-check-square icon-padding"></i>REVIEWS</div>
             </div>
         </legend>
         <hr/>
-        <form name="editDeliverable" ng-submit="save()">
-            <div ui-view class="row fadeIn">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label for="attachments" class="deliverables-header">Attachments</label>
-                        <span data-ap-attachments data-list-item="deliverableRecord"></span>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="pull-right">
-                        <div class="content-group">
-                            <button class="btn btn-primary" type="submit">Save</button>
-                            <button class="btn btn-default" ng-click="cancel()">Cancel</button>
-                            <button class="btn btn-default" ng-click="deleteRecord()">Delete</button>
+        <div class="col-sm-10">
+            <form name="editDeliverable" ng-submit="save()">
+                <div ui-view class="row fadeIn">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="attachments" class="deliverables-header">Attachments</label>
+                            <span data-ap-attachments data-list-item="deliverableRecord"></span>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label for="rating" class="deliverables-header">Rate this deliverable:</label>
-                        <rating ng-model="rate" max="5" readonly="isReadonly" on-hover="hoveringOver(value)"
-                                on-leave="overStar = null"></rating>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="rating" class="deliverables-header">Rate this deliverable:</label>
+                            <rating ng-change="vm.updateFeedback()" ng-model="userDeliverableFeedback.rating" max="5"
+                                    readonly="vm.isReadonly" on-hover="vm.hoveringOver(value)"
+                                    on-leave="vm.overStar = null"></rating>
                         <span class="label"
-                              ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}"
-                              ng-show="overStar && !isReadonly">{{percent}}%</span>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="deliverables-header" for="comment">Add a comment with your rating: </label>
-                        <input type="text" class="form-control" placeholder="Enter a Rating Comment" name="comment"/>
-                    </div>
-                </div>
-            </div>
-            <div ng-include="'modules/deliverables/views/deliverableFormTemplate.html'"></div>
-
-            <div class="row">
-
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label for="to" class="deliverables-header">To</label>
-                        <div ng-if="state.dataReady">
-                            <ui-select ng-model="deliverableRecord.to" multiple>
-                                <ui-select-match placeholder="Select TO Recipient">{{$item.lookupValue }}</ui-select-match>
-                                <ui-select-choices
-                                    repeat="person in personnelArray | filter: $select.search track by person.lookupId">
-                                    <div ng-bind-html="person.lookupValue | highlight: $select.search"></div>
-                                </ui-select-choices>
-                            </ui-select>
+                              ng-class="{'label-warning': vm.percent<30, 'label-info': vm.percent>=30 && vm.percent<70, 'label-success': vm.percent>=70}"
+                              ng-show="vm.overStar && !vm.isReadonly">{{vm.percent}}%</span>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label for="cc" class="deliverables-header">CC</label>
-                        <div ng-if="state.dataReady">
-                            <ui-select ng-model="deliverableRecord.cc" multiple>
-                                <ui-select-match placeholder="Select CC Recipient">{{$item.lookupValue }}</ui-select-match>
-                                <ui-select-choices
-                                    repeat="person in personnelArray | filter: $select.search track by person.lookupId">
-                                    <div ng-bind-html="person.lookupValue | highlight: $select.search"></div>
-                                </ui-select-choices>
-                            </ui-select>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="deliverables-header" for="comment">Add a comment with your rating: </label>
+                            <input type="text" class="form-control" ng-model="deliverableRecord.comment"
+                                   placeholder="Enter a Rating Comment" name="comment"/>
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="pull-right">
+                            <div class="content-group">
+                                <button class="btn btn-primary" type="submit">Save</button>
+                                <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+                                <button class="btn btn-default" ng-click="deleteRecord()">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-include="'modules/deliverables/views/deliverableFormTemplate.html'"></div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="to" class="deliverables-header">To</label>
 
+                            <div ng-if="state.dataReady">
+                                <ui-select ng-model="deliverableRecord.to" multiple>
+                                    <ui-select-match placeholder="Select TO Recipient">{{$item.lookupValue }}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                        repeat="person in personnelArray | filter: $select.search track by person.lookupId">
+                                        <div ng-bind-html="person.lookupValue | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="cc" class="deliverables-header">CC</label>
+
+                            <div ng-if="state.dataReady">
+                                <ui-select ng-model="deliverableRecord.cc" multiple>
+                                    <ui-select-match placeholder="Select CC Recipient">{{$item.lookupValue }}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                        repeat="person in personnelArray | filter: $select.search track by person.lookupId">
+                                        <div ng-bind-html="person.lookupValue | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-2">
+            <div ng-repeat="feedback in deliverableFeedback track by feedback.id">
+                <div class="row">
+                    <rating ng-model="feedback.rating" max="5" readonly="true"></rating>
+                </div>
+                <div class="row">
+                    <span class="author">{{feedback.author.lookupValue}}</span>
+                </div>
+                <div class="row">
+                    <span class="comment">{{feedback.comment}}</span>
+                </div>
             </div>
-
-        </form>
+        </div>
     </div>
 </fieldset>

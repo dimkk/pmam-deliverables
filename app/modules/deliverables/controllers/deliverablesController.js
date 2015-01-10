@@ -17,6 +17,7 @@
 
         var fiscalYear = '2013';
         var currentMonth = '7';
+        var vm = this;
 
         if(currentMonth > 8) {
             fiscalYear++;

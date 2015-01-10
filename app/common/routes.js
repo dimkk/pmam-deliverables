@@ -26,7 +26,8 @@ angular.module('pmam-deliverables')
             .state('deliverable', {
                 url: '/deliverable/:id',
                 templateUrl: 'modules/deliverables/views/deliverableFormView.html',
-                controller: 'deliverableFormController'
+                controller: 'deliverableFormController',
+                controllerAs: 'vm'
             })
 
             .state('newInstance', {
@@ -38,7 +39,8 @@ angular.module('pmam-deliverables')
             .state('deliverables.main', {
                 url: '/main?fy&mo',
                 templateUrl: 'modules/deliverables/views/deliverablesView.html',
-                controller: 'deliverablesController'
+                controller: 'deliverablesController',
+                controllerAs: 'vm'
             })
 
             .state('deliverables.instances', {

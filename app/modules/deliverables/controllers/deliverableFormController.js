@@ -7,7 +7,9 @@
 
 
     /* @ngInject */
-    function deliverableFormController(toastr, _, $state, $scope, deliverablesModel, deliverableDefinitionsModel, userService, $q ) {
+    function deliverableFormController(deliverableFeedbackModel, toastr, _, $state, $scope, deliverablesModel, deliverableDefinitionsModel, userService, $q) {
+
+        var vm = this;
 
         $scope.state = {dataReady:false};
         $scope.save = save;
@@ -25,10 +27,11 @@
             var calendarMonth;
             var deliverableRecord = deliverablesModel.getCachedEntity(parseInt(deliverableId));
 
-            var requestQueue = [userService.getUserLookupValues()];
+            var requestQueue = [userService.getUserLookupValues(), deliverableFeedbackModel.executeQuery()];
 
             if( !deliverableRecord ) {
                 requestQueue.push(deliverablesModel.getListItemById(parseInt(deliverableId)));
+
             }
 
             $q.all(requestQueue).then(function(resolvedPromises) {
@@ -36,8 +39,8 @@
 
                 if(!deliverableRecord){
 
-                    if(resolvedPromises[1]) {
-                        $scope.deliverableRecord = resolvedPromises[1];
+                    if (resolvedPromises[2]) {
+                        $scope.deliverableRecord = resolvedPromises[2];
                         getDeliverableTypes();
                     } else {
                         console.log('no record found!');
@@ -47,6 +50,13 @@
                     $scope.deliverableRecord = deliverableRecord;
                     getDeliverableTypes();
                 }
+
+                // get a list of all existing feedback on this deliverable
+                $scope.deliverableFeedback = $scope.deliverableRecord.getCachedFeedbackByDeliverableId();
+
+                // get feedback for just the current user
+                $scope.userDeliverableFeedback = $scope.deliverableRecord.getCachedFeedbackForCurrentUser();
+
 
                 // convert fiscal year month to calendar month
                 calendarMonth = $scope.deliverableRecord.month - 3;
@@ -59,13 +69,13 @@
             });
 
             // rating settings
-            $scope.rate = 5;
-            $scope.max = 5;
-            $scope.isReadonly = false;
+            vm.rate = 5;
+            vm.max = 5;
+            vm.isReadonly = false;
 
-            $scope.hoveringOver = function (value) {
-                $scope.overStar = value;
-                $scope.percent = 100 * (value / $scope.max);
+            vm.hoveringOver = function (value) {
+                vm.overStar = value;
+                vm.percent = 100 * (value / vm.max);
             };
 
             $scope.ratingStates = [
@@ -76,38 +86,15 @@
                 {stateOff: 'glyphicon-off'}
             ];
 
-            $scope.$watch('rate', function (val) {
+        }
 
-                function success(data) {
+        vm.updateFeedback = function (val) {
 
-                    console.log(data);
+            //function success(data) {
 
-                };
-
-                function error(response) {
-
-                    console.log(response)
-
-                    alert("Can't post " + response.data + " Error:" + response.status);
-
-                }
-
-
-                if (val) {
-
-                    var data = {
-                        rating: val,
-                        user: "userId" // I'm not sure where is your userId
-
-                    }
-
-                    // here we can update the data source with the rating but then what about the optional comment?
-                    console.log("post this: " + val);
-                    // $http.post("yourUrl", data).then(success, error);
-
-
-                }
-            })
+            $scope.userDeliverableFeedback.saveChanges().then(function () {
+                toastr.success("Feedback updated");
+            });
 
         }
 

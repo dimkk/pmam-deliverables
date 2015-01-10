@@ -5,7 +5,7 @@
         .module('pmam-deliverables')
         .factory('userSettingsModel', userSettingsModel);
 
-    function userSettingsModel(_, apModelFactory, $modal, user) {
+    function userSettingsModel($q, _, apModelFactory, $modal, user) {
 
         /** Object Constructor (class)*/
         function UserSettings(obj) {

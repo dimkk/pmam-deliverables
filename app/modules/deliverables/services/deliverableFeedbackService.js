@@ -14,7 +14,6 @@
     function deliverableFeedbackService(_, $q, deliverableFeedbackModel) {
         var service = {
             getDeliverableFeedback: getDeliverableFeedback,
-            addFeedback: addFeedback,
             updateFeedback: updateFeedback,
             deleteFeedback: deleteFeedback
         };
@@ -50,11 +49,8 @@
             return deferred.promise;
         }
 
-        function addFeedback() {
-
-        }
-
         function updateFeedback(item) {
+            //if(!item.id)
 
         }
 

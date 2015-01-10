@@ -41,7 +41,7 @@
             list: {
                 title: 'DeliverableFrequencies',
                 /**Maps to the offline XML file in dev folder (no spaces) */
-                guid: '{00A69513-BB63-4333-9639-EB14C08269DB}',
+                guid: '{FA20C6A2-0B6D-411C-B220-AD8EF1F0C6F8}',
                 /**List GUID can be found in list properties in SharePoint designer */
                 customFields: [
                 /** Array of objects mapping each SharePoint field to a property on a list item object */
