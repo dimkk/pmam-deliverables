@@ -120,11 +120,14 @@
         var feedbackByDeliverableId = {};
 
         function registerFeedbackByDeliverable(feedback) {
-            feedbackByDeliverableId[feedback.deliverable.lookupId] = feedbackByDeliverableId[feedback.deliverable.lookupId] || {};
-            /** Only register modifications that have been saved to the server and add to cache if not already there */
-            if(feedback.id && !feedbackByDeliverableId[feedback.deliverable.lookupId][feedback.id]) {
-                feedbackByDeliverableId[feedback.deliverable.lookupId][feedback.id] = feedback;
+            if (feedback.deliverable.lookupId) {
+                feedbackByDeliverableId[feedback.deliverable.lookupId] = feedbackByDeliverableId[feedback.deliverable.lookupId] || {};
+                /** Only register modifications that have been saved to the server and add to cache if not already there */
+                if (feedback.id && !feedbackByDeliverableId[feedback.deliverable.lookupId][feedback.id]) {
+                    feedbackByDeliverableId[feedback.deliverable.lookupId][feedback.id] = feedback;
+                }
             }
+
         }
 
         function removeFeedbackByDeliverable(feedback) {
