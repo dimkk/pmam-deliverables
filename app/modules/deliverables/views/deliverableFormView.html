@@ -21,6 +21,7 @@
                             <label for="rating" class="deliverables-header">Rate this deliverable:</label>
                             <rating ng-change="vm.updateFeedback()" ng-model="userDeliverableFeedback.rating" max="5"
                                     readonly="vm.isReadonly" on-hover="vm.hoveringOver(value)"
+                                    ng-class="{'rating-poor ': vm.percent<30, 'rating-fair': vm.percent>=30 && vm.percent<70, 'rating-good': vm.percent>=70}"
                                     on-leave="vm.overStar = null"></rating>
                         <span class="label"
                               ng-class="{'label-warning': vm.percent<30, 'label-info': vm.percent>=30 && vm.percent<70, 'label-success': vm.percent>=70}"
@@ -88,7 +89,7 @@
         <div class="col-sm-2">
             <div ng-repeat="feedback in deliverableFeedback track by feedback.id">
                 <div class="row">
-                    <rating ng-model="feedback.rating" max="5" readonly="true"></rating>
+                    <rating class="star-rating" ng-model="feedback.rating" max="5" readonly="true"></rating>
                 </div>
                 <div class="row">
                     <span class="author">{{feedback.author.lookupValue}}</span>
