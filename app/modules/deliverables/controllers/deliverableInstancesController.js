@@ -6,7 +6,7 @@
         .controller('deliverableInstancesController', deliverableInstancesController);
 
     /* @ngInject */
-    function deliverableInstancesController(chartService, $scope, $location, $state, _, deliverablesService, deliverableDefinitionsModel) {
+    function deliverableInstancesController(deliverablesModel, $q, deliverableFeedbackModel, chartService, $scope, $location, $state, _, deliverablesService, deliverableDefinitionsModel) {
 
         var fy = $state.params.fy || '2013';
         var activeId = $state.params.id;
@@ -24,11 +24,15 @@
 
             doBuildGauges();
 
-            deliverableDefinitionsModel.getFyDefinitions(fy).then(function(indexedCache){
+            $q.all([deliverableDefinitionsModel.getFyDefinitions(fy), deliverableFeedbackModel.executeQuery()])
+                .then(function (resolvedPromises) {
+
+                    var indexedCache = resolvedPromises[0];
 
                 if(!activeId){
                     $scope.state.selectedDeliverable = indexedCache.first();
-                    deliverablesService.getDeliverablesByType(fy,parseInt($scope.state.selectedDeliverable.id)).then(function(indexedCached){
+                    deliverablesService.getDeliverablesByType(fy, parseInt($scope.state.selectedDeliverable.id)).then
+                    (function (indexedCached) {
                         $scope.deliverableInstances = indexedCached;
                     })
                 } else {
@@ -51,7 +55,7 @@
         }
 
         function getUpdateState(){
-            $state.go('deliverables.instances',{ fy: fy, id: $scope.state.selectedDeliverable.id } )
+            $state.go('deliverables.instances', {fy: fy, id: $scope.state.selectedDeliverable.id})
         }
 
         function initializeMetricsGauages() {

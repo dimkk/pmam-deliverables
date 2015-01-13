@@ -28,7 +28,7 @@
                         <th>Submitted</th>
                         <th>Due</th>
                         <th>Schedule</th>
-                        <th>Details</th>
+                        <th>Rating</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -39,8 +39,7 @@
                         <td>{{ item.startDate | date:'shortDate' }}</td>
                         <td>{{ deliverableFrequencyFilter( item.deliverableType ) }}</td>
                         <td>
-                            <div ratings-directive data-deliverable="item" data-feedback="groupedFeedbackParams[item.id]">
-                            </div>
+                            <feedback-average data-deliverable="item"></feedback-average>
                         </td>
                     </tr>
                     </tbody>

@@ -30,9 +30,7 @@
                         <td>{{ item.startDate | date:'shortDate' }}</td>
                         <td>{{ frequency }}</td>
                         <td>
-                            <div ratings-directive data-deliverable="item"
-                                 data-feedback="groupedFeedbackParams[ item.id ]">
-                            </div>
+                            <feedback-average data-deliverable="item"></feedback-average>
                         </td>
                     </tr>
                     </tbody>
