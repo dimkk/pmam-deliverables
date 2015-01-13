@@ -25,6 +25,7 @@
 
             var deliverableFeedback = scope.deliverable.getCachedFeedbackByDeliverableId();
             scope.state = {average: '5'};
+            scope.state.reviewTotalString = "No Reviews";
 
             if (deliverableFeedback) {
 
@@ -36,6 +37,13 @@
                 });
 
                 scope.state.average = rating / feedbackArray.length;
+                scope.state.reviewTotal = feedbackArray.length;
+                if (scope.state.reviewTotal === 1) {
+                    scope.state.reviewTotalString = '1 Review';
+                }
+                if (scope.state.reviewTotal > 1) {
+                    scope.state.reviewTotalString = scope.state.reviewTotal + ' Reviews';
+                }
             }
 
             scope.hoveringOver = function (value) {
