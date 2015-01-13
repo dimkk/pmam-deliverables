@@ -1,4 +1,4 @@
 <rating
     ng-class="{'rating-poor': state.average===1, 'rating-fair': state.average>1 && state.average<4, 'rating-good': state.average>3}"
-    ng-model="state.average" max="5" readonly="true">
+    ng-model="state.average" title="{{state.average}} star rating" max="5" readonly="true">
 </rating>
