@@ -1,4 +1,13 @@
-<rating
-    ng-class="{'rating-poor': state.average===1, 'rating-fair': state.average>1 && state.average<4, 'rating-good': state.average>3}"
-    ng-model="state.average" title="{{state.average}} star rating" max="5" readonly="true">
-</rating>
+<table>
+    <tr>
+        <td>
+            <rating
+                ng-class="{'rating-poor': state.average===1, 'rating-fair': state.average>1 && state.average<4, 'rating-good': state.average>3}"
+                ng-model="state.average" title="{{state.average}} star rating" max="5" readonly="true">
+            </rating>
+        </td>
+        <td>
+            <span class="rating-qualifier search-padding">{{state.reviewTotalString}}</span>
+        </td>
+    </tr>
+</table>
