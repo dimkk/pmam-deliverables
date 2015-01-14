@@ -55,8 +55,7 @@
                 $scope.deliverableFeedback = $scope.deliverableRecord.getCachedFeedbackByDeliverableId();
 
                 // get feedback for just the current user
-                $scope.userDeliverableFeedback = $scope.deliverableRecord.getCachedFeedbackForCurrentUser();
-
+                vm.userDeliverableFeedback = $scope.deliverableRecord.getCachedFeedbackForCurrentUser();
 
                 // convert fiscal year month to calendar month
                 calendarMonth = $scope.deliverableRecord.month - 3;
@@ -92,7 +91,7 @@
 
             //function success(data) {
 
-            $scope.userDeliverableFeedback.saveChanges().then(function () {
+            vm.userDeliverableFeedback.saveChanges().then(function () {
                 toastr.success("Feedback updated");
             });
 

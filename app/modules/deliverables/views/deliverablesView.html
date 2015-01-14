@@ -33,7 +33,8 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="item in deliverablesByMonth track by item.id">
-                        <td><a ui-sref="deliverable({id:item.id})">{{ item.title }}</a>
+                        <td>
+                            <a ui-sref="deliverable({id:item.id})">{{ item.title }}</a>
                         </td>
                         <td>{{ item.submissionDate | date:'shortDate' }}</td>
                         <td>{{ item.startDate | date:'shortDate' }}</td>

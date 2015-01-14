@@ -24,7 +24,7 @@
         function link(scope, element, attrs) {
 
             var deliverableFeedback = scope.deliverable.getCachedFeedbackByDeliverableId();
-            scope.state = {average: '5'};
+            scope.state = {average: '0'};
             scope.state.reviewTotalString = "No Reviews";
 
             if (deliverableFeedback) {
