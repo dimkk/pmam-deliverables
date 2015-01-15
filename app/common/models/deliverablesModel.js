@@ -113,7 +113,7 @@
             }
             /** Create a placeholder if one is found */
             if(!feedbackForUser) {
-                feedbackForUser = deliverableFeedbackModel.createEmptyItem({rating: 5});
+                feedbackForUser = deliverableFeedbackModel.createEmptyItem({rating: 0});
             }
             return feedbackForUser;
         }
