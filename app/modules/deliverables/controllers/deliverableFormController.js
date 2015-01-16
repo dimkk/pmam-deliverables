@@ -57,6 +57,11 @@
                 // get feedback for just the current user
                 vm.userDeliverableFeedback = $scope.deliverableRecord.getCachedFeedbackForCurrentUser();
 
+                // if a comment already exists for the user, show the comments textarea now
+                if (vm.userDeliverableFeedback.comments.length) {
+                    vm.showCommentInput = true;
+                }
+
                 // convert fiscal year month to calendar month
                 calendarMonth = $scope.deliverableRecord.month - 3;
                 if(calendarMonth <= 0) {
@@ -71,6 +76,7 @@
             vm.rate = 5;
             vm.max = 5;
             vm.isReadonly = false;
+            vm.showCommentInput = false;
 
             vm.hoveringOver = function (value) {
                 vm.overStar = value;
@@ -89,12 +95,12 @@
 
         vm.updateFeedback = function (val) {
 
-            //function success(data) {
+            //TODO: fix this call - the feedback model is not getting the deliverable so its erroring
 
-            vm.userDeliverableFeedback.saveChanges().then(function () {
-                toastr.success("Feedback updated");
-            });
-
+            //vm.userDeliverableFeedback.saveChanges().then(function () {
+            //    toastr.success("Feedback updated");
+            //});
+            vm.showCommentInput = true;
         }
 
         function getDeliverableTypes() {
@@ -107,6 +113,10 @@
 
         function save() {
             $scope.deliverableRecord.saveChanges().then(function() {
+
+                //TODO: save any feedback updates - what needs to pass here?
+                vm.updateFeedback();
+
                 toastr.success("Deliverable updated");
                 $state.go('deliverables.instances', {
                     id: $scope.deliverableRecord.deliverableType.lookupId,
@@ -115,6 +125,7 @@
             }, function () {
                 toastr.error("There was a problem updating this deliverable record");
             });
+
         }
 
         function deleteRecord() {
