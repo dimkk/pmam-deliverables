@@ -1,13 +1,12 @@
 <fieldset>
     <div class="container-fluid">
-        <legend>
-            <div  class="row deliverables-paged">
-                <div class="col-sm-10"><i class="fa fa-check-square icon-padding"></i>EDIT DELIVERABLE</div>
-                <div class="col-sm-2"><i class="fa fa-check-square icon-padding"></i>REVIEWS</div>
-            </div>
-        </legend>
-        <hr/>
+
         <div class="col-sm-10">
+            <legend>
+                <div class="row deliverables-paged">
+                    <div class="col-sm-12"><i class="fa fa-check-square icon-padding"></i>EDIT DELIVERABLE</div>
+                </div>
+            </legend>
             <form name="editDeliverable" ng-submit="save()" role="form">
                 <div ui-view class="row fadeIn">
                     <div class="col-sm-6">
@@ -26,9 +25,9 @@
                                             readonly="vm.isReadonly" on-hover="vm.hoveringOver(value)"
                                             ng-class="{'one-star': vm.userDeliverableFeedback.rating===1 || vm.userDeliverableFeedback.rating===1.5,'two-star': vm.userDeliverableFeedback.rating===2 || vm.userDeliverableFeedback.rating===2.5, 'three-star': vm.userDeliverableFeedback.rating===3 || vm.userDeliverableFeedback.rating===3.5, 'four-star': vm.userDeliverableFeedback.rating===4 || vm.userDeliverableFeedback.rating===4.5,'five-star': vm.userDeliverableFeedback.rating===5}"
                                             on-leave="vm.overStar = null"></rating>
-                        <span class="label"
-                              ng-class="{'label-warning': vm.percent<30, 'label-info': vm.percent>=30 && vm.percent<70, 'label-success': vm.percent>=70}"
-                              ng-show="vm.overStar && !vm.isReadonly">{{vm.percent}}%</span>
+                                    <span class="label"
+                                          ng-class="{'label-warning': vm.percent<30, 'label-info': vm.percent>=30 && vm.percent<70, 'label-success': vm.percent>=70}"
+                                          ng-show="vm.overStar && !vm.isReadonly">{{vm.percent}}%</span>
                                 </div>
                                 <div class="content-group col-sm-6 pull-right">
                                     <button class="btn btn-primary" type="submit">Save</button>
@@ -80,24 +79,6 @@
                 </div>
             </form>
         </div>
-        <div class="col-sm-2">
-            <div ng-repeat="feedback in deliverableFeedback track by feedback.id">
-                <div class="row">
-                    <rating
-                        ng-class="{'one-star': feedback.rating===1 || feedback.rating===1.5,'two-star': feedback.rating===2 || feedback.rating===2.5, 'three-star': feedback.rating===3 || feedback.rating===3.5, 'four-star': feedback.rating===4 || feedback.rating===4.5,'five-star': feedback.rating===5}"
-                        ng-model="feedback.rating" max="5" readonly="true"></rating>
-                </div>
-                <div class="row">
-                    <span class="deliverables-data">{{feedback.created | date:'shortDate' }}</span>
-                </div>
-                <div class="row">
-                    <span class="author">{{feedback.author.lookupValue}}</span>
-                </div>
-                <div class="row">
-                    <span class="comment">{{feedback.comments}}</span>
-                </div>
-                <hr/>
-            </div>
-        </div>
+        <div ng-include="'modules/deliverables/views/deliverableFeedbackView.html'"></div>
     </div>
 </fieldset>

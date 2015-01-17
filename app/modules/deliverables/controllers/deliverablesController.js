@@ -6,7 +6,7 @@
         .controller( 'deliverablesController', deliverablesController );
 
     /* @ngInject */
-    function deliverablesController(deliverableFeedbackModel, deliverableFeedbackService, chartService, $location, $scope, toastr, $state, deliverablesService) {
+    function deliverablesController(deliverablesModel, deliverableFeedbackService, chartService, $location, $scope, toastr, $state, deliverablesService) {
 
         var yearPart;
         var currentFiscalYear = 0;
@@ -38,24 +38,16 @@
         }
 
         $scope.deliverableFrequencyFilter = deliverableFrequencyFilter;
+        $scope.getDeliverableFeedback = getDeliverableFeedback;
         $scope.decreaseDate = decreaseDate;
         $scope.increaseDate = increaseDate;
-        $scope.dataCheck;
+        $scope.showFeedback = false;
 
         activate();
 
         /**==================PRIVATE==================*/
 
         function activate() {
-
-            deliverableFeedbackModel.executeQuery().then(function (indexedCache) {
-                    $scope.dataCheck = indexedCache;
-
-                },
-                function (err) {
-                    console.log(err);
-                }
-            );
 
             doBuildGauges();
 
@@ -132,6 +124,14 @@
 
         }
 
+        function getDeliverableFeedback(Id) {
+
+            $scope.deliverableRecord = deliverablesModel.getCachedEntity(parseInt(Id));
+            $scope.deliverableFeedback = $scope.deliverableRecord.getCachedFeedbackByDeliverableId();
+            $scope.showFeedback = true;
+
+        }
+
         function initializeMetricsGauages() {
 
             $scope.metricsByMonth = doPrepareMetrics();
@@ -151,7 +151,6 @@
         }
 
         function doPrepareMetrics() {
-
             return chartService.prepareMetrics($scope.deliverablesByMonth);
 
         }
@@ -161,7 +160,6 @@
             var deliverableDefinition = deliverableDefinitions[ deliverableType.lookupId ];
 
             if( deliverableDefinition ) {
-
                 return deliverableDefinition.frequency.lookupValue;
             }
 
@@ -185,7 +183,7 @@
 
         }
 
-
+        // this is a stub for navigating to a form to manage definitions
         function openDefinitionsForm(deliverable) {
             $location.path("/definitions");
         }

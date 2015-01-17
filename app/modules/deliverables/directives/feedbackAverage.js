@@ -26,6 +26,7 @@
             var deliverableFeedback = scope.deliverable.getCachedFeedbackByDeliverableId();
             scope.state = {average: '0'};
             scope.state.reviewTotalString = "No Reviews";
+            scope.state.deliverableId = scope.deliverable.Id;
 
             if (deliverableFeedback) {
 

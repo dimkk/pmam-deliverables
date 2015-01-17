@@ -57,7 +57,7 @@
                 // get feedback for just the current user
                 vm.userDeliverableFeedback = $scope.deliverableRecord.getCachedFeedbackForCurrentUser();
 
-                // if a comment already exists for the user, show the comments textarea now
+                // if a comment already exists for the user, show the comments textarea
                 if (vm.userDeliverableFeedback.comments.length) {
                     vm.showCommentInput = true;
                 }

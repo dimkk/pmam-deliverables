@@ -1,7 +1,6 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-10">
-
             <div class="row deliverables-paged">
                 <div class="col-sm-9"><i class="fa fa-calendar icon-padding"></i>ACTIVE DELIVERABLES</div>
                 <div class="col-sm-3">
@@ -16,9 +15,7 @@
                     </div>
                 </div>
             </div>
-
             <hr/>
-
             <!-- Animate once we have data -->
             <div ng-if="gotData">
                 <table class="table table-striped">
@@ -28,7 +25,7 @@
                         <th>Submitted</th>
                         <th>Due</th>
                         <th>Schedule</th>
-                        <th>Rating</th>
+                        <th>Avg Rating</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -40,21 +37,19 @@
                         <td>{{ item.startDate | date:'shortDate' }}</td>
                         <td>{{ deliverableFrequencyFilter( item.deliverableType ) }}</td>
                         <td>
-                            <feedback-average data-deliverable="item"></feedback-average>
+                            <a ng-click="getDeliverableFeedback(item.id)" class="rating-data" title="View Details">
+                                <feedback-average data-deliverable="item"></feedback-average>
+                            </a>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-
                 <hr/>
                 <hr/>
-
                 <div class="row deliverables-paged">
                     <div class="col-sm-12"><i class="fa fa-calendar icon-padding"></i>PENDING DELIVERABLES</div>
                 </div>
-
                 <hr/>
-
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -77,24 +72,8 @@
                 </table>
             </div>
         </div>
-        <div class="col-sm-2">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="row text-center metrics-header">
-                        <i class="fa fa-check-square icon-padding"></i>METRICS
-                    </div>
-                </div>
-            </div>
-            <hr/>
-            <div class="row">
-                <div class="col-sm-12 text-center">
-                    <div google-chart chart="Gauge1"
-                         style="width: 200px; height: 200px; display: inline-block; vertical-align: top; position: relative;"></div>
-                    <div google-chart chart="Gauge2"
-                         style="width: 200px; height: 200px; display: inline-block; vertical-align: top; position: relative;"></div>
-                </div>
-            </div>
-        </div>
+        <div ng-if="!showFeedback" ng-include="'modules/deliverables/views/deliverableMetricsView.html'"></div>
+        <div ng-if="showFeedback" ng-include="'modules/deliverables/views/deliverableFeedbackView.html'"></div>
     </div>
 </div>
 
