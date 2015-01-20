@@ -20,14 +20,15 @@
                         <span class="deliverables-data">{{feedback.created | date:'shortDate' }}</span>
                     </div>
                     <div class="row">
-                        <span class="author">{{feedback.author.lookupValue}}:</span>
+                        <span ng-if="feedback.author.lookupValue.length">{{feedback.author.lookupValue}}:</span>
                     </div>
                     <div class="row">
-                        <span class="comment">{{feedback.comments}}</span>
+                        <span>{{feedback.comments}}</span>
                     </div>
                 </div>
             </div>
         </div>
+        <hr/>
     </div>
 </div>
 <hr/>

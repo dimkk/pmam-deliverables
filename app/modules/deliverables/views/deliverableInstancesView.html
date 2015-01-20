@@ -19,7 +19,7 @@
                         <th>Submitted</th>
                         <th>Due</th>
                         <th>Schedule</th>
-                        <th>Details</th>
+                        <th>Average Rating</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -30,7 +30,9 @@
                         <td>{{ item.startDate | date:'shortDate' }}</td>
                         <td>{{ frequency }}</td>
                         <td>
-                            <feedback-average data-deliverable="item"></feedback-average>
+                            <a ng-click="getDeliverableFeedback( item.id )" class="rating-data" title="View Details">
+                                <feedback-average data-deliverable="item"></feedback-average>
+                            </a>
                         </td>
                     </tr>
                     </tbody>
@@ -39,24 +41,8 @@
             <hr/>
             <hr/>
         </div>
-        <div class="col-sm-2">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="row text-center metrics-header">
-                        <i class="fa fa-check-square icon-padding"></i>METRICS
-                    </div>
-                </div>
-            </div>
-            <hr/>
-            <div class="row">
-                <div class="col-sm-12 text-center">
-                    <div google-chart chart="Gauge1"
-                         style="width: 200px; height: 200px; display: inline-block; vertical-align: top; position: relative;"></div>
-                    <div google-chart chart="Gauge2"
-                         style="width: 200px; height: 200px; display: inline-block; vertical-align: top; position: relative;"></div>
-                </div>
-            </div>
-        </div>
+        <!-- view toggles between metrics and feedback -->
+        <div ng-include="rightPanelView"></div>
     </div>
 </div>
 

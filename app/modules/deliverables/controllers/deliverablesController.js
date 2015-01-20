@@ -41,7 +41,7 @@
         $scope.getDeliverableFeedback = getDeliverableFeedback;
         $scope.decreaseDate = decreaseDate;
         $scope.increaseDate = increaseDate;
-        $scope.showFeedback = false;
+        $scope.rightPanelView = 'modules/deliverables/views/deliverableMetricsView.html';
 
         activate();
 
@@ -128,7 +128,7 @@
 
             $scope.deliverableRecord = deliverablesModel.getCachedEntity(parseInt(Id));
             $scope.deliverableFeedback = $scope.deliverableRecord.getCachedFeedbackByDeliverableId();
-            $scope.showFeedback = true;
+            $scope.rightPanelView = 'modules/deliverables/views/deliverableFeedbackView.html';
 
         }
 

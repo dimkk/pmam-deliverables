@@ -6,14 +6,16 @@
         .controller('deliverableInstancesController', deliverableInstancesController);
 
     /* @ngInject */
-    function deliverableInstancesController(deliverablesModel, $q, deliverableFeedbackModel, chartService, $scope, $location, $state, _, deliverablesService, deliverableDefinitionsModel) {
+    function deliverableInstancesController(deliverablesModel, $q, deliverableFeedbackModel, chartService, $scope, $location, $state, _, deliverablesService, deliverableDefinitionsModel, deliverableFeedbackService) {
 
         var fy = $state.params.fy || '2013';
         var activeId = $state.params.id;
 
         $scope.state = {selectedDeliverable: null};
         $scope.getUpdateState = getUpdateState;
-
+        $scope.getDeliverableFeedback = getDeliverableFeedback;
+        $scope.showFeedback = false;
+        $scope.rightPanelView = 'modules/deliverables/views/deliverableMetricsView.html';
         $scope.gotData = false;
 
         activate();
@@ -52,10 +54,26 @@
                 initializeMetricsGauages();
             })
 
+            deliverableFeedbackService.getDeliverableFeedback().then(
+                function (results) {
+                    $scope.deliverableFeedback = results;
+
+                },
+                function (err) {
+                    console.log(err);
+                }
+            );
         }
 
         function getUpdateState(){
             $state.go('deliverables.instances', {fy: fy, id: $scope.state.selectedDeliverable.id})
+        }
+
+        function getDeliverableFeedback(Id) {
+
+            $scope.deliverableRecord = deliverablesModel.getCachedEntity(parseInt(Id));
+            $scope.deliverableFeedback = $scope.deliverableRecord.getCachedFeedbackByDeliverableId();
+            $scope.rightPanelView = 'modules/deliverables/views/deliverableFeedbackView.html';
         }
 
         function initializeMetricsGauages() {
@@ -80,7 +98,6 @@
         function doPrepareMetrics() {
 
             return chartService.prepareMetrics($scope.deliverablesByMonth);
-
         }
 
     }

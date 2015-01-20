@@ -25,7 +25,7 @@
                         <th>Submitted</th>
                         <th>Due</th>
                         <th>Schedule</th>
-                        <th>Avg Rating</th>
+                        <th>Average Rating</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -37,7 +37,7 @@
                         <td>{{ item.startDate | date:'shortDate' }}</td>
                         <td>{{ deliverableFrequencyFilter( item.deliverableType ) }}</td>
                         <td>
-                            <a ng-click="getDeliverableFeedback(item.id)" class="rating-data" title="View Details">
+                            <a ng-click="getDeliverableFeedback( item.id )" class="rating-data" title="View Details">
                                 <feedback-average data-deliverable="item"></feedback-average>
                             </a>
                         </td>
@@ -72,8 +72,8 @@
                 </table>
             </div>
         </div>
-        <div ng-if="!showFeedback" ng-include="'modules/deliverables/views/deliverableMetricsView.html'"></div>
-        <div ng-if="showFeedback" ng-include="'modules/deliverables/views/deliverableFeedbackView.html'"></div>
+        <!-- view toggles between metrics and feedback -->
+        <div ng-include="rightPanelView"></div>
     </div>
 </div>
 
