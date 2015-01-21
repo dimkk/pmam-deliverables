@@ -92,7 +92,6 @@
 
                 function( results ) {
 
-                    $scope.gotData = true;
                     $scope.deliverableDefinitionsByMonth = results.deliverableDefinitionsByMonth;
                     deliverableDefinitions = results.deliverableDefinitions;
 
@@ -116,6 +115,7 @@
             deliverableFeedbackService.getDeliverableFeedback().then(
                 function (results) {
                     $scope.deliverableFeedback = results;
+                    $scope.gotData = true;
 
                 },
                 function(err) {
