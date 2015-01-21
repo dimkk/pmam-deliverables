@@ -17,6 +17,7 @@
         $scope.showFeedback = false;
         $scope.rightPanelView = 'modules/deliverables/views/deliverableMetricsView.html';
         $scope.gotData = false;
+        $scope.toggleRightPanel = toggleRightPanel;
 
         activate();
 
@@ -76,6 +77,10 @@
             $scope.rightPanelView = 'modules/deliverables/views/deliverableFeedbackView.html';
         }
 
+        function toggleRightPanel() {
+            $scope.rightPanelView = 'modules/deliverables/views/deliverableMetricsView.html';
+        }
+
         function initializeMetricsGauages() {
 
             $scope.metricsByMonth = doPrepareMetrics();
@@ -84,7 +89,6 @@
             $scope.Gauge1.data.rows[0].c[1].v = chartService.getRandom();
             $scope.Gauge2.data.rows[0].c[1].v = chartService.getRandom();
         }
-
 
         function doBuildGauges() {
 

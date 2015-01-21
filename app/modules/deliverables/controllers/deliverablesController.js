@@ -41,7 +41,8 @@
         $scope.getDeliverableFeedback = getDeliverableFeedback;
         $scope.decreaseDate = decreaseDate;
         $scope.increaseDate = increaseDate;
-        $scope.rightPanelView = 'modules/deliverables/views/deliverableMetricsView.html';
+        $scope.rightPanelView = $scope.showFeedbackPanel ? 'modules/deliverables/views/deliverableFeedbackView.html' : 'modules/deliverables/views/deliverableMetricsView.html';
+        $scope.toggleRightPanel = toggleRightPanel;
 
         activate();
 
@@ -129,7 +130,12 @@
             $scope.deliverableRecord = deliverablesModel.getCachedEntity(parseInt(Id));
             $scope.deliverableFeedback = $scope.deliverableRecord.getCachedFeedbackByDeliverableId();
             $scope.rightPanelView = 'modules/deliverables/views/deliverableFeedbackView.html';
+            $scope.showFeedbackPanel = true;
 
+        }
+
+        function toggleRightPanel() {
+            $scope.rightPanelView = 'modules/deliverables/views/deliverableMetricsView.html';
         }
 
         function initializeMetricsGauages() {
