@@ -3,19 +3,19 @@
 
     angular
         .module('pmam-deliverables')
-        .directive('feedbackAverage', feedbackAverage);
+        .directive('ratingsAverage', ratingsAverage);
 
-    feedbackAverage.$inject = ['$window'];
+    ratingsAverage.$inject = ['$window'];
 
     /* @ngInject */
-    function feedbackAverage($window) {
+    function ratingsAverage($window) {
         // Usage:
         //
         // Creates:
         //
         var directive = {
             link: link,
-            templateUrl: 'modules/deliverables/directives/ratingsView.html',
+            templateUrl: 'modules/deliverables/directives/ratingsAverageView.html',
             scope: {deliverable: '='},
             restrict: 'EA'
         };
