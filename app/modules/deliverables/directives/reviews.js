@@ -22,7 +22,10 @@
         return directive;
 
         function link(scope, element, attrs) {
+
             var deliverableFeedback = scope.feedback;
+
+            scope.state = {};
             scope.state.rating = deliverableFeedback.rating;
             scope.state.created = deliverableFeedback.created;
             scope.state.author = deliverableFeedback.author.lookupValue;
