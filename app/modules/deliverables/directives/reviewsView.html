@@ -1,3 +1,4 @@
+// view template for ratings by deliverable directive
 <rating
     ng-class="{'one-star': state.rating===1 || state.rating===1.5,'two-star': state.rating===2 || state.rating===2.5, 'three-star': state.rating===3 || state.rating===3.5, 'four-star': state.rating===4 || state.rating===4.5,'five-star': state.rating===5}"
     ng-model="state.rating" max="5" readonly="true"></rating>

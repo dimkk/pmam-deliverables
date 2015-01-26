@@ -1,6 +1,8 @@
 (function () {
     'use strict';
 
+    // I calculate and render the average rating of a deliverable based on user reviews
+
     angular
         .module('pmam-deliverables')
         .directive('ratingsAverage', ratingsAverage);

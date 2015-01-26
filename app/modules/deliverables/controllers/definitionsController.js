@@ -1,6 +1,8 @@
 (function () {
     'use strict';
 
+    // controller returning deliverable types
+
     angular
         .module('pmam-deliverables')
         .controller('definitionsController', definitionsController);

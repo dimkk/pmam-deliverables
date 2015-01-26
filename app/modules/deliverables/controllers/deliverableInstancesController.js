@@ -1,6 +1,8 @@
 (function () {
     'use strict';
 
+    // deliverables instances controller
+
     angular
         .module('pmam-deliverables')
         .controller('deliverableInstancesController', deliverableInstancesController);

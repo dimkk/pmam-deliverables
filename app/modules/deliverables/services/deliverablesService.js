@@ -23,15 +23,10 @@
 
         return service;
 
-
-//    4.  create a function that generates array of objects based on the filter returned from step 3
-//          and define the set of deliverable definitions for the current month that have not yet been submitted.
-
-
         /**==================PRIVATE==================*/
 
 
-//    2.  make a request to the server for all available deliverable frequencies
+//    make a request to the server for all available deliverable frequencies
 
         function getDeliverableFrequencies() {
 
@@ -46,7 +41,7 @@
             return deferred.promise;
         }
 
-//    3. TODO:  create a function that accepts a month and year and returns applicable definitions for a given month/year
+//    \accepts a month and year and returns applicable definitions for a given month/year
 
         function getDeliverableDefinitionsForMonth( fy, mo ) {
 
@@ -104,9 +99,9 @@
             return result;
         }
 
-// year / mo combination
+        // year / mo combination
 
-//  function to return promise for month
+        //  returns promise for month
 
         function getDeliverablesForMonth( fy, month ) {
 
@@ -122,7 +117,7 @@
             return deferred.promise;
         }
 
-        // a function that returns just the detail instances of a particular deliverable
+        // returns just the detail instances of a particular deliverable
 
         function getDeliverablesByType(fy, typeId) {
 
@@ -150,19 +145,6 @@
                         deliverableCountByDefinition[deliverable.deliverableType.lookupId]++;
                     })
                     deferred.resolve(deliverableCountByDefinition);
-                });
-
-            return deferred.promise;
-        }
-
-        function getDeliverableDefinitions(fy) {
-
-            var deferred = $q.defer();
-
-            deliverableDefinitionsModel.getFyDefinitions(fy)
-                .then(function( indexedCache ){
-
-                    deferred.resolve( indexedCache );
                 });
 
             return deferred.promise;

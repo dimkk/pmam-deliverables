@@ -1,6 +1,8 @@
 (function () {
     'use strict';
 
+    // I render the review details by user of a deliverable
+
     angular
         .module('pmam-deliverables')
         .directive('reviews', reviews);

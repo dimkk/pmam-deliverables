@@ -1,6 +1,8 @@
 (function () {
     'use strict';
 
+    // home page controller
+
     angular
         .module( 'pmam-deliverables' )
         .controller( 'deliverablesController', deliverablesController );

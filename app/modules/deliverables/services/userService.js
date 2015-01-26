@@ -21,8 +21,6 @@
         return service;
 
         /**==================PRIVATE==================*/
-// todo: create a group called deliverableActors
-// todo: change back to GetUserCollectionFromGroup
 
         function getUsers() {
             if(!requestForUsers) {

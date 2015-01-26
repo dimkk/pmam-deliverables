@@ -35,25 +35,13 @@
             return deferred.promise;
         }
 
-        function getDeliverableFeedbackByType(fy, typeId) {
-
-            var deferred = $q.defer();
-
-            deliverablesModel.getFyDeliverables(fy)
-                .then(function (indexedCache) {
-                    var deliverablesByType = _.where(indexedCache, function (deliverable) {
-                        return deliverable.deliverableType.lookupId === typeId;
-                    });
-                    deferred.resolve(deliverablesByType);
-                });
-            return deferred.promise;
-        }
-
+        //TODO: implement this method
         function updateFeedback(item) {
             //if(!item.id)
 
         }
 
+        //TODO: implement this method
         function deleteFeedback(id) {
 
         }

@@ -1,6 +1,8 @@
 (function () {
     'use strict';
 
+    // controller handling updates to existing deliverables
+
     angular
         .module('pmam-deliverables')
         .controller('deliverableFormController', deliverableFormController);

@@ -1,6 +1,8 @@
 (function () {
     'use strict';
 
+    // calculates and renders overall metrics into gauges using google charts
+
     angular
         .module('pmam-deliverables')
         .factory('chartService', chartService);
