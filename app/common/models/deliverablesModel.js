@@ -113,7 +113,10 @@
             }
             /** Create a placeholder if one is found */
             if(!feedbackForUser) {
-                feedbackForUser = deliverableFeedbackModel.createEmptyItem({rating: 0});
+                feedbackForUser = deliverableFeedbackModel.createEmptyItem({
+                    rating: 0,
+                    deliverable: {lookupId: self.id}
+                });
             }
             return feedbackForUser;
         }

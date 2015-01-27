@@ -95,13 +95,13 @@
 
         }
 
-        vm.updateFeedback = function (val) {
+        vm.updateFeedback = function () {
 
             //TODO: fix this call - the feedback model is not getting the deliverable so its erroring
 
-            //vm.userDeliverableFeedback.saveChanges().then(function () {
-            //    toastr.success("Feedback updated");
-            //});
+            vm.userDeliverableFeedback.saveChanges().then(function () {
+                toastr.success("Feedback updated");
+            });
             vm.showCommentInput = true;
         }
 
@@ -116,7 +116,7 @@
         function save() {
             $scope.deliverableRecord.saveChanges().then(function() {
 
-                //TODO: save any feedback updates - what needs to pass here?
+                //TODO: save any feedback updates - what needs to pass here? check if there is a comment - dirty?
                 vm.updateFeedback();
 
                 toastr.success("Deliverable updated");
