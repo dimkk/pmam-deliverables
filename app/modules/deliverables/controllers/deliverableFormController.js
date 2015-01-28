@@ -69,8 +69,6 @@
                 if(calendarMonth <= 0) {
                     calendarMonth = calendarMonth + 12;
                 }
-                $scope.deliverableRecord.month = calendarMonth.toString();
-
                 $scope.state.dataReady = true;
             });
 
@@ -97,8 +95,6 @@
 
         vm.updateFeedback = function () {
 
-            //TODO: fix this call - the feedback model is not getting the deliverable so its erroring
-
             vm.userDeliverableFeedback.saveChanges().then(function () {
                 toastr.success("Feedback updated");
             });
@@ -116,8 +112,11 @@
         function save() {
             $scope.deliverableRecord.saveChanges().then(function() {
 
-                //TODO: save any feedback updates - what needs to pass here? check if there is a comment - dirty?
-                vm.updateFeedback();
+                if (vm.userDeliverableFeedback.comments.length) {
+
+                    vm.updateFeedback();
+
+                }
 
                 toastr.success("Deliverable updated");
                 $state.go('deliverables.instances', {
