@@ -55,6 +55,7 @@
     "modules": [
         "./bower_components/angular-point/dist/angular-point.js",
         "./bower_components/angular-point-attachments/dist/apAttachments.js",
+        "./bower_components/angular-point-discussion-thread/dist/apDiscussionThread.js",
         "./bower_components/angular-point-modal/dist/apModalService.js",
         "./bower_components/angular-point-group-manager/dist/apGroupManager.js",
         "./bower_components/angular-point-form-control/dist/apInputControl.js",
@@ -86,6 +87,7 @@
         "./bower_components/angular-toastr/dist/angular-toastr.css",
         "./bower_components/angular-loading-bar/build/loading-bar.css",
         "./bower_components/font-awesome/css/font-awesome.min.css",
+        "./bower_components/angular-point-discussion-thread/dist/apDiscussionThread.css",
         "./app/styles/**/*bootstrap.css",
         "./app/styles/**/*bower.css"
     ]

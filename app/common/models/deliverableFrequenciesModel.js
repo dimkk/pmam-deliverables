@@ -49,7 +49,6 @@
                  /*  each field to quickly map with available options */
                     {staticName: "Title", objectType: "Text", mappedName: "title", readOnly: false},
                     {staticName: "Acronym", objectType: "Text", mappedName: "acronym", readOnly: false}
-
                 ]
             }
         });
