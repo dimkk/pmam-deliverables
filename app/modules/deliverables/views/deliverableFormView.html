@@ -10,18 +10,20 @@
             </legend>
             <form name="editDeliverable" ng-submit="save()" role="form">
                 <div ui-view class="row fadeIn">
-                    <div class="col-sm-6">
+                    <div class="col-xs-12 col-md-4">
                         <div class="form-group">
                             <label for="attachments" class="deliverables-header">Attachments</label>
                             <span data-ap-attachments data-list-item="deliverableRecord"></span>
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-xs-6 col-md-8">
                         <div class="form-horizontal">
                             <div class="form-group">
-                                <div class="col-sm-6">
+                                <div class="col-xs-12 col-md-6">
+
                                     <span class="deliverables-header right-padding">Rate this deliverable:</span>
-                                    <rating ng-change="vm.updateFeedback()" ng-model="vm.userDeliverableFeedback.rating"
+                                    <rating style="display:inline-block" ng-change="vm.updateFeedback()"
+                                            ng-model="vm.userDeliverableFeedback.rating"
                                             max="5"
                                             readonly="vm.isReadonly" on-hover="vm.hoveringOver(value)"
                                             ng-class="{'one-star': vm.userDeliverableFeedback.rating===1 || vm.userDeliverableFeedback.rating===1.5,'two-star': vm.userDeliverableFeedback.rating===2 || vm.userDeliverableFeedback.rating===2.5, 'three-star': vm.userDeliverableFeedback.rating===3 || vm.userDeliverableFeedback.rating===3.5, 'four-star': vm.userDeliverableFeedback.rating===4 || vm.userDeliverableFeedback.rating===4.5,'five-star': vm.userDeliverableFeedback.rating===5}"
@@ -30,7 +32,7 @@
                                           ng-class="{'label-warning': vm.percent<30, 'label-info': vm.percent>=30 && vm.percent<70, 'label-success': vm.percent>=70}"
                                           ng-show="vm.overStar && !vm.isReadonly">{{vm.percent}}%</span>
                                 </div>
-                                <div class="content-group col-sm-6 pull-right">
+                                <div class="content-group col-xs-12 col-md-6">
                                     <button class="btn btn-primary" type="submit">Save</button>
                                     <button class="btn btn-default" ng-click="cancel()">Cancel</button>
                                     <button class="btn btn-default" ng-click="deleteRecord()">Delete</button>
