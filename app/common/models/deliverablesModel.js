@@ -15,7 +15,7 @@
         .module('pmam-deliverables')
         .service('deliverablesModel', deliverablesModel);
 
-    function deliverablesModel(_, apModelFactory, apModalService, deliverableFeedbackModel, user) {
+    function deliverablesModel(_, apModelFactory, apModalService, apDiscussionThreadFactory, deliverableFeedbackModel, user) {
 
         /********************* Model Definition ***************************************/
 
@@ -61,7 +61,13 @@
                     {staticName: "Details", objectType: "Text", mappedName: "details", readOnly: false},
                     {staticName: "Justification", objectType: "Text", mappedName: "justification", readOnly: false},
                     {staticName: "To", objectType: "UserMulti", mappedName: "to", readOnly: false},
-                    {staticName: "CC", objectType: "UserMulti", mappedName: "cc", readOnly: false}
+                    {staticName: "CC", objectType: "UserMulti", mappedName: "cc", readOnly: false},
+                    {
+                        staticName: 'DiscussionThread',
+                        objectType: 'JSON',
+                        mappedName: 'discussionThread',
+                        readOnly: false
+                    }
 
                 ]
             }
@@ -82,7 +88,8 @@
             self.displayDate = moment(self.submissionDate).format('MMM YY');
             self.formattedstartdate = moment(self.startDate).format('MM/DD/YYYY');
             self.formattedsubmissiondate = moment(self.submissionDate).format('MM/DD/YYYY');
-
+            /** Instantiate a new discussion object even if there isn't an active discussion */
+            self.discussionThread = apDiscussionThreadFactory.createDiscussionObject(self, 'discussionThread');
         }
 
         Deliverable.prototype.openModal = openModal;
