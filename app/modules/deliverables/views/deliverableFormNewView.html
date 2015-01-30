@@ -17,7 +17,7 @@
                             <ui-select ng-model="deliverableRecord.to" multiple>
                                 <ui-select-match placeholder="Select TO Recipient">{{$item.lookupValue }}</ui-select-match>
                                 <ui-select-choices
-                                    repeat="person in personnelArray | filter: $select.search track by person.lookupId">
+                                    repeat="person in vm.personnelArray | filter: $select.search track by person.lookupId">
                                     <div ng-bind-html="person.lookupValue | highlight: $select.search"></div>
                                 </ui-select-choices>
                             </ui-select>
@@ -31,7 +31,7 @@
                             <ui-select ng-model="deliverableRecord.cc" multiple>
                                 <ui-select-match placeholder="Select CC Recipient">{{$item.lookupValue }}</ui-select-match>
                                 <ui-select-choices
-                                    repeat="person in personnelArray | filter: $select.search track by person.lookupId">
+                                    repeat="person in vm.personnelArray | filter: $select.search track by person.lookupId">
                                     <div ng-bind-html="person.lookupValue | highlight: $select.search"></div>
                                 </ui-select-choices>
                             </ui-select>

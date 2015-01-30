@@ -10,6 +10,8 @@
     /* @ngInject */
     function newDeliverableFormController(toastr, $state, $scope, deliverableDefinitionsModel, deliverablesModel, userService) {
 
+        var vm = this;
+
         activate();
 
         /**==================PRIVATE==================*/
@@ -24,8 +26,8 @@
             }
 
             $scope.state = {dataReady:false};
-            $scope.deliverableRecord = deliverablesModel.createEmptyItem({fy:fiscalYear});
-            $scope.deliverableRecord.month = currentMonth;
+            vm.deliverableRecord = deliverablesModel.createEmptyItem({fy: fiscalYear});
+            vm.deliverableRecord.month = currentMonth;
             $scope.cancel = cancel;
             $scope.save = save;
 
@@ -33,14 +35,17 @@
                 if($state.params.deliverableTypeId) {
                     var selectedDeliverableType = _.find($scope.deliverableTypes,{id:parseInt($state.params.deliverableTypeId)})
                     if(selectedDeliverableType){
-                        $scope.deliverableRecord.deliverableType = {lookupId:selectedDeliverableType.id,lookupValue:selectedDeliverableType.title};
+                        vm.deliverableRecord.deliverableType = {
+                            lookupId: selectedDeliverableType.id,
+                            lookupValue: selectedDeliverableType.title
+                        };
                     }
                 }
             });
 
             userService.getUserLookupValues()
                 .then(function (result) {
-                    $scope.personnelArray = result;
+                    vm.personnelArray = result;
                     $scope.state.dataReady = true;
                 }),
                 function(err) {
@@ -50,24 +55,27 @@
 
         function getDeliverableTypes() {
 
-            return deliverableDefinitionsModel.getFyDefinitions($scope.deliverableRecord.fy).then(function(indexedCache){
+            return deliverableDefinitionsModel.getFyDefinitions(vm.deliverableRecord.fy).then(function (indexedCache) {
 
-                $scope.deliverableTypes = indexedCache.toArray();
+                vm.deliverableTypes = indexedCache.toArray();
             });
 
         }
 
         function save() {
-            $scope.deliverableRecord.saveChanges().then(function() {
+            vm.deliverableRecord.saveChanges().then(function () {
                 toastr.success("Deliverable updated");
-                $state.go('deliverable', {id: $scope.deliverableRecord.deliverableType.lookupId});
+                $state.go('deliverable', {id: vm.deliverableRecord.deliverableType.lookupId});
             }, function () {
                 toastr.error("There was a problem updating this deliverable record");
             });
         }
 
         function cancel() {
-            $state.go('deliverables.instances',{ id:$scope.deliverableRecord.deliverableType.lookupId, fy:$scope.deliverableRecord.fy});
+            $state.go('deliverables.instances', {
+                id: vm.deliverableRecord.deliverableType.lookupId,
+                fy: vm.deliverableRecord.fy
+            });
         }
 
 

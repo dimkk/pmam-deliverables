@@ -33,7 +33,8 @@ angular.module('pmam-deliverables')
             .state('newInstance', {
                 url: '/deliverable?fy&deliverableTypeId',
                 templateUrl: 'modules/deliverables/views/deliverableFormNewView.html',
-                controller: 'newDeliverableFormController'
+                controller: 'newDeliverableFormController',
+                controllerAs: 'vm'
             })
 
             .state('deliverables.main', {

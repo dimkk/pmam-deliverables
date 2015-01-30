@@ -37,27 +37,27 @@
             }
 
             $q.all(requestQueue).then(function(resolvedPromises) {
-                $scope.personnelArray = resolvedPromises[0];
+                vm.personnelArray = resolvedPromises[0];
 
                 if(!deliverableRecord){
 
                     if (resolvedPromises[2]) {
-                        $scope.deliverableRecord = resolvedPromises[2];
+                        vm.deliverableRecord = resolvedPromises[2];
                         getDeliverableTypes();
                     } else {
                         console.log('no record found!');
                     }
 
                 } else {
-                    $scope.deliverableRecord = deliverableRecord;
+                    vm.deliverableRecord = deliverableRecord;
                     getDeliverableTypes();
                 }
 
                 // get a list of all existing feedback on this deliverable
-                $scope.deliverableFeedback = $scope.deliverableRecord.getCachedFeedbackByDeliverableId();
+                vm.deliverableFeedback = vm.deliverableRecord.getCachedFeedbackByDeliverableId();
 
                 // get feedback for just the current user
-                vm.userDeliverableFeedback = $scope.deliverableRecord.getCachedFeedbackForCurrentUser();
+                vm.userDeliverableFeedback = vm.deliverableRecord.getCachedFeedbackForCurrentUser();
 
                 // if a comment already exists for the user, show the comments textarea
                 if (vm.userDeliverableFeedback.comments.length) {
@@ -65,7 +65,7 @@
                 }
 
                 // convert fiscal year month to calendar month
-                calendarMonth = $scope.deliverableRecord.month - 3;
+                calendarMonth = vm.deliverableRecord.month - 3;
                 if(calendarMonth <= 0) {
                     calendarMonth = calendarMonth + 12;
                 }
@@ -103,14 +103,14 @@
 
         function getDeliverableTypes() {
 
-            deliverableDefinitionsModel.getFyDefinitions($scope.deliverableRecord.fy).then(function(indexedCache){
-                $scope.deliverableTypes = indexedCache.toArray();
+            deliverableDefinitionsModel.getFyDefinitions(vm.deliverableRecord.fy).then(function (indexedCache) {
+                vm.deliverableTypes = indexedCache.toArray();
             });
 
         }
 
         function save() {
-            $scope.deliverableRecord.saveChanges().then(function() {
+            vm.deliverableRecord.saveChanges().then(function () {
 
                 if (vm.userDeliverableFeedback.comments.length) {
 
@@ -120,8 +120,8 @@
 
                 toastr.success("Deliverable updated");
                 $state.go('deliverables.instances', {
-                    id: $scope.deliverableRecord.deliverableType.lookupId,
-                    fy: $scope.deliverableRecord.fy
+                    id: vm.deliverableRecord.deliverableType.lookupId,
+                    fy: vm.deliverableRecord.fy
                 });
             }, function () {
                 toastr.error("There was a problem updating this deliverable record");
@@ -133,10 +133,10 @@
 
             var confirmation = window.confirm('Are you sure you want to delete this deliverable?');
             if(confirmation) {
-                var deliverableTypeId = $scope.deliverableRecord.deliverableType.lookupId;
-                var deliverableFiscalYear = $scope.deliverableRecord.fy;
+                var deliverableTypeId = vm.deliverableRecord.deliverableType.lookupId;
+                var deliverableFiscalYear = vm.deliverableRecord.fy;
 
-                $scope.deliverableRecord.deleteItem().then(function () {
+                vm.deliverableRecord.deleteItem().then(function () {
                     toastr.success("Deliverable successfully deleted");
                     $state.go('deliverables.instances', {id: deliverableTypeId, fy: deliverableFiscalYear});
                 }, function () {
@@ -146,7 +146,10 @@
         }
 
         function cancel() {
-            $state.go('deliverables.instances',{ id:$scope.deliverableRecord.deliverableType.lookupId, fy:$scope.deliverableRecord.fy});
+            $state.go('deliverables.instances', {
+                id: vm.deliverableRecord.deliverableType.lookupId,
+                fy: vm.deliverableRecord.fy
+            });
         }
 
 
