@@ -16,7 +16,7 @@
                             <span data-ap-attachments data-list-item="deliverableRecord"></span>
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-6 col-md-4">
                         <div class="form-horizontal">
                             <div class="form-group">
                                 <div class="col-sm-6">
@@ -82,4 +82,12 @@
         </div>
         <div ng-include="'modules/deliverables/views/deliverableFeedbackView.html'"></div>
     </div>
+
+    <!--TODO Move this into an optionally displayed component, just a placeholder until it finds a home...-->
+    <div class="container">
+        <div ap-discussion-thread
+             data-list-item="deliverableRecord"
+             data-field-name="'discussionThread'"></div>
+    </div>
 </fieldset>
+
