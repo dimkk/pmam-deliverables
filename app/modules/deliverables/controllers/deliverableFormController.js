@@ -13,10 +13,10 @@
 
         var vm = this;
 
-        $scope.state = {dataReady:false};
-        $scope.save = save;
-        $scope.deleteRecord = deleteRecord;
-        $scope.cancel = cancel;
+        vm.state = {dataReady: false};
+        vm.save = save;
+        vm.deleteRecord = deleteRecord;
+        vm.cancel = cancel;
 
         activate();
 
@@ -69,7 +69,7 @@
                 if(calendarMonth <= 0) {
                     calendarMonth = calendarMonth + 12;
                 }
-                $scope.state.dataReady = true;
+                vm.state.dataReady = true;
             });
 
             // rating settings

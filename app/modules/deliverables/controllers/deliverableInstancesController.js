@@ -10,16 +10,17 @@
     /* @ngInject */
     function deliverableInstancesController(deliverablesModel, $q, deliverableFeedbackModel, chartService, $scope, $location, $state, _, deliverablesService, deliverableDefinitionsModel, deliverableFeedbackService) {
 
+        var vm = this;
         var fy = $state.params.fy || '2013';
         var activeId = $state.params.id;
 
         $scope.state = {selectedDeliverable: null};
-        $scope.getUpdateState = getUpdateState;
-        $scope.getDeliverableFeedback = getDeliverableFeedback;
-        $scope.showFeedback = false;
-        $scope.rightPanelView = 'modules/deliverables/views/deliverableMetricsView.html';
-        $scope.gotData = false;
-        $scope.toggleRightPanel = toggleRightPanel;
+        vm.getUpdateState = getUpdateState;
+        vm.getDeliverableFeedback = getDeliverableFeedback;
+        vm.showFeedback = false;
+        vm.rightPanelView = 'modules/deliverables/views/deliverableMetricsView.html';
+        vm.gotData = false;
+        vm.toggleRightPanel = toggleRightPanel;
 
         activate();
 
@@ -38,19 +39,19 @@
                     $scope.state.selectedDeliverable = indexedCache.first();
                     deliverablesService.getDeliverablesByType(fy, parseInt($scope.state.selectedDeliverable.id)).then
                     (function (indexedCached) {
-                        $scope.deliverableInstances = indexedCached;
+                        vm.deliverableInstances = indexedCached;
                     })
                 } else {
 
                     $scope.state.selectedDeliverable = indexedCache[ parseInt(activeId) ];
                 }
                 $scope.frequency = $scope.state.selectedDeliverable.frequency.lookupValue;
-                $scope.deliverableDefinitions = indexedCache.toArray();
-                $scope.gotData = true;
+                    vm.deliverableDefinitions = indexedCache.toArray();
+                    vm.gotData = true;
 
                 if(activeId) {
                     deliverablesService.getDeliverablesByType(fy,parseInt(activeId)).then(function(indexedCached){
-                        $scope.deliverableInstances = indexedCached;
+                        vm.deliverableInstances = indexedCached;
                     })
                 }
 
@@ -59,7 +60,7 @@
 
             deliverableFeedbackService.getDeliverableFeedback().then(
                 function (results) {
-                    $scope.deliverableFeedback = results;
+                    vm.deliverableFeedback = results;
 
                 },
                 function (err) {
@@ -74,13 +75,13 @@
 
         function getDeliverableFeedback(Id) {
 
-            $scope.deliverableRecord = deliverablesModel.getCachedEntity(parseInt(Id));
-            $scope.deliverableFeedback = $scope.deliverableRecord.getCachedFeedbackByDeliverableId();
-            $scope.rightPanelView = 'modules/deliverables/views/deliverableFeedbackView.html';
+            var deliverableRecord = deliverablesModel.getCachedEntity(parseInt(Id));
+            vm.deliverableFeedback = deliverableRecord.getCachedFeedbackByDeliverableId();
+            vm.rightPanelView = 'modules/deliverables/views/deliverableFeedbackView.html';
         }
 
         function toggleRightPanel() {
-            $scope.rightPanelView = 'modules/deliverables/views/deliverableMetricsView.html';
+            vm.rightPanelView = 'modules/deliverables/views/deliverableMetricsView.html';
         }
 
         function initializeMetricsGauages() {
@@ -103,7 +104,7 @@
 
         function doPrepareMetrics() {
 
-            return chartService.prepareMetrics($scope.deliverablesByMonth);
+            return chartService.prepareMetrics(vm.deliverablesByMonth);
         }
 
     }

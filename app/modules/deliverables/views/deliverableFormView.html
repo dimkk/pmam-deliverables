@@ -8,7 +8,7 @@
                     <div class="col-sm-12"><i class="fa fa-check-square icon-padding"></i>EDIT DELIVERABLE</div>
                 </div>
             </legend>
-            <form name="editDeliverable" ng-submit="save()" role="form">
+            <form name="editDeliverable" ng-submit="vm.save()" role="form">
                 <div ui-view class="row fadeIn">
                     <div class="col-xs-12 col-md-4">
                         <div class="form-group">
@@ -34,8 +34,8 @@
                                 </div>
                                 <div class="content-group col-xs-12 col-md-6">
                                     <button class="btn btn-primary" type="submit">Save</button>
-                                    <button class="btn btn-default" ng-click="cancel()">Cancel</button>
-                                    <button class="btn btn-default" ng-click="deleteRecord()">Delete</button>
+                                    <button class="btn btn-default" ng-click="vm.cancel()">Cancel</button>
+                                    <button class="btn btn-default" ng-click="vm.deleteRecord()">Delete</button>
                                 </div>
                             </div>
                         </div>
@@ -52,7 +52,8 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="to" class="deliverables-header">To</label>
-                            <div ng-if="state.dataReady">
+
+                            <div ng-if="vm.state.dataReady">
                                 <ui-select ng-model="vm.deliverableRecord.to" multiple>
                                     <ui-select-match placeholder="Select TO Recipient">{{$item.lookupValue }}
                                     </ui-select-match>
@@ -67,7 +68,8 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="cc" class="deliverables-header">CC</label>
-                            <div ng-if="state.dataReady">
+
+                            <div ng-if="vm.state.dataReady">
                                 <ui-select ng-model="vm.deliverableRecord.cc" multiple>
                                     <ui-select-match placeholder="Select CC Recipient">{{$item.lookupValue }}
                                     </ui-select-match>

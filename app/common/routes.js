@@ -20,7 +20,8 @@ angular.module('pmam-deliverables')
             .state('deliverables.types', {
                 url: '/types',
                 templateUrl: 'modules/deliverables/views/deliverableDefinitionsView.html',
-                controller: 'definitionsController'
+                controller: 'definitionsController',
+                controllerAs: 'vm'
             })
 
             .state('deliverable', {
@@ -47,7 +48,8 @@ angular.module('pmam-deliverables')
             .state('deliverables.instances', {
                 url: '/instances?fy&id',
                 templateUrl: 'modules/deliverables/views/deliverableInstancesView.html',
-                controller: 'deliverableInstancesController'
+                controller: 'deliverableInstancesController',
+                controllerAs: 'vm'
             })
 
             //Group Manager

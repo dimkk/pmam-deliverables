@@ -10,11 +10,12 @@
     /* @ngInject */
     function definitionsController($state, $scope, deliverableDefinitionsModel, deliverablesService) {
 
+        var vm = this;
         var fy = $state.params.fy || '2013';
 
         $scope.fiscalYear = fy;
-        $scope.gotData = false;
-        $scope.state = {
+        vm.gotData = false;
+        vm.state = {
             definitions: [],
             validChartData: 'false',
             searchString: ''
@@ -30,8 +31,8 @@
             deliverableDefinitionsModel.getFyDefinitions(fy)
                 .then(function (result) {
 
-                    $scope.deliverableDefinitions = result.toArray();
-                    $scope.state.validChartData = true;
+                    vm.deliverableDefinitions = result.toArray();
+                    vm.state.validChartData = true;
 
                 }),
                 function(err) {
@@ -39,7 +40,7 @@
                 }
 
             deliverablesService.getDeliverableCountByDefinition(fy).then(function(deliverableCountByDefinition){
-                $scope.deliverableCountByDefinition = deliverableCountByDefinition;
+                vm.deliverableCountByDefinition = deliverableCountByDefinition;
             });
         }
     }

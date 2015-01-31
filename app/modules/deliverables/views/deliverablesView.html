@@ -6,11 +6,13 @@
                 <div class="col-sm-9"><i class="fa fa-calendar icon-padding"></i>ACTIVE DELIVERABLES</div>
                 <div class="col-sm-3">
                     <div class="btn-group">
-                        <button class="btn btn-light pull-left" type="button" ng-click="decreaseDate()">
+                        <button class="btn btn-light pull-left" type="button" ng-click="vm.decreaseDate()">
                             <i class="fa fa-arrow-left"></i>
                         </button>
-                        <button class="pull-left btn btn-white bold" style="width: 75px" disabled>{{ displayPeriod }}</button>
-                        <button class="btn btn-light pull-left" type="button" ng-click="increaseDate()">
+                        <button class="pull-left btn btn-white bold" style="width: 75px" disabled>{{ vm.displayPeriod
+                            }}
+                        </button>
+                        <button class="btn btn-light pull-left" type="button" ng-click="vm.increaseDate()">
                             <i class="fa fa-arrow-right"></i>
                         </button>
                     </div>
@@ -18,7 +20,7 @@
             </div>
             <hr/>
             <!-- Animate once we have data -->
-            <div ng-if="gotData">
+            <div ng-if="vm.gotData">
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -30,15 +32,15 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="item in deliverablesByMonth track by item.id">
+                    <tr ng-repeat="item in vm.deliverablesByMonth track by item.id">
                         <td>
                             <a ui-sref="deliverable({id:item.id})">{{ item.title }}</a>
                         </td>
                         <td>{{ item.submissionDate | date:'shortDate' }}</td>
                         <td>{{ item.startDate | date:'shortDate' }}</td>
-                        <td>{{ deliverableFrequencyFilter( item.deliverableType ) }}</td>
+                        <td>{{ vm.deliverableFrequencyFilter( item.deliverableType ) }}</td>
                         <td>
-                            <a ng-click="getDeliverableFeedback( item.id )" class="rating-data" title="View Details">
+                            <a ng-click="vm.getDeliverableFeedback( item.id )" class="rating-data" title="View Details">
                                 <ratings-average data-deliverable="item"></ratings-average>
                             </a>
                         </td>
@@ -61,12 +63,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="fadeIn" ng-repeat="item in deliverableDefinitionsByMonth">
-                        <td><a ui-sref="deliverables.instances({fy:fiscalYear,id:item.id})">{{ item.deliverableNumber }}</a></td>
+                    <tr class="fadeIn" ng-repeat="item in vm.deliverableDefinitionsByMonth">
+                        <td><a ui-sref="deliverables.instances({fy:vm.fiscalYear,id:item.id})">{{ item.deliverableNumber
+                            }}</a></td>
                         <td>{{ item.title }}</td>
                         <td>{{ item.frequency.lookupValue }}</td>
                         <td>
-                            <a ui-sref="newInstance({ fy:fiscalYear,deliverableTypeId:item.id })"><i
+                            <a ui-sref="newInstance({ fy:vm.fiscalYear,deliverableTypeId:item.id })"><i
                                 class="fa fa-plus"></i></a>
                         </td>
                     </tr>
@@ -75,7 +78,7 @@
             </div>
         </div>
         <!-- view toggles between metrics and feedback -->
-        <div ng-include="rightPanelView"></div>
+        <div ng-include="vm.rightPanelView"></div>
     </div>
 </div>
 

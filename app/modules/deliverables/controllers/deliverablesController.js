@@ -29,7 +29,7 @@
         var mo = $state.params.mo || currentMonth;
         var deliverableDefinitions;
 
-        $scope.gotData = false;
+        vm.gotData = false;
 
         var monthNames = ["SEP","OCT","NOV","DEC","JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG"];
 
@@ -39,12 +39,12 @@
             mo = 11;
         }
 
-        $scope.deliverableFrequencyFilter = deliverableFrequencyFilter;
-        $scope.getDeliverableFeedback = getDeliverableFeedback;
-        $scope.decreaseDate = decreaseDate;
-        $scope.increaseDate = increaseDate;
-        $scope.rightPanelView = $scope.showFeedbackPanel ? 'modules/deliverables/views/deliverableFeedbackView.html' : 'modules/deliverables/views/deliverableMetricsView.html';
-        $scope.toggleRightPanel = toggleRightPanel;
+        vm.deliverableFrequencyFilter = deliverableFrequencyFilter;
+        vm.getDeliverableFeedback = getDeliverableFeedback;
+        vm.decreaseDate = decreaseDate;
+        vm.increaseDate = increaseDate;
+        vm.rightPanelView = $scope.showFeedbackPanel ? 'modules/deliverables/views/deliverableFeedbackView.html' : 'modules/deliverables/views/deliverableMetricsView.html';
+        vm.toggleRightPanel = toggleRightPanel;
 
         activate();
 
@@ -58,15 +58,15 @@
 
                 function( results ) {
 
-                    $scope.deliverablesByMonth = results;
+                    vm.deliverablesByMonth = results;
 
-                    if($scope.deliverablesByMonth[0] !== undefined) {
+                    if (vm.deliverablesByMonth[0] !== undefined) {
 
-                        fiscalYear = $scope.deliverablesByMonth[0].fy;
+                        fiscalYear = vm.deliverablesByMonth[0].fy;
                         yearPart = fiscalYear.substr(fiscalYear.length - 2);
-                        $scope.fiscalYear = fiscalYear;
-                        $scope.displayPeriod = monthNames[$scope.deliverablesByMonth[0].month] + " " + yearPart;
-                        currentMonth = $scope.deliverablesByMonth[0].month;
+                        vm.fiscalYear = fiscalYear;
+                        vm.displayPeriod = monthNames[vm.deliverablesByMonth[0].month] + " " + yearPart;
+                        currentMonth = vm.deliverablesByMonth[0].month;
                         initializeMetricsGauages();
                     }
 
@@ -94,7 +94,7 @@
 
                 function( results ) {
 
-                    $scope.deliverableDefinitionsByMonth = results.deliverableDefinitionsByMonth;
+                    vm.deliverableDefinitionsByMonth = results.deliverableDefinitionsByMonth;
                     deliverableDefinitions = results.deliverableDefinitions;
 
                 },
@@ -116,8 +116,8 @@
 
             deliverableFeedbackService.getDeliverableFeedback().then(
                 function (results) {
-                    $scope.deliverableFeedback = results;
-                    $scope.gotData = true;
+                    vm.deliverableFeedback = results;
+                    vm.gotData = true;
 
                 },
                 function(err) {
@@ -129,15 +129,15 @@
 
         function getDeliverableFeedback(Id) {
 
-            $scope.deliverableRecord = deliverablesModel.getCachedEntity(parseInt(Id));
-            $scope.deliverableFeedback = $scope.deliverableRecord.getCachedFeedbackByDeliverableId();
-            $scope.rightPanelView = 'modules/deliverables/views/deliverableFeedbackView.html';
+            var deliverableRecord = deliverablesModel.getCachedEntity(parseInt(Id));
+            vm.deliverableFeedback = deliverableRecord.getCachedFeedbackByDeliverableId();
+            vm.rightPanelView = 'modules/deliverables/views/deliverableFeedbackView.html';
             $scope.showFeedbackPanel = true;
 
         }
 
         function toggleRightPanel() {
-            $scope.rightPanelView = 'modules/deliverables/views/deliverableMetricsView.html';
+            vm.rightPanelView = 'modules/deliverables/views/deliverableMetricsView.html';
         }
 
         function initializeMetricsGauages() {
@@ -159,7 +159,7 @@
         }
 
         function doPrepareMetrics() {
-            return chartService.prepareMetrics($scope.deliverablesByMonth);
+            return chartService.prepareMetrics(vm.deliverablesByMonth);
 
         }
 
