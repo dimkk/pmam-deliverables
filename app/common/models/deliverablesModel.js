@@ -15,7 +15,8 @@
         .module('pmam-deliverables')
         .service('deliverablesModel', deliverablesModel);
 
-    function deliverablesModel(_, apModelFactory, apModalService, apDiscussionThreadFactory, deliverableFeedbackModel, user) {
+    function deliverablesModel(_, apModelFactory, apModalService, apDiscussionThreadFactory, deliverableFeedbackModel,
+                               deliverableDefinitionsModel, user) {
 
         /********************* Model Definition ***************************************/
 
@@ -86,8 +87,6 @@
             var self = this;
             _.extend(self, obj);
             self.displayDate = moment(self.submissionDate).format('MMM YY');
-            self.formattedstartdate = moment(self.startDate).format('MM/DD/YYYY');
-            self.formattedsubmissiondate = moment(self.submissionDate).format('MM/DD/YYYY');
             /** Instantiate a new discussion object even if there isn't an active discussion */
             self.discussionThread = apDiscussionThreadFactory.createDiscussionObject(self, 'discussionThread');
         }
@@ -95,6 +94,7 @@
         Deliverable.prototype.openModal = openModal;
         Deliverable.prototype.getCachedFeedbackByDeliverableId = getCachedFeedbackByDeliverableId;
         Deliverable.prototype.getCachedFeedbackForCurrentUser = getCachedFeedbackForCurrentUser;
+        Deliverable.prototype.getDeliverableDefinition = getDeliverableDefinition;
 
         /** Optionally add a modal form **/
         model.openModal = apModalService.modalModelProvider({
@@ -126,6 +126,12 @@
                 });
             }
             return feedbackForUser;
+        }
+
+        /** Adds ability to reference get the deliverable definition directly from any deliverable object */
+        function getDeliverableDefinition() {
+            var self = this;
+            return deliverableDefinitionsModel.getCachedEntity(self.deliverableType.lookupId);
         }
 
 
