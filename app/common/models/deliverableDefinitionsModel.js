@@ -78,8 +78,9 @@
                     {staticName: "To", objectType: "User", mappedName: "to", readOnly: false},
                     {staticName: "CC", objectType: "User", mappedName: "cc", readOnly: false},
                     //Work unit assignment number (eg 2.1 or 2.3)
-                    {staticName: 'TaskNumber', objectType: 'Text', mappedName: 'taskNumber', readOnly: false}
-
+                    {staticName: 'TaskNumber', objectType: 'Text', mappedName: 'taskNumber', readOnly: false},
+                    /** JSON array of date strings ["2014-12-15", "2015-03-15", "2015-06-15", "2015-09-15"] that will override calculated dates. */
+                    {staticName: 'SpecifiedDates', objectType: 'JSON', mappedName: 'specifiedDates', readOnly: false}
                 ]
             }
         });
@@ -96,9 +97,12 @@
         function DeliverableDefinition(obj) {
             var self = this;
             _.extend(self, obj);
+            /** Identify all due dates for this deliverable definition and store for later use */
+            self.dueDates = calculateDeliverableDueDates(self);
         }
 
         DeliverableDefinition.prototype.openModal = openModal;
+        DeliverableDefinition.prototype.getDeliverableDueDatesForMonth = getDeliverableDueDatesForMonth;
 
 
         /** Optionally add a modal form **/
@@ -134,6 +138,9 @@
 
         model.getFyDefinitions = getFyDefinitions;
 
+        return model;
+
+
         /********************* Model Specific Shared Functions ***************************************/
 
         function getFyDefinitions (fy) {
@@ -162,8 +169,88 @@
             }
 
             return model.executeQuery(fyCacheKey);
-        };
+        }
 
-        return model;
+        /**
+         * @description Given a zero based month number, returns an array of due dates for the given month or an empty
+         * array if there are no due dates for the month.
+         * @param {number} zeroBasedMonthNumber
+         * @returns {Date[]}
+         */
+        function getDeliverableDueDatesForMonth(zeroBasedMonthNumber) {
+            var deliverableDefinition = this,
+                deliverableDueDatesForMonth = [];
+            _.each(deliverableDefinition.dueDates, function(dueDate) {
+                if(dueDate.getMonth() == zeroBasedMonthNumber) {
+                    deliverableDueDatesForMonth.push(dueDate);
+                }
+            });
+            return deliverableDueDatesForMonth;
+        }
+
+        /**
+         * @name calculateDeliverableDueDates
+         * @param {DeliverableDefinition} deliverableDefinition
+         * @returns {Array} of date objects.
+         */
+        function calculateDeliverableDueDates(deliverableDefinition) {
+            var dueDates = [],
+                /** Format fy as a number */
+                fy = parseInt(deliverableDefinition.fy),
+                i = 0;
+
+            if(deliverableDefinition.specifiedDates.length > 0) {
+                /** Dates were manually entered so no need to compute */
+                _.each(deliverableDefinition.specifiedDates, function(dateString) {
+                    dueDates.push(new Date(dateString));
+                });
+            } else {
+                /** Compute dates based on periodicity */
+                switch( deliverableDefinition.frequency.lookupId ) {
+                    case 1:   // monthly
+                        /** Check for the case where the date identifier is a string instead of a number formatted as string **/
+                        if(isNaN(deliverableDefinition.dateIdentifier)) { //TODO Find a better way to handle the Last day of month case
+                            if(deliverableDefinition.dateIdentifier === 'Last') {
+                                /** Build an array of dates for the last day of each month */
+                                for(i; i < 12; i++) {
+                                    /** Using zero for day sets date to last day of previous month, that is why we need i+1 */
+                                    dueDates.push(new Date(getFY(deliverableDefinition.fy), i + 1, 0));
+                                }
+                            }
+                        } else {
+                            for(i; i < 12; i++) {
+                                /** Date identifier is numeric value as string which represents the day of month deliverable is due */
+                                dueDates.push(new Date(getFY(deliverableDefinition.fy), i + 1, parseInt(deliverableDefinition.dateIdentifier)));
+                            }
+                        }
+                        break;
+                    case 3:  // bi-monthly
+                        for(i; i < 12; i+2) {
+                            /** Create a due date for each odd month */
+                            dueDates.push(new Date(getFY(deliverableDefinition.fy), i + 1, parseInt(deliverableDefinition.dateIdentifier)));
+                        }
+                        break;
+                    case 4:  // one time
+                        if( deliverableDefinition.hardDate.length ){
+                            dueDates.push(new Date( deliverableDefinition.hardDate ));
+                        }
+                        break;
+                }
+            }
+
+            return dueDates;
+        }
+
+        /**
+         * @description Returns a valid calendar year that corresponds with a fiscal year and zero based month number
+         * @param {string} fyString
+         * @param {number} monthNumber
+         * @returns {Number} Calendar Year
+         */
+        function getFY(fyString, monthNumber) {
+            var fyNumber = parseInt(fyString);
+            return monthNumber < 9 ? fyNumber : fyNumber - 1;
+        }
+
     }
 })();
