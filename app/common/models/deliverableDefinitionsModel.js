@@ -57,26 +57,28 @@
                     {staticName: "Frequency", objectType: "Lookup", mappedName: "frequency", readOnly: false},
                     {
                         staticName: "DateIdentifier",
-                        objectType: "Number",
+                        objectType: "Text",
                         mappedName: "dateIdentifier",
                         readOnly: false
                     },
                     {staticName: "HardDate", objectType: "Date", mappedName: "hardDate", readOnly: false},
                     {staticName: "FY", objectType: "text", mappedName: "fy", readOnly: false},
-                    {
-                        staticName: "Frequency_x003a_Acronym",
-                        objectType: "Lookup",
-                        mappedName: "frequencyAcronym",
-                        readOnly: false
-                    },
-                    {
-                        staticName: "FrequencyDescription",
-                        objectType: "Text",
-                        mappedName: "frequencyDescription",
-                        readOnly: false
-                    },
+                    //{
+                    //    staticName: "Frequency_x003a_Acronym",
+                    //    objectType: "Lookup",
+                    //    mappedName: "frequencyAcronym",
+                    //    readOnly: false
+                    //},
+                    //{
+                    //    staticName: "FrequencyDescription",
+                    //    objectType: "Text",
+                    //    mappedName: "frequencyDescription",
+                    //    readOnly: false
+                    //},
                     {staticName: "To", objectType: "User", mappedName: "to", readOnly: false},
-                    {staticName: "CC", objectType: "User", mappedName: "cc", readOnly: false}
+                    {staticName: "CC", objectType: "User", mappedName: "cc", readOnly: false},
+                    //Work unit assignment number (eg 2.1 or 2.3)
+                    {staticName: 'TaskNumber', objectType: 'Text', mappedName: 'taskNumber', readOnly: false}
 
                 ]
             }
