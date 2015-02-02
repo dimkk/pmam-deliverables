@@ -43,7 +43,7 @@
         vm.getDeliverableFeedback = getDeliverableFeedback;
         vm.decreaseDate = decreaseDate;
         vm.increaseDate = increaseDate;
-        vm.rightPanelView = $scope.showFeedbackPanel ? 'modules/deliverables/views/deliverableFeedbackView.html' : 'modules/deliverables/views/deliverableMetricsView.html';
+        vm.rightPanelView = vm.showFeedbackPanel ? 'modules/deliverables/views/deliverableFeedbackView.html' : 'modules/deliverables/views/deliverableMetricsView.html';
         vm.toggleRightPanel = toggleRightPanel;
 
         activate();
@@ -80,7 +80,7 @@
                             mo = 11;
                         }
 
-                        $scope.displayPeriod = monthNames[ mo ] + " " + fy.substr(fy.length - 2);
+                        vm.displayPeriod = monthNames[mo] + " " + fy.substr(fy.length - 2);
 
                     }
 
@@ -132,7 +132,7 @@
             var deliverableRecord = deliverablesModel.getCachedEntity(parseInt(Id));
             vm.deliverableFeedback = deliverableRecord.getCachedFeedbackByDeliverableId();
             vm.rightPanelView = 'modules/deliverables/views/deliverableFeedbackView.html';
-            $scope.showFeedbackPanel = true;
+            vm.showFeedbackPanel = true;
 
         }
 
@@ -142,11 +142,11 @@
 
         function initializeMetricsGauages() {
 
-            $scope.metricsByMonth = doPrepareMetrics();
+            vm.metricsByMonth = doPrepareMetrics();
 
             // faking the gauge data for now; it should run off the values returned in metricsByMonth
-            $scope.Gauge1.data.rows[0].c[1].v = chartService.getRandom();
-            $scope.Gauge2.data.rows[0].c[1].v = chartService.getRandom();
+            vm.Gauge1.data.rows[0].c[1].v = chartService.getRandom();
+            vm.Gauge2.data.rows[0].c[1].v = chartService.getRandom();
         }
 
         function doBuildGauges() {
@@ -154,8 +154,8 @@
             var gauges = chartService.buildGauges();
 
             //Create initial gauge objects if not already defined
-            $scope.Gauge1 = gauges.Gauge1;
-            $scope.Gauge2 = gauges.Gauge2;
+            vm.Gauge1 = gauges.Gauge1;
+            vm.Gauge2 = gauges.Gauge2;
         }
 
         function doPrepareMetrics() {
