@@ -75,8 +75,9 @@
                     //    mappedName: "frequencyDescription",
                     //    readOnly: false
                     //},
-                    {staticName: "To", objectType: "User", mappedName: "to", readOnly: false},
-                    {staticName: "CC", objectType: "User", mappedName: "cc", readOnly: false},
+                    /** Default To and CC email recipients.  Accepts both users and groups */
+                    {staticName: 'To', objectType: 'UserMulti', mappedName: 'to', readOnly: false},
+                    {staticName: "CC", objectType: "UserMulti", mappedName: "cc", readOnly: false},
                     //Work unit assignment number (eg 2.1 or 2.3)
                     {staticName: 'TaskNumber', objectType: 'Text', mappedName: 'taskNumber', readOnly: false},
                     /** JSON array of date strings ["2014-12-15", "2015-03-15", "2015-06-15", "2015-09-15"] that will override calculated dates. */
