@@ -8,7 +8,7 @@
         .controller('newDeliverableFormController', newDeliverableFormController);
 
     /* @ngInject */
-    function newDeliverableFormController(toastr, $state, $scope, deliverableDefinitionsModel, deliverablesModel, userService) {
+    function newDeliverableFormController(toastr, $state, deliverableDefinitionsModel, deliverablesModel, userService) {
 
         var vm = this;
 
@@ -21,13 +21,20 @@
             var fiscalYear = moment().format('YYYY');
             var currentMonth = moment().format('MM');
 
+            // correct for fiscal year
+            currentMonth = parseInt(currentMonth) + 3;
+
+            if (currentMonth > 12) {
+                currentMonth = currentMonth - 12;
+            }
+
             if(currentMonth > 8) {
                 fiscalYear++;
             }
 
             vm.state = {dataReady: false};
             vm.deliverableRecord = deliverablesModel.createEmptyItem({fy: fiscalYear});
-            vm.deliverableRecord.month = currentMonth;
+            vm.deliverableRecord.month = parseInt(currentMonth) + 3;
             vm.cancel = cancel;
             vm.save = save;
 
