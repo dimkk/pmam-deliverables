@@ -143,7 +143,7 @@
                     _.each(indexedCache,function(deliverable){
                         deliverableCountByDefinition[deliverable.deliverableType.lookupId] = deliverableCountByDefinition[deliverable.deliverableType.lookupId] || 0;
                         deliverableCountByDefinition[deliverable.deliverableType.lookupId]++;
-                    })
+                    });
                     deferred.resolve(deliverableCountByDefinition);
                 });
 
