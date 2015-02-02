@@ -13,7 +13,7 @@
         var vm = this;
         var fy = $state.params.fy || '2013';
 
-        $scope.fiscalYear = fy;
+        vm.fiscalYear = fy;
         vm.gotData = false;
         vm.state = {
             definitions: [],

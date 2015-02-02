@@ -23,15 +23,17 @@
             <tbody>
             <tr class="deliverables-data" ng-repeat="item in vm.deliverableDefinitions | filter:vm.state.searchString">
                 <td>
-                    <a ui-sref="deliverables.instances({ fy:fiscalYear, id:item.id })">{{ item.deliverableNumber }}</a>
+                    <a ui-sref="deliverables.instances({ fy:vm.fiscalYear, id:item.id })">{{ item.deliverableNumber
+                        }}</a>
                 </td>
                 <td>{{ item.title }}</td>
                 <td>{{ item.frequency.lookupValue }}</td>
                 <td>
-                    <a ui-sref="deliverables.instances({ fy:fiscalYear, id:item.id })"><span class="badge badge-info">{{ vm.deliverableCountByDefinition[item.id] || 0 }}</span></a>
+                    <a ui-sref="deliverables.instances({ fy:vm.fiscalYear, id:item.id })"><span
+                        class="badge badge-info">{{ vm.deliverableCountByDefinition[item.id] || 0 }}</span></a>
                 </td>
                 <td>
-                    <a ui-sref="newInstance({ fy:fiscalYear, deliverableTypeId:item.id })"><i class="fa fa-plus"></i></a>
+                    <a ui-sref="newInstance({ fy:vm.fiscalYear, deliverableTypeId:item.id })"><i class="fa fa-plus"></i></a>
                 </td>
             </tr>
             </tbody>

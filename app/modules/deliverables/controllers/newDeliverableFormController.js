@@ -25,15 +25,15 @@
                 fiscalYear++;
             }
 
-            $scope.state = {dataReady:false};
+            vm.state = {dataReady: false};
             vm.deliverableRecord = deliverablesModel.createEmptyItem({fy: fiscalYear});
             vm.deliverableRecord.month = currentMonth;
-            $scope.cancel = cancel;
-            $scope.save = save;
+            vm.cancel = cancel;
+            vm.save = save;
 
             getDeliverableTypes().then(function(){
                 if($state.params.deliverableTypeId) {
-                    var selectedDeliverableType = _.find($scope.deliverableTypes,{id:parseInt($state.params.deliverableTypeId)})
+                    var selectedDeliverableType = _.find(vm.deliverableTypes, {id: parseInt($state.params.deliverableTypeId)})
                     if(selectedDeliverableType){
                         vm.deliverableRecord.deliverableType = {
                             lookupId: selectedDeliverableType.id,
@@ -46,7 +46,7 @@
             userService.getUserLookupValues()
                 .then(function (result) {
                     vm.personnelArray = result;
-                    $scope.state.dataReady = true;
+                    vm.state.dataReady = true;
                 }),
                 function(err) {
                     console.log(err);

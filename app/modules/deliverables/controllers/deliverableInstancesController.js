@@ -14,7 +14,7 @@
         var fy = $state.params.fy || '2013';
         var activeId = $state.params.id;
 
-        $scope.state = {selectedDeliverable: null};
+        vm.state = {selectedDeliverable: null};
         vm.getUpdateState = getUpdateState;
         vm.getDeliverableFeedback = getDeliverableFeedback;
         vm.showFeedback = false;
@@ -36,16 +36,16 @@
                     var indexedCache = resolvedPromises[0];
 
                 if(!activeId){
-                    $scope.state.selectedDeliverable = indexedCache.first();
-                    deliverablesService.getDeliverablesByType(fy, parseInt($scope.state.selectedDeliverable.id)).then
+                    vm.state.selectedDeliverable = indexedCache.first();
+                    deliverablesService.getDeliverablesByType(fy, parseInt(vm.state.selectedDeliverable.id)).then
                     (function (indexedCached) {
                         vm.deliverableInstances = indexedCached;
                     })
                 } else {
 
-                    $scope.state.selectedDeliverable = indexedCache[ parseInt(activeId) ];
+                    vm.state.selectedDeliverable = indexedCache[parseInt(activeId)];
                 }
-                $scope.frequency = $scope.state.selectedDeliverable.frequency.lookupValue;
+                    $scope.frequency = vm.state.selectedDeliverable.frequency.lookupValue;
                     vm.deliverableDefinitions = indexedCache.toArray();
                     vm.gotData = true;
 
@@ -70,7 +70,7 @@
         }
 
         function getUpdateState(){
-            $state.go('deliverables.instances', {fy: fy, id: $scope.state.selectedDeliverable.id})
+            $state.go('deliverables.instances', {fy: fy, id: vm.state.selectedDeliverable.id})
         }
 
         function getDeliverableFeedback(Id) {
