@@ -196,8 +196,6 @@
          */
         function calculateDeliverableDueDates(deliverableDefinition) {
             var dueDates = [],
-                /** Format fy as a number */
-                fy = parseInt(deliverableDefinition.fy),
                 i = 0;
 
             if(deliverableDefinition.specifiedDates.length > 0) {
@@ -206,6 +204,18 @@
                     dueDates.push(new Date(dateString));
                 });
             } else {
+
+                /** Function that accepts a function and calls it for each of the 12 months */
+                var processMonths = function(evalMonth) {
+                    for(i = 0; i < 12; i++) {
+                        var fy = getFY(parseInt(deliverableDefinition.fy), i);
+                        var dueDate = evalMonth(fy, i);
+                        if(dueDate) {
+                            dueDates.push(dueDate);
+                        }
+                    }
+                };
+
                 /** Compute dates based on periodicity */
                 switch( deliverableDefinition.frequency.lookupId ) {
                     case 1:   // monthly
@@ -213,23 +223,26 @@
                         if(isNaN(deliverableDefinition.dateIdentifier)) { //TODO Find a better way to handle the Last day of month case
                             if(deliverableDefinition.dateIdentifier === 'Last') {
                                 /** Build an array of dates for the last day of each month */
-                                for(i; i < 12; i++) {
+                                processMonths(function(fy, i) {
                                     /** Using zero for day sets date to last day of previous month, that is why we need i+1 */
-                                    dueDates.push(new Date(getFY(deliverableDefinition.fy), i + 1, 0));
-                                }
+                                    return new Date(getFY(deliverableDefinition.fy, i), i + 1, 0);
+                                });
                             }
                         } else {
-                            for(i; i < 12; i++) {
+                            processMonths(function(fy, i) {
                                 /** Date identifier is numeric value as string which represents the day of month deliverable is due */
-                                dueDates.push(new Date(getFY(deliverableDefinition.fy), i + 1, parseInt(deliverableDefinition.dateIdentifier)));
-                            }
+                                return new Date(getFY(deliverableDefinition.fy, i), i + 1, parseInt(deliverableDefinition.dateIdentifier));
+                            });
                         }
                         break;
                     case 3:  // bi-monthly
-                        for(i; i < 12; i+2) {
-                            /** Create a due date for each odd month */
-                            dueDates.push(new Date(getFY(deliverableDefinition.fy), i + 1, parseInt(deliverableDefinition.dateIdentifier)));
-                        }
+                        processMonths(function(fy, i) {
+                            /** Only add odd months */
+                            if(i % 2) {
+                                /** Create a due date for each odd month */
+                                return new Date(getFY(deliverableDefinition.fy, i), i + 1, parseInt(deliverableDefinition.dateIdentifier));
+                            }
+                        });
                         break;
                     case 4:  // one time
                         if( deliverableDefinition.hardDate.length ){
@@ -241,6 +254,7 @@
 
             return dueDates;
         }
+
 
         /**
          * @description Returns a valid calendar year that corresponds with a fiscal year and zero based month number
