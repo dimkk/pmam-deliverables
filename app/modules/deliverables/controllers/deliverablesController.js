@@ -148,9 +148,9 @@
 
         }
         function getCurrentFiscalMonth() {
-            var calendarMonthNumber = new Date().getMonth() - 2;
-            if(calendarMonthNumber <= 0) {
-                calendarMonthNumber = calendarMonthNumber + 12;
+            var calendarMonthNumber = new Date().getMonth() + 4;
+            if(calendarMonthNumber > 12) {
+                calendarMonthNumber = calendarMonthNumber - 12;
             }
             return calendarMonthNumber
         }

@@ -34,7 +34,7 @@
 
             vm.state = {dataReady: false};
             vm.deliverableRecord = deliverablesModel.createEmptyItem({fy: fiscalYear});
-            vm.deliverableRecord.month = parseInt(currentMonth) + 3;
+            vm.deliverableRecord.fiscalMonth = parseInt(currentMonth) + 3;
             vm.cancel = cancel;
             vm.save = save;
 

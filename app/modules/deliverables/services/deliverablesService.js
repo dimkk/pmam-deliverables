@@ -123,7 +123,7 @@
             deliverablesModel.getFyDeliverables(fiscalYear)
                 .then(function (indexedCache) {
                     var deliverablesForMonth = _.where(indexedCache, function(deliverable) {
-                        return deliverable.month === fiscalMonth;
+                        return deliverable.fiscalMonth === fiscalMonth;
                     });
                     deferred.resolve(deliverablesForMonth);
                 });

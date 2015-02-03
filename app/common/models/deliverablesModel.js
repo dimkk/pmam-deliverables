@@ -59,7 +59,7 @@
                     },
                     {staticName: "FY", objectType: "text", mappedName: "fy", readOnly: false},
                     /** Fiscal month number (1-12) with 1 being October and 12 being September */
-                    {staticName: 'Month', objectType: 'Integer', mappedName: 'month', readOnly: false},
+                    {staticName: 'Month', objectType: 'Integer', mappedName: 'fiscalMonth', readOnly: false},
                     {staticName: "Details", objectType: "Text", mappedName: "details", readOnly: false},
                     {staticName: "Justification", objectType: "Text", mappedName: "justification", readOnly: false},
                     {staticName: "To", objectType: "UserMulti", mappedName: "to", readOnly: false},
@@ -173,7 +173,7 @@
          */
         function getCalendarMonth() {
             var deliverable = this,
-                calendarMonthNumber = deliverable.month - 3;
+                calendarMonthNumber = deliverable.fiscalMonth - 3;
             if(calendarMonthNumber <= 0) {
                 calendarMonthNumber = calendarMonthNumber + 12;
             }
