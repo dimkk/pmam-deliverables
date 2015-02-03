@@ -87,3 +87,12 @@
         <div ng-include="'modules/deliverables/views/deliverableFeedbackView.html'"></div>
     </div>
 </fieldset>
+
+<!--TODO Figure out how and where to use the discussion thread functionality below -->
+<div class="row">
+    <div class="col-sm-12">
+        <div ap-discussion-thread
+             data-field-name="'discussionThread'"
+             data-list-item="vm.deliverableRecord"></div>
+    </div>
+</div>
