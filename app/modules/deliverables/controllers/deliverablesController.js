@@ -53,7 +53,7 @@
             //TODO Refactor to use the deliverableFrequenciesService instead
             deliverablesService.getDeliverableFrequencies().then(
                 function(results) {
-                    $scope.deliverableFrequencies = results;
+                    vm.deliverableFrequencies = results;
 
                 }
             );
