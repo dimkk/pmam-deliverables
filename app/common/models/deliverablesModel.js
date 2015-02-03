@@ -58,7 +58,8 @@
                         readOnly: false
                     },
                     {staticName: "FY", objectType: "text", mappedName: "fy", readOnly: false},
-                    {staticName: "Month", objectType: "text", mappedName: "month", readOnly: false},
+                    /** Fiscal month number (1-12) with 1 being October and 12 being September */
+                    {staticName: 'Month', objectType: 'Integer', mappedName: 'month', readOnly: false},
                     {staticName: "Details", objectType: "Text", mappedName: "details", readOnly: false},
                     {staticName: "Justification", objectType: "Text", mappedName: "justification", readOnly: false},
                     {staticName: "To", objectType: "UserMulti", mappedName: "to", readOnly: false},
@@ -94,6 +95,7 @@
         Deliverable.prototype.openModal = openModal;
         Deliverable.prototype.getCachedFeedbackByDeliverableId = getCachedFeedbackByDeliverableId;
         Deliverable.prototype.getCachedFeedbackForCurrentUser = getCachedFeedbackForCurrentUser;
+        Deliverable.prototype.getCalendarMonth = getCalendarMonth;
         Deliverable.prototype.getDeliverableDefinition = getDeliverableDefinition;
 
         /** Optionally add a modal form **/
@@ -165,6 +167,18 @@
 
 
         /********************* Model Specific Shared Functions ***************************************/
+
+        /**
+         * @description Month is the FY Month (1-12), method converts into calendar month (0-11)
+         */
+        function getCalendarMonth() {
+            var deliverable = this,
+                calendarMonthNumber = deliverable.month - 3;
+            if(calendarMonthNumber <= 0) {
+                calendarMonthNumber = calendarMonthNumber + 12;
+            }
+            return calendarMonthNumber
+        }
 
         function getFyDeliverables(fy) {
             /** Unique query name (ex: fy2013) */
