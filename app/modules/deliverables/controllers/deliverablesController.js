@@ -8,7 +8,7 @@
         .controller( 'deliverablesController', deliverablesController );
 
     /* @ngInject */
-    function deliverablesController(deliverablesModel, deliverableFeedbackService, chartService, $location, $scope, toastr, $state, deliverablesService) {
+    function deliverablesController(deliverablesModel, deliverableFeedbackService, chartService, $location, $state, deliverablesService) {
 
         var yearPart;
         var currentFiscalYear = 0;
@@ -106,7 +106,7 @@
             deliverablesService.getDeliverableFrequencies().then(
 
                 function(results) {
-                    $scope.deliverableFrequencies = results;
+                    vm.deliverableFrequencies = results;
 
                 },
                 function (err) {
