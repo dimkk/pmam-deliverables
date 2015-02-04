@@ -65,10 +65,8 @@
                 }
 
                 // convert fiscal year month to calendar month
-                calendarMonth = vm.deliverableRecord.month - 3;
-                if(calendarMonth <= 0) {
-                    calendarMonth = calendarMonth + 12;
-                }
+                calendarMonth = vm.deliverableRecord.getCalendarMonth();
+
                 vm.state.dataReady = true;
             });
 

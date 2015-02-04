@@ -54,11 +54,18 @@
 
                     _.each(deliverableDefinitions, function( deliverableDefinition ) {
 
-                        var activeDefinition = filterDefinitionsByFrequency( deliverableDefinition, mo );
+                        //Retrieve array of all due dates for this deliverable for the given month
+                        var dueDatesThisMonth = deliverableDefinition.getDeliverableDueDatesForMonth(mo);
 
-                        if( activeDefinition ) {
+                        if( dueDatesThisMonth.length > 0) {
                             deliverableDefinitionsByMonth[ deliverableDefinition.id ] = deliverableDefinition;
                         }
+
+                        //var activeDefinition = filterDefinitionsByFrequency( deliverableDefinition, mo );
+                        //
+                        //if( activeDefinition ) {
+                        //    deliverableDefinitionsByMonth[ deliverableDefinition.id ] = deliverableDefinition;
+                        //}
 
                     } );
 
@@ -68,49 +75,55 @@
             return deferred.promise;
         }
 
-        function filterDefinitionsByFrequency( deliverableDefinition, mo ) {
-
-            var result = false;
-
-            // check for eligible frequencies
-            switch( deliverableDefinition.frequency.lookupId.toString() ) {
-
-                case "1":   // monthly
-                    result = true;
-                    break;
-
-                case "3":  // bi-monthly
-                    if( parseInt(mo) % 2 ){
-                        result = true;
-                        break;
-                    }
-
-                case "4":  // one off
-                    if( deliverableDefinition.hardDate.length ){
-                        var dateToParse = new Date( deliverableDefinition.hardDate );
-                        var hardDateMonth = dateToParse.getMonth();
-                        if( hardDateMonth === mo ) {
-                            result = true;
-                            break;
-                        }
-                    }
-            }
-
-            return result;
-        }
+        //function filterDefinitionsByFrequency( deliverableDefinition, mo ) {
+        //
+        //    var result = false;
+        //
+        //    // check for eligible frequencies
+        //    switch( deliverableDefinition.frequency.lookupId.toString() ) {
+        //
+        //        case "1":   // monthly
+        //            result = true;
+        //            break;
+        //
+        //        case "3":  // bi-monthly
+        //            if( parseInt(mo) % 2 ){
+        //                result = true;
+        //                break;
+        //            }
+        //
+        //        case "4":  // one off
+        //            if( deliverableDefinition.hardDate.length ){
+        //                var dateToParse = new Date( deliverableDefinition.hardDate );
+        //                var hardDateMonth = dateToParse.getMonth();
+        //                if( hardDateMonth === mo ) {
+        //                    result = true;
+        //                    break;
+        //                }
+        //            }
+        //    }
+        //
+        //    return result;
+        //}
 
         // year / mo combination
 
         //  returns promise for month
 
-        function getDeliverablesForMonth( fy, month ) {
+        /**
+         *
+         * @param {number} fiscalYear
+         * @param {number} fiscalMonth
+         * @returns {promise} object[]
+         */
+        function getDeliverablesForMonth( fiscalYear, fiscalMonth ) {
 
             var deferred = $q.defer();
 
-            deliverablesModel.getFyDeliverables(fy)
+            deliverablesModel.getFyDeliverables(fiscalYear)
                 .then(function (indexedCache) {
                     var deliverablesForMonth = _.where(indexedCache, function(deliverable) {
-                        return deliverable.month === month.toString();
+                        return deliverable.fiscalMonth === fiscalMonth;
                     });
                     deferred.resolve(deliverablesForMonth);
                 });

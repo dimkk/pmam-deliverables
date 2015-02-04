@@ -8,40 +8,20 @@
         .controller( 'deliverablesController', deliverablesController );
 
     /* @ngInject */
-    function deliverablesController(deliverablesModel, deliverableFeedbackService, chartService, $location, $state, deliverablesService) {
+    function deliverablesController(deliverablesModel, deliverableFeedbackService, chartService, $scope, $state, deliverablesService) {
 
-        var yearPart;
-        var currentFiscalYear = 0;
-
-        // uncomment below to use current year and month
-        //var fiscalYear = moment().format('YYYY');
-        //var currentMonth = moment().format('MM');
-
-        var fiscalYear = '2013';
-        var currentMonth = '7';
         var vm = this;
 
-        if(currentMonth > 8) {
-            fiscalYear++;
-        }
-
-        var fy = $state.params.fy || fiscalYear;
-        var mo = $state.params.mo || currentMonth;
+        /** $state query string params return as strings, if they exist and can be converted to an int do it, otherwise use the current fiscal year and month */
+        var fiscalYear = isNaN($state.params.fy) ? getCurrentFiscalYear() : parseInt($state.params.fy);
+        var fiscalMonth = isNaN($state.params.mo) ? getCurrentFiscalMonth() : parseInt($state.params.mo);
         var deliverableDefinitions;
 
-        vm.gotData = false;
-
-        var monthNames = ["SEP","OCT","NOV","DEC","JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG"];
-
-        fiscalYear = fy.substr(fy.length - 2);
-
-        if( mo < 0 ) {
-            mo = 11;
-        }
-
-        vm.deliverableFrequencyFilter = deliverableFrequencyFilter;
-        vm.getDeliverableFeedback = getDeliverableFeedback;
         vm.decreaseDate = decreaseDate;
+        vm.deliverableFrequencyFilter = deliverableFrequencyFilter;
+        vm.displayPeriod = generateDisplayPeriod();
+        vm.getDeliverableFeedback = getDeliverableFeedback;
+        vm.gotData = false;
         vm.increaseDate = increaseDate;
         vm.rightPanelView = vm.showFeedbackPanel ? 'modules/deliverables/views/deliverableFeedbackView.html' : 'modules/deliverables/views/deliverableMetricsView.html';
         vm.toggleRightPanel = toggleRightPanel;
@@ -54,63 +34,27 @@
 
             doBuildGauges();
 
-            deliverablesService.getDeliverablesForMonth( fy, mo ).then(
+            deliverablesService.getDeliverablesForMonth( fiscalYear, fiscalMonth ).then(
 
                 function( results ) {
-
                     vm.deliverablesByMonth = results;
-
-                    if (vm.deliverablesByMonth[0] !== undefined) {
-
-                        fiscalYear = vm.deliverablesByMonth[0].fy;
-                        yearPart = fiscalYear.substr(fiscalYear.length - 2);
-                        vm.fiscalYear = fiscalYear;
-                        vm.displayPeriod = monthNames[vm.deliverablesByMonth[0].month] + " " + yearPart;
-                        currentMonth = vm.deliverablesByMonth[0].month;
-                        initializeMetricsGauages();
-                    }
-
-                    // this is where we handle increments and decrements when there's no data
-                    else {
-
-                        if( mo > 11 ){
-                            mo = 0;
-                        }
-                        if( mo < 0 ){
-                            mo = 11;
-                        }
-
-                        vm.displayPeriod = monthNames[mo] + " " + fy.substr(fy.length - 2);
-
-                    }
-
-                },
-                function(err) {
-                    console.log(err);
+                    initializeMetricsGauges();
                 }
             );
 
-            deliverablesService.getDeliverableDefinitionsForMonth( fy, mo ).then(
-
+            deliverablesService.getDeliverableDefinitionsForMonth( fiscalYear, fiscalMonth ).then(
                 function( results ) {
 
                     vm.deliverableDefinitionsByMonth = results.deliverableDefinitionsByMonth;
                     deliverableDefinitions = results.deliverableDefinitions;
-
-                },
-                function(err) {
-                    console.log(err);
                 }
             );
 
+            //TODO Refactor to use the deliverableFrequenciesService instead
             deliverablesService.getDeliverableFrequencies().then(
-
                 function(results) {
                     vm.deliverableFrequencies = results;
 
-                },
-                function (err) {
-                    console.log(err);
                 }
             );
 
@@ -118,10 +62,6 @@
                 function (results) {
                     vm.deliverableFeedback = results;
                     vm.gotData = true;
-
-                },
-                function(err) {
-                    console.log(err);
                 }
             );
 
@@ -140,7 +80,7 @@
             vm.rightPanelView = 'modules/deliverables/views/deliverableMetricsView.html';
         }
 
-        function initializeMetricsGauages() {
+        function initializeMetricsGauges() {
 
             vm.metricsByMonth = doPrepareMetrics();
 
@@ -173,46 +113,54 @@
 
         }
 
-        // 9/1 starts the new fiscal year
+        // 10/1 starts the new fiscal year
         function increaseDate() {
-
-            currentMonth = parseInt(mo) + 1;
-            currentFiscalYear = fy;
+            var updatedMonth = fiscalMonth + 1;
+            var updatedYear = fiscalYear;
 
             // if we're flipping to the new year, increment current fiscal year bucket
-            if( currentMonth === 4 ) {
-                currentFiscalYear = parseInt(currentFiscalYear) + 1;
-                currentFiscalYear = currentFiscalYear.toString();
+            if( updatedMonth > 12 ) {
+                updatedYear = fiscalYear + 1;
+                updatedMonth = 1;
             }
 
-            // fetch the filtered data
-            $location.search( 'fy', currentFiscalYear );
-            $location.search( 'mo',  currentMonth );
+            $state.go('deliverables.main', {fy: updatedYear, mo: updatedMonth});
 
-        }
-
-        // this is a stub for navigating to a form to manage definitions
-        function openDefinitionsForm(deliverable) {
-            $location.path("/definitions");
         }
 
         function decreaseDate() {
 
-            currentMonth = parseInt(mo) - 1;
-            currentFiscalYear = fy;
+            var updatedMonth = fiscalMonth - 1;
+            var updatedYear = fiscalYear;
 
             // if we're flipping to the previous year, decrement current fiscal year bucket
-            if( currentMonth === 3 ) {
-                currentFiscalYear = parseInt(currentFiscalYear) - 1;
-                currentFiscalYear = currentFiscalYear.toString();
+            if( updatedMonth === 0 ){
+                updatedYear = updatedYear - 1;
+                updatedMonth = 12;
             }
 
-            if( currentMonth === 0 ){
-                currentMonth = 12;
-            }
+            $state.go('deliverables.main', {fy: updatedYear, mo: updatedMonth});
+        }
 
-            $location.search( 'fy', currentFiscalYear );
-            $location.search( 'mo', currentMonth );
+        function getCurrentFiscalYear() {
+            var today = new Date();
+            return today.getMonth() < 3 ? today.getFullYear() : today.getFullYear() - 1;
+
+        }
+        function getCurrentFiscalMonth() {
+            var calendarMonthNumber = new Date().getMonth() + 4;
+            if(calendarMonthNumber > 12) {
+                calendarMonthNumber = calendarMonthNumber - 12;
+            }
+            return calendarMonthNumber
+        }
+
+        function generateDisplayPeriod() {
+            var monthNames = ["OCT","NOV","DEC","JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP"],
+                calendarYear = fiscalMonth < 4 ? fiscalYear - 1 : fiscalYear,
+                twoDigitYear = (calendarYear.toString()).substr(2);
+                //Month is (1-12) so we need to add 1 to find value in 0 based monthName array
+                return monthNames[fiscalMonth - 1] + " " + twoDigitYear
         }
     }
 })();
