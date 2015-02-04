@@ -54,10 +54,10 @@
                 .then(function (result) {
                     vm.personnelArray = result;
                     vm.state.dataReady = true;
-                }),
+                },
                 function(err) {
                     console.log(err);
-                }
+                });
         }
 
         function getDeliverableTypes() {
