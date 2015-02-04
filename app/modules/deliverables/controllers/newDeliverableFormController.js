@@ -32,7 +32,7 @@
                 fiscalYear++;
             }
 
-            vm.state = {dataReady: false};
+            vm.dataReady = false;
             vm.deliverableRecord = deliverablesModel.createEmptyItem({fy: fiscalYear});
             vm.deliverableRecord.fiscalMonth = parseInt(currentMonth) + 3;
             vm.cancel = cancel;
@@ -53,7 +53,7 @@
             userService.getUserLookupValues()
                 .then(function (result) {
                     vm.personnelArray = result;
-                    vm.state.dataReady = true;
+                    vm.dataReady = true;
                 },
                 function(err) {
                     console.log(err);
