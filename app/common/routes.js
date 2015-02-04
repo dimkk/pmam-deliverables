@@ -28,7 +28,26 @@ angular.module('pmam-deliverables')
                 url: '/deliverable/:id',
                 templateUrl: 'modules/deliverables/views/tabbedFormView.html',
                 controller: 'deliverableFormController',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    deliverableRecord: function($stateParams, $q, deliverablesModel) {
+                        var deferred = $q.defer(),
+                            deliverableId = parseInt($stateParams.id),
+                            deliverableRecord = deliverablesModel.getCachedEntity(deliverableId);
+
+                        if(deliverableRecord) {
+                            deferred.resolve(deliverableRecord);
+                        } else {
+                            deliverablesModel.getListItemById(deliverableId)
+                                .then(function (deliverable) {
+                                    deferred.resolve(deliverable);
+                                });
+                        }
+
+                        return deferred.promise;
+
+                    }
+                }
             })
 
             .state('newInstance', {
