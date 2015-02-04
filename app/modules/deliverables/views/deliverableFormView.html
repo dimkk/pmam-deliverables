@@ -1,98 +1,79 @@
-<!-- wrapper for edit form view -->
-<fieldset>
-    <div class="container-fluid">
+<form name="editDeliverable" ng-submit="vm.save()" role="form">
+    <div ui-view class="row fadeIn">
+        <div class="col-xs-12 col-md-4">
+            <div class="form-group">
+                <label for="attachments" class="deliverables-header">Attachments</label>
+                <span data-ap-attachments data-list-item="vm.deliverableRecord"></span>
+            </div>
+        </div>
+        <div class="col-xs-6 col-md-8">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-xs-12 col-md-6">
 
-        <div class="col-sm-10">
-            <legend>
-                <div class="row deliverables-paged">
-                    <div class="col-sm-12"><i class="fa fa-check-square icon-padding"></i>EDIT DELIVERABLE</div>
-                </div>
-            </legend>
-            <form name="editDeliverable" ng-submit="vm.save()" role="form">
-                <div ui-view class="row fadeIn">
-                    <div class="col-xs-12 col-md-4">
-                        <div class="form-group">
-                            <label for="attachments" class="deliverables-header">Attachments</label>
-                            <span data-ap-attachments data-list-item="vm.deliverableRecord"></span>
-                        </div>
-                    </div>
-                    <div class="col-xs-6 col-md-8">
-                        <div class="form-horizontal">
-                            <div class="form-group">
-                                <div class="col-xs-12 col-md-6">
-
-                                    <span class="deliverables-header right-padding">Rate this deliverable:</span>
-                                    <rating style="display:inline-block" ng-change="vm.updateFeedback()"
-                                            ng-model="vm.userDeliverableFeedback.rating"
-                                            max="5"
-                                            readonly="vm.isReadonly" on-hover="vm.hoveringOver(value)"
-                                            ng-class="{'one-star': vm.userDeliverableFeedback.rating===1 || vm.userDeliverableFeedback.rating===1.5,'two-star': vm.userDeliverableFeedback.rating===2 || vm.userDeliverableFeedback.rating===2.5, 'three-star': vm.userDeliverableFeedback.rating===3 || vm.userDeliverableFeedback.rating===3.5, 'four-star': vm.userDeliverableFeedback.rating===4 || vm.userDeliverableFeedback.rating===4.5,'five-star': vm.userDeliverableFeedback.rating===5}"
-                                            on-leave="vm.overStar = null"></rating>
+                        <span class="deliverables-header right-padding">Rate this deliverable:</span>
+                        <rating class="ratings-no-wrap" ng-change="vm.updateFeedback()"
+                                ng-model="vm.userDeliverableFeedback.rating"
+                                max="5"
+                                readonly="vm.isReadonly" on-hover="vm.hoveringOver(value)"
+                                ng-class="{'one-star': vm.userDeliverableFeedback.rating===1 || vm.userDeliverableFeedback.rating===1.5,'two-star': vm.userDeliverableFeedback.rating===2 || vm.userDeliverableFeedback.rating===2.5, 'three-star': vm.userDeliverableFeedback.rating===3 || vm.userDeliverableFeedback.rating===3.5, 'four-star': vm.userDeliverableFeedback.rating===4 || vm.userDeliverableFeedback.rating===4.5,'five-star': vm.userDeliverableFeedback.rating===5}"
+                                on-leave="vm.overStar = null"></rating>
                                     <span class="label"
                                           ng-class="{'label-warning': vm.percent<30, 'label-info': vm.percent>=30 && vm.percent<70, 'label-success': vm.percent>=70}"
                                           ng-show="vm.overStar && !vm.isReadonly">{{vm.percent}}%</span>
-                                </div>
-                                <div class="content-group col-xs-12 col-md-6">
-                                    <button class="btn btn-primary" type="submit">Save</button>
-                                    <button class="btn btn-default" ng-click="vm.cancel()">Cancel</button>
-                                    <button class="btn btn-default" ng-click="vm.deleteRecord()">Delete</button>
-                                </div>
-                            </div>
-                        </div>
-                        <hr/>
-                        <div class="form-group fadeIn" ng-show="vm.showCommentInput">
-                            <label class="deliverables-header" for="comment">Add a comment with your rating: </label>
+                    </div>
+                    <div class="content-group col-xs-12 col-md-6">
+                        <button class="btn btn-primary" type="submit">Save</button>
+                        <button class="btn btn-default" ng-click="vm.cancel()">Cancel</button>
+                        <button class="btn btn-default" ng-click="vm.deleteRecord()">Delete</button>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="form-group fadeIn" ng-show="vm.showCommentInput">
+                <label class="deliverables-header" for="comment">Add a comment with your rating: </label>
                             <textarea rows="4" class="form-control" ng-model="vm.userDeliverableFeedback.comments"
                                       placeholder="Enter a Rating Comment" name="comment"/>
-                        </div>
-                    </div>
-                </div>
-                <div ng-include="'modules/deliverables/views/deliverableFormTemplate.html'"></div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="to" class="deliverables-header">To</label>
-
-                            <div ng-if="vm.state.dataReady">
-                                <ui-select ng-model="vm.deliverableRecord.to" multiple>
-                                    <ui-select-match placeholder="Select TO Recipient">{{$item.lookupValue }}
-                                    </ui-select-match>
-                                    <ui-select-choices
-                                        repeat="person in vm.personnelArray | filter: $select.search track by person.lookupId">
-                                        <div ng-bind-html="person.lookupValue | highlight: $select.search"></div>
-                                    </ui-select-choices>
-                                </ui-select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="cc" class="deliverables-header">CC</label>
-
-                            <div ng-if="vm.state.dataReady">
-                                <ui-select ng-model="vm.deliverableRecord.cc" multiple>
-                                    <ui-select-match placeholder="Select CC Recipient">{{$item.lookupValue }}
-                                    </ui-select-match>
-                                    <ui-select-choices
-                                        repeat="person in vm.personnelArray | filter: $select.search track by person.lookupId">
-                                        <div ng-bind-html="person.lookupValue | highlight: $select.search"></div>
-                                    </ui-select-choices>
-                                </ui-select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
-        <div ng-include="'modules/deliverables/views/deliverableFeedbackView.html'"></div>
     </div>
-</fieldset>
+    <div ng-include="'modules/deliverables/views/deliverableFormTemplate.html'"></div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label for="to" class="deliverables-header">To</label>
 
-<!--TODO Figure out how and where to use the discussion thread functionality below -->
-<div class="row">
-    <div class="col-sm-12">
-        <div ap-discussion-thread
-             data-field-name="'discussionThread'"
-             data-list-item="vm.deliverableRecord"></div>
+                <div ng-if="vm.state.dataReady">
+                    <ui-select ng-model="vm.deliverableRecord.to" multiple>
+                        <ui-select-match placeholder="Select TO Recipient">{{$item.lookupValue }}
+                        </ui-select-match>
+                        <ui-select-choices
+                            repeat="person in vm.personnelArray | filter: $select.search track by person.lookupId">
+                            <div ng-bind-html="person.lookupValue | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label for="cc" class="deliverables-header">CC</label>
+
+                <div ng-if="vm.state.dataReady">
+                    <ui-select ng-model="vm.deliverableRecord.cc" multiple>
+                        <ui-select-match placeholder="Select CC Recipient">{{$item.lookupValue }}
+                        </ui-select-match>
+                        <ui-select-choices
+                            repeat="person in vm.personnelArray | filter: $select.search track by person.lookupId">
+                            <div ng-bind-html="person.lookupValue | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</form>
+
+
+
+

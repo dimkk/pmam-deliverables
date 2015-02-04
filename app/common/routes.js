@@ -26,7 +26,7 @@ angular.module('pmam-deliverables')
 
             .state('deliverable', {
                 url: '/deliverable/:id',
-                templateUrl: 'modules/deliverables/views/deliverableFormView.html',
+                templateUrl: 'modules/deliverables/views/tabbedFormView.html',
                 controller: 'deliverableFormController',
                 controllerAs: 'vm'
             })

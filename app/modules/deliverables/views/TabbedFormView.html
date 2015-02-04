@@ -1,0 +1,27 @@
+<!-- wrapper for edit form view -->
+<fieldset>
+    <div class="container-fluid">
+
+        <div class="col-sm-10">
+            <legend>
+                <div class="row deliverables-paged">
+                    <div class="col-sm-12"><i class="fa fa-check-square icon-padding"></i>EDIT DELIVERABLE</div>
+                </div>
+            </legend>
+
+            <ul class="nav nav-tabs">
+                <li ng-repeat="tab in vm.tabs"
+                    ng-class="{active: vm.currentTab === tab}">
+                    <a ng-click="vm.setTab(tab)">{{ tab.title }}</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <br/>
+
+                <div ng-include="vm.currentTab"></div>
+            </div>
+
+        </div>
+        <div ng-include="'modules/deliverables/views/deliverableFeedbackView.html'"></div>
+    </div>
+</fieldset>

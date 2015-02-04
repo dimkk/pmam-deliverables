@@ -91,6 +91,25 @@
                 {stateOff: 'glyphicon-off'}
             ];
 
+
+            vm.tabs = [{
+                title: 'Main',
+                url: 'modules/deliverables/views/deliverableFormView.html'
+            }, {
+                title: 'Comments',
+                url: 'modules/deliverables/views/deliverableCommentsView.html'
+            }];
+
+            vm.currentTab = 'modules/deliverables/views/deliverableFormView.html';
+
+            vm.setTab = function (tab) {
+                vm.currentTab = tab.url;
+            }
+
+            vm.isActiveTab = function (tabUrl) {
+                return tabUrl == vm.currentTab;
+            }
+
         }
 
         vm.updateFeedback = function () {
