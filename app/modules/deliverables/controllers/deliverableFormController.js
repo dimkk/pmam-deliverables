@@ -9,14 +9,37 @@
 
 
     /* @ngInject */
-    function deliverableFormController(deliverableFeedbackModel, toastr, _, $state, $scope, deliverablesModel, deliverableDefinitionsModel, userService, $q) {
+    function deliverableFormController(deliverableFeedbackModel, toastr, $state, deliverableDefinitionsModel,
+                                       userService, $q, deliverableRecord) {
 
         var vm = this;
-
-        vm.state = {dataReady: false};
-        vm.save = save;
-        vm.deleteRecord = deleteRecord;
         vm.cancel = cancel;
+        vm.dataReady = false;
+        vm.deleteRecord = deleteRecord;
+        vm.deliverableRecord = deliverableRecord;
+        vm.hoveringOver = hoveringOver;
+        vm.isActiveTab = isActiveTab;
+        vm.save = save;
+        vm.setTab = setTab;
+        vm.updateFeedback = updateFeedback;
+
+        // rating settings
+        vm.rate = 5;
+        vm.max = 5;
+        vm.isReadonly = false;
+        vm.showCommentInput = false;
+
+
+        vm.tabs = [{
+            title: 'Main',
+            url: 'modules/deliverables/views/deliverableFormView.html'
+        }, {
+            title: 'Comments',
+            url: 'modules/deliverables/views/deliverableCommentsView.html'
+        }];
+
+        //TODO This should reference an object in the above array, shouldn't have the file ref twice
+        vm.currentTab = 'modules/deliverables/views/deliverableFormView.html';
 
         activate();
 
@@ -25,39 +48,22 @@
 
         function activate() {
 
-            var deliverableId = $state.params.id;
             var calendarMonth;
-            var deliverableRecord = deliverablesModel.getCachedEntity(parseInt(deliverableId));
 
-            var requestQueue = [userService.getUserLookupValues(), deliverableFeedbackModel.executeQuery()];
-
-            if( !deliverableRecord ) {
-                requestQueue.push(deliverablesModel.getListItemById(parseInt(deliverableId)));
-
-            }
-
-            $q.all(requestQueue).then(function(resolvedPromises) {
+            $q.all([
+                userService.getUserLookupValues(),
+                deliverableFeedbackModel.executeQuery(),
+                deliverableDefinitionsModel.getFyDefinitions(deliverableRecord.fy)
+            ]).then(function(resolvedPromises) {
                 vm.personnelArray = resolvedPromises[0];
+                vm.deliverableTypes = resolvedPromises[2].toArray();
 
-                if(!deliverableRecord){
-
-                    if (resolvedPromises[2]) {
-                        vm.deliverableRecord = resolvedPromises[2];
-                        getDeliverableTypes();
-                    } else {
-                        console.log('no record found!');
-                    }
-
-                } else {
-                    vm.deliverableRecord = deliverableRecord;
-                    getDeliverableTypes();
-                }
-
+                //TODO Need to create a method that gets deliverable by fy so we can cache instead of calling new each time
                 // get a list of all existing feedback on this deliverable
-                vm.deliverableFeedback = vm.deliverableRecord.getCachedFeedbackByDeliverableId();
+                vm.deliverableFeedback = deliverableRecord.getCachedFeedbackByDeliverableId();
 
                 // get feedback for just the current user
-                vm.userDeliverableFeedback = vm.deliverableRecord.getCachedFeedbackForCurrentUser();
+                vm.userDeliverableFeedback = deliverableRecord.getCachedFeedbackForCurrentUser();
 
                 // if a comment already exists for the user, show the comments textarea
                 if (vm.userDeliverableFeedback.comments.length) {
@@ -65,69 +71,37 @@
                 }
 
                 // convert fiscal year month to calendar month
-                calendarMonth = vm.deliverableRecord.getCalendarMonth();
+                calendarMonth = deliverableRecord.getCalendarMonth();
 
-                vm.state.dataReady = true;
+                vm.dataReady = true;
             });
 
-            // rating settings
-            vm.rate = 5;
-            vm.max = 5;
-            vm.isReadonly = false;
-            vm.showCommentInput = false;
-
-            vm.hoveringOver = function (value) {
-                vm.overStar = value;
-                vm.percent = 100 * (value / vm.max);
-            };
-
-            $scope.ratingStates = [
-                {stateOn: 'glyphicon-ok-sign', stateOff: 'glyphicon-ok-circle'},
-                {stateOn: 'glyphicon-star', stateOff: 'glyphicon-star-empty'},
-                {stateOn: 'glyphicon-heart', stateOff: 'glyphicon-ban-circle'},
-                {stateOn: 'glyphicon-heart'},
-                {stateOff: 'glyphicon-off'}
-            ];
-
-
-            vm.tabs = [{
-                title: 'Main',
-                url: 'modules/deliverables/views/deliverableFormView.html'
-            }, {
-                title: 'Comments',
-                url: 'modules/deliverables/views/deliverableCommentsView.html'
-            }];
-
-            vm.currentTab = 'modules/deliverables/views/deliverableFormView.html';
-
-            vm.setTab = function (tab) {
-                vm.currentTab = tab.url;
-            }
-
-            vm.isActiveTab = function (tabUrl) {
-                return tabUrl == vm.currentTab;
-            }
 
         }
 
-        vm.updateFeedback = function () {
+        function isActiveTab(tabUrl) {
+            return tabUrl == vm.currentTab;
+        }
 
+        function setTab(tab) {
+            vm.currentTab = tab.url;
+        }
+
+        function updateFeedback() {
             vm.userDeliverableFeedback.saveChanges().then(function () {
                 toastr.success("Feedback updated");
             });
             vm.showCommentInput = true;
         }
 
-        function getDeliverableTypes() {
-
-            deliverableDefinitionsModel.getFyDefinitions(vm.deliverableRecord.fy).then(function (indexedCache) {
-                vm.deliverableTypes = indexedCache.toArray();
-            });
-
+        function hoveringOver(value) {
+            vm.overStar = value;
+            vm.percent = 100 * (value / vm.max);
         }
 
+
         function save() {
-            vm.deliverableRecord.saveChanges().then(function () {
+            deliverableRecord.saveChanges().then(function () {
 
                 if (vm.userDeliverableFeedback.comments.length) {
 
@@ -137,8 +111,8 @@
 
                 toastr.success("Deliverable updated");
                 $state.go('deliverables.instances', {
-                    id: vm.deliverableRecord.deliverableType.lookupId,
-                    fy: vm.deliverableRecord.fy
+                    id: deliverableRecord.deliverableType.lookupId,
+                    fy: deliverableRecord.fy
                 });
             }, function () {
                 toastr.error("There was a problem updating this deliverable record");
@@ -150,10 +124,10 @@
 
             var confirmation = window.confirm('Are you sure you want to delete this deliverable?');
             if(confirmation) {
-                var deliverableTypeId = vm.deliverableRecord.deliverableType.lookupId;
-                var deliverableFiscalYear = vm.deliverableRecord.fy;
+                var deliverableTypeId = deliverableRecord.deliverableType.lookupId;
+                var deliverableFiscalYear = deliverableRecord.fy;
 
-                vm.deliverableRecord.deleteItem().then(function () {
+                deliverableRecord.deleteItem().then(function () {
                     toastr.success("Deliverable successfully deleted");
                     $state.go('deliverables.instances', {id: deliverableTypeId, fy: deliverableFiscalYear});
                 }, function () {
@@ -164,8 +138,8 @@
 
         function cancel() {
             $state.go('deliverables.instances', {
-                id: vm.deliverableRecord.deliverableType.lookupId,
-                fy: vm.deliverableRecord.fy
+                id: deliverableRecord.deliverableType.lookupId,
+                fy: deliverableRecord.fy
             });
         }
 
