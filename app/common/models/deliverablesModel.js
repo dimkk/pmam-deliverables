@@ -16,7 +16,7 @@
         .service('deliverablesModel', deliverablesModel);
 
     function deliverablesModel(_, apModelFactory, apModalService, apDiscussionThreadFactory, deliverableFeedbackModel,
-                               deliverableDefinitionsModel, user) {
+                               deliverableDefinitionsModel, calendarService, user) {
 
         /********************* Model Definition ***************************************/
 
@@ -172,12 +172,8 @@
          * @description Month is the FY Month (1-12), method converts into calendar month (0-11)
          */
         function getCalendarMonth() {
-            var deliverable = this,
-                calendarMonthNumber = deliverable.fiscalMonth - 3;
-            if(calendarMonthNumber <= 0) {
-                calendarMonthNumber = calendarMonthNumber + 12;
-            }
-            return calendarMonthNumber
+            var deliverable = this;
+            return calendarService.getCalendarMonth(deliverable.fiscalMonth);
         }
 
         function getFyDeliverables(fy) {
@@ -190,14 +186,11 @@
                     name: fyCacheKey,
                     query: '' +
                     '<Query>' +
-                    '   <OrderBy>' +
-                    '       <FieldRef Name="ID" Ascending="TRUE"/>' +
-                    '   </OrderBy>' +
                     '   <Where>' +
                     /** Return all records for this FY */
                     '       <Eq>' +
                     '           <FieldRef Name="FY"/>' +
-                    '           <Value>' + fy + '</Value>' +
+                    '           <Value Type="Text">' + fy + '</Value>' +
                     '       </Eq>' +
                     '   </Where>' +
                     '</Query>'

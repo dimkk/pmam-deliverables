@@ -187,7 +187,7 @@
                     /** Return all records for this FY */
                     '       <Eq>' +
                     '           <FieldRef Name="FY"/>' +
-                    '           <Value>' + fy + '</Value>' +
+                    '           <Value Type="Text">' + fy + '</Value>' +
                     '       </Eq>' +
                     '   </Where>' +
                     '</Query>'
