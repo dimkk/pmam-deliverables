@@ -8,18 +8,19 @@
         .controller( 'deliverablesController', deliverablesController );
 
     /* @ngInject */
-    function deliverablesController(deliverablesModel, deliverableFeedbackService, chartService, $scope, $state, deliverablesService) {
+    function deliverablesController(deliverablesModel, deliverableFeedbackService, chartService, $state,
+                                    deliverablesService, calendarService) {
 
         var vm = this;
 
         /** $state query string params return as strings, if they exist and can be converted to an int do it, otherwise use the current fiscal year and month */
-        var fiscalYear = isNaN($state.params.fy) ? getCurrentFiscalYear() : parseInt($state.params.fy);
-        var fiscalMonth = isNaN($state.params.mo) ? getCurrentFiscalMonth() : parseInt($state.params.mo);
+        var fiscalYear = isNaN($state.params.fy) ? calendarService.getCurrentFiscalYear() : parseInt($state.params.fy);
+        var fiscalMonth = isNaN($state.params.mo) ? calendarService.getCurrentFiscalMonth() : parseInt($state.params.mo);
         var deliverableDefinitions;
 
         vm.decreaseDate = decreaseDate;
         vm.deliverableFrequencyFilter = deliverableFrequencyFilter;
-        vm.displayPeriod = generateDisplayPeriod();
+        vm.displayPeriod = calendarService.generateDisplayPeriod(fiscalMonth, fiscalYear);
         vm.getDeliverableFeedback = getDeliverableFeedback;
         vm.gotData = false;
         vm.increaseDate = increaseDate;
@@ -67,9 +68,9 @@
 
         }
 
-        function getDeliverableFeedback(Id) {
+        function getDeliverableFeedback(id) {
 
-            var deliverableRecord = deliverablesModel.getCachedEntity(parseInt(Id));
+            var deliverableRecord = deliverablesModel.getCachedEntity(parseInt(id));
             vm.deliverableFeedback = deliverableRecord.getCachedFeedbackByDeliverableId();
             vm.rightPanelView = 'modules/deliverables/views/deliverableFeedbackView.html';
             vm.showFeedbackPanel = true;
@@ -140,27 +141,6 @@
             }
 
             $state.go('deliverables.main', {fy: updatedYear, mo: updatedMonth});
-        }
-
-        function getCurrentFiscalYear() {
-            var today = new Date();
-            return today.getMonth() < 3 ? today.getFullYear() : today.getFullYear() - 1;
-
-        }
-        function getCurrentFiscalMonth() {
-            var calendarMonthNumber = new Date().getMonth() + 4;
-            if(calendarMonthNumber > 12) {
-                calendarMonthNumber = calendarMonthNumber - 12;
-            }
-            return calendarMonthNumber
-        }
-
-        function generateDisplayPeriod() {
-            var monthNames = ["OCT","NOV","DEC","JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP"],
-                calendarYear = fiscalMonth < 4 ? fiscalYear - 1 : fiscalYear,
-                twoDigitYear = (calendarYear.toString()).substr(2);
-                //Month is (1-12) so we need to add 1 to find value in 0 based monthName array
-                return monthNames[fiscalMonth - 1] + " " + twoDigitYear
         }
     }
 })();
