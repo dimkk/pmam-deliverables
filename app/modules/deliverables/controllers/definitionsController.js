@@ -8,10 +8,10 @@
         .controller('definitionsController', definitionsController);
 
     /* @ngInject */
-    function definitionsController($state, $scope, deliverableDefinitionsModel, deliverablesService) {
+    function definitionsController($state, $scope, deliverableDefinitionsModel, deliverablesService, calendarService) {
 
         var vm = this;
-        var fy = $state.params.fy || '2013';
+        var fy = isNaN($state.params.fy) ? calendarService.getCurrentFiscalYear() : parseInt($state.params.fy);
 
         vm.fiscalYear = fy;
         vm.gotData = false;
