@@ -8,7 +8,7 @@
         .controller('newDeliverableFormController', newDeliverableFormController);
 
     /* @ngInject */
-    function newDeliverableFormController(toastr, $state, deliverableDefinitionsModel, deliverablesModel, userService) {
+    function newDeliverableFormController(toastr, $state, deliverableDefinitionsModel, deliverablesModel, userService, calendarService) {
 
         var vm = this;
 
@@ -18,23 +18,12 @@
 
         function activate() {
 
-            var fiscalYear = moment().format('YYYY');
-            var currentMonth = moment().format('MM');
-
-            // correct for fiscal year
-            currentMonth = parseInt(currentMonth) + 3;
-
-            if (currentMonth > 12) {
-                currentMonth = currentMonth - 12;
-            }
-
-            if(currentMonth > 8) {
-                fiscalYear++;
-            }
+            var fiscalYear = isNaN($state.params.fy) ? calendarService.getCurrentFiscalYear() : parseInt($state.params.fy);
+            var fiscalMonth = isNaN($state.params.mo) ? calendarService.getCurrentFiscalMonth() : parseInt($state.params.mo);
 
             vm.dataReady = false;
             vm.deliverableRecord = deliverablesModel.createEmptyItem({fy: fiscalYear});
-            vm.deliverableRecord.fiscalMonth = parseInt(currentMonth) + 3;
+            vm.deliverableRecord.fiscalMonth = parseInt(fiscalMonth);
             vm.cancel = cancel;
             vm.save = save;
 
