@@ -30,7 +30,7 @@
                 <td>{{ deliverableDefinition.frequency.lookupValue }}</td>
                 <td>
                     <a ui-sref="deliverables.instances({ fy:vm.fiscalYear, id:deliverableDefinition.id })"><span
-                        class="badge badge-info">{{ vm.deliverableCountByDefinition[deliverableDefinition.id] || 0 }}</span></a>
+                        class="badge badge-info">{{ vm.deliverableCountByDefinition(deliverableDefinition) }}</span></a>
                 </td>
                 <td>
                     <a ui-sref="newInstance({ fy:vm.fiscalYear, deliverableTypeId:deliverableDefinition.id })"><i class="fa fa-plus"></i></a>

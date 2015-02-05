@@ -8,24 +8,30 @@
         .controller('definitionsController', definitionsController);
 
     /* @ngInject */
-    function definitionsController($state, deliverableDefinitionsModel, calendarService) {
+    function definitionsController($state, $q, _, deliverableDefinitionsModel, deliverablesModel, calendarService) {
 
         var vm = this;
 
+        vm.deliverableCountByDefinition = deliverableCountByDefinition;
         vm.fiscalYear = isNaN($state.params.fy) ? calendarService.getCurrentFiscalYear() : parseInt($state.params.fy);
         vm.searchString = '';
 
         activate();
 
-
         /**==================PRIVATE==================*/
 
         function activate() {
 
-            deliverableDefinitionsModel.getFyDefinitions(vm.fy)
-                .then(function (indexedCache) {
-                    vm.deliverableDefinitions = indexedCache
-                })
+            $q.all([deliverableDefinitionsModel.getFyDefinitions(vm.fy), deliverablesModel.getFyDeliverables(vm.fy)])
+                .then(function (resolvedPromises) {
+                    vm.deliverableDefinitions = resolvedPromises[0];
+                });
         }
+
+        function deliverableCountByDefinition(definition) {
+            var deliverableInstances = definition.getDeliverablesForDefinition();
+            return _.toArray(deliverableInstances).length;
+        }
+
     }
 })();
