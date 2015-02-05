@@ -206,7 +206,7 @@
         }
 
         function getRandom() {
-            return Math.floor(Math.random() * 5) + 1;
+            return (Math.random() * 5).toFixed(1);
         }
 
     }
