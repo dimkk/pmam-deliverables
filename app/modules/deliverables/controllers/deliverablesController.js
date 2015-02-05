@@ -24,7 +24,8 @@
         vm.getDeliverableFeedback = getDeliverableFeedback;
         vm.gotData = false;
         vm.increaseDate = increaseDate;
-        vm.rightPanelView = vm.showFeedbackPanel ? 'modules/deliverables/views/deliverableFeedbackView.html' : 'modules/deliverables/views/deliverableMetricsView.html';
+        vm.rightPanelViewArray = ['modules/deliverables/views/deliverableFeedbackView.html', 'modules/deliverables/views/deliverableMetricsView.html'];
+        vm.rightPanelView = vm.showFeedbackPanel ? vm.rightPanelViewArray[0] : vm.rightPanelViewArray[1];
         vm.toggleRightPanel = toggleRightPanel;
 
         activate();
@@ -54,8 +55,8 @@
             //TODO Refactor to use the deliverableFrequenciesService instead
             deliverablesService.getDeliverableFrequencies().then(
                 function(results) {
-                    vm.deliverableFrequencies = results;
 
+                    vm.deliverableFrequencies = results;
                 }
             );
 
@@ -72,13 +73,13 @@
 
             var deliverableRecord = deliverablesModel.getCachedEntity(parseInt(id));
             vm.deliverableFeedback = deliverableRecord.getCachedFeedbackByDeliverableId();
-            vm.rightPanelView = 'modules/deliverables/views/deliverableFeedbackView.html';
+            vm.rightPanelView = vm.rightPanelViewArray[0];
             vm.showFeedbackPanel = true;
 
         }
 
         function toggleRightPanel() {
-            vm.rightPanelView = 'modules/deliverables/views/deliverableMetricsView.html';
+            vm.rightPanelView = vm.rightPanelViewArray[1];
         }
 
         function initializeMetricsGauges() {
@@ -113,6 +114,7 @@
             }
 
         }
+
 
         // 10/1 starts the new fiscal year
         function increaseDate() {
