@@ -28,16 +28,16 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="item in vm.deliverableInstances track by item.id">
+                    <tr ng-repeat="deliverableInstance in vm.deliverableInstances track by deliverableInstance.id">
                         <td>
-                            <a ui-sref="deliverable({id:item.id})">{{ item.title }}</a>
+                            <a ui-sref="deliverable({id:deliverableInstance.id})">{{ deliverableInstance.title }}</a>
                         </td>
-                        <td>{{ item.submissionDate | date:'shortDate' }}</td>
-                        <td>{{ item.startDate | date:'shortDate' }}</td>
+                        <td>{{ deliverableInstance.submissionDate | date:'shortDate' }}</td>
+                        <td>{{ deliverableInstance.startDate | date:'shortDate' }}</td>
                         <td>{{ vm.deliverableFrequency }}</td>
                         <td>
-                            <a ng-click="vm.getDeliverableFeedback( item.id )" class="rating-data" title="View Details">
-                                <ratings-average data-deliverable="item"></ratings-average>
+                            <a ng-click="vm.getDeliverableFeedback( deliverableInstance.id )" class="rating-data" title="View Details">
+                                <ratings-average data-deliverable="deliverableInstance"></ratings-average>
                             </a>
                         </td>
                     </tr>
