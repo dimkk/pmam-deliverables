@@ -8,8 +8,8 @@
         .controller('deliverableInstancesController', deliverableInstancesController);
 
     /* @ngInject */
-    function deliverableInstancesController($q, deliverableFeedbackModel, chartService, $scope, deliverablesModel,
-                                            $state, deliverablesService, fyDefinitions, selectedDefinition, fy) {
+    function deliverableInstancesController($state, $q, deliverableFeedbackModel, deliverablesModel, chartService,
+                                            fyDefinitions, selectedDefinition, fy) {
 
         var vm = this;
         /** Stop Everything if a valid definition isn't available */
@@ -32,13 +32,14 @@
 
         function activate() {
 
-            $q.all([
-                deliverableFeedbackModel.getFyFeedback(fy),
-                deliverablesService.getDeliverablesByType(fy, selectedDefinition.id)
-            ])
-                .then(function (resolvedPromises) {
-                    vm.deliverableFeedback = resolvedPromises[0];
-                    vm.deliverableInstances = resolvedPromises[1];
+            deliverablesModel.getFyDeliverables(fy)
+                .then(function (indexedCache) {
+                    vm.deliverableInstances = selectedDefinition.getDeliverablesForDefinition();
+                });
+
+            deliverableFeedbackModel.getFyFeedback(fy)
+                .then(function (indexedCache) {
+                    vm.deliverableFeedback = indexedCache;
                     initializeMetricsGauges();
                 });
         }
