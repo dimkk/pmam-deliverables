@@ -9,13 +9,12 @@
      *
      *
      * @requires apModelFactory
-     * @requires apModalService
      */
     angular
         .module('pmam-deliverables')
-        .service('deliverableDefinitionsModel', deliverableDefinitionsModel);
+        .factory('deliverableDefinitionsModel', deliverableDefinitionsModel);
 
-    function deliverableDefinitionsModel(_, apModelFactory, apModalService) {
+    function deliverableDefinitionsModel(_, apModelFactory, $injector) {
 
         /********************* Model Definition ***************************************/
 
@@ -29,6 +28,7 @@
             //Store a promise for each completed fy request so we only need to make the call once
             cachedFyRequests: {},
             factory: DeliverableDefinition,
+            getFyDefinitions: getFyDefinitions,
             /**
              * @ngdoc object
              * @name deliverableDefinitionsModel.list
@@ -119,21 +119,9 @@
             self.dueDates = calculateDeliverableDueDates(self);
         }
 
-        DeliverableDefinition.prototype.openModal = openModal;
         DeliverableDefinition.prototype.getDeliverableDueDatesForMonth = getDeliverableDueDatesForMonth;
+        DeliverableDefinition.prototype.getDeliverablesForDefinition = getDeliverablesForDefinition;
 
-
-        /** Optionally add a modal form **/
-        model.openModal = apModalService.modalModelProvider({
-            templateUrl: '',
-            controller: '',
-            expectedArguments: ['entity']
-        });
-
-        function openModal() {
-            var listItem = this;
-            return model.openModal(listItem);
-        }
 
 
         /*********************************** Queries ***************************************/
@@ -153,8 +141,6 @@
             '   </OrderBy>' +
             '</Query>'
         });
-
-        model.getFyDefinitions = getFyDefinitions;
 
         return model;
 
@@ -285,7 +271,6 @@
             return dueDates;
         }
 
-
         /**
          * @description Returns a valid calendar year that corresponds with a fiscal year and zero based month number
          * @param {string} fyString
@@ -295,6 +280,20 @@
         function getFY(fyString, monthNumber) {
             var fyNumber = parseInt(fyString);
             return monthNumber < 9 ? fyNumber : fyNumber - 1;
+        }
+
+        /**
+         * @name DeliverableDefinition.getDeliverablesForDefinition
+         * @description Allows us to retrieve deliverables for a given definition which have already been
+         * grouped/cache by definition id.
+         * @returns {object} Keys of deliverable id and values of the deliverables themselves.
+         */
+        function getDeliverablesForDefinition() {
+            var self = this;
+            /* Need to manually inject with $injector because deliverablesModel already has this model as a
+             * dependency and they can't each directly depend on the other or neither will instantiate */
+            var deliverablesModel = $injector.get('deliverablesModel');
+            return deliverablesModel.getCachedDeliverablesByTypeId(self.id);
         }
 
     }

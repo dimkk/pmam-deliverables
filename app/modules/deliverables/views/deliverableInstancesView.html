@@ -3,16 +3,20 @@
     <div class="row">
         <div class="col-sm-10">
             <div class="row deliverables-paged">
-                <div class="col-sm-9"><i class="fa fa-check-square icon-padding"></i>DELIVERABLES</div>
-                <div class="col-sm-3">
-                    <select ng-model="vm.state.selectedDeliverable" ng-change="vm.getUpdateState()" class="form-control"
-                            data-ng-options="deliverableDefinition as deliverableDefinition.title for deliverableDefinition in vm.deliverableDefinitions | orderBy: 'title' track by deliverableDefinition.id">
+                <div class="col-sm-7"><i class="fa fa-check-square icon-padding"></i>DELIVERABLES</div>
+                <div class="col-sm-5" ng-if="vm.fyDefinitions">
+                    <select
+                        ng-model="vm.selectedDefinition"
+                        ng-change="vm.getUpdateState()"
+                        class="form-control"
+                        data-ng-options="vm.dropdownLabel(deliverableDefinition) for deliverableDefinition in vm.fyDefinitions | toArray | orderBy: 'title' track by deliverableDefinition.id">
                     </select>
                 </div>
             </div>
+
             <hr/>
-            <!-- Animate once we have data -->
-            <div ng-if="vm.gotData">
+
+            <div ng-if="vm.selectedDefinition">
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -25,11 +29,12 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="item in vm.deliverableInstances track by item.id">
-                        <td><a ui-sref="deliverable({id:item.id})">{{ item.title }}</a>
+                        <td>
+                            <a ui-sref="deliverable({id:item.id})">{{ item.title }}</a>
                         </td>
                         <td>{{ item.submissionDate | date:'shortDate' }}</td>
                         <td>{{ item.startDate | date:'shortDate' }}</td>
-                        <td>{{ frequency }}</td>
+                        <td>{{ vm.deliverableFrequency }}</td>
                         <td>
                             <a ng-click="vm.getDeliverableFeedback( item.id )" class="rating-data" title="View Details">
                                 <ratings-average data-deliverable="item"></ratings-average>
@@ -39,9 +44,11 @@
                     </tbody>
                 </table>
             </div>
-            <hr/>
-            <hr/>
+
+            <!-- Display message when a valid definition isn't found -->
+            <div ng-if="!vm.selectedDefinition" class="alert alert-info">No matching definitions were found.</div>
         </div>
+
         <!-- view toggles between metrics and feedback -->
         <div ng-include="vm.rightPanelView"></div>
     </div>

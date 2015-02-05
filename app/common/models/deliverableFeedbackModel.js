@@ -9,13 +9,15 @@
      *
      *
      * @requires apModelFactory
-     * @requires apModalService
      */
     angular
         .module('pmam-deliverables')
-        .service('deliverableFeedbackModel', deliverableFeedbackModel);
+        .factory('deliverableFeedbackModel', deliverableFeedbackModel);
 
-    function deliverableFeedbackModel(_, apModelFactory, apModalService) {
+    function deliverableFeedbackModel(_, apModelFactory) {
+
+        /** Local feedback cache organized by deliverable id */
+        var feedbackByDeliverableId = {};
 
         /********************* Model Definition ***************************************/
 
@@ -27,6 +29,8 @@
          */
         var model = apModelFactory.create({
             factory: DeliverableFeedback,
+            getCachedFeedbackByDeliverableId: getCachedFeedbackByDeliverableId,
+            getFyFeedback: getFyFeedback,
             /**
              * @ngdoc object
              * @name deliverableFeedbackModel.list
@@ -52,27 +56,16 @@
                     {staticName: 'Title', objectType: 'Text', mappedName: 'title', readOnly: false},
                     {staticName: 'Comments', objectType: 'Text', mappedName: 'comments', readOnly: false},
                     {staticName: 'Definition', objectType: 'Lookup', mappedName: 'definition', readOnly: false},
+                    /* Dependent lookup, returns normal lookup but the lookupValue contains the FY
+                     value on the linked deliverable.  This value is read-only. */
                     {
-                        staticName: 'Definition_x003a_Deliverable_x00',
+                        staticName: 'Definition_x003a_FY',
                         objectType: 'Lookup',
-                        mappedName: 'definitiondeliverable',
-                        readOnly: false
-                    },
-                    {
-                        staticName: 'Definition_x003a_Title',
-                        objectType: 'Lookup',
-                        mappedName: 'definitiontitle',
-                        readOnly: false
+                        mappedName: 'fy',
+                        readOnly: true
                     },
                     {staticName: 'Deliverable', objectType: 'Lookup', mappedName: 'deliverable', readOnly: false},
-                    {
-                        staticName: 'Deliverable_x003a_Submission_x00',
-                        objectType: 'Lookup',
-                        mappedName: 'deliverablesubmission',
-                        readOnly: false
-                    },
                     {staticName: 'Rating', objectType: 'Integer', mappedName: 'rating', readOnly: false}
-
                 ]
             }
         });
@@ -97,28 +90,12 @@
                 removeFeedbackByDeliverable(self);
                 return self._deleteItem();
             }
-
         }
 
-        DeliverableFeedback.prototype.openModal = openModal;
-
-
-        /** Optionally add a modal form **/
-        model.openModal = apModalService.modalModelProvider({
-            templateUrl: '',
-            controller: '',
-            expectedArguments: ['entity']
-        });
-
-        model.getCachedFeedbackByDeliverableId = getCachedFeedbackByDeliverableId;
-
-        function openModal() {
-            var listItem = this;
-            return model.openModal(listItem);
-        }
-
-        var feedbackByDeliverableId = {};
-
+        /**
+         * @description Adds a feedback element to a cache that is grouped by deliverable to make later retrieval immediate
+         * @param {DeliverableFeedback} feedback
+         */
         function registerFeedbackByDeliverable(feedback) {
             if (feedback.deliverable.lookupId) {
                 feedbackByDeliverableId[feedback.deliverable.lookupId] = feedbackByDeliverableId[feedback.deliverable.lookupId] || {};
@@ -130,6 +107,10 @@
 
         }
 
+        /**
+         * @description Removes a feedback element from the local cache.
+         * @param {DeliverableFeedback} feedback
+         */
         function removeFeedbackByDeliverable(feedback) {
             if(feedbackByDeliverableId[feedback.deliverable.lookupId][feedback.id]) {
                 /** Remove cached feedback */
@@ -137,28 +118,41 @@
             }
         }
 
+        /**
+         * @description Pulls cached feedback for a given deliverable.
+         * @param {number} deliverableId
+         * @returns {DeliverableFeedback[]} Array of matching feedback for a given deliverable.
+         */
         function getCachedFeedbackByDeliverableId(deliverableId) {
             return feedbackByDeliverableId[deliverableId];
         }
 
-
-
         /*********************************** Queries ***************************************/
 
-        /** Fetch data (pulls local xml if offline named model.list.title + '.xml')
-         *  Initially pulls all requested data.  Each subsequent call just pulls records that have been changed,
-         *  updates the model, and returns a reference to the updated data array
-         * @returns {Array} Requested list items
-         */
-        model.registerQuery({
-            name: 'primary',
-            query: '' +
-            '<Query>' +
-            '   <OrderBy>' +
-            '       <FieldRef Name="ID" Ascending="TRUE"/>' +
-            '   </OrderBy>' +
-            '</Query>'
-        });
+        function getFyFeedback(fy) {
+            /** Unique query name (ex: fy2013) */
+            var fyCacheKey = 'fy' + fy;
+
+            /** Register fy query if it doesn't exist */
+            if (!_.isObject(model.queries[fyCacheKey])) {
+                model.registerQuery({
+                    name: fyCacheKey,
+                    query: '' +
+                    '<Query>' +
+                    '   <Where>' +
+                    /** Return all records for this FY */
+                    '       <Eq>' +
+                    '           <FieldRef Name="Definition_x003a_FY"/>' +
+                    '           <Value Type="Text">' + fy + '</Value>' +
+                    '       </Eq>' +
+                    '   </Where>' +
+                    '</Query>'
+                });
+            }
+
+            return model.executeQuery(fyCacheKey);
+        }
+
 
         /********************* Model Specific Shared Functions ***************************************/
 

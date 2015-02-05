@@ -13,7 +13,7 @@
      * @description
      *
      */
-    function chartService() {
+    function chartService($timeout) {
         var palette = ['#667B99', '#a58a5d', '#AB988B', '#A50516', '#904820', '#D4A357',
             '#C0C0C0', '#9C2A00', '#663300'];
 
@@ -44,7 +44,9 @@
 
 
         /**==================PRIVATE==================*/
-        function Gauge(label) {
+
+
+        function Gauge(label, options) {
             var self = this;
             _.extend(self, {
                 'type': 'Gauge',
@@ -64,7 +66,7 @@
                         {
                             'c': [
                                 {'v': label},
-                                {'v': 0, 'f': '0%'}
+                                {'v': 0, 'f': '0'}
                             ]
                         }
                     ]
@@ -74,18 +76,23 @@
                         duration: 1000,
                         easing: 'inAndOut'
                     },
-                    max: 100,
+                    redFrom: 0, redTo: 1,
+                    yellowFrom: 1, yellowTo: 3, yellowColor: '#fbff0a',
+                    greenFrom: 3, greenTo: 5,
+                    majorTicks: [0, 1, 2, 3, 4, 5],
+                    max: 5,
                     fontName: '"Arial"',
-                    fontSize: 10,
-                    majorTicks: [0, 20, 40, 60, 80, 100]
+                    fontSize: 10
                 }
             });
 
-            self.updateGaugeValue = function (percent) {
+            _.extend(self.options, options);
+
+            self.updateGaugeValue = function (val) {
                 /* Pause prior to triggering animation */
                 $timeout(function () {
-                    self.data.rows[0].c[1].v = percent;
-                    self.data.rows[0].c[1].f = percent + '%';
+                    self.data.rows[0].c[1].v = val;
+                    self.data.rows[0].c[1].f = val;
                 }, 1000);
             };
         }

@@ -30,19 +30,28 @@ angular.module('pmam-deliverables')
                 controller: 'deliverableFormController',
                 controllerAs: 'vm',
                 resolve: {
-                    deliverableRecord: function($stateParams, $q, deliverablesModel) {
-                        var deferred = $q.defer(),
-                            deliverableId = parseInt($stateParams.id),
-                            deliverableRecord = deliverablesModel.getCachedEntity(deliverableId);
+                    deliverableRecord: function ($stateParams, $q, deliverablesModel, toastr) {
 
-                        if(deliverableRecord) {
-                            deferred.resolve(deliverableRecord);
+                        var deferred = $q.defer();
+
+                        /** Verify a valid id is passed in */
+                        if (isNaN($stateParams.id)) {
+                            toastr.error('A valid ID needs to be provided.');
+                            deferred.resolve(null);
                         } else {
-                            deliverablesModel.getListItemById(deliverableId)
-                                .then(function (deliverable) {
-                                    deferred.resolve(deliverable);
-                                });
+                            var deliverableId = parseInt($stateParams.id),
+                                deliverableRecord = deliverablesModel.getCachedEntity(deliverableId);
+
+                            if (deliverableRecord) {
+                                deferred.resolve(deliverableRecord);
+                            } else {
+                                deliverablesModel.getListItemById(deliverableId)
+                                    .then(function (deliverable) {
+                                        deferred.resolve(deliverable);
+                                    });
+                            }
                         }
+
 
                         return deferred.promise;
 
@@ -68,7 +77,36 @@ angular.module('pmam-deliverables')
                 url: '/instances?fy&id',
                 templateUrl: 'modules/deliverables/views/deliverableInstancesView.html',
                 controller: 'deliverableInstancesController',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    fy: function($stateParams, calendarService) {
+                        return isNaN($stateParams.fy) ? calendarService.getCurrentFiscalYear() : parseInt($stateParams.fy);
+                    },
+                    fyDefinitions: function(deliverableDefinitionsModel, $stateParams, fy) {
+                        return deliverableDefinitionsModel.getFyDefinitions(fy);
+                    },
+                    selectedDefinition: function($stateParams, $q, fyDefinitions) {
+                        var deferred = $q.defer();
+                        if (isNaN($stateParams.id)) {
+                            /** No ID was provided */
+
+                            if(fyDefinitions.count() < 1) {
+                                /** No definitions for this month were found */
+                                deferred.resolve(null);
+                            } else {
+                                /** Set to the first definition */
+                                deferred.resolve(fyDefinitions.first());
+                            }
+
+                        } else {
+                            var definitionId = parseInt($stateParams.id);
+                            deferred.resolve(fyDefinitions[definitionId]);
+                        }
+
+                        return deferred.promise;
+                    }
+                }
+
             })
 
             //Group Manager

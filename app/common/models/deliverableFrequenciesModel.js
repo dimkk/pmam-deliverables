@@ -13,7 +13,7 @@
      */
     angular
         .module('pmam-deliverables')
-        .service('deliverableFrequenciesModel', deliverableFrequenciesModel);
+        .factory('deliverableFrequenciesModel', deliverableFrequenciesModel);
 
     function deliverableFrequenciesModel(_, apModelFactory, apModalService) {
 
