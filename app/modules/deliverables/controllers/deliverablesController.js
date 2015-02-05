@@ -11,7 +11,7 @@
 
         var vm = this;
 
-        /* $state query string params return as strings, if they exist and can be converted to an int do it,
+        /** $state query string params return as strings, if they exist and can be converted to an int do it,
         otherwise use the current fiscal year and month */
         var fiscalYear = isNaN($state.params.fy) ? calendarService.getCurrentFiscalYear() : parseInt($state.params.fy);
         var fiscalMonth = isNaN($state.params.mo) ? calendarService.getCurrentFiscalMonth() : parseInt($state.params.mo);
@@ -43,12 +43,6 @@
             deliverablesService.getDeliverableDefinitionsForMonth( fiscalYear, fiscalMonth )
                 .then(function( results ) {
                     vm.deliverableDefinitionsByMonth = results.deliverableDefinitionsByMonth;
-                });
-
-            //TODO Refactor to use the deliverableFrequenciesService instead
-            deliverablesService.getDeliverableFrequencies()
-                .then(function(results) {
-                    vm.deliverableFrequencies = results;
                 });
 
             deliverableFeedbackModel.getFyFeedback(fiscalYear)
