@@ -8,18 +8,12 @@
         .controller('definitionsController', definitionsController);
 
     /* @ngInject */
-    function definitionsController($state, $scope, deliverableDefinitionsModel, deliverablesService, calendarService) {
+    function definitionsController($state, deliverableDefinitionsModel, calendarService) {
 
         var vm = this;
-        var fy = isNaN($state.params.fy) ? calendarService.getCurrentFiscalYear() : parseInt($state.params.fy);
 
-        vm.fiscalYear = fy;
-        vm.gotData = false;
-        vm.state = {
-            definitions: [],
-            validChartData: 'false',
-            searchString: ''
-        };
+        vm.fiscalYear = isNaN($state.params.fy) ? calendarService.getCurrentFiscalYear() : parseInt($state.params.fy);
+        vm.searchString = '';
 
         activate();
 
@@ -28,20 +22,10 @@
 
         function activate() {
 
-            deliverableDefinitionsModel.getFyDefinitions(fy)
-                .then(function (result) {
-
-                    vm.deliverableDefinitions = result.toArray();
-                    vm.state.validChartData = true;
-
-                }),
-                function(err) {
-                    console.log(err);
-                }
-
-            deliverablesService.getDeliverableCountByDefinition(fy).then(function(deliverableCountByDefinition){
-                vm.deliverableCountByDefinition = deliverableCountByDefinition;
-            });
+            deliverableDefinitionsModel.getFyDefinitions(vm.fy)
+                .then(function (indexedCache) {
+                    vm.deliverableDefinitions = indexedCache
+                })
         }
     }
 })();
