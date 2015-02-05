@@ -9,15 +9,15 @@
                 </div>
             </legend>
 
+            <!-- build the nav tabs -->
             <ul class="nav nav-tabs">
                 <li ng-repeat="tab in vm.tabs"
-                    ng-class="{active: vm.currentTab === tab}">
+                    ng-class="{active: vm.currentTab === tab.url}">
                     <a ng-click="vm.setTab(tab)">{{ tab.title }}</a>
                 </li>
             </ul>
+            <!-- include tab content -->
             <div class="tab-content">
-                <br/>
-
                 <div ng-include="vm.currentTab"></div>
             </div>
 
