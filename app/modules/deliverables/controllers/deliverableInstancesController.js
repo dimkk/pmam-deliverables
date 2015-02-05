@@ -8,19 +8,23 @@
         .controller('deliverableInstancesController', deliverableInstancesController);
 
     /* @ngInject */
-    function deliverableInstancesController(deliverablesModel, $q, deliverableFeedbackModel, chartService, $scope, $location, $state, _, deliverablesService, deliverableDefinitionsModel, deliverableFeedbackService) {
+    function deliverableInstancesController($state, $q, deliverableFeedbackModel, deliverablesModel, chartService,
+                                            fyDefinitions, selectedDefinition, fy) {
 
         var vm = this;
-        var fy = $state.params.fy || '2013';
-        var activeId = $state.params.id;
-
-        vm.state = {selectedDeliverable: null};
+        /** Stop Everything if a valid definition isn't available */
+        if(!selectedDefinition) {
+            return null;
+        }
+        vm.deliverableFrequency = selectedDefinition.frequency.lookupValue;
+        vm.fyDefinitions = fyDefinitions;
+        vm.selectedDefinition = selectedDefinition;
         vm.getUpdateState = getUpdateState;
-        vm.getDeliverableFeedback = getDeliverableFeedback;
-        vm.showFeedback = false;
-        vm.rightPanelView = 'modules/deliverables/views/deliverableMetricsView.html';
         vm.gotData = false;
+        vm.rightPanelView = 'modules/deliverables/views/deliverableMetricsView.html';
+        vm.showFeedback = false;
         vm.toggleRightPanel = toggleRightPanel;
+        vm.dropdownLabel = dropdownLabel;
 
         activate();
 
@@ -28,83 +32,39 @@
 
         function activate() {
 
-            doBuildGauges();
+            deliverablesModel.getFyDeliverables(fy)
+                .then(function (indexedCache) {
+                    vm.deliverableInstances = selectedDefinition.getDeliverablesForDefinition();
+                });
 
-            $q.all([deliverableDefinitionsModel.getFyDefinitions(fy), deliverableFeedbackModel.executeQuery()])
-                .then(function (resolvedPromises) {
-
-                    var indexedCache = resolvedPromises[0];
-
-                if(!activeId){
-                    vm.state.selectedDeliverable = indexedCache.first();
-                    deliverablesService.getDeliverablesByType(fy, parseInt(vm.state.selectedDeliverable.id)).then
-                    (function (indexedCached) {
-                        vm.deliverableInstances = indexedCached;
-                    })
-                } else {
-
-                    vm.state.selectedDeliverable = indexedCache[parseInt(activeId)];
-                }
-                    $scope.frequency = vm.state.selectedDeliverable.frequency.lookupValue;
-                    vm.deliverableDefinitions = indexedCache.toArray();
-                    vm.gotData = true;
-
-                if(activeId) {
-                    deliverablesService.getDeliverablesByType(fy,parseInt(activeId)).then(function(indexedCached){
-                        vm.deliverableInstances = indexedCached;
-                    })
-                }
-
-                initializeMetricsGauages();
-            })
-
-            deliverableFeedbackService.getDeliverableFeedback().then(
-                function (results) {
-                    vm.deliverableFeedback = results;
-
-                },
-                function (err) {
-                    console.log(err);
-                }
-            );
+            deliverableFeedbackModel.getFyFeedback(fy)
+                .then(function (indexedCache) {
+                    vm.deliverableFeedback = indexedCache;
+                    initializeMetricsGauges();
+                });
         }
 
-        function getUpdateState(){
-            $state.go('deliverables.instances', {fy: fy, id: vm.state.selectedDeliverable.id})
-        }
-
-        function getDeliverableFeedback(Id) {
-
-            var deliverableRecord = deliverablesModel.getCachedEntity(parseInt(Id));
-            vm.deliverableFeedback = deliverableRecord.getCachedFeedbackByDeliverableId();
-            vm.rightPanelView = 'modules/deliverables/views/deliverableFeedbackView.html';
+        function getUpdateState() {
+            $state.go('deliverables.instances', {fy: fy, id: vm.selectedDefinition.id});
         }
 
         function toggleRightPanel() {
             vm.rightPanelView = 'modules/deliverables/views/deliverableMetricsView.html';
         }
 
-        function initializeMetricsGauages() {
-
-            $scope.metricsByMonth = doPrepareMetrics();
-
-            // faking the gauge data for now; it should run off the values returned in metricsByMonth
-            $scope.Gauge1.data.rows[0].c[1].v = chartService.getRandom();
-            $scope.Gauge2.data.rows[0].c[1].v = chartService.getRandom();
+        function dropdownLabel(deliverableDefinition) {
+            var deliverables = deliverableDefinition.getDeliverablesForDefinition();
+            return deliverableDefinition.title + ' (' + _.toArray(deliverables).length + ')';
         }
 
-        function doBuildGauges() {
+        function initializeMetricsGauges() {
 
-            var gauges = chartService.buildGauges();
+            vm.gauge1 = new chartService.Gauge('Satisfaction');
+            vm.gauge2 = new chartService.Gauge('OTD');
 
-            //Create initial gauge objects if not already defined
-            $scope.Gauge1 = gauges.Gauge1;
-            $scope.Gauge2 = gauges.Gauge2;
-        }
-
-        function doPrepareMetrics() {
-
-            return chartService.prepareMetrics(vm.deliverablesByMonth);
+            //TODO Add logic so we don't need to fake gauge values
+            vm.gauge1.updateGaugeValue(chartService.getRandom());
+            vm.gauge2.updateGaugeValue(chartService.getRandom());
         }
 
     }

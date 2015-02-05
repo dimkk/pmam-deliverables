@@ -9,24 +9,28 @@
      *
      *
      * @requires apModelFactory
-     * @requires apModalService
      */
     angular
         .module('pmam-deliverables')
-        .service('deliverablesModel', deliverablesModel);
+        .factory('deliverablesModel', deliverablesModel);
 
-    function deliverablesModel(_, apModelFactory, apModalService, apDiscussionThreadFactory, deliverableFeedbackModel,
+    function deliverablesModel(_, apModelFactory, apDiscussionThreadFactory, deliverableFeedbackModel,
                                deliverableDefinitionsModel, calendarService, user) {
+
+        /** Local Deliverable cache organized by deliverable type id */
+        var deliverableByTypeId = {};
 
         /********************* Model Definition ***************************************/
 
         /**
          * @ngdoc object
-         * @name deliverablesModel.model
+         * @name deliverablesModel
          * @description
          *  Model Constructor
          */
         var model = apModelFactory.create({
+            getCachedDeliverablesByTypeId: getCachedDeliverablesByTypeId,
+            getFyDeliverables: getFyDeliverables,
             factory: Deliverable,
             /**
              * @ngdoc object
@@ -57,6 +61,7 @@
                         mappedName: "submissionDate",
                         readOnly: false
                     },
+                    /** FY is October - September */
                     {staticName: "FY", objectType: "text", mappedName: "fy", readOnly: false},
                     /** Fiscal month number (1-12) with 1 being October and 12 being September */
                     {staticName: 'Month', objectType: 'Integer', mappedName: 'fiscalMonth', readOnly: false},
@@ -90,26 +95,42 @@
             self.displayDate = moment(self.submissionDate).format('MMM YY');
             /** Instantiate a new discussion object even if there isn't an active discussion */
             self.discussionThread = apDiscussionThreadFactory.createDiscussionObject(self, 'discussionThread');
+
+            /** Store in cached object so we can reference by deliverable type directly from the type without needing to iterate over anything*/
+            registerDeliverableByType(self);
+            /** Modify standard prototype delete logic so we can remove from cache prior to actually deleting */
+            self._deleteItem = self.deleteItem;
+            self.deleteItem = function() {
+                removeDeliverableByType(self);
+                return self._deleteItem();
+            }
         }
 
-        Deliverable.prototype.openModal = openModal;
         Deliverable.prototype.getCachedFeedbackByDeliverableId = getCachedFeedbackByDeliverableId;
         Deliverable.prototype.getCachedFeedbackForCurrentUser = getCachedFeedbackForCurrentUser;
         Deliverable.prototype.getCalendarMonth = getCalendarMonth;
         Deliverable.prototype.getDeliverableDefinition = getDeliverableDefinition;
 
-        /** Optionally add a modal form **/
-        model.openModal = apModalService.modalModelProvider({
-            templateUrl: '',
-            controller: '',
-            expectedArguments: ['entity']
-        });
+        return model;
 
+        /**==================PRIVATE==================*/
+
+
+        /**
+         * @name Deliverable.getCachedFeedbackByDeliverableId
+         * @description Allows us to retrieve all feedback for a given deliverable which have already been
+         * grouped/cached by deliverable id.
+         * @returns {object} Keys of deliverable feedback id's and values of the feeback themselves.
+         */
         function getCachedFeedbackByDeliverableId() {
             var self = this;
             return deliverableFeedbackModel.getCachedFeedbackByDeliverableId(self.id);
         }
 
+        /**
+         * @name Deliverable.getCachedFeedbackForCurrentUser
+         * @returns {deliverableFeedbackModel.DeliverableFeedback} Either an existing feedback record or empty record.
+         */
         function getCachedFeedbackForCurrentUser() {
             var self = this, feedbackForUser,
                 feedbackForDeliverable = self.getCachedFeedbackByDeliverableId();
@@ -130,52 +151,25 @@
             return feedbackForUser;
         }
 
-        /** Adds ability to reference get the deliverable definition directly from any deliverable object */
+        /**
+         * @name Deliverable.getDeliverableDefinition
+         * @description Adds ability to reference the deliverable definition directly from any deliverable object
+         * @returns {deliverableDefinitionsModel.factory} DeliverableDefinition
+         */
         function getDeliverableDefinition() {
             var self = this;
             return deliverableDefinitionsModel.getCachedEntity(self.deliverableType.lookupId);
         }
 
 
-        function openModal() {
-            var listItem = this;
-            return model.openModal(listItem);
-        }
-
-
         /*********************************** Queries ***************************************/
 
-        /** Fetch data (pulls local xml if offline named model.list.title + '.xml')
-         *  Initially pulls all requested data.  Each subsequent call just pulls records that have been changed,
-         *  updates the model, and returns a reference to the updated data array
-         * @returns {Array} Requested list items
-         */
-        model.registerQuery({
-            name: 'primary',
-            query: '' +
-            '<Query>' +
-            '   <OrderBy>' +
-            '       <FieldRef Name="ID" Ascending="TRUE"/>' +
-            '   </OrderBy>' +
-            '</Query>'
-        });
-
-
-        model.getFyDeliverables = getFyDeliverables;
-
-        return model;
-
-
-        /********************* Model Specific Shared Functions ***************************************/
-
         /**
-         * @description Month is the FY Month (1-12), method converts into calendar month (0-11)
+         * @name model.getFyDeliverables
+         * @param {number} fy Fiscal year.
+         * @description
+         * @returns {*|Object}
          */
-        function getCalendarMonth() {
-            var deliverable = this;
-            return calendarService.getCalendarMonth(deliverable.fiscalMonth);
-        }
-
         function getFyDeliverables(fy) {
             /** Unique query name (ex: fy2013) */
             var fyCacheKey = 'fy' + fy;
@@ -201,6 +195,45 @@
         }
 
 
+        /********************* Model Specific Shared Functions ***************************************/
+
+        /**
+         * @name Deliverable.getCalendarMonth
+         * @description Month is the FY Month (1-12), method converts into calendar month (0-11)
+         * @returns {number} Integer 0-11
+         */
+        function getCalendarMonth() {
+            var deliverable = this;
+            return calendarService.getCalendarMonth(deliverable.fiscalMonth);
+        }
+
+        function registerDeliverableByType(deliverable) {
+            if (deliverable.deliverableType.lookupId) {
+                deliverableByTypeId[deliverable.deliverableType.lookupId] = deliverableByTypeId[deliverable.deliverableType.lookupId] || {};
+                /** Only register modifications that have been saved to the server and add to cache if not already there */
+                if (deliverable.id && !deliverableByTypeId[deliverable.deliverableType.lookupId][deliverable.id]) {
+                    deliverableByTypeId[deliverable.deliverableType.lookupId][deliverable.id] = deliverable;
+                }
+            }
+        }
+
+        function removeDeliverableByType(deliverable) {
+            if(deliverableByTypeId[deliverable.deliverableType.lookupId][deliverable.id]) {
+                /** Remove cached deliverable */
+                delete deliverableByTypeId[deliverable.deliverableType.lookupId][deliverable.id];
+            }
+        }
+
+        /**
+         * @name model.getCachedDeliverablesByTypeId
+         * @param {number} deliverableTypeId
+         * @description Allows us to retrieve deliverables for a given definition which have already been
+         * grouped/cache by definition id.
+         * @returns {object} Keys of deliverable id and values of the deliverables themselves.
+         */
+        function getCachedDeliverablesByTypeId(deliverableTypeId) {
+            return deliverableByTypeId[deliverableTypeId];
+        }
 
     }
 })();

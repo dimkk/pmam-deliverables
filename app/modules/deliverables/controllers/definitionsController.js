@@ -8,40 +8,30 @@
         .controller('definitionsController', definitionsController);
 
     /* @ngInject */
-    function definitionsController($state, $scope, deliverableDefinitionsModel, deliverablesService, calendarService) {
+    function definitionsController($state, $q, _, deliverableDefinitionsModel, deliverablesModel, calendarService) {
 
         var vm = this;
-        var fy = isNaN($state.params.fy) ? calendarService.getCurrentFiscalYear() : parseInt($state.params.fy);
 
-        vm.fiscalYear = fy;
-        vm.gotData = false;
-        vm.state = {
-            definitions: [],
-            validChartData: 'false',
-            searchString: ''
-        };
+        vm.deliverableCountByDefinition = deliverableCountByDefinition;
+        vm.fiscalYear = isNaN($state.params.fy) ? calendarService.getCurrentFiscalYear() : parseInt($state.params.fy);
+        vm.searchString = '';
 
         activate();
-
 
         /**==================PRIVATE==================*/
 
         function activate() {
 
-            deliverableDefinitionsModel.getFyDefinitions(fy)
-                .then(function (result) {
-
-                    vm.deliverableDefinitions = result.toArray();
-                    vm.state.validChartData = true;
-
-                }),
-                function(err) {
-                    console.log(err);
-                }
-
-            deliverablesService.getDeliverableCountByDefinition(fy).then(function(deliverableCountByDefinition){
-                vm.deliverableCountByDefinition = deliverableCountByDefinition;
-            });
+            $q.all([deliverableDefinitionsModel.getFyDefinitions(vm.fy), deliverablesModel.getFyDeliverables(vm.fy)])
+                .then(function (resolvedPromises) {
+                    vm.deliverableDefinitions = resolvedPromises[0];
+                });
         }
+
+        function deliverableCountByDefinition(definition) {
+            var deliverableInstances = definition.getDeliverablesForDefinition();
+            return _.toArray(deliverableInstances).length;
+        }
+
     }
 })();

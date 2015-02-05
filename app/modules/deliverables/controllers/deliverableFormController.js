@@ -48,6 +48,12 @@
 
         function activate() {
 
+            if(!deliverableRecord) {
+                /** Redirect if a valid deliverable isn't found */
+                toastr.error('No requested deliverable wasn\'t found.');
+                return $state.go('deliverables.main');
+            }
+
             var calendarMonth;
 
             $q.all([

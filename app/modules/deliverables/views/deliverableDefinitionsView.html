@@ -3,13 +3,13 @@
     <div class="row deliverables-paged">
         <div class="col-sm-8"><i class="fa fa-check-square icon-padding"></i>DELIVERABLE TYPES</div>
         <div class="col-sm-4">
-            <input type="text" ng-model="vm.state.searchString" placeholder=" Enter Search Term"><i
+            <input type="text" ng-model="vm.searchString" placeholder=" Enter Search Term"><i
             class="fa fa-search search-padding"></i>
         </div>
     </div>
     <hr/>
     <!-- Animate once we have data -->
-    <div ng-if="vm.state.validChartData">
+    <div>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -21,19 +21,19 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="deliverables-data" ng-repeat="item in vm.deliverableDefinitions | filter:vm.state.searchString">
+            <tr class="deliverables-data" ng-repeat="deliverableDefinition in vm.deliverableDefinitions | toArray | filter:vm.searchString track by deliverableDefinition.id">
                 <td>
-                    <a ui-sref="deliverables.instances({ fy:vm.fiscalYear, id:item.id })">{{ item.deliverableNumber
+                    <a ui-sref="deliverables.instances({ fy:vm.fiscalYear, id:deliverableDefinition.id })">{{ deliverableDefinition.deliverableNumber
                         }}</a>
                 </td>
-                <td>{{ item.title }}</td>
-                <td>{{ item.frequency.lookupValue }}</td>
+                <td>{{ deliverableDefinition.title }}</td>
+                <td>{{ deliverableDefinition.frequency.lookupValue }}</td>
                 <td>
-                    <a ui-sref="deliverables.instances({ fy:vm.fiscalYear, id:item.id })"><span
-                        class="badge badge-info">{{ vm.deliverableCountByDefinition[item.id] || 0 }}</span></a>
+                    <a ui-sref="deliverables.instances({ fy:vm.fiscalYear, id:deliverableDefinition.id })"><span
+                        class="badge badge-info">{{ vm.deliverableCountByDefinition(deliverableDefinition) }}</span></a>
                 </td>
                 <td>
-                    <a ui-sref="newInstance({ fy:vm.fiscalYear, deliverableTypeId:item.id })"><i class="fa fa-plus"></i></a>
+                    <a ui-sref="newInstance({ fy:vm.fiscalYear, deliverableTypeId:deliverableDefinition.id })"><i class="fa fa-plus"></i></a>
                 </td>
             </tr>
             </tbody>

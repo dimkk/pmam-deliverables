@@ -2,30 +2,29 @@
     'use strict';
 
     // home page controller
-
     angular
         .module( 'pmam-deliverables' )
         .controller( 'deliverablesController', deliverablesController );
 
-    /* @ngInject */
-    function deliverablesController(deliverablesModel, deliverableFeedbackService, chartService, $state,
+    function deliverablesController(deliverableFeedbackModel, chartService, $state,
                                     deliverablesService, calendarService) {
 
         var vm = this;
 
-        /** $state query string params return as strings, if they exist and can be converted to an int do it, otherwise use the current fiscal year and month */
+        /** $state query string params return as strings, if they exist and can be converted to an int do it,
+        otherwise use the current fiscal year and month */
         var fiscalYear = isNaN($state.params.fy) ? calendarService.getCurrentFiscalYear() : parseInt($state.params.fy);
         var fiscalMonth = isNaN($state.params.mo) ? calendarService.getCurrentFiscalMonth() : parseInt($state.params.mo);
-        var deliverableDefinitions;
 
         vm.decreaseDate = decreaseDate;
         vm.deliverableFrequencyFilter = deliverableFrequencyFilter;
         vm.displayPeriod = calendarService.generateDisplayPeriod(fiscalMonth, fiscalYear);
+        vm.fiscalYear = fiscalYear;
         vm.getDeliverableFeedback = getDeliverableFeedback;
         vm.gotData = false;
         vm.increaseDate = increaseDate;
-        vm.rightPanelViewArray = ['modules/deliverables/views/deliverableFeedbackView.html', 'modules/deliverables/views/deliverableMetricsView.html'];
-        vm.rightPanelView = vm.showFeedbackPanel ? vm.rightPanelViewArray[0] : vm.rightPanelViewArray[1];
+        vm.rightPanelView = 'modules/deliverables/views/deliverableMetricsView.html';
+        vm.showFeedbackPanel = false;
         vm.toggleRightPanel = toggleRightPanel;
 
         activate();
@@ -34,87 +33,56 @@
 
         function activate() {
 
-            doBuildGauges();
+            initializeMetricsGauges();
 
-            deliverablesService.getDeliverablesForMonth( fiscalYear, fiscalMonth ).then(
-
-                function( results ) {
+            deliverablesService.getDeliverablesForMonth( fiscalYear, fiscalMonth )
+                .then( function( results ) {
                     vm.deliverablesByMonth = results;
-                    initializeMetricsGauges();
-                }
-            );
+                });
 
-            deliverablesService.getDeliverableDefinitionsForMonth( fiscalYear, fiscalMonth ).then(
-                function( results ) {
-
+            deliverablesService.getDeliverableDefinitionsForMonth( fiscalYear, fiscalMonth )
+                .then(function( results ) {
                     vm.deliverableDefinitionsByMonth = results.deliverableDefinitionsByMonth;
-                    deliverableDefinitions = results.deliverableDefinitions;
-                }
-            );
+                });
 
-            //TODO Refactor to use the deliverableFrequenciesService instead
-            deliverablesService.getDeliverableFrequencies().then(
-                function(results) {
-
-                    vm.deliverableFrequencies = results;
-                }
-            );
-
-            deliverableFeedbackService.getDeliverableFeedback().then(
-                function (results) {
+            deliverableFeedbackModel.getFyFeedback(fiscalYear)
+                .then(function (results) {
                     vm.deliverableFeedback = results;
-                    vm.gotData = true;
-                }
-            );
-
+                });
         }
 
-        function getDeliverableFeedback(id) {
-
-            var deliverableRecord = deliverablesModel.getCachedEntity(parseInt(id));
+        function getDeliverableFeedback(deliverableRecord) {
             vm.deliverableFeedback = deliverableRecord.getCachedFeedbackByDeliverableId();
-            vm.rightPanelView = vm.rightPanelViewArray[0];
+            vm.rightPanelView = 'modules/deliverables/views/deliverableFeedbackView.html';
             vm.showFeedbackPanel = true;
-
         }
 
         function toggleRightPanel() {
-            vm.rightPanelView = vm.rightPanelViewArray[1];
+            vm.rightPanelView = 'modules/deliverables/views/deliverableMetricsView.html';
         }
 
         function initializeMetricsGauges() {
 
-            vm.metricsByMonth = doPrepareMetrics();
+            vm.gauge1 = new chartService.Gauge('Satisfaction');
+            vm.gauge2 = new chartService.Gauge('OTD');
 
-            // faking the gauge data for now; it should run off the values returned in metricsByMonth
-            vm.Gauge1.data.rows[0].c[1].v = chartService.getRandom();
-            vm.Gauge2.data.rows[0].c[1].v = chartService.getRandom();
+            //TODO Add logic so we don't need to fake gauge values
+            vm.gauge1.updateGaugeValue(chartService.getRandom());
+            vm.gauge2.updateGaugeValue(chartService.getRandom());
         }
 
-        function doBuildGauges() {
-
-            var gauges = chartService.buildGauges();
-
-            //Create initial gauge objects if not already defined
-            vm.Gauge1 = gauges.Gauge1;
-            vm.Gauge2 = gauges.Gauge2;
-        }
-
-        function doPrepareMetrics() {
-            return chartService.prepareMetrics(vm.deliverablesByMonth);
-
-        }
-
-        function deliverableFrequencyFilter( deliverableType ) {
-
-            var deliverableDefinition = deliverableDefinitions[ deliverableType.lookupId ];
-
+        /**
+         * @name vm.deliverableFrequencyFilter
+         * @description Find the definition for the provided deliverable and return the frequency.
+         * @param {Deliverable} deliverable object.
+         * @returns {string}
+         */
+        function deliverableFrequencyFilter( deliverable ) {
+            var deliverableDefinition = deliverable.getDeliverableDefinition();
             if( deliverableDefinition ) {
                 return deliverableDefinition.frequency.lookupValue;
             }
-
         }
-
 
         // 10/1 starts the new fiscal year
         function increaseDate() {
@@ -128,11 +96,9 @@
             }
 
             $state.go('deliverables.main', {fy: updatedYear, mo: updatedMonth});
-
         }
 
         function decreaseDate() {
-
             var updatedMonth = fiscalMonth - 1;
             var updatedYear = fiscalYear;
 
