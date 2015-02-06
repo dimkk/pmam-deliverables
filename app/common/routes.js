@@ -18,7 +18,7 @@ angular.module('pmam-deliverables')
             })
 
             .state('deliverables.types', {
-                url: '/types',
+                url: '/types?fy',
                 templateUrl: 'modules/deliverables/views/deliverableDefinitionsView.html',
                 controller: 'definitionsController',
                 controllerAs: 'vm'
