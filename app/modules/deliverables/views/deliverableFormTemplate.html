@@ -52,20 +52,8 @@
                     <label class="deliverables-header" for="month">Month*</label>
                     <select ng-required="true" name="month"
                             ng-model="vm.deliverableRecord.fiscalMonth"
-                            class="form-control">
-                        <option value="4">January</option>
-                        <option value="5">February</option>
-                        <option value="6">March</option>
-                        <option value="7">April</option>
-                        <option value="8">May</option>
-                        <option value="9">June</option>
-                        <option value="10">July</option>
-                        <option value="11">August</option>
-                        <option value="12">September</option>
-                        <option value="1">October</option>
-                        <option value="2">November</option>
-                        <option value="3">December</option>
-                    </select>
+                            class="form-control"
+                            ng-options="month.number as month.label for month in vm.monthOptions"></select>
                 </div>
             </div>
 
