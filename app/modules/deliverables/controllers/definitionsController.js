@@ -37,14 +37,14 @@
         }
 
         function nextFiscalYear() {
-            vm.fiscalYear = vm.fiscalYear + 1;
-            $state.go('deliverables.types', {fy: vm.fiscalYear});
+            var updatedFiscalYear = vm.fiscalYear + 1;
+            $state.go('deliverables.types', {fy: updatedFiscalYear});
 
         }
 
         function priorFiscalYear() {
-            vm.fiscalYear = vm.fiscalYear - 1;
-            $state.go('deliverables.types', {fy: vm.fiscalYear});
+            var updatedFiscalYear = vm.fiscalYear - 1;
+            $state.go('deliverables.types', {fy: updatedFiscalYear});
         }
 
     }
