@@ -27,7 +27,7 @@ angular.module('pmam-deliverables')
             .state('deliverable', {
                 url: '/deliverable/:id',
                 templateUrl: 'modules/deliverables/views/deliverableFormEditView.html',
-                controller: 'deliverableFormController',
+                controller: 'deliverableFormEditController',
                 controllerAs: 'vm',
                 resolve: {
                     deliverableRecord: function ($stateParams, $q, deliverablesModel, toastr) {
@@ -62,7 +62,7 @@ angular.module('pmam-deliverables')
             .state('newInstance', {
                 url: '/deliverable?fy&deliverableTypeId',
                 templateUrl: 'modules/deliverables/views/deliverableFormNewView.html',
-                controller: 'newDeliverableFormController',
+                controller: 'deliverableFormNewController',
                 controllerAs: 'vm'
             })
 

@@ -4,10 +4,10 @@
     // controller handling updates to existing deliverables
     angular
         .module('pmam-deliverables')
-        .controller('deliverableFormController', deliverableFormController);
+        .controller('deliverableFormEditController', deliverableFormEditController);
 
     /* @ngInject */
-    function deliverableFormController(deliverableFeedbackModel, toastr, $state, deliverableDefinitionsModel,
+    function deliverableFormEditController(deliverableFeedbackModel, toastr, $state, deliverableDefinitionsModel,
                                        userService, $q, deliverableRecord, ratingsService) {
 
         var vm = this;
