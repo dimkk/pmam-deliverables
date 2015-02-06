@@ -14,7 +14,11 @@
 
         vm.deliverableCountByDefinition = deliverableCountByDefinition;
         vm.fiscalYear = isNaN($state.params.fy) ? calendarService.getCurrentFiscalYear() : parseInt($state.params.fy);
+        vm.fiscalYearDisplay = vm.fiscalYear.toString().slice(-2);
         vm.searchString = '';
+        vm.nextFiscalYear = nextFiscalYear;
+        vm.priorFiscalYear = priorFiscalYear;
+        vm.fm = isNaN(vm.fm) ? vm.fiscalYear : vm.fm;
 
         activate();
 
@@ -31,6 +35,17 @@
         function deliverableCountByDefinition(definition) {
             var deliverableInstances = definition.getDeliverablesForDefinition();
             return _.toArray(deliverableInstances).length;
+        }
+
+        function nextFiscalYear() {
+            vm.fiscalYear = vm.fiscalYear + 1;
+            $state.go('deliverables.types', {fy: vm.fiscalYear});
+
+        }
+
+        function priorFiscalYear() {
+            vm.fiscalYear = vm.fiscalYear - 1;
+            $state.go('deliverables.types', {fy: vm.fiscalYear});
         }
 
     }
