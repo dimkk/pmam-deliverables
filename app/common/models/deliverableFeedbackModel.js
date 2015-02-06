@@ -54,8 +54,8 @@
                     //TODO These field names are pretty bad, think about fixing
                     //Ex: {staticName: 'Title', objectType: 'Text', mappedName: 'title', readOnly: false}
                     {staticName: 'Title', objectType: 'Text', mappedName: 'title', readOnly: false},
-                    {staticName: 'Comments', objectType: 'Text', mappedName: 'comments', readOnly: false},
-                    {staticName: 'Definition', objectType: 'Lookup', mappedName: 'definition', readOnly: false},
+                    {staticName: 'Comments', objectType: 'Note', mappedName: 'comments', readOnly: false},
+                    {staticName: 'DeliverableDefinition', objectType: 'Lookup', mappedName: 'definition', readOnly: false},
                     /* Dependent lookup, returns normal lookup but the lookupValue contains the FY
                      value on the linked deliverable.  This value is read-only. */
                     {
