@@ -16,10 +16,11 @@
         var fiscalYear = isNaN($state.params.fy) ? calendarService.getCurrentFiscalYear() : parseInt($state.params.fy);
         var fiscalMonth = isNaN($state.params.mo) ? calendarService.getCurrentFiscalMonth() : parseInt($state.params.mo);
 
+        vm.cancel = cancel;
         vm.dataReady = false;
         vm.deliverableRecord = deliverablesModel.createEmptyItem({fy: fiscalYear});
         vm.deliverableRecord.fiscalMonth = parseInt(fiscalMonth);
-        vm.cancel = cancel;
+        vm.monthOptions = calendarService.getMonthOptions();
         vm.save = save;
 
         activate();

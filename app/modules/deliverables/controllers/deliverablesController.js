@@ -44,21 +44,12 @@
             ])
                 .then(function(resolvedPromises) {
                     vm.deliverablesByMonth = resolvedPromises[0];
-                    vm.deliverableDefinitionsByMonth = resolvedPromises[1].deliverableDefinitionsByMonth;
+                    vm.deliverableDefinitionsByMonth = resolvedPromises[1];
                     vm.deliverableFeedback = resolvedPromises[2];
                     vm.activeDefinitionIdArray = getActiveDefinitionIds(resolvedPromises[0]);
                     vm.gotData = true;
                 });
 
-            //deliverablesService.getDeliverableDefinitionsForMonth( fiscalYear, fiscalMonth )
-            //    .then(function( results ) {
-            //        vm.deliverableDefinitionsByMonth = results.deliverableDefinitionsByMonth;
-            //    });
-            //
-            //deliverableFeedbackModel.getFyFeedback(fiscalYear)
-            //    .then(function (results) {
-            //        vm.deliverableFeedback = results;
-            //    });
         }
 
         function getActiveDefinitionIds(activeDeliverables) {

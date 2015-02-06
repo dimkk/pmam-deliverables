@@ -16,6 +16,7 @@
             getCalendarMonth: getCalendarMonth,
             getCurrentFiscalMonth: getCurrentFiscalMonth,
             getCurrentFiscalYear: getCurrentFiscalYear,
+            getMonthOptions: getMonthOptions,
             generateDisplayPeriod: generateDisplayPeriod
         };
 
@@ -54,6 +55,25 @@
             }
             return calendarMonthNumber
         }
+
+        function getMonthOptions() {
+            return [
+                {number: 4, label: 'January'},
+                {number: 5, label: 'February'},
+                {number: 6, label: 'March'},
+                {number: 7, label: 'April'},
+                {number: 8, label: 'May'},
+                {number: 9, label: 'June'},
+                {number: 10, label: 'July'},
+                {number: 11, label: 'August'},
+                {number: 12, label: 'September'},
+                {number: 1, label: 'October'},
+                {number: 2, label: 'November'},
+                {number: 3, label: 'December'}
+            ]
+        }
+
+
 
 
     }

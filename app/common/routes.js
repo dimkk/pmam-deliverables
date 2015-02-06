@@ -30,18 +30,18 @@ angular.module('pmam-deliverables')
                 controller: 'deliverableInstancesController',
                 controllerAs: 'vm',
                 resolve: {
-                    fy: function ($stateParams, calendarService) {
+                    fy: function($stateParams, calendarService) {
                         return isNaN($stateParams.fy) ? calendarService.getCurrentFiscalYear() : parseInt($stateParams.fy);
                     },
-                    fyDefinitions: function (deliverableDefinitionsModel, $stateParams, fy) {
+                    fyDefinitions: function(deliverableDefinitionsModel, $stateParams, fy) {
                         return deliverableDefinitionsModel.getFyDefinitions(fy);
                     },
-                    selectedDefinition: function ($stateParams, $q, fyDefinitions) {
+                    selectedDefinition: function($stateParams, $q, fyDefinitions) {
                         var deferred = $q.defer();
                         if (isNaN($stateParams.id)) {
                             /** No ID was provided */
 
-                            if (fyDefinitions.count() < 1) {
+                            if(fyDefinitions.count() < 1) {
                                 /** No definitions for this month were found */
                                 deferred.resolve(null);
                             } else {

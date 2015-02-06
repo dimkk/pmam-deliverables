@@ -8,8 +8,9 @@
 
     /* @ngInject */
     function deliverableFormEditController(deliverableFeedbackModel, toastr, $state, deliverableDefinitionsModel,
-                                       userService, $q, deliverableRecord, ratingsService) {
+                                       userService, $q, deliverableRecord, ratingsService, calendarService) {
 
+        //TODO Need to add logic to revert back to pristine deliverable in cache if entity is updated and user leaves without saving
         var vm = this;
         vm.activeTab = 'main'; //2 tabs are ['main', 'discussion']
         vm.cancel = cancel;
@@ -20,6 +21,7 @@
         vm.discussionBadgeValue = discussionBadgeValue;
         vm.getLabelClass = ratingsService.getLabelClass;
         vm.hoveringOver = hoveringOver;
+        vm.monthOptions = calendarService.getMonthOptions();
         vm.save = save;
         vm.starClass = ratingsService.starClass;
         vm.updateFeedback = updateFeedback;
@@ -89,10 +91,7 @@
                 }
 
                 toastr.success("Deliverable updated");
-                $state.go('deliverables.instances', {
-                    id: deliverableRecord.deliverableType.lookupId,
-                    fy: deliverableRecord.fy
-                });
+                navigateBack();
             }, function () {
                 toastr.error("There was a problem updating this deliverable record");
             });
@@ -102,12 +101,9 @@
         function deleteRecord() {
             var confirmation = window.confirm('Are you sure you want to delete this deliverable?');
             if (confirmation) {
-                var deliverableTypeId = deliverableRecord.deliverableType.lookupId;
-                var deliverableFiscalYear = deliverableRecord.fy;
-
                 deliverableRecord.deleteItem().then(function () {
                     toastr.success("Deliverable successfully deleted");
-                    $state.go('deliverables.instances', {id: deliverableTypeId, fy: deliverableFiscalYear});
+                    navigateBack();
                 }, function () {
                     toastr.error("There was a problem deleting this deliverable record");
                 });
@@ -115,13 +111,12 @@
         }
 
         function cancel() {
-            $state.go('deliverables.instances', {
-                id: deliverableRecord.deliverableType.lookupId,
-                fy: deliverableRecord.fy
-            });
+            //TODO Need to revert back any changes to form fields
+            navigateBack();
         }
 
         function deleteMyFeedback(feedback) {
+            //TODO This currently doesn't fully purge the cache and needs to be addressed
             var confirmation = window.confirm('Are you sure you want to delete your feedback?');
             if(confirmation) {
                 feedback.deleteItem()
@@ -131,6 +126,14 @@
                         toastr.success('Feedback successfully removed.')
                     })
             }
+
+        }
+
+        function navigateBack() {
+            $state.go('deliverables.main', {
+                mo: deliverableRecord.fiscalMonth,
+                fy: deliverableRecord.fy
+            });
 
         }
 

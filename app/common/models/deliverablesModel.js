@@ -74,7 +74,8 @@
                         objectType: 'JSON',
                         mappedName: 'discussionThread',
                         readOnly: false
-                    }
+                    },
+                    {staticName: 'Attachments', objectType: 'Attachments', mappedName: 'attachments', readOnly: true}
 
                 ]
             }
@@ -145,7 +146,8 @@
             if(!feedbackForUser) {
                 feedbackForUser = deliverableFeedbackModel.createEmptyItem({
                     rating: 0,
-                    deliverable: {lookupId: self.id}
+                    deliverable: {lookupId: self.id},
+                    definition: self.deliverableType
                 });
             }
             return feedbackForUser;
