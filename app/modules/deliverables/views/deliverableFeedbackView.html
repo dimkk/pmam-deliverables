@@ -1,24 +1,54 @@
 <!-- partial view that renders the right panel feedback display -->
-<div class="col-sm-2">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="row">
-                <i class="fa fa-check-square icon-padding"></i><span class="metrics-header">REVIEWS</span>
-                <a ng-show="vm.gotData" ng-click="vm.toggleRightPanel()" class="return-icon-padding"
-                   title="View Metrics">
-                    Metrics <i class="fa fa-arrow-down"></i>
-                </a>
-
+<fieldset>
+    <legend>
+        <div class="row">
+            <div class="col-sm-12">
+                <i class="fa fa-star-half-o icon-padding"></i><span class="metrics-header">REVIEWS</span>
+                <!--<a ng-click="vm.toggleRightPanel()" class="return-icon-padding"-->
+                   <!--title="View Metrics ">-->
+                    <!--Metrics <i class="fa fa-tachometer"></i>-->
+                <!--</a>-->
             </div>
         </div>
+    </legend>
+
+
+    <div>
+        <label>Rate this deliverable</label>
+        <rating ng-change="vm.updateFeedback()"
+                state-on="'fa fa-star fa-2x'" state-off="'fa fa-star-o fa-2x'"
+                ng-model="vm.userDeliverableFeedback.rating" max="5"
+                readonly="vm.isReadonly" on-hover="vm.hoveringOver(value)"
+                class="ratings-no-wrap {{ starClass(vm.userDeliverableFeedback.rating) }}"
+                on-leave="vm.overStar = null"></rating>
     </div>
-    <hr/>
+
+
+    <!-- Current User's Comments -->
+    <div class="fadeIn" ng-if="vm.userDeliverableFeedback.id">
+        <h4><span class="pull-right label {{ vm.getLabelClass(vm.overStar || vm.userDeliverableFeedback.rating) }}"
+              ng-show="vm.overStar || vm.userDeliverableFeedback.rating">{{vm.percent}}%</span></h4>
+
+        <label for="comment">Feedback</label>
+        <textarea rows="6" class="form-control"
+                  ng-model="vm.userDeliverableFeedback.comments"
+                  ng-blur="vm.updateFeedback()"
+                  placeholder="Add a Comment" name="comment"
+                  title="Feedback comment is automatically updated after leaving this field."></textarea>
+        <button ng-click="vm.deleteMyFeedback(vm.userDeliverableFeedback)"
+                class="btn btn-link pull-right"
+                title="Delete your feedback."><i class="fa fa-trash"></i> delete</button>
+
+        <br/>
+    </div>
+
     <div ng-repeat="feedback in vm.deliverableFeedback track by feedback.id">
         <div class="row">
             <div class="col-sm-12">
-                <reviews data-feedback="feedback"></reviews>
+                <!-- Don't display feedback for current user in this area -->
+                <reviews data-feedback="feedback" ng-if="feedback !== vm.userDeliverableFeedback"></reviews>
             </div>
         </div>
     </div>
-</div>
-<hr/>
+
+</fieldset>
