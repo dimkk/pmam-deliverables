@@ -6,7 +6,7 @@
         .module( 'pmam-deliverables' )
         .controller( 'deliverablesController', deliverablesController );
 
-    function deliverablesController(deliverableFeedbackModel, chartService, $state,
+    function deliverablesController($q, deliverableFeedbackModel, chartService, $state,
                                     deliverablesService, calendarService) {
 
         var vm = this;
@@ -35,20 +35,31 @@
 
             initializeMetricsGauges();
 
-            deliverablesService.getDeliverablesForMonth( fiscalYear, fiscalMonth )
-                .then( function( results ) {
-                    vm.deliverablesByMonth = results;
+            $q.all([
+                deliverablesService.getDeliverablesForMonth( fiscalYear, fiscalMonth ),
+                deliverablesService.getDeliverableDefinitionsForMonth( fiscalYear, fiscalMonth ),
+                deliverableFeedbackModel.getFyFeedback(fiscalYear)
+            ])
+                .then(function(resolvedPromises) {
+                    vm.deliverablesByMonth = resolvedPromises[0];
+                    vm.deliverableDefinitionsByMonth = resolvedPromises[1].deliverableDefinitionsByMonth;
+                    vm.deliverableFeedback = resolvedPromises[2];
                 });
 
-            deliverablesService.getDeliverableDefinitionsForMonth( fiscalYear, fiscalMonth )
-                .then(function( results ) {
-                    vm.deliverableDefinitionsByMonth = results.deliverableDefinitionsByMonth;
-                });
-
-            deliverableFeedbackModel.getFyFeedback(fiscalYear)
-                .then(function (results) {
-                    vm.deliverableFeedback = results;
-                });
+            //deliverablesService.getDeliverablesForMonth( fiscalYear, fiscalMonth )
+            //    .then( function( results ) {
+            //        vm.deliverablesByMonth = results;
+            //    });
+            //
+            //deliverablesService.getDeliverableDefinitionsForMonth( fiscalYear, fiscalMonth )
+            //    .then(function( results ) {
+            //        vm.deliverableDefinitionsByMonth = results.deliverableDefinitionsByMonth;
+            //    });
+            //
+            //deliverableFeedbackModel.getFyFeedback(fiscalYear)
+            //    .then(function (results) {
+            //        vm.deliverableFeedback = results;
+            //    });
         }
 
         function getDeliverableFeedback(deliverableRecord) {
