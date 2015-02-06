@@ -18,7 +18,6 @@
         vm.searchString = '';
         vm.nextFiscalYear = nextFiscalYear;
         vm.priorFiscalYear = priorFiscalYear;
-        vm.fm = isNaN(vm.fm) ? vm.fiscalYear : vm.fm;
 
         activate();
 
@@ -26,7 +25,7 @@
 
         function activate() {
 
-            $q.all([deliverableDefinitionsModel.getFyDefinitions(vm.fy), deliverablesModel.getFyDeliverables(vm.fy)])
+            $q.all([deliverableDefinitionsModel.getFyDefinitions(vm.fiscalYear), deliverablesModel.getFyDeliverables(vm.fiscalYear)])
                 .then(function (resolvedPromises) {
                     vm.deliverableDefinitions = resolvedPromises[0];
                 });
