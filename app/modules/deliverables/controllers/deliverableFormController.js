@@ -2,102 +2,70 @@
     'use strict';
 
     // controller handling updates to existing deliverables
-
     angular
         .module('pmam-deliverables')
         .controller('deliverableFormController', deliverableFormController);
 
-
     /* @ngInject */
     function deliverableFormController(deliverableFeedbackModel, toastr, $state, deliverableDefinitionsModel,
-                                       userService, $q, deliverableRecord) {
+                                       userService, $q, deliverableRecord, ratingsService) {
 
         var vm = this;
+        vm.activeTab = 'main'; //2 tabs are ['main', 'discussion']
         vm.cancel = cancel;
         vm.dataReady = false;
+        vm.deleteMyFeedback = deleteMyFeedback;
         vm.deleteRecord = deleteRecord;
         vm.deliverableRecord = deliverableRecord;
+        vm.discussionBadgeValue = discussionBadgeValue;
+        vm.getLabelClass = ratingsService.getLabelClass;
         vm.hoveringOver = hoveringOver;
-        vm.isActiveTab = isActiveTab;
         vm.save = save;
-        vm.setTab = setTab;
+        vm.starClass = ratingsService.starClass;
         vm.updateFeedback = updateFeedback;
 
         // rating settings
         vm.rate = 5;
         vm.max = 5;
         vm.isReadonly = false;
-        vm.showCommentInput = false;
-
-
-        vm.tabs = [{
-            title: 'Main',
-            url: 'modules/deliverables/views/deliverableFormView.html'
-        }, {
-            title: 'Comments',
-            url: 'modules/deliverables/views/deliverableCommentsView.html'
-        }];
-
-        //TODO This should reference an object in the above array, shouldn't have the file ref twice
-        vm.currentTab = 'modules/deliverables/views/deliverableFormView.html';
 
         activate();
-
 
         /**==================PRIVATE==================*/
 
         function activate() {
 
-            if(!deliverableRecord) {
+            if (!deliverableRecord) {
                 /** Redirect if a valid deliverable isn't found */
                 toastr.error('No requested deliverable wasn\'t found.');
                 return $state.go('deliverables.main');
             }
 
-            var calendarMonth;
-
             $q.all([
                 userService.getUserLookupValues(),
-                deliverableFeedbackModel.executeQuery(),
+                deliverableFeedbackModel.getFyFeedback(deliverableRecord.fy),
                 deliverableDefinitionsModel.getFyDefinitions(deliverableRecord.fy)
-            ]).then(function(resolvedPromises) {
+            ]).then(function (resolvedPromises) {
                 vm.personnelArray = resolvedPromises[0];
                 vm.deliverableTypes = resolvedPromises[2].toArray();
 
-                //TODO Need to create a method that gets deliverable by fy so we can cache instead of calling new each time
-                // get a list of all existing feedback on this deliverable
+                // get all feedback for this deliverable
                 vm.deliverableFeedback = deliverableRecord.getCachedFeedbackByDeliverableId();
 
-                // get feedback for just the current user
+                // get feedback for just the current user for this deliverable
                 vm.userDeliverableFeedback = deliverableRecord.getCachedFeedbackForCurrentUser();
-
-                // if a comment already exists for the user, show the comments textarea
-                if (vm.userDeliverableFeedback.comments.length) {
-                    vm.showCommentInput = true;
-                }
-
-                // convert fiscal year month to calendar month
-                calendarMonth = deliverableRecord.getCalendarMonth();
 
                 vm.dataReady = true;
             });
-
-
-        }
-
-        function isActiveTab(tabUrl) {
-            return tabUrl == vm.currentTab;
-        }
-
-        function setTab(tab) {
-            vm.currentTab = tab.url;
         }
 
         function updateFeedback() {
-            vm.userDeliverableFeedback.saveChanges().then(function () {
-                toastr.success("Feedback updated");
-            });
-            vm.showCommentInput = true;
+            vm.userDeliverableFeedback.saveChanges()
+                .then(function (updatedFeedback) {
+                    toastr.success("Feedback updated");
+                    /** Ensure feedback reference is updated */
+                    vm.userDeliverableFeedback = updatedFeedback;
+                });
         }
 
         function hoveringOver(value) {
@@ -105,14 +73,19 @@
             vm.percent = 100 * (value / vm.max);
         }
 
+        function discussionBadgeValue() {
+            /** Display the number of posts if greater than 0 */
+            return vm.deliverableRecord.discussionThread.posts.length > 0 ?
+                vm.deliverableRecord.discussionThread.posts.length : '';
+        }
 
-        function save() {
+        function save(deliverableForm) {
+            console.log(deliverableForm);
+
             deliverableRecord.saveChanges().then(function () {
-
+                //todo split this logic out
                 if (vm.userDeliverableFeedback.comments.length) {
-
                     vm.updateFeedback();
-
                 }
 
                 toastr.success("Deliverable updated");
@@ -127,9 +100,8 @@
         }
 
         function deleteRecord() {
-
             var confirmation = window.confirm('Are you sure you want to delete this deliverable?');
-            if(confirmation) {
+            if (confirmation) {
                 var deliverableTypeId = deliverableRecord.deliverableType.lookupId;
                 var deliverableFiscalYear = deliverableRecord.fy;
 
@@ -149,6 +121,18 @@
             });
         }
 
+        function deleteMyFeedback(feedback) {
+            var confirmation = window.confirm('Are you sure you want to delete your feedback?');
+            if(confirmation) {
+                feedback.deleteItem()
+                    .then(function () {
+                        /** Record is deleted from server and local cache so instantiate a new feedback record */
+                        vm.userDeliverableFeedback = deliverableRecord.getCachedFeedbackForCurrentUser();
+                        toastr.success('Feedback successfully removed.')
+                    })
+            }
+
+        }
 
     }
 })();
