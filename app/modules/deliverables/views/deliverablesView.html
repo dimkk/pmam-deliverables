@@ -3,7 +3,10 @@
     <div class="row">
         <div class="col-sm-10">
             <div class="row deliverables-paged">
+
                 <div class="col-sm-9"><i class="fa fa-calendar icon-padding"></i>ACTIVE DELIVERABLES</div>
+
+                <!-- NAVIGATION BETWEEN MONTHS -->
                 <div class="col-sm-3">
                     <div class="btn-group">
                         <button class="btn btn-light pull-left" type="button" ng-click="vm.decreaseDate()">
@@ -19,76 +22,81 @@
                 </div>
             </div>
             <hr/>
-            <!-- Animate once we have data -->
-            <div>
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Submitted</th>
-                        <th>Due</th>
-                        <th>Schedule</th>
-                        <th>Average Rating</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="deliverable in vm.deliverablesByMonth track by deliverable.id">
-                        <td>
-                            <a ui-sref="deliverable({id:deliverable.id})">{{ deliverable.title }}</a>
-                        </td>
-                        <td>{{ deliverable.submissionDate | date:'shortDate' }}</td>
-                        <td>{{ deliverable.startDate | date:'shortDate' }}</td>
-                        <td>{{ vm.deliverableFrequencyFilter( deliverable ) }}</td>
-                        <td>
-                            <a ng-click="vm.getDeliverableFeedback( deliverable )" class="rating-data" title="View Details">
-                                <ratings-average data-deliverable="deliverable"></ratings-average>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr ng-if="vm.deliverablesByMonth && vm.deliverablesByMonth.length < 1">
-                        <td colspan="5" class="alert">No deliverables were found for the selected month.</td>
-                    </tr>
-                    </tbody>
-                </table>
-                <hr/>
-                <hr/>
-                <div class="row deliverables-paged">
-                    <div class="col-sm-12"><i class="fa fa-calendar icon-padding"></i>PENDING DELIVERABLES</div>
-                </div>
-                <hr/>
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Reference Number</th>
-                        <th>Title</th>
-                        <th>Schedule</th>
-                        <th>Add</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="definition in vm.deliverableDefinitionsByMonth">
-                        <td>
-                            <a ui-sref="deliverables.instances({fy:vm.fiscalYear, id:definition.id})">
-                                {{ definition.deliverableNumber }}
-                            </a>
-                        </td>
-                        <td>{{ definition.title }}</td>
-                        <td>{{ definition.frequency.lookupValue }}</td>
-                        <td>
-                            <a ui-sref="newInstance({ fy:vm.fiscalYear, deliverableTypeId:definition.id })">
-                                <i class="fa fa-plus"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr ng-if="vm.deliverableDefinitionsByMonth && vm.deliverableDefinitionsByMonth.length < 1">
-                        <td colspan="5" class="alert">There are no outstanding deliverables remaining.</td>
-                    </tr>
-                    </tbody>
-                </table>
+
+            <!-- SUBMITTED DELIVERABLES FOR THE MONTH -->
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Submitted</th>
+                    <th>Due</th>
+                    <th>Schedule</th>
+                    <th>Average Rating</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="deliverable in vm.deliverablesByMonth track by deliverable.id">
+                    <td>
+                        <a ui-sref="deliverable({id:deliverable.id})">{{ deliverable.title }}</a>
+                    </td>
+                    <td>{{ deliverable.submissionDate | date:'shortDate' }}</td>
+                    <td>{{ deliverable.startDate | date:'shortDate' }}</td>
+                    <td>{{ vm.deliverableFrequencyFilter( deliverable ) }}</td>
+                    <td>
+                        <a ng-click="vm.getDeliverableFeedback( deliverable )" class="rating-data" title="View Details">
+                            <ratings-average data-deliverable="deliverable"></ratings-average>
+                        </a>
+                    </td>
+                </tr>
+                <tr ng-if="vm.deliverablesByMonth && vm.deliverablesByMonth.length < 1">
+                    <td colspan="5" class="alert">No deliverables were found for the selected month.</td>
+                </tr>
+                </tbody>
+            </table>
+            <hr/>
+            <hr/>
+
+
+            <!-- OUTSTANDING DELIVERABLES -->
+            <div class="row deliverables-paged">
+                <div class="col-sm-12"><i class="fa fa-calendar icon-padding"></i>PENDING DELIVERABLES</div>
             </div>
+            <hr/>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Reference Number</th>
+                    <th>Title</th>
+                    <th>Schedule</th>
+                    <th>Add</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="definition in vm.deliverableDefinitionsByMonth">
+                    <td>
+                        <a ui-sref="deliverables.instances({fy:vm.fiscalYear, id:definition.id})">
+                            {{ definition.deliverableNumber }}
+                        </a>
+                    </td>
+                    <td>{{ definition.title }}</td>
+                    <td>{{ definition.frequency.lookupValue }}</td>
+                    <td>
+                        <a ui-sref="newInstance({ fy:vm.fiscalYear, deliverableTypeId:definition.id })">
+                            <i class="fa fa-plus"></i>
+                        </a>
+                    </td>
+                </tr>
+                <tr ng-if="vm.deliverableDefinitionsByMonth && vm.deliverableDefinitionsByMonth.length < 1">
+                    <td colspan="5" class="alert">There are no outstanding deliverables remaining.</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
+
         <!-- view toggles between metrics and feedback -->
         <div ng-include="vm.rightPanelView"></div>
+
+
     </div>
 </div>
 
