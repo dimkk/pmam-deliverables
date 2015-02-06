@@ -1,16 +1,16 @@
 <!--view template for ratings by deliverable directive-->
-<rating
-    ng-class="{'one-star': state.rating===1 || state.rating===1.5,'two-star': state.rating===2 || state.rating===2.5, 'three-star': state.rating===3 || state.rating===3.5, 'four-star': state.rating===4 || state.rating===4.5,'five-star': state.rating===5}"
-    ng-model="state.rating" max="5" readonly="true"></rating>
+<rating ng-model="feedback.rating"
+        state-on="'fa fa-star fa-lg'" state-off="'fa fa-star-o fa-lg'"
+        max="5" readonly="true"></rating>
+
 <div class="left-padding">
     <div class="row">
-        <span class="deliverables-data">{{state.created | date:'shortDate' }}</span>
+        <span class="deliverables-data">{{feedback.created | date:'shortDate' }}</span>
     </div>
     <div class="row">
-        <span ng-if="state.author.length">{{state.author}}:</span>
+        <span ng-if="feedback.author">{{feedback.author.lookupValue}}:</span>
     </div>
     <div class="row">
-        <span>{{state.comments}}</span>
+        <span>{{feedback.comments}}</span>
     </div>
 </div>
-<hr/>

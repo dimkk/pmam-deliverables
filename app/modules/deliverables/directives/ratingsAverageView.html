@@ -3,8 +3,10 @@
     <tr>
         <td>
             <rating
-                ng-class="{'one-star': state.average===1 || state.average===1.5,'two-star': state.average===2 || state.average===2.5, 'three-star': state.average===3 || state.average===3.5, 'four-star': state.average===4 || state.average===4.5,'five-star': state.average===5}"
-                ng-model="state.average" title="{{state.average}} star rating" max="5" readonly="true">
+                state-on="'fa fa-star'" state-off="'fa fa-star-o'"
+                disabled="disabled"
+                ng-model="state.average" title="{{state.average}} star rating"
+                max="5" readonly="true">
             </rating>
         </td>
         <td>

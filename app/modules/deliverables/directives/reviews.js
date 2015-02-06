@@ -2,19 +2,12 @@
     'use strict';
 
     // I render the review details by user of a deliverable
-
     angular
         .module('pmam-deliverables')
         .directive('reviews', reviews);
 
-    reviews.$inject = ['$window'];
-
     /* @ngInject */
-    function reviews($window) {
-        // Usage:
-        //
-        // Creates:
-        //
+    function reviews(ratingsService) {
         var directive = {
             link: link,
             templateUrl: 'modules/deliverables/directives/reviewsView.html',
@@ -24,14 +17,7 @@
         return directive;
 
         function link(scope, element, attrs) {
-
-            var deliverableFeedback = scope.feedback;
-
-            scope.state = {};
-            scope.state.rating = deliverableFeedback.rating;
-            scope.state.created = deliverableFeedback.created;
-            scope.state.author = deliverableFeedback.author.lookupValue;
-            scope.state.comments = deliverableFeedback.comments;
+            scope.starClass = ratingsService.starClass;
         }
     }
 })();
