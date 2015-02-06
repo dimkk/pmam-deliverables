@@ -14,7 +14,50 @@ angular.module('pmam-deliverables')
             .state('deliverables', {
                 url: '/deliverables',
                 abstract: true,
-                template: '<div ui-view class="fadeIn"></div>'
+                template: '<div ui-view class="fadeIn primary-view"></div>'
+            })
+
+            .state('deliverables.main', {
+                url: '/main?fy&mo',
+                templateUrl: 'modules/deliverables/views/deliverablesView.html',
+                controller: 'deliverablesController',
+                controllerAs: 'vm'
+            })
+
+            .state('deliverables.instances', {
+                url: '/instances?fy&id',
+                templateUrl: 'modules/deliverables/views/deliverableInstancesView.html',
+                controller: 'deliverableInstancesController',
+                controllerAs: 'vm',
+                resolve: {
+                    fy: function($stateParams, calendarService) {
+                        return isNaN($stateParams.fy) ? calendarService.getCurrentFiscalYear() : parseInt($stateParams.fy);
+                    },
+                    fyDefinitions: function(deliverableDefinitionsModel, $stateParams, fy) {
+                        return deliverableDefinitionsModel.getFyDefinitions(fy);
+                    },
+                    selectedDefinition: function($stateParams, $q, fyDefinitions) {
+                        var deferred = $q.defer();
+                        if (isNaN($stateParams.id)) {
+                            /** No ID was provided */
+
+                            if(fyDefinitions.count() < 1) {
+                                /** No definitions for this month were found */
+                                deferred.resolve(null);
+                            } else {
+                                /** Set to the first definition */
+                                deferred.resolve(fyDefinitions.first());
+                            }
+
+                        } else {
+                            var definitionId = parseInt($stateParams.id);
+                            deferred.resolve(fyDefinitions[definitionId]);
+                        }
+
+                        return deferred.promise;
+                    }
+                }
+
             })
 
             .state('deliverables.types', {
@@ -64,49 +107,6 @@ angular.module('pmam-deliverables')
                 templateUrl: 'modules/deliverables/views/deliverableFormNewView.html',
                 controller: 'deliverableFormNewController',
                 controllerAs: 'vm'
-            })
-
-            .state('deliverables.main', {
-                url: '/main?fy&mo',
-                templateUrl: 'modules/deliverables/views/deliverablesView.html',
-                controller: 'deliverablesController',
-                controllerAs: 'vm'
-            })
-
-            .state('deliverables.instances', {
-                url: '/instances?fy&id',
-                templateUrl: 'modules/deliverables/views/deliverableInstancesView.html',
-                controller: 'deliverableInstancesController',
-                controllerAs: 'vm',
-                resolve: {
-                    fy: function($stateParams, calendarService) {
-                        return isNaN($stateParams.fy) ? calendarService.getCurrentFiscalYear() : parseInt($stateParams.fy);
-                    },
-                    fyDefinitions: function(deliverableDefinitionsModel, $stateParams, fy) {
-                        return deliverableDefinitionsModel.getFyDefinitions(fy);
-                    },
-                    selectedDefinition: function($stateParams, $q, fyDefinitions) {
-                        var deferred = $q.defer();
-                        if (isNaN($stateParams.id)) {
-                            /** No ID was provided */
-
-                            if(fyDefinitions.count() < 1) {
-                                /** No definitions for this month were found */
-                                deferred.resolve(null);
-                            } else {
-                                /** Set to the first definition */
-                                deferred.resolve(fyDefinitions.first());
-                            }
-
-                        } else {
-                            var definitionId = parseInt($stateParams.id);
-                            deferred.resolve(fyDefinitions[definitionId]);
-                        }
-
-                        return deferred.promise;
-                    }
-                }
-
             })
 
             //Group Manager
