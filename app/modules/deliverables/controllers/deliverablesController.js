@@ -6,7 +6,7 @@
         .module( 'pmam-deliverables' )
         .controller( 'deliverablesController', deliverablesController );
 
-    function deliverablesController($q, deliverableFeedbackModel, chartService, $state,
+    function deliverablesController($filter, $q, deliverableFeedbackModel, chartService, $state,
                                     deliverablesService, calendarService) {
 
         var vm = this;
@@ -27,6 +27,7 @@
         vm.rightPanelView = vm.rightPanelViewArray[1];
         vm.showFeedbackPanel = false;
         vm.toggleRightPanel = toggleRightPanel;
+        vm.customArrayFilter = customArrayFilter;
 
         activate();
 
@@ -45,6 +46,7 @@
                     vm.deliverablesByMonth = resolvedPromises[0];
                     vm.deliverableDefinitionsByMonth = resolvedPromises[1].deliverableDefinitionsByMonth;
                     vm.deliverableFeedback = resolvedPromises[2];
+                    vm.activeDefinitionIdArray = getActiveDefinitionIds(resolvedPromises[0]);
                     vm.gotData = true;
                 });
 
@@ -57,6 +59,18 @@
             //    .then(function (results) {
             //        vm.deliverableFeedback = results;
             //    });
+        }
+
+        function getActiveDefinitionIds(activeDeliverables) {
+            return _.pluck(activeDeliverables, function (activeDeliverable) {
+                return activeDeliverable.deliverableType.lookupId;
+            });
+
+        }
+
+        function customArrayFilter(item) {
+
+            return vm.activeDefinitionIdArray.indexOf(item.id) === -1;
         }
 
         function getDeliverableFeedback(deliverableRecord) {
