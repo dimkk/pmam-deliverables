@@ -50,7 +50,7 @@
 
                     } );
 
-                    deferred.resolve( { deliverableDefinitions: deliverableDefinitions, deliverableDefinitionsByMonth: deliverableDefinitionsByMonth } );
+                    deferred.resolve(deliverableDefinitionsByMonth);
                 });
 
             return deferred.promise;
