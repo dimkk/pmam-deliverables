@@ -23,7 +23,8 @@
         vm.getDeliverableFeedback = getDeliverableFeedback;
         vm.gotData = false;
         vm.increaseDate = increaseDate;
-        vm.rightPanelView = 'modules/deliverables/views/deliverableMetricsView.html';
+        vm.rightPanelViewArray = ['modules/deliverables/views/deliverableFeedbackView.html', 'modules/deliverables/views/deliverableMetricsView.html'];
+        vm.rightPanelView = vm.rightPanelViewArray[1];
         vm.showFeedbackPanel = false;
         vm.toggleRightPanel = toggleRightPanel;
 
@@ -44,13 +45,9 @@
                     vm.deliverablesByMonth = resolvedPromises[0];
                     vm.deliverableDefinitionsByMonth = resolvedPromises[1].deliverableDefinitionsByMonth;
                     vm.deliverableFeedback = resolvedPromises[2];
+                    vm.gotData = true;
                 });
 
-            //deliverablesService.getDeliverablesForMonth( fiscalYear, fiscalMonth )
-            //    .then( function( results ) {
-            //        vm.deliverablesByMonth = results;
-            //    });
-            //
             //deliverablesService.getDeliverableDefinitionsForMonth( fiscalYear, fiscalMonth )
             //    .then(function( results ) {
             //        vm.deliverableDefinitionsByMonth = results.deliverableDefinitionsByMonth;
@@ -64,12 +61,12 @@
 
         function getDeliverableFeedback(deliverableRecord) {
             vm.deliverableFeedback = deliverableRecord.getCachedFeedbackByDeliverableId();
-            vm.rightPanelView = 'modules/deliverables/views/deliverableFeedbackView.html';
+            vm.rightPanelView = vm.rightPanelViewArray[0];
             vm.showFeedbackPanel = true;
         }
 
         function toggleRightPanel() {
-            vm.rightPanelView = 'modules/deliverables/views/deliverableMetricsView.html';
+            vm.rightPanelView = vm.rightPanelViewArray[1];
         }
 
         function initializeMetricsGauges() {
