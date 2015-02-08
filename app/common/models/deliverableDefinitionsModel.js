@@ -86,12 +86,12 @@
                     //    mappedName: "frequencyAcronym",
                     //    readOnly: false
                     //},
-                    //{
-                    //    staticName: "FrequencyDescription",
-                    //    objectType: "Text",
-                    //    mappedName: "frequencyDescription",
-                    //    readOnly: false
-                    //},
+                    {
+                        staticName: "FrequencyDescription",
+                        objectType: "Text",
+                        mappedName: "frequencyDescription",
+                        readOnly: false
+                    },
                 /** Default To and CC email recipients.  Accepts both users and groups */
                     {staticName: 'To', objectType: 'UserMulti', mappedName: 'to', readOnly: false},
                     {staticName: "CC", objectType: "UserMulti", mappedName: "cc", readOnly: false},
