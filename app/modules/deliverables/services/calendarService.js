@@ -26,7 +26,6 @@
         function getCurrentFiscalYear() {
             var today = new Date();
             return today.getMonth() < 3 ? today.getFullYear() : today.getFullYear() - 1;
-
         }
         function getCurrentFiscalMonth() {
             var calendarMonthNumber = new Date().getMonth() + 4;
@@ -45,12 +44,14 @@
         }
 
         /**
+         * @name calendarService.getCalendarMonth
          * @description Month is the FY Month (1-12), method converts into calendar month (0-11)
+         * @param {number} fiscalMonth Fiscal month (1-12)
+         * @returns {number} Calendar month number (0-11)
          */
         function getCalendarMonth(fiscalMonth) {
-            var deliverable = this,
-                calendarMonthNumber = fiscalMonth - 3;
-            if(calendarMonthNumber <= 0) {
+            var calendarMonthNumber = fiscalMonth - 4;
+            if(calendarMonthNumber < 0) {
                 calendarMonthNumber = calendarMonthNumber + 12;
             }
             return calendarMonthNumber
