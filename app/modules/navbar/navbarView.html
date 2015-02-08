@@ -1,5 +1,5 @@
 
-<div class="navbar navbar-inverse" role="navigation" ng-controller="navbarCtrl">
+<div class="navbar navbar-inverse" role="navigation" ng-controller="navbarCtrl as vm">
     <div class="navbar-inner">
         <div class="brand pull-left">
             <img src="images/usmc_40-inverse.png" alt="Logo"/>
@@ -9,13 +9,13 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="navbar-collapse">
             <ul class="nav navbar-nav">
-                <li ui-sref-active="active" ng-repeat="nav in navLocations">
-                    <a ui-sref="{{nav.state}}" href=""><i class="fa {{nav.iconClass}}"></i> {{nav.label}}</a>
+                <li ui-sref-active="active" ng-repeat="nav in vm.navLocations">
+                    <a ui-sref="{{nav.state}}" href=""><i class="fa {{nav.iconClass}}"></i> <span class="hidden-sm">{{nav.label}}</span></a>
                 </li>
             </ul>
             <ul title="Add a new deliverable." class="nav navbar-nav pull-right">
                 <li>
-                    <a ui-sref="newInstance()"><i class="fa fa-plus"></i></a>
+                    <a ui-sref="newInstance()"><i class="fa fa-plus"></i> New</a>
                 </li>
             </ul>
         </div>
