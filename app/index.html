@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>ESED Deliverables Dashboard</title>
+    <title>ESED Deliverables</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
 
@@ -30,6 +30,7 @@
     <!-- build:css styles/main.css -->
     <!-- inject-projectcss:css -->
     <link rel="stylesheet" href="styles/css/animate.css">
+    <link rel="stylesheet" href="styles/css/color-pallete.css">
     <link rel="stylesheet" href="styles/css/custom.css">
     <link rel="stylesheet" href="styles/css/main.css">
     <link rel="stylesheet" href="styles/css/overrides.css">
@@ -57,7 +58,7 @@
     <div ui-view class="fadeIn">
         <div class="splash">
             <div class="message">
-                ESED Deliverables Dashboard
+                ESED Deliverables
             </div>
             <img src="images/Preloader.gif" alt="Preloader">
         </div>
@@ -120,21 +121,21 @@
 
 <!-- inject-projectjs:js -->
 <script src="modules/deliverables/services/userService.js"></script>
+<script src="modules/deliverables/services/ratingsService.js"></script>
 <script src="modules/deliverables/services/deliverablesService.js"></script>
 <script src="modules/deliverables/services/deliverableFrequenciesService.js"></script>
-<script src="modules/deliverables/services/deliverableFeedbackService.js"></script>
 <script src="modules/deliverables/services/chartService.js"></script>
-<script src="modules/deliverables/controllers/newDeliverableFormController.js"></script>
+<script src="modules/deliverables/services/calendarService.js"></script>
 <script src="modules/deliverables/controllers/deliverablesController.js"></script>
 <script src="modules/deliverables/controllers/deliverableInstancesController.js"></script>
-<script src="modules/deliverables/controllers/deliverableFormController.js"></script>
+<script src="modules/deliverables/controllers/deliverableFormNewController.js"></script>
+<script src="modules/deliverables/controllers/deliverableFormEditController.js"></script>
 <script src="modules/deliverables/controllers/definitionsController.js"></script>
 <script src="modules/deliverables/directives/reviews.js"></script>
 <script src="modules/deliverables/directives/ratingsAverage.js"></script>
 <script src="modules/navbar/navbarCtrl.js"></script>
 <script src="common/models/userSettingsModel.js"></script>
 <script src="common/models/deliverablesModel.js"></script>
-<script src="common/models/deliverableFrequenciesModel.js"></script>
 <script src="common/models/deliverableFeedbackModel.js"></script>
 <script src="common/models/deliverableDefinitionsModel.js"></script>
 <script src="common/user.js"></script>
