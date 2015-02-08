@@ -11,7 +11,7 @@
      * @description
      *
      */
-    function deliverablesService(_, $q, deliverablesModel, deliverableDefinitionsModel) {
+    function deliverablesService(_, $q, deliverablesModel, deliverableDefinitionsModel, calendarService) {
 
         var service = {
             getDeliverablesForMonth: getDeliverablesForMonth,
@@ -34,6 +34,10 @@
 
             var deferred = $q.defer();
 
+            //Need to get use calendar month instead of fiscal month in order to get due dates for a month
+            var calendarMonth = calendarService.getCalendarMonth(fiscalMonth);
+
+
             deliverableDefinitionsModel.getFyDefinitions(fiscalYear)
                 .then(function( deliverableDefinitions ){
 
@@ -41,8 +45,9 @@
 
                     _.each(deliverableDefinitions, function( deliverableDefinition ) {
 
+
                         //Retrieve array of all due dates for this deliverable for the given month
-                        var dueDatesThisMonth = deliverableDefinition.getDeliverableDueDatesForMonth(fiscalMonth);
+                        var dueDatesThisMonth = deliverableDefinition.getDeliverableDueDatesForMonth(calendarMonth);
 
                         if( dueDatesThisMonth.length > 0) {
                             deliverableDefinitionsByMonth[ deliverableDefinition.id ] = deliverableDefinition;
