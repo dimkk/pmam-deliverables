@@ -14,7 +14,7 @@
 
         vm.deliverableCountByDefinition = deliverableCountByDefinition;
         vm.fiscalYear = isNaN($state.params.fy) ? calendarService.getCurrentFiscalYear() : parseInt($state.params.fy);
-        vm.fiscalYearDisplay = vm.fiscalYear.toString().slice(-2);
+        vm.fiscalYearDisplay = 'FY ' + vm.fiscalYear.toString().slice(-2);
         vm.searchString = '';
         vm.nextFiscalYear = nextFiscalYear;
         vm.priorFiscalYear = priorFiscalYear;
