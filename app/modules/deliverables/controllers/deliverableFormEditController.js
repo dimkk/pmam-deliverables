@@ -49,7 +49,7 @@
                 deliverableDefinitionsModel.getFyDefinitions(deliverableRecord.fy)
             ]).then(function (resolvedPromises) {
                 vm.personnelArray = resolvedPromises[0];
-                vm.deliverableTypes = resolvedPromises[2].toArray();
+                vm.deliverableTypes = resolvedPromises[2];
 
                 // get all feedback for this deliverable
                 vm.deliverableFeedback = deliverableRecord.getCachedFeedbackByDeliverableId();
