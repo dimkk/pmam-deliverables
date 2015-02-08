@@ -1,28 +1,41 @@
 <!-- renders deliverable types display -->
-<div class="container-fluid">
-    <div class="row deliverables-paged">
-        <div class="col-sm-8"><i class="fa fa-check-square icon-padding"></i>DELIVERABLE TYPES</div>
-        <div class="col-sm-2">
-            <input type="text" ng-model="vm.searchString" placeholder=" Enter Search Term"><i
-            class="fa fa-search search-padding"></i>
+<div class="navbar navbar-default hidden-print">
+    <div class="container-fluid">
+
+        <div class="navbar-left">
+            <span class="navbar-text h4"><i class="fa fa-lg fa-list-ol icon-padding"></i>FY DELIVERABLES</span>
+
         </div>
-        <!-- navigate fiscal years  -->
-        <div class="col-sm-2">
-            <div class="btn-group pull-right">
-                <button class="btn btn-light pull-left" type="button" ng-click="vm.priorFiscalYear()">
+
+        <!--=========== Fiscal Month Toggle Control ===================-->
+        <form class="navbar-form navbar-right">
+            <div class="btn-group">
+
+                <button class="btn btn-default pull-left" type="button" ng-click="vm.priorFiscalYear()">
                     <i class="fa fa-arrow-left"></i>
                 </button>
-                <button class="pull-left btn btn-white bold" style="width: 75px" disabled>FY {{ vm.fiscalYearDisplay }}
-                </button>
-                <button class="btn btn-light pull-left" type="button" ng-click="vm.nextFiscalYear()">
+
+                <span class="pull-left time-indicator text-muted">{{ vm.fiscalYearDisplay }}</span>
+
+                <button class="btn btn-default pull-left" type="button" ng-click="vm.nextFiscalYear()">
                     <i class="fa fa-arrow-right"></i>
                 </button>
+
+            </div>
+        </form>
+
+        <!--=========== Filter ===================-->
+        <div class="navbar-form navbar-right">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Filter" ng-model="vm.searchString">
             </div>
         </div>
+
     </div>
-    <hr/>
-    <!-- Animate once we have data -->
-    <div>
+</div>
+
+<div class="container-fluid">
+    <div class="panel panel-default">
         <table class="table table-striped">
             <thead>
             <tr>
@@ -34,9 +47,11 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="deliverables-data" ng-repeat="deliverableDefinition in vm.deliverableDefinitions | toArray | filter:vm.searchString track by deliverableDefinition.id">
+            <tr class="deliverables-data"
+                ng-repeat="deliverableDefinition in vm.deliverableDefinitions | toArray | filter:vm.searchString | orderBy:'deliverableNumber' track by deliverableDefinition.id">
                 <td>
-                    <a ui-sref="deliverables.instances({ fy:vm.fiscalYear, id:deliverableDefinition.id })">{{ deliverableDefinition.deliverableNumber
+                    <a ui-sref="deliverables.instances({ fy:vm.fiscalYear, id:deliverableDefinition.id })">{{
+                        deliverableDefinition.deliverableNumber
                         }}</a>
                 </td>
                 <td>{{ deliverableDefinition.title }}</td>
@@ -46,7 +61,8 @@
                         class="badge badge-info">{{ vm.deliverableCountByDefinition(deliverableDefinition) }}</span></a>
                 </td>
                 <td>
-                    <a ui-sref="newInstance({ fy:vm.fiscalYear, deliverableTypeId:deliverableDefinition.id })"><i class="fa fa-plus"></i></a>
+                    <a ui-sref="newInstance({ fy:vm.fiscalYear, deliverableTypeId:deliverableDefinition.id })"><i
+                        class="fa fa-plus"></i></a>
                 </td>
             </tr>
             </tbody>

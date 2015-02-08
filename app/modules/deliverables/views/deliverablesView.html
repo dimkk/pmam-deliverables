@@ -33,14 +33,14 @@
     </div>
 </div>
 
-<div class="container">
+<div class="container-fluid">
 
 
 
     <div class="row">
         <div class="col-sm-10">
             <div class="panel panel-default">
-                <div class="panel-heading"><i class="fa fa-calendar icon-padding"></i>ACTIVE DELIVERABLES</div>
+                <div class="panel-heading"><i class="fa fa-folder-o fa-lg"></i> SUBMITTED DELIVERABLES</div>
 
                 <!-- SUBMITTED DELIVERABLES FOR THE MONTH -->
                 <table class="table table-striped">
@@ -54,7 +54,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="deliverable in vm.deliverablesByMonth | filter:vm.searchString track by deliverable.id">
+                    <tr ng-repeat="deliverable in vm.deliverablesByMonth | filter:vm.searchString | orderBy:'title' track by deliverable.id">
                         <td>
                             <a ui-sref="deliverable({id:deliverable.id})" title="Click to view all deliverables of this type.">{{ deliverable.title }}</a>
                         </td>
@@ -67,16 +67,24 @@
                             </a>
                         </td>
                     </tr>
+
+                    <!-- NO DELIVERABLES FOUND FOR THE YEAR -->
                     <tr ng-if="vm.deliverablesByMonth && vm.deliverablesByMonth.length < 1">
                         <td colspan="5" class="alert">No deliverables were found for the selected month.</td>
                     </tr>
+
+                    <!-- LOADING MESSAGE -->
+                    <tr ng-if="!vm.gotData">
+                        <td colspan="5" class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Loading deliverable information...</td>
+                    </tr>
+
                     </tbody>
                 </table>
 
             </div>
 
             <div class="panel panel-default">
-                <div class="panel-heading"><i class="fa fa-calendar icon-padding"></i>PENDING DELIVERABLES</div>
+                <div class="panel-heading"><i class="fa fa-lg fa-folder-open-o"></i> PENDING DELIVERABLES</div>
 
                 <!-- PENDING DELIVERABLES FOR THE MONTH -->
                 <table class="table table-striped">
@@ -89,7 +97,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="definition in vm.deliverableDefinitionsByMonth | toArray | filter:vm.customArrayFilter | filter:vm.searchString track by definition.id">
+                    <tr ng-repeat="definition in vm.deliverableDefinitionsByMonth | toArray | filter:vm.customArrayFilter | filter:vm.searchString | orderBy:'deliverableNumber' track by definition.id">
                         <td>
                             <a ui-sref="deliverables.instances({fy:vm.fiscalYear, id:definition.id})">
                                 {{ definition.deliverableNumber }}
@@ -98,14 +106,23 @@
                         <td>{{ definition.title }}</td>
                         <td>{{ definition.frequency.lookupValue }}</td>
                         <td>
-                            <a ui-sref="newInstance({ fy:vm.fiscalYear, deliverableTypeId:definition.id })" title="Add a new {{definition.title}} deliverable.">
+                            <a ui-sref="newInstance({ fy:vm.fiscalYear, mo: vm.fiscalMonth, deliverableTypeId:definition.id })" title="Add a new {{definition.title}} deliverable.">
                                 <i class="fa fa-plus"></i>
                             </a>
                         </td>
                     </tr>
+
+
+                    <!-- NO DEFINITIONS FOUND FOR THE YEAR -->
                     <tr ng-if="vm.deliverableDefinitionsByMonth && vm.deliverableDefinitionsByMonth.length < 1">
                         <td colspan="5" class="alert">There are no outstanding deliverables remaining.</td>
                     </tr>
+
+                    <!-- LOADING MESSAGE -->
+                    <tr ng-if="!vm.gotData">
+                        <td colspan="4" class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Loading deliverable information...</td>
+                    </tr>
+
                     </tbody>
                 </table>
             </div>

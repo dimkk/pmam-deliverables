@@ -1,24 +1,57 @@
 <!-- renders view of deliverables by type -->
+<div class="navbar navbar-default hidden-print">
+    <div class="container-fluid">
+
+        <div class="navbar-left">
+            <span class="navbar-text h4"><i class="fa fa-check-square icon-padding"></i>RELATED DELIVERABLES</span>
+
+        </div>
+
+        <!--=========== Fiscal Month Toggle Control ===================-->
+        <form class="navbar-form navbar-right">
+            <div class="btn-group">
+
+                <button class="btn btn-default pull-left" type="button" ng-click="vm.priorFiscalYear()">
+                    <i class="fa fa-arrow-left"></i>
+                </button>
+
+                <span class="pull-left time-indicator text-muted">{{ vm.fiscalYearDisplay }}</span>
+
+                <button class="btn btn-default pull-left" type="button" ng-click="vm.nextFiscalYear()">
+                    <i class="fa fa-arrow-right"></i>
+                </button>
+
+            </div>
+        </form>
+
+        <!--=========== Filter ===================-->
+        <div class="navbar-form navbar-right" ng-if="vm.fyDefinitions">
+            <div class="form-group">
+                <label>Type</label>
+                <select
+                    ng-model="vm.selectedDefinition"
+                    ng-change="vm.getUpdateState()"
+                    class="form-control"
+                    data-ng-options="vm.dropdownLabel(deliverableDefinition) for deliverableDefinition in vm.fyDefinitions | toArray | orderBy: 'title' track by deliverableDefinition.id">
+                </select>
+
+                <!--<input type="text" class="form-control" placeholder="Filter" ng-model="vm.searchString">-->
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-10">
-            <div class="row deliverables-paged">
-                <div class="col-sm-7"><i class="fa fa-check-square icon-padding"></i>DELIVERABLES</div>
-                <div class="col-sm-5" ng-if="vm.fyDefinitions">
-                    <select
-                        ng-model="vm.selectedDefinition"
-                        ng-change="vm.getUpdateState()"
-                        class="form-control"
-                        data-ng-options="vm.dropdownLabel(deliverableDefinition) for deliverableDefinition in vm.fyDefinitions | toArray | orderBy: 'title' track by deliverableDefinition.id">
-                    </select>
-                </div>
-            </div>
-
-            <hr/>
 
             <div class="panel panel-default" ng-if="vm.selectedDefinition">
-                <div class="panel-heading"><i class="fa fa-check-square icon-padding"></i>DELIVERABLES</div>
+                <div class="panel-heading" ng-if="vm.selectedDefinition">
+                    {{ vm.selectedDefinition.deliverableNumber }}
+                    <div class="pull-right">Frequency: {{ vm.selectedDefinition.frequencyDescription }}</div>
 
+                </div>
 
                 <table class="table table-striped">
                     <thead>
@@ -31,7 +64,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="deliverableInstance in vm.deliverableInstances track by deliverableInstance.id">
+                    <tr ng-repeat="deliverableInstance in vm.deliverableInstances | orderBy:'startDate' track by deliverableInstance.id">
                         <td>
                             <a ui-sref="deliverable({id:deliverableInstance.id})">{{ deliverableInstance.title }}</a>
                         </td>
@@ -43,6 +76,12 @@
                                 <ratings-average data-deliverable="deliverableInstance"></ratings-average>
                             </a>
                         </td>
+                    </tr>
+                    <tr ng-if="!vm.deliverableInstances && vm.gotData">
+                        <td colspan="5" class="alert">No deliverables were found for the selected type.</td>
+                    </tr>
+                    <tr ng-if="!vm.gotData">
+                        <td colspan="5" class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Loading deliverable information...</td>
                     </tr>
                     </tbody>
                 </table>
