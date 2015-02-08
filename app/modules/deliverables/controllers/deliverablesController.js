@@ -19,6 +19,7 @@
         vm.decreaseDate = decreaseDate;
         vm.deliverableFrequencyFilter = deliverableFrequencyFilter;
         vm.displayPeriod = calendarService.generateDisplayPeriod(fiscalMonth, fiscalYear);
+        vm.fiscalMonth = fiscalMonth;
         vm.fiscalYear = fiscalYear;
         vm.getDeliverableFeedback = getDeliverableFeedback;
         vm.gotData = false;
