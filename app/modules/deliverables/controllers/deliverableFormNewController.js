@@ -8,18 +8,15 @@
         .controller('deliverableFormNewController', deliverableFormNewController);
 
     /* @ngInject */
-    function deliverableFormNewController(toastr, $state, deliverableDefinitionsModel, deliverablesModel,
+    function deliverableFormNewController($scope, toastr, $state, deliverableDefinitionsModel, deliverablesModel,
                                           userService, calendarService) {
 
         var vm = this;
-
         var fiscalYear = isNaN($state.params.fy) ? calendarService.getCurrentFiscalYear() : parseInt($state.params.fy);
         var fiscalMonth = isNaN($state.params.mo) ? calendarService.getCurrentFiscalMonth() : parseInt($state.params.mo);
 
         vm.cancel = cancel;
         vm.dataReady = false;
-        vm.deliverableRecord = deliverablesModel.createEmptyItem({fy: fiscalYear});
-        vm.deliverableRecord.fiscalMonth = parseInt(fiscalMonth);
         vm.monthOptions = calendarService.getMonthOptions();
         vm.save = save;
 
@@ -29,19 +26,31 @@
 
         function activate() {
 
+            /** Instantiate new deliverable record with default values */
+            vm.deliverableRecord = deliverablesModel.createEmptyItem({
+                fy: fiscalYear,
+                fiscalMonth: fiscalMonth,
+                startDate: new Date(),
+                submissionDate: new Date()
+            });
+
             deliverableDefinitionsModel.getFyDefinitions(vm.deliverableRecord.fy)
                 .then(function (indexedCache) {
-                    vm.deliverableTypes = indexedCache.toArray();
+                    vm.deliverableTypes = indexedCache;
                     /** Check to see if a deliverable type was identified */
                     if ($state.params.deliverableTypeId) {
-                        var selectedDeliverableType = indexedCache[parseInt($state.params.deliverableTypeId)];
-                        if (selectedDeliverableType) {
-                            vm.deliverableRecord.deliverableType = {
-                                lookupId: selectedDeliverableType.id,
-                                lookupValue: selectedDeliverableType.title
-                            };
-                        }
+                        var deliverableTypeId = parseInt($state.params.deliverableTypeId);
+                        setDeliverableDefaults(deliverableTypeId);
                     }
+
+                    /** Add to scope so we can add watch which will update default when the type is changed */
+                    $scope.observableDeliverableRecord = vm.deliverableRecord;
+                    $scope.$watch('observableDeliverableRecord.deliverableType', function(newVal, oldVal) {
+                        if(newVal && newVal !== oldVal && newVal.lookupId) {
+                            setDeliverableDefaults(newVal.lookupId);
+                        }
+                    });
+
                 });
 
             userService.getUserLookupValues()
@@ -62,10 +71,33 @@
         }
 
         function cancel() {
-            $state.go('deliverables.instances', {
-                id: vm.deliverableRecord.deliverableType.lookupId,
+            $state.go('deliverables.main', {
+                mo: vm.deliverableRecord.fiscalMonth,
                 fy: vm.deliverableRecord.fy
             });
+        }
+
+        function setDeliverableDefaults(deliverableTypeId) {
+
+            var selectedDeliverableType = vm.deliverableTypes[deliverableTypeId];
+            console.log(deliverableTypeId);
+
+
+            if (selectedDeliverableType) {
+                if(vm.deliverableRecord.deliverableType.lookupId !== deliverableTypeId) {
+                    vm.deliverableRecord.deliverableType = {
+                        lookupId: selectedDeliverableType.id,
+                        lookupValue: selectedDeliverableType.title
+                    };
+                }
+
+                /** Attempt to auto populate the due date based on current month and deliverable definition */
+                var calendarMonth = calendarService.getCalendarMonth(fiscalMonth);
+                var dueDatesForMonth = selectedDeliverableType.getDeliverableDueDatesForMonth(calendarMonth);
+                if(_.isDate(dueDatesForMonth[0])) {
+                    vm.deliverableRecord.dueDate = dueDatesForMonth[0];
+                }
+            }
         }
 
     }
