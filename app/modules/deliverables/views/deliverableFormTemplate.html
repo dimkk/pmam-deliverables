@@ -22,7 +22,7 @@
             <select placeholder="Select Type" ng-required="true"
                     ng-model="vm.deliverableRecord.deliverableType"
                     ng-options="{lookupId: deliverableType.id, lookupValue: deliverableType.title} as deliverableType.title for deliverableType
-                                    in vm.deliverableTypes | orderBy:'title' track by deliverableType.lookupId || deliverableType.id"
+                                    in vm.deliverableTypes | toArray | orderBy:'title' track by deliverableType.lookupId || deliverableType.id"
                     class="form-control" name="deliverableType">
                 <option value="">Select Deliverable Type</option>
             </select>
@@ -62,7 +62,7 @@
         <div class="row">
 
             <!--START DATE-->
-            <div class="col-xs-12 col-sm-6">
+            <div class="col-xs-12 col-sm-4">
                 <div class="form-group"
                      ng-class="{ 'has-error': editDeliverable.startDate.$invalid && editDeliverable.startDate.$dirty }">
                     <label class="deliverables-header" for="startDate">Start Date*</label>
@@ -77,7 +77,7 @@
             </div>
 
             <!-- SUBMISSION DATE -->
-            <div class="col-xs-12 col-sm-6">
+            <div class="col-xs-12 col-sm-4">
                 <div class="form-group"
                      ng-class="{ 'has-error': editDeliverable.submissionDate.$invalid && editDeliverable.submissionDate.$dirty }">
                     <label class="deliverables-header" for="submissionDate">Submission Date*</label>
@@ -89,6 +89,18 @@
                          ng-if='editDeliverable.submissionDate.$dirty' class="form-error">
                         <div ng-message="required">You did not enter a Submission Date</div>
                     </div>
+
+                </div>
+            </div>
+
+            <!-- Due DATE -->
+            <div class="col-xs-12 col-sm-4">
+                <div class="form-group"
+                     ng-class="{ 'has-error': editDeliverable.dueDate.$invalid && editDeliverable.dueDate.$dirty }">
+                    <label class="deliverables-header" for="dueDate">Due Date</label>
+                    <input size="8" placeholder="Select a Due Date"
+                           name="dueDate" ui-date class="form-control"
+                           ng-model="vm.deliverableRecord.dueDate"/>
 
                 </div>
             </div>
