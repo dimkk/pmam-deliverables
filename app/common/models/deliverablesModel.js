@@ -61,7 +61,8 @@
                         mappedName: "submissionDate",
                         readOnly: false
                     },
-                    /** FY is October - September */
+                    {staticName: 'DueDate', objectType: 'DateTime', mappedName: 'dueDate', readOnly: false},
+                /** FY is October - September */
                     {staticName: "FY", objectType: "text", mappedName: "fy", readOnly: false},
                     /** Fiscal month number (1-12) with 1 being October and 12 being September */
                     {staticName: 'Month', objectType: 'Integer', mappedName: 'fiscalMonth', readOnly: false},
