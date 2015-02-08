@@ -9,7 +9,7 @@
 
     /* @ngInject */
     function deliverableInstancesController($state, $q, deliverableFeedbackModel, deliverablesModel, chartService,
-                                            fyDefinitions, selectedDefinition, fy) {
+                                            fyDefinitions, selectedDefinition, fiscalYear) {
 
         var vm = this;
         /** Stop Everything if a valid definition isn't available */
@@ -17,6 +17,7 @@
             return null;
         }
         vm.deliverableFrequency = selectedDefinition.frequency.lookupValue;
+        vm.fiscalYearDisplay = 'FY ' + fiscalYear.toString().slice(-2);
         vm.fyDefinitions = fyDefinitions;
         vm.selectedDefinition = selectedDefinition;
         vm.getUpdateState = getUpdateState;
@@ -25,6 +26,8 @@
         vm.showFeedback = false;
         vm.toggleRightPanel = toggleRightPanel;
         vm.dropdownLabel = dropdownLabel;
+        vm.nextFiscalYear = nextFiscalYear;
+        vm.priorFiscalYear = priorFiscalYear;
 
         activate();
 
@@ -32,20 +35,21 @@
 
         function activate() {
 
-            deliverablesModel.getFyDeliverables(fy)
+            deliverablesModel.getFyDeliverables(fiscalYear)
                 .then(function (indexedCache) {
                     vm.deliverableInstances = selectedDefinition.getDeliverablesForDefinition();
+                    vm.gotData = true;
+
                 });
 
-            deliverableFeedbackModel.getFyFeedback(fy)
+            deliverableFeedbackModel.getFyFeedback(fiscalYear)
                 .then(function (indexedCache) {
-                    vm.deliverableFeedback = indexedCache;
                     initializeMetricsGauges();
                 });
         }
 
         function getUpdateState() {
-            $state.go('deliverables.instances', {fy: fy, id: vm.selectedDefinition.id});
+            $state.go('deliverables.instances', {fy: fiscalYear, id: vm.selectedDefinition.id});
         }
 
         function toggleRightPanel() {
@@ -66,6 +70,18 @@
             vm.gauge1.updateGaugeValue(chartService.getRandom());
             vm.gauge2.updateGaugeValue(chartService.getRandom());
         }
+
+        function nextFiscalYear() {
+            var updatedFiscalYear = fiscalYear + 1;
+            $state.go('deliverables.instances', {fy: updatedFiscalYear});
+
+        }
+
+        function priorFiscalYear() {
+            var updatedFiscalYear = fiscalYear - 1;
+            $state.go('deliverables.instances', {fy: updatedFiscalYear});
+        }
+
 
     }
 })();
