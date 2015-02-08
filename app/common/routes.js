@@ -30,11 +30,11 @@ angular.module('pmam-deliverables')
                 controller: 'deliverableInstancesController',
                 controllerAs: 'vm',
                 resolve: {
-                    fy: function($stateParams, calendarService) {
+                    fiscalYear: function($stateParams, calendarService) {
                         return isNaN($stateParams.fy) ? calendarService.getCurrentFiscalYear() : parseInt($stateParams.fy);
                     },
-                    fyDefinitions: function(deliverableDefinitionsModel, $stateParams, fy) {
-                        return deliverableDefinitionsModel.getFyDefinitions(fy);
+                    fyDefinitions: function(deliverableDefinitionsModel, $stateParams, fiscalYear) {
+                        return deliverableDefinitionsModel.getFyDefinitions(fiscalYear);
                     },
                     selectedDefinition: function($stateParams, $q, fyDefinitions) {
                         var deferred = $q.defer();
@@ -103,7 +103,7 @@ angular.module('pmam-deliverables')
             })
 
             .state('newInstance', {
-                url: '/deliverable?fy&deliverableTypeId',
+                url: '/deliverable?fy&mo&deliverableTypeId',
                 templateUrl: 'modules/deliverables/views/deliverableFormNewView.html',
                 controller: 'deliverableFormNewController',
                 controllerAs: 'vm'
