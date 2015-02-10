@@ -8,15 +8,11 @@
         .controller('deliverableInstancesController', deliverableInstancesController);
 
     /* @ngInject */
-    function deliverableInstancesController($state, $q, deliverableFeedbackModel, deliverablesModel, chartService,
+    function deliverableInstancesController($state, deliverableFeedbackModel, deliverablesModel, chartService,
                                             fyDefinitions, selectedDefinition, fiscalYear) {
 
         var vm = this;
-        /** Stop Everything if a valid definition isn't available */
-        if(!selectedDefinition) {
-            return null;
-        }
-        vm.deliverableFrequency = selectedDefinition.frequency.lookupValue;
+
         vm.fiscalYearDisplay = 'FY ' + fiscalYear.toString().slice(-2);
         vm.fyDefinitions = fyDefinitions;
         vm.selectedDefinition = selectedDefinition;
@@ -29,6 +25,12 @@
         vm.nextFiscalYear = nextFiscalYear;
         vm.priorFiscalYear = priorFiscalYear;
 
+        /** Stop Everything if a valid definition isn't available */
+        if(!selectedDefinition) {
+            return null;
+        }
+        vm.deliverableFrequency = selectedDefinition.frequency.lookupValue;
+
         activate();
 
         /**==================PRIVATE==================*/
@@ -39,7 +41,6 @@
                 .then(function (indexedCache) {
                     vm.deliverableInstances = selectedDefinition.getDeliverablesForDefinition();
                     vm.gotData = true;
-
                 });
 
             deliverableFeedbackModel.getFyFeedback(fiscalYear)
@@ -73,13 +74,13 @@
 
         function nextFiscalYear() {
             var updatedFiscalYear = fiscalYear + 1;
-            $state.go('deliverables.instances', {fy: updatedFiscalYear});
+            $state.go('deliverables.instances', {fy: updatedFiscalYear, id: null});
 
         }
 
         function priorFiscalYear() {
             var updatedFiscalYear = fiscalYear - 1;
-            $state.go('deliverables.instances', {fy: updatedFiscalYear});
+            $state.go('deliverables.instances', {fy: updatedFiscalYear, id: null});
         }
 
 

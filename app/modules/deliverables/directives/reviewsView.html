@@ -1,16 +1,7 @@
 <!--view template for ratings by deliverable directive-->
 <rating ng-model="feedback.rating"
         state-on="'fa fa-star fa-lg'" state-off="'fa fa-star-o fa-lg'"
-        max="5" readonly="true"></rating>
+        max="5" readonly="true"></rating><br/>
+<strong>{{feedback.author.lookupValue}}</strong><br/>
 
-<div class="left-padding">
-    <div class="row">
-        <span class="deliverables-data">{{feedback.created | date:'shortDate' }}</span>
-    </div>
-    <div class="row">
-        <span ng-if="feedback.author">{{feedback.author.lookupValue}}:</span>
-    </div>
-    <div class="row">
-        <span>{{feedback.comments}}</span>
-    </div>
-</div>
+<p>{{feedback.comments}} | {{feedback.modified | date:'shortDate' }}</p>

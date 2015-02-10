@@ -13,7 +13,7 @@
     </legend>
 
 
-    <div>
+    <div ng-if="vm.userDeliverableFeedback">
         <label>Rate this deliverable</label>
         <rating ng-change="vm.updateFeedback()"
                 state-on="'fa fa-star fa-2x'" state-off="'fa fa-star-o fa-2x'"
@@ -41,12 +41,14 @@
 
         <br/>
     </div>
-
-    <div ng-repeat="feedback in vm.deliverableFeedback track by feedback.id">
-        <div class="row">
-            <div class="col-sm-12">
-                <!-- Don't display feedback for current user in this area -->
-                <reviews data-feedback="feedback" ng-if="feedback !== vm.userDeliverableFeedback"></reviews>
+    <div ng-if="vm.deliverableFeedback">
+        <hr class="hr-sm">
+        <div ng-repeat="feedback in vm.deliverableFeedback track by feedback.id">
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- Don't display feedback for current user in this area -->
+                    <reviews data-feedback="feedback" ng-if="feedback.id && feedback.id !== vm.userDeliverableFeedback.id"></reviews>
+                </div>
             </div>
         </div>
     </div>

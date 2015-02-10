@@ -82,7 +82,6 @@
             var selectedDeliverableType = vm.deliverableTypes[deliverableTypeId];
             console.log(deliverableTypeId);
 
-
             if (selectedDeliverableType) {
                 if(vm.deliverableRecord.deliverableType.lookupId !== deliverableTypeId) {
                     vm.deliverableRecord.deliverableType = {

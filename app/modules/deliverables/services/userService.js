@@ -22,11 +22,17 @@
 
         /**==================PRIVATE==================*/
 
+        /**
+         * @name userService.getUsers
+         * @description Makes an initial call for members of the "ESED Deliverables Participants" group,
+         * caches promise, and returns promise for all subsequent requests.
+         * @returns {promise} Resolves with an array of users.
+         */
         function getUsers() {
             if(!requestForUsers) {
                 requestForUsers = apDataService.getCollection({
-                    operation:'GetUserCollectionFromSite',
-                    groupName:'deliverableActors',
+                    operation:'GetUserCollectionFromGroup',
+                    groupName:'ESED Deliverables Participants',
                     filterNode:'User'
                 });
             }
@@ -48,7 +54,7 @@
                 var userLookupValues = _.map(userArray, function (user) {
                     return {lookupValue: user.Name, lookupId: user.ID};
                 });
-                deferred.resolve(userLookupValues)
+                deferred.resolve(userLookupValues);
             });
 
             return deferred.promise;

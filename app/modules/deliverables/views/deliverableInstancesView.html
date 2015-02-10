@@ -25,9 +25,9 @@
         </form>
 
         <!--=========== Filter ===================-->
-        <div class="navbar-form navbar-right" ng-if="vm.fyDefinitions">
+        <div class="navbar-form navbar-right" ng-if="vm.fyDefinitions.count() > 0">
             <div class="form-group">
-                <label>Type</label>
+                <label>Type&nbsp;</label>
                 <select
                     ng-model="vm.selectedDefinition"
                     ng-change="vm.getUpdateState()"

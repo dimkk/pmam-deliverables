@@ -26,6 +26,10 @@
                     class="form-control" name="deliverableType">
                 <option value="">Select Deliverable Type</option>
             </select>
+            <!-- Display additional deliverable details on the new form -->
+            <div class="help-block" ng-if="vm.deliverableRecord.deliverableType">
+                {{ vm.deliverableRecord.getDeliverableDefinition().deliverableNumber }}
+                <span class="pull-right hidden-sm"> Frequency: {{ vm.deliverableRecord.getDeliverableDefinition().frequencyDescription }}</span></div>
         </div>
 
         <div class="row">

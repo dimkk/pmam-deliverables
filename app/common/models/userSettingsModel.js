@@ -43,6 +43,7 @@
         model.registerQuery({
             name: 'primary',
             operation: 'GetListItems',
+            CAMLRowLimit: 1,
             query: '' +
             '<Query>' +
             '   <Where>' +
@@ -53,7 +54,7 @@
             '           </Eq>' +
             '           <Eq>' +
             '               <FieldRef Name="Title"/>' +
-            '               <Value Type="Text">1App</Value>' +
+            '               <Value Type="Text">ESED Deliverables</Value>' +
             '           </Eq>' +
             '       </And>' +
             '   </Where>' +
@@ -65,16 +66,17 @@
 
 
         model.executeQuery('primary')
-            .then(function (response) {
+            .then(function (indexedCache) {
                 //Create new record if it doesn't already exist
-                if (response.count() === 0) {
+                if (indexedCache.count() === 0) {
                     //Newly created list item is processed and added to model.data
-                    apDataService.createListItem(model, {title: '1App', preferences: {}})
+                    model.addNewItem({ title: 'ESED Deliverables', preferences: {} })
                         .then(function (newItemCache) {
-                            updateReference(newItemCache.first());
+                            /** Returns the newly created list item */
+                            updateReference(newItemCache);
                         });
                 } else {
-                    updateReference(response.first());
+                    updateReference(indexedCache.first());
                 }
             });
 
@@ -87,50 +89,6 @@
 
 
         /********************* Model Specific Shared Functions ***************************************/
-            //Allows storage and retrieval of page states between sessions
-        model.pageState = function (pageName, pageState) {
-
-            //Getter
-            if (!pageState) {
-                return model.getCache().first().preferences.pageStates[pageName];
-            }
-
-            //Setter
-            model.getCache().first().preferences.pageStates[pageName] = pageState;
-            model.getCache().first().saveChanges();
-        };
-
-        model.addMember = function (user) {
-            console.log(user);
-            if (!model.getCache().first().preferences.teamMembers) {
-                model.getCache().first().preferences.teamMembers = [];
-            }
-
-            //Check to make sure team member isn't already saved
-            if (model.getCache().first().preferences.teamMembers.indexOf(user.accountName.lookupId) === -1) {
-                model.getCache().first().preferences.teamMembers.push(user.accountName.lookupId);
-            }
-            return model.getCache().first().saveChanges();
-        };
-
-        model.deleteMember = function (user) {
-            var index = model.getCache().first().preferences.teamMembers.indexOf(user.accountName.lookupId);
-            model.getCache().first().preferences.teamMembers.splice(index, 1);
-            return model.getCache().first().saveChanges();
-        };
-
-        model.isMember = function (user) {
-            return _.contains(model.getCache().first().preferences.teamMembers, user.accountName.lookupId);
-        };
-
-        model.openModal = function () {
-
-            var modalInstance = $modal.open({
-                templateUrl: 'modules/favorites/views/favorites_view.html',
-                controller: 'favoritesCtrl'
-            });
-            return modalInstance.result;
-        };
 
         return model;
     }
