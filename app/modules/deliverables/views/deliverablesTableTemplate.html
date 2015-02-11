@@ -1,0 +1,53 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Type</th>
+        <th>Submitted</th>
+        <th>Due</th>
+        <th>Schedule</th>
+        <th>Average Rating</th>
+        <th style="max-width:40px"><i data-tooltip="Denotes an active discussion thread" class="fa fa-comments fa-lg"></i></th>
+        <th style="max-width:40px"><span data-tooltip="The number of times a deliverable has been viewed" class="badge">#</span></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="deliverable in vm.visibleDeliverables | filter:vm.searchString | orderBy:'submittedDate' track by deliverable.id">
+        <td>
+            <image ng-src="{{deliverable.getDaysBetweenSubmittedAndDue() < 0 ? 'images/imnbusy.png' : 'images/imnon.png'}}" alt="Stoplight"></image>&nbsp;
+            <a ui-sref="deliverable({id:deliverable.id})" title="View this deliverable">{{ deliverable.title }}</a>
+        </td>
+        <td>
+            <a ui-sref="deliverables.instances({fy:deliverable.fy, id:deliverable.deliverableType.lookupId})"
+               title="View all deliverables of this type">{{ deliverable.deliverableType.lookupValue }}</a>
+        </td>
+        <td>{{ deliverable.submissionDate | date:'shortDate' }}</td>
+        <td>{{ deliverable.dueDate | date:'shortDate' }}</td>
+        <td>{{ deliverable.getDeliverableDefinition().deliverableFrequency }}</td>
+        <td class="no-wrap">
+            <!--<a ng-click="vm.getDeliverableFeedback( deliverable )" class="rating-data" title="View Details">-->
+                <ratings-average data-deliverable="deliverable"></ratings-average>
+            <!--</a>-->
+        </td>
+        <td>
+            <a ng-show="deliverable.discussionThread.posts.length > 0"
+               tooltip="Click to view discussion thread"
+               ui-sref="deliverable({id:deliverable.id, activeTab: 'discussion'})">
+                <i class="fa fa-comments fa-lg"></i>
+            </a>
+        </td>
+        <td><span class="badge">{{deliverable.getViewCount()}}</span></td>
+    </tr>
+
+    <!-- NO DELIVERABLES FOUND FOR THE YEAR -->
+    <tr ng-if="vm.visibleDeliverables && vm.visibleDeliverables.length < 1">
+        <td colspan="8" class="alert">No matching deliverables were found.</td>
+    </tr>
+
+    <!-- LOADING MESSAGE -->
+    <tr ng-if="!vm.gotData">
+        <td colspan="8" class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Loading deliverable information...</td>
+    </tr>
+
+    </tbody>
+</table>
