@@ -90,11 +90,9 @@
                     };
                 }
 
-                /** Attempt to auto populate the due date based on current month and deliverable definition */
-                var calendarMonth = calendarService.getCalendarMonth(fiscalMonth);
-                var dueDatesForMonth = selectedDeliverableType.getDeliverableDueDatesForMonth(calendarMonth);
-                if(_.isDate(dueDatesForMonth[0])) {
-                    vm.deliverableRecord.dueDate = dueDatesForMonth[0];
+                var estimatedDueDate = vm.deliverableRecord.estimateDeliverableDueDate();
+                if(_.isDate(estimatedDueDate)) {
+                    vm.deliverableRecord.dueDate = estimatedDueDate;
                 }
             }
         }
