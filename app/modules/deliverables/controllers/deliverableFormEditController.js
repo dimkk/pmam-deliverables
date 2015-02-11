@@ -8,8 +8,7 @@
 
     /* @ngInject */
     function deliverableFormEditController(deliverableFeedbackModel, toastr, $state, deliverableDefinitionsModel,
-                                       userService, $q, deliverableRecord, ratingsService, calendarService,
-                                       deliverableAccessLogModel, $scope) {
+                                       userService, $q, deliverableRecord, ratingsService, calendarService, $scope) {
 
         //TODO Need to add logic to revert back to pristine deliverable in cache if entity is updated and user leaves without saving
         var vm = this;
@@ -27,6 +26,8 @@
         vm.save = save;
         vm.starClass = ratingsService.starClass;
         vm.updateFeedback = updateFeedback;
+        vm.userCanContribute = userService.userCanContribute;
+        vm.userCanReview = userService.userCanReview;
 
         // rating settings
         vm.rate = 5;
@@ -65,10 +66,10 @@
             /** Create a log record so we can collect metrics on the average duration a user is on this page */
             deliverableRecord.registerDeliverableAccessEvent()
                 .then(function (deliverableAccessEvent) {
+                    /** Wait for user to leave current state so we can log it */
                     $scope.$on('$stateChangeStart', function(){
                         /** Causes modified date to reflect updated time so we can get delta between created and modified */
                         deliverableAccessEvent.saveChanges();
-                        console.log('Route Changed');
                     });
                 })
         }
@@ -93,21 +94,13 @@
                 vm.deliverableRecord.discussionThread.posts.length : '';
         }
 
-        function save(deliverableForm) {
-            console.log(deliverableForm);
-
+        function save() {
             deliverableRecord.saveChanges().then(function () {
-                //todo split this logic out
-                if (vm.userDeliverableFeedback.comments.length) {
-                    vm.updateFeedback();
-                }
-
                 toastr.success("Deliverable updated");
                 navigateBack();
             }, function () {
                 toastr.error("There was a problem updating this deliverable record");
             });
-
         }
 
         function deleteRecord() {
@@ -138,7 +131,6 @@
                         toastr.success('Feedback successfully removed.')
                     })
             }
-
         }
 
         function navigateBack() {
