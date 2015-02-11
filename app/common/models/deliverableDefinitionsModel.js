@@ -14,7 +14,7 @@
         .module('pmam-deliverables')
         .factory('deliverableDefinitionsModel', deliverableDefinitionsModel);
 
-    function deliverableDefinitionsModel(_, apModelFactory, $injector) {
+    function deliverableDefinitionsModel(_, apModelFactory, $injector, deliverableFrequenciesService) {
 
         /********************* Model Definition ***************************************/
 
@@ -47,8 +47,8 @@
                 /**List GUID can be found in list properties in SharePoint designer */
                 customFields: [
                 /** Array of objects mapping each SharePoint field to a property on a list item object */
-                /** If OneApp live templates have been imported type 'oafield' followed by the tab key for
-                 /*  each field to quickly map with available options */
+
+                /** eg: 'QA Reconciliation of OIS-MC Data' */
                     {
                         staticName: "Title",
                         objectType: "Text",
@@ -56,14 +56,16 @@
                         readOnly: false,
                         description: 'Label for this deliverable type.'
                     },
+
+                /** eg: 'WUA15-009/2.1.2.b.4.*' */
                     {
                         staticName: "DeliverableNumber",
                         objectType: "Text",
                         mappedName: "deliverableNumber",
                         readOnly: false
                     },
-                    //TODO Deprecate and use DeliverableFrequency instead
-                    {staticName: "Frequency", objectType: "Lookup", mappedName: "frequency", readOnly: false},
+
+                /** See deliverableFrequenciesService for options */
                     {
                         staticName: 'DeliverableFrequency',
                         objectType: 'Choice',
@@ -71,34 +73,59 @@
                         readOnly: false,
                         description: 'The frequency this deliverable is due.'
                     },
+
+                    //TODO deprecate because we are trying to do too many things with this field, break apart
+                /* For Monthly/Bimonthly this is a number as a string that represents the day of the month this deliverable is due
+                *  In both of those cases it can also represent the
+                * */
                     {
                         staticName: "DateIdentifier",
                         objectType: "Text",
                         mappedName: "dateIdentifier",
                         readOnly: false
                     },
-                    //TODO Deprecate - This functionality can be handled in SpecifiedDates
-                    {staticName: "HardDate", objectType: "Date", mappedName: "hardDate", readOnly: false},
-                    {staticName: "FY", objectType: "text", mappedName: "fy", readOnly: false},
-                    //{
-                    //    staticName: "Frequency_x003a_Acronym",
-                    //    objectType: "Lookup",
-                    //    mappedName: "frequencyAcronym",
-                    //    readOnly: false
-                    //},
+
+
+                /** For Monthly/Bimonthly - Represents the day of the month this deliverable is due
+                *   ( */
+                    {staticName: 'DayOfMonthDue', objectType: 'Integer', mappedName: 'dayOfMonthDue', readOnly: false},
+
+                /** In cases like the last day of the month, there is no easy way to set this using a single integer as
+                 * in the above field so we need compute (currently only option is 'LastDayOfMonth' but could be easily expanded) */
+                    {
+                        staticName: 'DynamicDate',
+                        objectType: 'Choice',
+                        mappedName: 'dynamicDate',
+                        readOnly: false
+                    },
+
+                /** In cases where we are given N days from the start date to have the deliverable submitted (ad-hoc deliverables) */
+                    {staticName: 'DateOffset', objectType: 'Integer', mappedName: 'dateOffset', readOnly: false},
+
+                /** Applicable FY to display this deliverable type */
+                    {staticName: "FY", objectType: "Integer", mappedName: "fy", readOnly: false},
+
+                /** eg: Day 5 of every month. */
                     {
                         staticName: "FrequencyDescription",
                         objectType: "Text",
                         mappedName: "frequencyDescription",
                         readOnly: false
                     },
-                /** Default To and CC email recipients.  Accepts both users and groups */
+
+                    //TODO Allow users to update default to/cc recipients
+
+                /** Default To and CC email recipients.  Accepts both users and groups
+                 * (currently uses members from 'ESED Deliverables Participants' group)*/
                     {staticName: 'To', objectType: 'UserMulti', mappedName: 'to', readOnly: false},
                     {staticName: "CC", objectType: "UserMulti", mappedName: "cc", readOnly: false},
-                    //Work unit assignment number (eg 2.1 or 2.3)
+
+                /** Work unit assignment number (eg 2.1 or 2.3) */
                     {staticName: 'TaskNumber', objectType: 'Text', mappedName: 'taskNumber', readOnly: false},
+
                 /** JSON array of date strings ["2014-12-15", "2015-03-15", "2015-06-15", "2015-09-15"] that will override calculated dates. */
                     {staticName: 'SpecifiedDates', objectType: 'JSON', mappedName: 'specifiedDates', readOnly: false}
+
                 ]
             }
         });
@@ -116,7 +143,7 @@
             var self = this;
             _.extend(self, obj);
             /** Identify all due dates for this deliverable definition and store for later use */
-            self.dueDates = calculateDeliverableDueDates(self);
+            self.dueDates = deliverableFrequenciesService.generateDeliverableDueDates(self);
         }
 
         DeliverableDefinition.prototype.getDeliverableDueDatesForMonth = getDeliverableDueDatesForMonth;
@@ -125,28 +152,6 @@
 
 
         /*********************************** Queries ***************************************/
-
-        /** Fetch data (pulls local xml if offline named model.list.title + '.xml')
-         *  Initially pulls all requested data.  Each subsequent call just pulls records that have been changed,
-         *  updates the model, and returns a reference to the updated data array
-         * @returns {Array} Requested list items
-         */
-        model.registerQuery({
-            name: 'primary',
-            operation: 'GetListItems',
-            query: '' +
-            '<Query>' +
-            '   <OrderBy>' +
-            '       <FieldRef Name="ID" Ascending="TRUE"/>' +
-            '   </OrderBy>' +
-            '</Query>'
-        });
-
-        return model;
-
-
-        /********************* Model Specific Shared Functions ***************************************/
-
 
         /**
          * @description Makes a single request for deliverable definitions for a given FY.  All subsequent requests
@@ -206,83 +211,6 @@
         }
 
         /**
-         * @name calculateDeliverableDueDates
-         * @param {DeliverableDefinition} deliverableDefinition
-         * @returns {Array} of date objects.
-         */
-        function calculateDeliverableDueDates(deliverableDefinition) {
-            var dueDates = [],
-                i = 0;
-
-            if (deliverableDefinition.specifiedDates.length > 0) {
-                /** Dates were manually entered so no need to compute */
-                _.each(deliverableDefinition.specifiedDates, function (dateString) {
-                    dueDates.push(new Date(dateString));
-                });
-            } else {
-
-                /** Function that accepts a function and calls it for each of the 12 months */
-                var processMonths = function (evalMonth) {
-                    for (i = 0; i < 12; i++) {
-                        var fy = getFY(parseInt(deliverableDefinition.fy), i);
-                        var dueDate = evalMonth(fy, i);
-                        if (dueDate) {
-                            dueDates.push(dueDate);
-                        }
-                    }
-                };
-
-                /** Compute dates based on periodicity */
-                switch (deliverableDefinition.deliverableFrequency) {
-                    case 'Monthly':
-                        /** Check for the case where the date identifier is a string instead of a number formatted as string **/
-                        if (isNaN(deliverableDefinition.dateIdentifier)) { //TODO Find a better way to handle the Last day of month case
-                            if (deliverableDefinition.dateIdentifier === 'Last') {
-                                /** Build an array of dates for the last day of each month */
-                                processMonths(function (fy, i) {
-                                    /** Using zero for day sets date to last day of previous month, that is why we need i+1 */
-                                    return new Date(getFY(deliverableDefinition.fy, i), i + 1, 0);
-                                });
-                            }
-                        } else {
-                            processMonths(function (fy, i) {
-                                /** Date identifier is numeric value as string which represents the day of month deliverable is due */
-                                return new Date(getFY(deliverableDefinition.fy, i), i + 1, parseInt(deliverableDefinition.dateIdentifier));
-                            });
-                        }
-                        break;
-                    case 'Bimonthly':
-                        processMonths(function (fy, i) {
-                            /** Only add odd months */
-                            if (i % 2) {
-                                /** Create a due date for each odd month */
-                                return new Date(getFY(deliverableDefinition.fy, i), i + 1, parseInt(deliverableDefinition.dateIdentifier));
-                            }
-                        });
-                        break;
-                    case 'One Time':
-                        if (deliverableDefinition.hardDate.length) {
-                            dueDates.push(new Date(deliverableDefinition.hardDate));
-                        }
-                        break;
-                }
-            }
-
-            return dueDates;
-        }
-
-        /**
-         * @description Returns a valid calendar year that corresponds with a fiscal year and zero based month number
-         * @param {string} fyString
-         * @param {number} monthNumber
-         * @returns {Number} Calendar Year
-         */
-        function getFY(fyString, monthNumber) {
-            var fyNumber = parseInt(fyString);
-            return monthNumber < 9 ? fyNumber : fyNumber - 1;
-        }
-
-        /**
          * @name DeliverableDefinition.getDeliverablesForDefinition
          * @description Allows us to retrieve deliverables for a given definition which have already been
          * grouped/cache by definition id.
@@ -295,6 +223,8 @@
             var deliverablesModel = $injector.get('deliverablesModel');
             return deliverablesModel.getCachedDeliverablesByTypeId(self.id);
         }
+
+        return model;
 
     }
 })();
