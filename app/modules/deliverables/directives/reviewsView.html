@@ -4,4 +4,4 @@
         max="5" readonly="true"></rating><br/>
 <strong>{{feedback.author.lookupValue}}</strong><br/>
 
-<p>{{feedback.comments}} | {{feedback.modified | date:'shortDate' }}</p>
+<p>{{feedback.comments}} <small>{{feedback.modified | date:'shortDate' }}</small></p>
