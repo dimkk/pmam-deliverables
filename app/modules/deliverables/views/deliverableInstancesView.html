@@ -53,38 +53,8 @@
 
                 </div>
 
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Submitted</th>
-                        <th>Due</th>
-                        <th>Schedule</th>
-                        <th>Average Rating</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="deliverableInstance in vm.deliverableInstances | orderBy:'startDate' track by deliverableInstance.id">
-                        <td>
-                            <a ui-sref="deliverable({id:deliverableInstance.id})">{{ deliverableInstance.title }}</a>
-                        </td>
-                        <td>{{ deliverableInstance.submissionDate | date:'shortDate' }}</td>
-                        <td>{{ deliverableInstance.startDate | date:'shortDate' }}</td>
-                        <td>{{ vm.deliverableFrequency }}</td>
-                        <td>
-                            <a ng-click="vm.getDeliverableFeedback( deliverableInstance.id )" class="rating-data" title="View Details">
-                                <ratings-average data-deliverable="deliverableInstance"></ratings-average>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr ng-if="!vm.deliverableInstances && vm.gotData">
-                        <td colspan="5" class="alert">No deliverables were found for the selected type.</td>
-                    </tr>
-                    <tr ng-if="!vm.gotData">
-                        <td colspan="5" class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Loading deliverable information...</td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="panel-table-include" ng-include="'modules/deliverables/views/deliverablesTableTemplate.html'"></div>
+
             </div>
 
             <!-- Display message when a valid definition isn't found -->

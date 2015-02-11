@@ -42,44 +42,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading"><i class="fa fa-folder-o fa-lg"></i> SUBMITTED DELIVERABLES</div>
 
-                <!-- SUBMITTED DELIVERABLES FOR THE MONTH -->
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Submitted</th>
-                        <th>Due</th>
-                        <th>Schedule</th>
-                        <th>Average Rating</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="deliverable in vm.deliverablesByMonth | filter:vm.searchString | orderBy:'title' track by deliverable.id">
-                        <td>
-                            <a ui-sref="deliverable({id:deliverable.id})" title="Click to view all deliverables of this type.">{{ deliverable.title }}</a>
-                        </td>
-                        <td>{{ deliverable.submissionDate | date:'shortDate' }}</td>
-                        <td>{{ deliverable.startDate | date:'shortDate' }}</td>
-                        <td>{{ vm.deliverableFrequencyFilter( deliverable ) }}</td>
-                        <td>
-                            <a ng-click="vm.getDeliverableFeedback( deliverable )" class="rating-data" title="View Details">
-                                <ratings-average data-deliverable="deliverable"></ratings-average>
-                            </a>
-                        </td>
-                    </tr>
-
-                    <!-- NO DELIVERABLES FOUND FOR THE YEAR -->
-                    <tr ng-if="vm.deliverablesByMonth && vm.deliverablesByMonth.length < 1">
-                        <td colspan="5" class="alert">No deliverables were found for the selected month.</td>
-                    </tr>
-
-                    <!-- LOADING MESSAGE -->
-                    <tr ng-if="!vm.gotData">
-                        <td colspan="5" class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Loading deliverable information...</td>
-                    </tr>
-
-                    </tbody>
-                </table>
+                <!-- SUBMITTED DELIVERABLES FOR THE MONTH (USE THE SAME TEMPLATE AS DELIVERABLE INSTANCES-->
+                <div class="panel-table-include" ng-include="'modules/deliverables/views/deliverablesTableTemplate.html'"></div>
 
             </div>
 
@@ -104,7 +68,7 @@
                             </a>
                         </td>
                         <td>{{ definition.title }}</td>
-                        <td>{{ definition.frequency.lookupValue }}</td>
+                        <td>{{ definition.frequencyDescription }}</td>
                         <td>
                             <a ui-sref="newInstance({ fy:vm.fiscalYear, mo: vm.fiscalMonth, deliverableTypeId:definition.id })" title="Add a new {{definition.title}} deliverable.">
                                 <i class="fa fa-plus"></i>
