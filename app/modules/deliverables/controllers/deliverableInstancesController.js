@@ -67,16 +67,6 @@
             return deliverableDefinition.title + ' (' + _.toArray(deliverables).length + ')';
         }
 
-        function initializeMetricsGauges() {
-
-            vm.gauge1 = new chartService.Gauge('Satisfaction');
-            vm.gauge2 = new chartService.Gauge('OTD');
-
-            //TODO Add logic so we don't need to fake gauge values
-            vm.gauge1.updateGaugeValue(chartService.getRandom());
-            vm.gauge2.updateGaugeValue(chartService.getRandom());
-        }
-
         function nextFiscalYear() {
             var updatedFiscalYear = fiscalYear + 1;
             $state.go('deliverables.instances', {fy: updatedFiscalYear, id: null});
