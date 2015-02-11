@@ -76,11 +76,16 @@
 
             _.extend(self.options, options);
 
-            self.updateGaugeValue = function (val) {
+            self.updateGaugeValue = function (val, label) {
                 /* Pause prior to triggering animation */
                 $timeout(function () {
-                    self.data.rows[0].c[1].v = val;
-                    self.data.rows[0].c[1].f = val;
+                    if(isNaN(val)) {
+                        self.data.rows[0].c[1].v = 0;
+                        self.data.rows[0].c[1].f = 'N/A';
+                    } else {
+                        self.data.rows[0].c[1].v = val;
+                        self.data.rows[0].c[1].f = label || val;
+                    }
                 }, 750);
             };
         }
@@ -107,8 +112,7 @@
 
         function getOnTimeDeliveryRating(deliverables) {
             var percentage = getOnTimeDeliveryPercentage(deliverables);
-            var rating = parseInt(percentage * 5 * 10) / 10;
-            return rating;
+            return parseInt(percentage * 5 * 10) / 10;
         }
 
         function getSatisfactionRating(deliverables) {
