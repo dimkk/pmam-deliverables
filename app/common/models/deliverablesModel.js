@@ -14,8 +14,9 @@
         .module('pmam-deliverables')
         .factory('deliverablesModel', deliverablesModel);
 
-    function deliverablesModel(_, apModelFactory, apDiscussionThreadFactory, deliverableFeedbackModel,
-                               deliverableDefinitionsModel, calendarService, user) {
+    function deliverablesModel(_, apModelFactory, apDiscussionThreadFactory, moment, deliverableFeedbackModel,
+                               deliverableDefinitionsModel, calendarService, deliverableFrequenciesService, user,
+                               deliverableAccessLogModel) {
 
         /** Local Deliverable cache organized by deliverable type id */
         var deliverableByTypeId = {};
@@ -37,7 +38,6 @@
              * @name deliverablesModel.list
              * @description
              *  Contains
-             *
              *  - list.title (Maps to the offline XML file in dev folder (no spaces))
              *  - list.guid (GUID can be found in list properties in SharePoint designer)
              *  - list.customFields
@@ -62,8 +62,9 @@
                         readOnly: false
                     },
                     {staticName: 'DueDate', objectType: 'DateTime', mappedName: 'dueDate', readOnly: false},
-                /** FY is October - September */
-                    {staticName: "FY", objectType: "text", mappedName: "fy", readOnly: false},
+
+                /** FY is October - September (Actually a string in SharePoint but we call it Integer for automatic type conversion*/
+                    {staticName: "FY", objectType: "Integer", mappedName: "fy", readOnly: false},
                     /** Fiscal month number (1-12) with 1 being October and 12 being September */
                     {staticName: 'Month', objectType: 'Integer', mappedName: 'fiscalMonth', readOnly: false},
                     {staticName: "Details", objectType: "Text", mappedName: "details", readOnly: false},
@@ -108,10 +109,19 @@
             }
         }
 
+        Deliverable.prototype.estimateDeliverableDueDate = estimateDeliverableDueDate;
+        Deliverable.prototype.getCachedAccessLogsByDeliverableId = getCachedAccessLogsByDeliverableId;
         Deliverable.prototype.getCachedFeedbackByDeliverableId = getCachedFeedbackByDeliverableId;
         Deliverable.prototype.getCachedFeedbackForCurrentUser = getCachedFeedbackForCurrentUser;
         Deliverable.prototype.getCalendarMonth = getCalendarMonth;
+        Deliverable.prototype.getDaysBetweenSubmittedAndDue = getDaysBetweenSubmittedAndDue;
         Deliverable.prototype.getDeliverableDefinition = getDeliverableDefinition;
+        Deliverable.prototype.getRatingsAverage = getRatingsAverage;
+        Deliverable.prototype.getViewCount = getViewCount;
+        Deliverable.prototype.hasFeedback = hasFeedback;
+        Deliverable.prototype.registerDeliverableAccessEvent = registerDeliverableAccessEvent;
+        Deliverable.prototype.startDateIsRelevant = startDateIsRelevant;
+        Deliverable.prototype.wasDeliveredOnTime = wasDeliveredOnTime;
 
         return model;
 
@@ -122,7 +132,7 @@
          * @name Deliverable.getCachedFeedbackByDeliverableId
          * @description Allows us to retrieve all feedback for a given deliverable which have already been
          * grouped/cached by deliverable id.
-         * @returns {object} Keys of deliverable feedback id's and values of the feeback themselves.
+         * @returns {object} Keys of deliverable feedback id's and values of the feedback themselves.
          */
         function getCachedFeedbackByDeliverableId() {
             var self = this;
@@ -228,7 +238,16 @@
         }
 
         /**
-         * @name model.getCachedDeliverablesByTypeId
+         * @name Deliverable.estimateDeliverableDueDate
+         * @returns {Date} The due date or null if one isn't found.
+         */
+        function estimateDeliverableDueDate() {
+            var deliverable = this;
+            return deliverableFrequenciesService.estimateDeliverableDueDate(deliverable);
+        }
+
+        /**
+         * @name deliverablesModel.getCachedDeliverablesByTypeId
          * @param {number} deliverableTypeId
          * @description Allows us to retrieve deliverables for a given definition which have already been
          * grouped/cache by definition id.
@@ -237,6 +256,117 @@
         function getCachedDeliverablesByTypeId(deliverableTypeId) {
             return deliverableByTypeId[deliverableTypeId];
         }
+
+        /**
+         * @name Deliverable.startDateIsRelevant
+         * @description We only need to show the start date field on ad-hoc type deliverables.
+         * @returns {boolean}
+         */
+        function startDateIsRelevant() {
+            var deliverable = this;
+            var deliverableDefinition = deliverable.getDeliverableDefinition();
+            return deliverableDefinition.deliverableFrequency === 'As Required';
+        }
+
+        /**
+         * @name Deliverable.getDaysBetweenSubmittedAndDue
+         * @returns {number} + = submitted early, - = submitted late
+         */
+        function getDaysBetweenSubmittedAndDue() {
+            var deliverable = this;
+
+            //TODO get this working once the current bug in moment-business is resolved
+            //return moment(deliverable.dueDate).weekDays(moment(deliverable.submissionDate));
+
+            //Number of actual days between dates
+            var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+            var firstDate = deliverable.dueDate || deliverable.estimateDeliverableDueDate();
+            var secondDate = deliverable.submissionDate;
+
+            var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
+
+            return secondDate < firstDate ? diffDays : -diffDays;
+        }
+
+        /**
+         * @name Deliverable.wasDeliveredOnTime
+         * @returns {boolean} Was this deliverable submitted by the due date?
+         */
+        function wasDeliveredOnTime() {
+            var deliverable = this;
+            return deliverable.getDaysBetweenSubmittedAndDue() >= 0;
+        }
+
+        /**
+         * @name Deliverable.hasFeedback
+         * @description Simple check to see if a given deliverable has any feedback.
+         * @returns {boolean}
+         */
+        function hasFeedback() {
+            var deliverable = this;
+            /** Force a boolean response */
+            return !!deliverable.getCachedFeedbackByDeliverableId();
+        }
+
+        /**
+         * @name Deliverable.getRatingsAverage
+         * @returns {number} Average of all ratings for this deliverable.
+         */
+        function getRatingsAverage() {
+            var deliverable = this,
+                ratingSum = 0,
+                averageRating;
+            var feedbackRecords = _.toArray(deliverable.getCachedFeedbackByDeliverableId());
+
+            _.each(feedbackRecords, function(feedbackRecord) {
+                ratingSum += feedbackRecord.rating;
+            });
+            if(!feedbackRecords.length) {
+                /** Assume perfect score unless there are actual ratings */
+                averageRating = 5;
+            } else {
+                averageRating = Math.round( (ratingSum / feedbackRecords.length) * 10) / 10;
+            }
+            return averageRating;
+        }
+
+        /**
+         * @name Deliverable.registerDeliverableAccessEvent
+         * @description Creates a log entry the first time a user views a deliverable then modifies once they leave
+         * so the delta from the two time will show how long they viewed the record.
+         * @returns {promise}
+         */
+        function registerDeliverableAccessEvent() {
+            var deliverable = this;
+            return deliverableAccessLogModel.addNewItem({
+                deliverable: {lookupId: deliverable.id},
+                fy: deliverable.fy
+            });
+        }
+
+
+        /**
+         * @name Deliverable.getCachedAccessLogsByDeliverableId
+         * @description Allows us to retrieve all feedback for a given deliverable which have already been
+         * grouped/cached by deliverable id.
+         * @returns {object} Keys of deliverable feedback id's and values of the feedback themselves.
+         */
+        function getCachedAccessLogsByDeliverableId() {
+            var self = this;
+            return deliverableAccessLogModel.getCachedLogByDeliverableId(self.id);
+        }
+
+        /**
+         * @name Deliverable.getViewCount
+         * @description Returns the number of times a given deliverable has been viewed.
+         * @returns {Number}
+         */
+        function getViewCount() {
+            var deliverable = this;
+            var accessLogs = deliverable.getCachedAccessLogsByDeliverableId();
+            return _.toArray(accessLogs).length;
+        }
+
 
     }
 })();
