@@ -7,7 +7,7 @@
         <th>Due</th>
         <th>Schedule</th>
         <th>Average Rating</th>
-        <th style="max-width:40px"><i data-tooltip="Denotes an active discussion thread" class="fa fa-comments fa-lg"></i></th>
+        <th style="max-width:40px" class="hidden-sm"><i data-tooltip="Denotes an active discussion thread" class="fa fa-comments fa-lg"></i></th>
         <th style="max-width:40px"><span data-tooltip="The number of times a deliverable has been viewed" class="badge">#</span></th>
     </tr>
     </thead>
@@ -29,7 +29,7 @@
                 <ratings-average data-deliverable="deliverable"></ratings-average>
             <!--</a>-->
         </td>
-        <td>
+        <td class="hidden-sm">
             <a ng-show="deliverable.discussionThread.posts.length > 0"
                tooltip="Click to view discussion thread"
                ui-sref="deliverable({id:deliverable.id, activeTab: 'discussion'})">
