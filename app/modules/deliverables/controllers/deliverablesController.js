@@ -20,14 +20,9 @@
         vm.displayPeriod = calendarService.generateDisplayPeriod(fiscalMonth, fiscalYear);
         vm.fiscalMonth = fiscalMonth;
         vm.fiscalYear = fiscalYear;
-        vm.getDeliverableFeedback = getDeliverableFeedback;
         vm.gotData = false;
         vm.increaseDate = increaseDate;
-        vm.rightPanelViewArray = ['modules/deliverables/views/deliverableFeedbackView.html', 'modules/deliverables/views/deliverableMetricsView.html'];
-        vm.rightPanelView = vm.rightPanelViewArray[1];
         vm.showFeedbackPanel = false;
-        vm.toggleRightPanel = toggleRightPanel;
-        vm.customArrayFilter = customArrayFilter;
 
         activate();
 
@@ -48,47 +43,13 @@
                     vm.visibleDeliverables = resolvedPromises[0];
                     vm.deliverableDefinitionsByMonth = resolvedPromises[1];
                     vm.deliverableFeedback = resolvedPromises[2];
-                    vm.activeDefinitionIdArray = getActiveDefinitionIds(resolvedPromises[0]);
 
                     vm.gauge1.updateGaugeValue(chartService.getSatisfactionRating(vm.visibleDeliverables));
                     vm.gauge2.updateGaugeValue(chartService.getOnTimeDeliveryRating(vm.visibleDeliverables));
 
                     vm.gotData = true;
-
                 });
 
-        }
-
-        function getActiveDefinitionIds(activeDeliverables) {
-            return _.pluck(activeDeliverables, function (activeDeliverable) {
-                return activeDeliverable.deliverableType.lookupId;
-            });
-
-        }
-
-        function customArrayFilter(item) {
-
-            return vm.activeDefinitionIdArray.indexOf(item.id) === -1;
-        }
-
-        function getDeliverableFeedback(deliverableRecord) {
-            vm.deliverableFeedback = deliverableRecord.getCachedFeedbackByDeliverableId();
-            vm.rightPanelView = vm.rightPanelViewArray[0];
-            vm.showFeedbackPanel = true;
-        }
-
-        function toggleRightPanel() {
-            vm.rightPanelView = vm.rightPanelViewArray[1];
-        }
-
-        function initializeMetricsGauges() {
-
-            vm.gauge1 = new chartService.Gauge('Satisfaction');
-            vm.gauge2 = new chartService.Gauge('OTD');
-
-            //TODO Add logic so we don't need to fake gauge values
-            vm.gauge1.updateGaugeValue(chartService.getRandom());
-            vm.gauge2.updateGaugeValue(chartService.getRandom());
         }
 
         // 10/1 starts the new fiscal year

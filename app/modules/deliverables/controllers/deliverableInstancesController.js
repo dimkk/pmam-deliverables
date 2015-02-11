@@ -18,9 +18,7 @@
         vm.selectedDefinition = selectedDefinition;
         vm.getUpdateState = getUpdateState;
         vm.gotData = false;
-        vm.rightPanelView = 'modules/deliverables/views/deliverableMetricsView.html';
         vm.showFeedback = false;
-        vm.toggleRightPanel = toggleRightPanel;
         vm.dropdownLabel = dropdownLabel;
         vm.nextFiscalYear = nextFiscalYear;
         vm.priorFiscalYear = priorFiscalYear;
@@ -58,10 +56,6 @@
             $state.go('deliverables.instances', {fy: fiscalYear, id: vm.selectedDefinition.id});
         }
 
-        function toggleRightPanel() {
-            vm.rightPanelView = 'modules/deliverables/views/deliverableMetricsView.html';
-        }
-
         function dropdownLabel(deliverableDefinition) {
             var deliverables = deliverableDefinition.getDeliverablesForDefinition();
             return deliverableDefinition.title + ' (' + _.toArray(deliverables).length + ')';
@@ -77,7 +71,6 @@
             var updatedFiscalYear = fiscalYear - 1;
             $state.go('deliverables.instances', {fy: updatedFiscalYear, id: null});
         }
-
 
     }
 })();
