@@ -1,16 +1,6 @@
-<!-- view template for average ratings directive -->
-<table>
-    <tr>
-        <td>
-            <rating
-                state-on="'fa fa-star'" state-off="'fa fa-star-o'"
-                disabled="disabled"
-                ng-model="state.average" title="{{state.average}} star rating"
-                max="5" readonly="true">
-            </rating>
-        </td>
-        <td>
-            <span class="left-padding">{{state.reviewTotalString}}</span>
-        </td>
-    </tr>
-</table>
+<rating
+    state-on="'fa fa-star fa-lg'" state-off="'fa fa-star-o fa-lg'"
+    disabled="disabled"
+    ng-model="state.average" tooltip="{{state.tooltipText}}"
+    max="5" readonly="true">
+</rating>
