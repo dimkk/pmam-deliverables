@@ -8,8 +8,8 @@
         .controller('deliverableInstancesController', deliverableInstancesController);
 
     /* @ngInject */
-    function deliverableInstancesController($state, deliverableFeedbackModel, deliverablesModel, chartService,
-                                            fyDefinitions, selectedDefinition, fiscalYear) {
+    function deliverableInstancesController($state, $q, deliverableFeedbackModel, deliverablesModel, chartService,
+                                            fyDefinitions, selectedDefinition, fiscalYear, deliverableAccessLogModel) {
 
         var vm = this;
 
@@ -29,7 +29,6 @@
         if(!selectedDefinition) {
             return null;
         }
-        vm.deliverableFrequency = selectedDefinition.frequency.lookupValue;
 
         activate();
 
@@ -37,16 +36,15 @@
 
         function activate() {
 
-            deliverablesModel.getFyDeliverables(fiscalYear)
-                .then(function (indexedCache) {
-                    vm.deliverableInstances = selectedDefinition.getDeliverablesForDefinition();
-                    vm.gotData = true;
-                });
-
-            deliverableFeedbackModel.getFyFeedback(fiscalYear)
-                .then(function (indexedCache) {
-                    initializeMetricsGauges();
-                });
+            $q.all([
+                deliverablesModel.getFyDeliverables(fiscalYear),
+                deliverableFeedbackModel.getFyFeedback(fiscalYear),
+                deliverableAccessLogModel.getFyAccessLogs(fiscalYear)
+            ]).then(function (resolvedPromises) {
+                vm.visibleDeliverables = _.toArray(selectedDefinition.getDeliverablesForDefinition());
+                initializeMetricsGauges();
+                vm.gotData = true;
+            });
         }
 
         function getUpdateState() {
