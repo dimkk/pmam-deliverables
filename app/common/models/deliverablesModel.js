@@ -77,6 +77,13 @@
                         mappedName: 'discussionThread',
                         readOnly: false
                     },
+                /** Flagged once To/CC emails have been generated to notify stakeholders. */
+                    {
+                        staticName: 'StakeholdersNotified',
+                        objectType: 'Boolean',
+                        mappedName: 'stakeholdersNotified',
+                        readOnly: false
+                    },
                     {staticName: 'Attachments', objectType: 'Attachments', mappedName: 'attachments', readOnly: true}
 
                 ]
