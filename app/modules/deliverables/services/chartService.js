@@ -17,7 +17,10 @@
 
         var service = {
             Gauge: Gauge,
-            getRandom: getRandom
+            getOnTimeDeliveryPercentage: getOnTimeDeliveryPercentage,
+            getOnTimeDeliveryRating: getOnTimeDeliveryRating,
+            getRandom: getRandom,
+            getSatisfactionRating: getSatisfactionRating
         };
 
         return service;
@@ -61,9 +64,9 @@
                         duration: 1000,
                         easing: 'inAndOut'
                     },
-                    redFrom: 0, redTo: 1,
-                    yellowFrom: 1, yellowTo: 3, yellowColor: '#fbff0a',
-                    greenFrom: 3, greenTo: 5,
+                    redFrom: 2.5, redTo: 3,
+                    yellowFrom: 3, yellowTo: 4, yellowColor: '#fbff0a',
+                    greenFrom: 4, greenTo: 5,
                     majorTicks: [0, 1, 2, 3, 4, 5],
                     max: 5,
                     fontName: '"Arial"',
@@ -89,6 +92,32 @@
          */
         function getRandom() {
             return (Math.random() * 5).toFixed(1);
+        }
+
+        function getOnTimeDeliveryPercentage(deliverables) {
+            var onTimeDeliverables = 0;
+            var deliverableArray = _.isArray(deliverables) ? deliverables : _.toArray(deliverables);
+            _.each(deliverableArray, function(deliverable) {
+                if(deliverable.wasDeliveredOnTime()) {
+                    onTimeDeliverables++;
+                }
+            });
+            return onTimeDeliverables / deliverableArray.length;
+        }
+
+        function getOnTimeDeliveryRating(deliverables) {
+            var percentage = getOnTimeDeliveryPercentage(deliverables);
+            var rating = parseInt(percentage * 5 * 10) / 10;
+            return rating;
+        }
+
+        function getSatisfactionRating(deliverables) {
+            var ratingSum = 0;
+            var deliverableArray = _.isArray(deliverables) ? deliverables : _.toArray(deliverables);
+            _.each(deliverableArray, function(deliverable) {
+                ratingSum += deliverable.getRatingsAverage();
+            });
+            return Math.round( (ratingSum / deliverableArray.length) * 10) / 10;
         }
 
     }
