@@ -24,6 +24,7 @@
         /** Also passes list to List constructor to build viewFields (XML definition of fields to return) */
         var model = apModelFactory.create({
             factory: UserSettings,
+            identifyCurrentUser: identifyCurrentUser,
             list: {
                 title: 'UserSettings',
                 /**Maps to the offline XML file in dev folder (no spaces) */
@@ -65,20 +66,22 @@
         model.ready = deferred.promise;
 
 
-        model.executeQuery('primary')
-            .then(function (indexedCache) {
-                //Create new record if it doesn't already exist
-                if (indexedCache.count() === 0) {
-                    //Newly created list item is processed and added to model.data
-                    model.addNewItem({ title: 'ESED Deliverables', preferences: {} })
-                        .then(function (newItemCache) {
-                            /** Returns the newly created list item */
-                            updateReference(newItemCache);
-                        });
-                } else {
-                    updateReference(indexedCache.first());
-                }
-            });
+        function identifyCurrentUser() {
+            return model.executeQuery('primary')
+                .then(function (indexedCache) {
+                    //Create new record if it doesn't already exist
+                    if (indexedCache.count() === 0) {
+                        //Newly created list item is processed and added to model.data
+                        model.addNewItem({ title: 'ESED Deliverables', preferences: {} })
+                            .then(function (newItemCache) {
+                                /** Returns the newly created list item */
+                                updateReference(newItemCache);
+                            });
+                    } else {
+                        updateReference(indexedCache.first());
+                    }
+                });
+        }
 
         /** Creates a reference to the current user on the model */
         function updateReference(userPreferences) {
