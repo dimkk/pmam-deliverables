@@ -9,14 +9,31 @@
      * @ngdoc service
      * @name userService
      * @description
-     *
      */
-    function userService($q, apDataService) {
+    function userService($q, _, apUserModel, apDataService) {
         var service = {
+            userCanReview: userCanReview,
+            userCanContribute: userCanContribute,
+            userIsAdmin: userIsAdmin,
             getUserLookupValues: getUserLookupValues,
+            getUserRoles: getUserRoles,
             getUsers:getUsers
         };
-        var requestForUsers;
+        var requestForUsers, requestForUserRoles;
+
+        /** Defines the primary user roles within the application and is updated based on group memberships of the current
+         * user after application bootstrap */
+        var userRoles = {
+            /** Members of this group have admin rights over the process and control all aspects */
+            'ESED Administrators': false,
+            /** Members of this group are part of the ESED team responsible for uploading deliverables. */
+            'ESED Deliverables Contributors': false,
+            /** Members of this group are part of the PM-Ammo team and are responsible for providing deliverable feedback and reviews. */
+            'ESED Deliverables Reviewers': false,
+            /** Base group that you need to be a part of in order to participate in the application */
+            'ESED Deliverables Participants': true
+        };
+
 
         return service;
 
@@ -58,6 +75,36 @@
             });
 
             return deferred.promise;
+        }
+
+        function getUserRoles() {
+            /** Only run once and return cached deferred object for subsequent calls */
+            if(!requestForUserRoles) {
+                var requestQueue = [];
+                /** Extend the user roles constant with boolean values pertaining to if the current user is a member of the group */
+                _.each(userRoles, function(memberOf, groupName) {
+                    requestQueue.push(apUserModel.checkIfMember(groupName)
+                        .then(function (userMembership) {
+                            userRoles[groupName] = userMembership;
+                        }));
+                });
+
+                requestForUserRoles = $q.all(requestQueue);
+            }
+
+            return requestForUserRoles;
+        }
+
+        function userCanReview() {
+            return userRoles['ESED Deliverables Reviewers'] || userIsAdmin();
+        }
+
+        function userCanContribute() {
+            return userRoles['ESED Deliverables Contributors'] || userIsAdmin();
+        }
+
+        function userIsAdmin() {
+            return userRoles['ESED Administrator'];
         }
     }
 })();
