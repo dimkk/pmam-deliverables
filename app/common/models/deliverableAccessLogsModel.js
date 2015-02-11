@@ -15,7 +15,7 @@
         .module('pmam-deliverables')
         .service('deliverableAccessLogModel', deliverableAccessLogModel);
 
-    function deliverableAccessLogModel(_, apModelFactory) {
+    function deliverableAccessLogModel(_, apModelFactory, moment) {
 
         /** Local access log cache organized by deliverable id */
         var accessLogsByDeliverableId = {};
@@ -82,43 +82,35 @@
 
         }
 
-        /**
-         * @name deliverableAccessLogModel.registerLogByDeliverable
-         * @description Adds a accessLog element to a cache that is grouped by deliverable to make later retrieval immediate
-         * @param {DeliverableAccessLog} accessLog
-         */
-        function registerLogByDeliverable(accessLog) {
-            if (accessLog.deliverable.lookupId) {
-                accessLogsByDeliverableId[accessLog.deliverable.lookupId] = accessLogsByDeliverableId[accessLog.deliverable.lookupId] || {};
-                /** Only register modifications that have been saved to the server and add to cache if not already there */
-                if (accessLog.id && !accessLogsByDeliverableId[accessLog.deliverable.lookupId][accessLog.id]) {
-                    accessLogsByDeliverableId[accessLog.deliverable.lookupId][accessLog.id] = accessLog;
-                }
-            }
+        DeliverableAccessLog.prototype.getHumanizedReviewDuration = getHumanizedReviewDuration;
+        DeliverableAccessLog.prototype.getReviewDuration = getReviewDuration;
 
+
+        /**
+         * @name DeliverableAccessLog.getReviewDuration
+         * @description A record is created when a user accesses a deliverable details form.  It is then updated when the
+         * user leaves the form so this method returns the number of milliseconds between the created and modified
+         * dates.
+         * @returns {Number} Number of milliseconds betweeen log created and modified dates.
+         */
+        function getReviewDuration() {
+            var logEntry = this;
+            /** Get the number of milliseconds between modified and created */
+            var milliseconds = moment(logEntry.modified).diff(logEntry.created);
+            return milliseconds;
         }
 
         /**
-         * @name deliverableAccessLogModel.removeLogByDeliverable
-         * @description Removes a accessLog element from the local cache.
-         * @param {DeliverableAccessLog} accessLog
+         * @name DeliverableAccessLog.getHumanizedReviewDuration
+         * @returns {String} Humanized version of duration (eg. 'a few seconds')
          */
-        function removeLogByDeliverable(accessLog) {
-            if(accessLogsByDeliverableId[accessLog.deliverable.lookupId][accessLog.id]) {
-                /** Remove cached accessLog */
-                delete accessLogsByDeliverableId[accessLog.deliverable.lookupId][accessLog.id];
-            }
+        function getHumanizedReviewDuration() {
+            var logEntry = this;
+            /** Return the duration as a humanized string (eg 'a few seconds') */
+            var durationString = moment.duration(logEntry.getReviewDuration()).humanize();
+            return durationString;
         }
 
-        /**
-         * @name deliverableAccessLogModel.getCachedLogByDeliverableId
-         * @description Pulls cached logs for a given deliverable.
-         * @param {number} deliverableId
-         * @returns {DeliverableAccessLog[]} Array of matching access logs for a given deliverable.
-         */
-        function getCachedLogByDeliverableId(deliverableId) {
-            return accessLogsByDeliverableId[deliverableId];
-        }
 
 
         /*********************************** Queries ***************************************/
@@ -163,6 +155,44 @@
 
 
         /********************* Model Specific Shared Functions ***************************************/
+
+        /**
+         * @name deliverableAccessLogModel.registerLogByDeliverable
+         * @description Adds a accessLog element to a cache that is grouped by deliverable to make later retrieval immediate
+         * @param {DeliverableAccessLog} accessLog
+         */
+        function registerLogByDeliverable(accessLog) {
+            if (accessLog.deliverable.lookupId) {
+                accessLogsByDeliverableId[accessLog.deliverable.lookupId] = accessLogsByDeliverableId[accessLog.deliverable.lookupId] || {};
+                /** Only register modifications that have been saved to the server and add to cache if not already there */
+                if (accessLog.id && !accessLogsByDeliverableId[accessLog.deliverable.lookupId][accessLog.id]) {
+                    accessLogsByDeliverableId[accessLog.deliverable.lookupId][accessLog.id] = accessLog;
+                }
+            }
+
+        }
+
+        /**
+         * @name deliverableAccessLogModel.removeLogByDeliverable
+         * @description Removes a accessLog element from the local cache.
+         * @param {DeliverableAccessLog} accessLog
+         */
+        function removeLogByDeliverable(accessLog) {
+            if(accessLogsByDeliverableId[accessLog.deliverable.lookupId][accessLog.id]) {
+                /** Remove cached accessLog */
+                delete accessLogsByDeliverableId[accessLog.deliverable.lookupId][accessLog.id];
+            }
+        }
+
+        /**
+         * @name deliverableAccessLogModel.getCachedLogByDeliverableId
+         * @description Pulls cached logs for a given deliverable.
+         * @param {number} deliverableId
+         * @returns {DeliverableAccessLog[]} Array of matching access logs for a given deliverable.
+         */
+        function getCachedLogByDeliverableId(deliverableId) {
+            return accessLogsByDeliverableId[deliverableId];
+        }
 
 
         return model;
