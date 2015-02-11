@@ -8,11 +8,13 @@
 
     /* @ngInject */
     function deliverableFormEditController(deliverableFeedbackModel, toastr, $state, deliverableDefinitionsModel,
-                                       userService, $q, deliverableRecord, ratingsService, calendarService) {
+                                       userService, $q, deliverableRecord, ratingsService, calendarService,
+                                       deliverableAccessLogModel, $scope) {
 
         //TODO Need to add logic to revert back to pristine deliverable in cache if entity is updated and user leaves without saving
         var vm = this;
-        vm.activeTab = 'main'; //2 tabs are ['main', 'discussion']
+        /** Allows us to navigate directly to discussion tab */
+        vm.activeTab = $state.params.activeTab ? $state.params.activeTab : 'main'; //2 tabs are ['main', 'discussion']
         vm.cancel = cancel;
         vm.dataReady = false;
         vm.deleteMyFeedback = deleteMyFeedback;
@@ -59,6 +61,16 @@
 
                 vm.dataReady = true;
             });
+
+            /** Create a log record so we can collect metrics on the average duration a user is on this page */
+            deliverableRecord.registerDeliverableAccessEvent()
+                .then(function (deliverableAccessEvent) {
+                    $scope.$on('$stateChangeStart', function(){
+                        /** Causes modified date to reflect updated time so we can get delta between created and modified */
+                        deliverableAccessEvent.saveChanges();
+                        console.log('Route Changed');
+                    });
+                })
         }
 
         function updateFeedback() {
