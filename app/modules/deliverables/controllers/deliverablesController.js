@@ -6,8 +6,8 @@
         .module( 'pmam-deliverables' )
         .controller( 'deliverablesController', deliverablesController );
 
-    function deliverablesController($filter, $q, deliverableFeedbackModel, chartService, $state,
-                                    deliverablesService, calendarService) {
+    function deliverablesController( $q, deliverableFeedbackModel, chartService, $state,
+                                    deliverablesService, calendarService, deliverableAccessLogModel) {
 
         var vm = this;
 
@@ -17,7 +17,6 @@
         var fiscalMonth = isNaN($state.params.mo) ? calendarService.getCurrentFiscalMonth() : parseInt($state.params.mo);
 
         vm.decreaseDate = decreaseDate;
-        vm.deliverableFrequencyFilter = deliverableFrequencyFilter;
         vm.displayPeriod = calendarService.generateDisplayPeriod(fiscalMonth, fiscalYear);
         vm.fiscalMonth = fiscalMonth;
         vm.fiscalYear = fiscalYear;
@@ -41,10 +40,11 @@
             $q.all([
                 deliverablesService.getDeliverablesForMonth( fiscalYear, fiscalMonth ),
                 deliverablesService.getDeliverableDefinitionsForMonth( fiscalYear, fiscalMonth ),
-                deliverableFeedbackModel.getFyFeedback(fiscalYear)
+                deliverableFeedbackModel.getFyFeedback(fiscalYear),
+                deliverableAccessLogModel.getFyAccessLogs(fiscalYear)
             ])
                 .then(function(resolvedPromises) {
-                    vm.deliverablesByMonth = resolvedPromises[0];
+                    vm.visibleDeliverables = resolvedPromises[0];
                     vm.deliverableDefinitionsByMonth = resolvedPromises[1];
                     vm.deliverableFeedback = resolvedPromises[2];
                     vm.activeDefinitionIdArray = getActiveDefinitionIds(resolvedPromises[0]);
@@ -83,19 +83,6 @@
             //TODO Add logic so we don't need to fake gauge values
             vm.gauge1.updateGaugeValue(chartService.getRandom());
             vm.gauge2.updateGaugeValue(chartService.getRandom());
-        }
-
-        /**
-         * @name vm.deliverableFrequencyFilter
-         * @description Find the definition for the provided deliverable and return the frequency.
-         * @param {Deliverable} deliverable object.
-         * @returns {string}
-         */
-        function deliverableFrequencyFilter( deliverable ) {
-            var deliverableDefinition = deliverable.getDeliverableDefinition();
-            if( deliverableDefinition ) {
-                return deliverableDefinition.frequency.lookupValue;
-            }
         }
 
         // 10/1 starts the new fiscal year
