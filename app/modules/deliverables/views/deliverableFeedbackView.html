@@ -13,7 +13,7 @@
     </legend>
 
 
-    <div ng-if="vm.userDeliverableFeedback">
+    <div ng-if="vm.userDeliverableFeedback && vm.userCanReview()">
         <label>Rate this deliverable</label>
         <rating ng-change="vm.updateFeedback()"
                 state-on="'fa fa-star fa-2x'" state-off="'fa fa-star-o fa-2x'"
@@ -25,7 +25,7 @@
 
 
     <!-- Current User's Comments -->
-    <div class="fadeIn" ng-if="vm.userDeliverableFeedback.id">
+    <div class="fadeIn" ng-if="vm.userDeliverableFeedback.id && vm.userCanReview()">
         <h4><span class="pull-right label {{ vm.getLabelClass(vm.overStar || vm.userDeliverableFeedback.rating) }}"
               ng-show="vm.overStar || vm.userDeliverableFeedback.rating">{{vm.percent}}%</span></h4>
 
@@ -51,6 +51,10 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div ng-if="!vm.deliverableFeedback">
+        <hr class="hr-sm">
+        <div class="help-block">No feedback available for the current deliverable.</div>
     </div>
 
 </fieldset>
