@@ -29,7 +29,8 @@
             <!-- Display additional deliverable details on the new form -->
             <div class="help-block" ng-if="vm.deliverableRecord.deliverableType">
                 {{ vm.deliverableRecord.getDeliverableDefinition().deliverableNumber }}
-                <span class="pull-right hidden-sm"> Frequency: {{ vm.deliverableRecord.getDeliverableDefinition().frequencyDescription }}</span></div>
+                <span class="pull-right hidden-sm"> Frequency: {{ vm.deliverableRecord.getDeliverableDefinition().frequencyDescription }}</span>
+            </div>
         </div>
 
         <div class="row">
@@ -65,14 +66,13 @@
 
         <div class="row">
 
-            <!--START DATE-->
-            <div class="col-xs-12 col-sm-4">
-                <div class="form-group"
+            <!--START DATE (Only visible on AD-Hoc type deliverables)-->
+            <div class="col-xs-12 col-sm-4" ng-if="vm.deliverableRecord.startDateIsRelevant()">
+                <div class="form-group" title="Date tasked by customer."
                      ng-class="{ 'has-error': editDeliverable.startDate.$invalid && editDeliverable.startDate.$dirty }">
                     <label class="deliverables-header" for="startDate">Start Date*</label>
                     <input size="8" ng-required="true" placeholder="Select Start Date" name="startDate"
                            ui-date class="form-control" ng-model="vm.deliverableRecord.startDate"/>
-
                     <div ng-messages="editDeliverable.startDate.$error" ng-if='editDeliverable.startDate.$dirty'
                          class="form-error">
                         <div ng-message="required">You did not enter a Start Date</div>
@@ -81,8 +81,8 @@
             </div>
 
             <!-- SUBMISSION DATE -->
-            <div class="col-xs-12 col-sm-4">
-                <div class="form-group"
+            <div class="col-xs-12 col-sm-{{ vm.deliverableRecord.startDateIsRelevant() ? 4 : 6 }}">
+                <div class="form-group" title="Date submitted to customer."
                      ng-class="{ 'has-error': editDeliverable.submissionDate.$invalid && editDeliverable.submissionDate.$dirty }">
                     <label class="deliverables-header" for="submissionDate">Submission Date*</label>
                     <input size="8" ng-required="true" placeholder="Select Submission Date"
@@ -98,8 +98,8 @@
             </div>
 
             <!-- Due DATE -->
-            <div class="col-xs-12 col-sm-4">
-                <div class="form-group"
+            <div class="col-xs-12 col-sm-{{ vm.deliverableRecord.startDateIsRelevant() ? 4 : 6 }} ">
+                <div class="form-group" title="Required submission due date."
                      ng-class="{ 'has-error': editDeliverable.dueDate.$invalid && editDeliverable.dueDate.$dirty }">
                     <label class="deliverables-header" for="dueDate">Due Date</label>
                     <input size="8" placeholder="Select a Due Date"
@@ -128,13 +128,17 @@
         <!-- DETAILS -->
         <div class="form-group">
             <label for="details" class="deliverables-header">Details</label>
-            <textarea rows="6" placeholder="Enter Details" class="form-control" ng-model="vm.deliverableRecord.details"
+            <textarea rows="10" placeholder="Enter Details" class="form-control" ng-model="vm.deliverableRecord.details"
                       name="details"/>
         </div>
 
+
         <!-- JUSTIFICATION -->
-        <div class="form-group">
-            <label for="justification" class="deliverables-header">Justification</label>
+        <button type="button" class="btn btn-link" ng-show="vm.deliverableRecord.justification.length === 0"
+           title="Optionally toggle the justification input."
+           ng-click="displayJustification = !displayJustification"><i class="fa fa-plus"></i> Add justification</button>
+        <div class="form-group" ng-show="vm.deliverableRecord.justification.length > 0 || displayJustification">
+            <label for="justification">Justification</label>
             <textarea rows="4" placeholder="Enter a Justification" class="form-control"
                       ng-model="vm.deliverableRecord.justification"
                       name="justification"/>
