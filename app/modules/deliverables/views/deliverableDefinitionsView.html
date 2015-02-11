@@ -55,7 +55,7 @@
                         }}</a>
                 </td>
                 <td>{{ deliverableDefinition.title }}</td>
-                <td>{{ deliverableDefinition.frequency.lookupValue }}</td>
+                <td>{{ deliverableDefinition.deliverableFrequency }}</td>
                 <td>
                     <a ui-sref="deliverables.instances({ fy:vm.fiscalYear, id:deliverableDefinition.id })"><span
                         class="badge badge-info">{{ vm.deliverableCountByDefinition(deliverableDefinition) }}</span></a>
