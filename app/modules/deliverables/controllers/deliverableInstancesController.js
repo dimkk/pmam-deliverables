@@ -36,14 +36,21 @@
 
         function activate() {
 
+            vm.gauge1 = new chartService.Gauge('Satisfaction');
+            vm.gauge2 = new chartService.Gauge('OTD');
+
             $q.all([
                 deliverablesModel.getFyDeliverables(fiscalYear),
                 deliverableFeedbackModel.getFyFeedback(fiscalYear),
                 deliverableAccessLogModel.getFyAccessLogs(fiscalYear)
             ]).then(function (resolvedPromises) {
                 vm.visibleDeliverables = _.toArray(selectedDefinition.getDeliverablesForDefinition());
-                initializeMetricsGauges();
+
+                vm.gauge1.updateGaugeValue(chartService.getSatisfactionRating(vm.visibleDeliverables));
+                vm.gauge2.updateGaugeValue(chartService.getOnTimeDeliveryRating(vm.visibleDeliverables));
+
                 vm.gotData = true;
+
             });
         }
 

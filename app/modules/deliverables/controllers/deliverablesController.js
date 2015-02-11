@@ -35,7 +35,8 @@
 
         function activate() {
 
-            initializeMetricsGauges();
+            vm.gauge1 = new chartService.Gauge('Satisfaction');
+            vm.gauge2 = new chartService.Gauge('OTD');
 
             $q.all([
                 deliverablesService.getDeliverablesForMonth( fiscalYear, fiscalMonth ),
@@ -48,7 +49,12 @@
                     vm.deliverableDefinitionsByMonth = resolvedPromises[1];
                     vm.deliverableFeedback = resolvedPromises[2];
                     vm.activeDefinitionIdArray = getActiveDefinitionIds(resolvedPromises[0]);
+
+                    vm.gauge1.updateGaugeValue(chartService.getSatisfactionRating(vm.visibleDeliverables));
+                    vm.gauge2.updateGaugeValue(chartService.getOnTimeDeliveryRating(vm.visibleDeliverables));
+
                     vm.gotData = true;
+
                 });
 
         }
