@@ -10,11 +10,11 @@
                     </div>
                 </legend>
 
-                <!-- Only display save options when the primary tab is visible -->
-                <div class="pull-right" ng-show="vm.activeTab === 'main'">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                <!-- Only display save and delete options when the primary tab is visible -->
+                <div class="pull-right">
+                    <button type="submit" ng-show="vm.activeTab === 'main'" class="btn btn-primary">Save</button>
                     <button type="button" class="btn btn-default" ng-click="vm.cancel()">Cancel</button>
-                    <button type="button" class="btn btn-default" ng-click="vm.deleteRecord()">Delete</button>
+                    <button type="button" ng-show="vm.activeTab === 'main'" class="btn btn-default" ng-click="vm.deleteRecord()">Delete</button>
                 </div>
 
 
