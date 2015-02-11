@@ -90,6 +90,10 @@
                     };
                 }
 
+                /** Set default To and CC recipients */
+                vm.deliverableRecord.to = selectedDeliverableType.to;
+                vm.deliverableRecord.cc = selectedDeliverableType.cc;
+
                 var estimatedDueDate = vm.deliverableRecord.estimateDeliverableDueDate();
                 if(_.isDate(estimatedDueDate)) {
                     vm.deliverableRecord.dueDate = estimatedDueDate;
