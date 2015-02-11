@@ -14,6 +14,7 @@
     function calendarService() {
         var service = {
             getCalendarMonth: getCalendarMonth,
+            getCalendarYear: getCalendarYear,
             getCurrentFiscalMonth: getCurrentFiscalMonth,
             getCurrentFiscalYear: getCurrentFiscalYear,
             getMonthOptions: getMonthOptions,
@@ -27,6 +28,7 @@
             var today = new Date();
             return today.getMonth() < 3 ? today.getFullYear() : today.getFullYear() - 1;
         }
+
         function getCurrentFiscalMonth() {
             var calendarMonthNumber = new Date().getMonth() + 4;
             if(calendarMonthNumber > 12) {
@@ -56,6 +58,18 @@
             }
             return calendarMonthNumber
         }
+
+        /**
+         * @name calendarService.getCalendarYear
+         * @description Returns a valid calendar year that corresponds with a fiscal year and zero based month number
+         * @param {number} fiscalYear
+         * @param {number} monthNumber
+         * @returns {number} Calendar Year
+         */
+        function getCalendarYear(fiscalYear, monthNumber) {
+            return monthNumber < 9 ? fiscalYear : fiscalYear - 1;
+        }
+
 
         function getMonthOptions() {
             return [
