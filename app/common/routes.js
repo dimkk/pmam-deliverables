@@ -68,7 +68,7 @@ angular.module('pmam-deliverables')
             })
 
             .state('deliverable', {
-                url: '/deliverable/:id',
+                url: '/deliverable/:id?activeTab', //['main', 'discussion'] with default = main
                 templateUrl: 'modules/deliverables/views/deliverableFormEditView.html',
                 controller: 'deliverableFormEditController',
                 controllerAs: 'vm',
