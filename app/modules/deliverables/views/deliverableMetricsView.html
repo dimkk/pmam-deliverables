@@ -1,19 +1,5 @@
-<!-- partial view that renders the right panel metrics display -->
-<div class="col-sm-2">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="row text-center metrics-header">
-                <i class="fa fa-tachometer fa-lg icon-padding"></i>METRICS
-            </div>
-        </div>
-    </div>
-    <hr/>
-    <div class="row">
-        <div class="col-sm-12 text-center">
-            <div google-chart chart="vm.gauge1"
-                 style="width: 200px; height: 200px; display: inline-block; vertical-align: top; position: relative;"></div>
-            <div google-chart chart="vm.gauge2"
-                 style="width: 200px; height: 200px; display: inline-block; vertical-align: top; position: relative;"></div>
-        </div>
-    </div>
-</div>
+<fieldset>
+    <legend>METRICS</legend>
+    <div google-chart chart="vm.gauge1" title="Average Customer Satisfaction" class="google-gauge"></div>
+    <div google-chart chart="vm.gauge2" title="On Time Delivery Summary" class="google-gauge"></div>
+</fieldset>
