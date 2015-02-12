@@ -42,7 +42,7 @@
 
             if (!deliverableRecord) {
                 /** Redirect if a valid deliverable isn't found */
-                toastr.error('No requested deliverable wasn\'t found.');
+                toastr.error('The requested deliverable wasn\'t found.');
                 return $state.go('deliverables.main');
             }
 
@@ -71,7 +71,7 @@
                         /** Causes modified date to reflect updated time so we can get delta between created and modified */
                         deliverableAccessEvent.saveChanges();
                     });
-                })
+                });
         }
 
         function updateFeedback() {
