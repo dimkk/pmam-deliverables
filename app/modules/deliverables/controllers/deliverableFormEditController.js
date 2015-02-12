@@ -60,6 +60,11 @@
                 // get feedback for just the current user for this deliverable
                 vm.userDeliverableFeedback = deliverableRecord.getCachedFeedbackForCurrentUser();
 
+                //TODO Clean this up, currently it's here just to initialize the percent label if the user has feedback
+                if(vm.userDeliverableFeedback) {
+                    vm.percent = 100 * (vm.userDeliverableFeedback.rating / vm.max);
+                }
+
                 vm.dataReady = true;
             });
 

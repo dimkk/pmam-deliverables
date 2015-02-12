@@ -43,8 +43,10 @@
                 <th>Title</th>
                 <th>Schedule</th>
                 <th>Count</th>
-                <th>Create</th>
-                <th>Stakeholders</th>
+                <th style="width:30px">Create</th>
+                <th>To</th>
+                <th>CC</th>
+                <th style="width: 30px">Edit</th>
             </tr>
             </thead>
             <tbody>
@@ -58,13 +60,22 @@
                 <td>{{ deliverableDefinition.title }}</td>
                 <td>{{ deliverableDefinition.deliverableFrequency }}</td>
                 <td>
-                    <a ui-sref="deliverables.instances({ fy:vm.fiscalYear, id:deliverableDefinition.id })"><span
-                        class="badge badge-info">{{ vm.deliverableCountByDefinition(deliverableDefinition) }}</span></a>
+                    <a ui-sref="deliverables.instances({ fy:vm.fiscalYear, id:deliverableDefinition.id })"
+                        title="Click to view all deliverable instances of this type.">
+                        <span class="badge badge-info">{{ vm.deliverableCountByDefinition(deliverableDefinition) }}</span>
+                    </a>
                 </td>
                 <td>
                     <a ui-sref="newInstance({ fy:vm.fiscalYear, deliverableTypeId:deliverableDefinition.id })"
                         title="Create a new {{deliverableDefinition.title}}"><i class="fa fa-plus fa-lg"></i>
                     </a>
+                </td>
+                <!-- Iterate over each stakeholder and display comma separated last names -->
+                <td>
+                    <span ng-repeat="stakeholder in deliverableDefinition.to | orderBy:'lookupValue' track by stakeholder.lookupId">{{ stakeholder.lookupValue.split(' ')[0] + (!$last ? ',&nbsp;' : '') }}</span>
+                </td>
+                <td>
+                    <span ng-repeat="stakeholder in deliverableDefinition.cc | orderBy:'lookupValue' track by stakeholder.lookupId">{{ stakeholder.lookupValue.split(' ')[0] + (!$last ? ',&nbsp;' : '') }}</span>
                 </td>
                 <td>
                     <button type="button" class="btn btn-link"

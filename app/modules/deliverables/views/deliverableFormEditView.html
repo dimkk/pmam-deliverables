@@ -46,7 +46,7 @@
                                         <label for="to" class="deliverables-header">To</label>
 
                                         <div ng-if="vm.dataReady">
-                                            <ui-select ng-model="vm.deliverableRecord.to" multiple>
+                                            <ui-select ng-model="vm.deliverableRecord.to" multiple data-reset-search-input="true">
                                                 <ui-select-match placeholder="Select TO Recipient">{{$item.lookupValue }}
                                                 </ui-select-match>
                                                 <ui-select-choices
@@ -64,7 +64,7 @@
                                         <label for="cc" class="deliverables-header">CC</label>
 
                                         <div ng-if="vm.dataReady">
-                                            <ui-select ng-model="vm.deliverableRecord.cc" multiple>
+                                            <ui-select ng-model="vm.deliverableRecord.cc" multiple data-reset-search-input="true">
                                                 <ui-select-match placeholder="Select CC Recipient">{{$item.lookupValue }}
                                                 </ui-select-match>
                                                 <ui-select-choices

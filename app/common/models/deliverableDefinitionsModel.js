@@ -14,7 +14,7 @@
         .module('pmam-deliverables')
         .factory('deliverableDefinitionsModel', deliverableDefinitionsModel);
 
-    function deliverableDefinitionsModel(apModalService, _, apModelFactory, $injector, deliverableFrequenciesService) {
+    function deliverableDefinitionsModel($modal, _, apModelFactory, $injector, deliverableFrequenciesService) {
 
         /********************* Model Definition ***************************************/
 
@@ -148,23 +148,22 @@
 
         DeliverableDefinition.prototype.getDeliverableDueDatesForMonth = getDeliverableDueDatesForMonth;
         DeliverableDefinition.prototype.getDeliverablesForDefinition = getDeliverablesForDefinition;
+        DeliverableDefinition.prototype.stakeholdersModal = stakeholdersModal;
 
 
-        /**
-         * Opens modal dialog to add/edit an link record
-         * @param {object} event - defaults to a new record if missing
-         * @returns {promise} // Success = saved or deleted, Failure = dismissed dialog
-         */
-        model.stakeholdersModal = apModalService.modalModelProvider({
-            templateUrl: 'modules/deliverables/views/deliverableDefinitionModalView.html',
-            controller: 'deliverableDefinitionModalController',
-            controllerAs: 'vm',
-            expectedArguments: ['deliverableDefinition']
-        });
-
-        DeliverableDefinition.prototype.stakeholdersModal = function () {
-            model.stakeholdersModal(this);
-        };
+        function stakeholdersModal() {
+            var deliverableDefinition = this;
+            return $modal.open({
+                templateUrl: 'modules/deliverables/views/deliverableDefinitionModalView.html',
+                controller: 'deliverableDefinitionModalController',
+                controllerAs: 'vm',
+                resolve: {
+                    deliverableDefinition: function () {
+                        return deliverableDefinition;
+                    }
+                }
+            });
+        }
 
 
         /*********************************** Queries ***************************************/

@@ -69,7 +69,7 @@
             var deferred = $q.defer();
             getUsers().then(function (userArray) {
                 var userLookupValues = _.map(userArray, function (user) {
-                    return {lookupValue: user.Name, lookupId: user.ID};
+                    return {lookupValue: user.Name, lookupId: parseInt(user.ID)};
                 });
                 deferred.resolve(userLookupValues);
             });

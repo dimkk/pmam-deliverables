@@ -5,13 +5,15 @@
         .module('pmam-deliverables')
         .controller('deliverableDefinitionModalController', deliverableDefinitionModalController);
 
-    function deliverableDefinitionModalController($modalInstance, apModalService, deliverableDefinitionsModel, userService, deliverableDefinition) {
+    function deliverableDefinitionModalController($modalInstance, userService, toastr, deliverableDefinition) {
         var vm = this;
 
         vm.cancel = cancel;
-        vm.deliverableDefinition = deliverableDefinition;
-        vm.saveEntity = saveEntity;
-        vm.state = apModalService.initializeState();
+        vm.save = save;
+
+        /** Create a working copy of the fields we're interested in so we don't polute local cache if user cancels */
+        vm.to = angular.copy(deliverableDefinition.to);
+        vm.cc = angular.copy(deliverableDefinition.cc);
 
         activate();
 
@@ -19,15 +21,27 @@
         /**==================PRIVATE==================*/
 
         function activate() {
-            /** Used to store primitives to pass as reference instead of value to child scopes */
+
+            /** Current user's permission for this definition */
+            var userPermissions = deliverableDefinition.resolvePermissions();
+            vm.userCanEdit = userPermissions.EditListItems;
+
+
             userService.getUserLookupValues()
                 .then(function (personnelArray) {
                     vm.personnelArray = personnelArray;
-                })
+                });
         }
 
-        function saveEntity() {
-            apModalService.saveEntity(vm.deliverableDefinition, deliverableDefinitionsModel, vm.state, $modalInstance);
+        function save() {
+            deliverableDefinition.to = vm.to;
+            deliverableDefinition.cc = vm.cc;
+
+            deliverableDefinition.saveFields(['to','cc'])
+                .then(function (updatedDefinition) {
+                    $modalInstance.close(updatedDefinition);
+                    toastr.success('Deliverable stakeholders successfully updated.');
+                });
         }
 
         function cancel() {

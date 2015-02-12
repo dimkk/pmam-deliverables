@@ -272,7 +272,12 @@
         function startDateIsRelevant() {
             var deliverable = this;
             var deliverableDefinition = deliverable.getDeliverableDefinition();
-            return deliverableDefinition.deliverableFrequency === 'As Required';
+            var relevant = false;
+
+            if(deliverableDefinition) {
+                relevant = deliverableDefinition.deliverableFrequency === 'As Required';
+            }
+            return relevant;
         }
 
         /**
