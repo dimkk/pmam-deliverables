@@ -14,7 +14,7 @@
         .module('pmam-deliverables')
         .factory('deliverableDefinitionsModel', deliverableDefinitionsModel);
 
-    function deliverableDefinitionsModel(_, apModelFactory, $injector, deliverableFrequenciesService) {
+    function deliverableDefinitionsModel(apModalService, _, apModelFactory, $injector, deliverableFrequenciesService) {
 
         /********************* Model Definition ***************************************/
 
@@ -150,6 +150,22 @@
         DeliverableDefinition.prototype.getDeliverablesForDefinition = getDeliverablesForDefinition;
 
 
+        /**
+         * Opens modal dialog to add/edit an link record
+         * @param {object} event - defaults to a new record if missing
+         * @returns {promise} // Success = saved or deleted, Failure = dismissed dialog
+         */
+        model.stakeholdersModal = apModalService.modalModelProvider({
+            templateUrl: 'modules/deliverables/views/deliverableDefinitionModalView.html',
+            controller: 'deliverableDefinitionModalController',
+            controllerAs: 'vm',
+            expectedArguments: ['deliverableDefinition']
+        });
+
+        DeliverableDefinition.prototype.stakeholdersModal = function () {
+            model.stakeholdersModal(this);
+        };
+
 
         /*********************************** Queries ***************************************/
 
@@ -192,6 +208,8 @@
             /** Return cached promise */
             return model.cachedFyRequests[fy];
         }
+
+        /********************* Model Specific Shared Functions ***************************************/
 
         /**
          * @description Given a zero based month number, returns an array of due dates for the given month or an empty
