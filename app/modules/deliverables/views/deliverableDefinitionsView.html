@@ -43,7 +43,8 @@
                 <th>Title</th>
                 <th>Schedule</th>
                 <th>Count</th>
-                <th>New</th>
+                <th>Create</th>
+                <th>Stakeholders</th>
             </tr>
             </thead>
             <tbody>
@@ -61,8 +62,16 @@
                         class="badge badge-info">{{ vm.deliverableCountByDefinition(deliverableDefinition) }}</span></a>
                 </td>
                 <td>
-                    <a ui-sref="newInstance({ fy:vm.fiscalYear, deliverableTypeId:deliverableDefinition.id })"><i
-                        class="fa fa-plus"></i></a>
+                    <a ui-sref="newInstance({ fy:vm.fiscalYear, deliverableTypeId:deliverableDefinition.id })"
+                        title="Create a new {{deliverableDefinition.title}}"><i class="fa fa-plus fa-lg"></i>
+                    </a>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-link"
+                            ng-click="deliverableDefinition.stakeholdersModal()"
+                            title="Edit stakeholders">
+                        <i class="fa fa-users fa-lg"></i>
+                    </button>
                 </td>
             </tr>
             </tbody>
