@@ -6,33 +6,42 @@ angular.module('pmam-deliverables')
         // For any unmatched url, redirect to /state1
         $urlRouterProvider
             //Default deliverables view
-            .when('/deliverables', '/deliverables/main')
+            .when('/deliverables', '/deliverables/summary')
             //Default Route
             .otherwise('/deliverables');
 
         $stateProvider
             .state('deliverables', {
-                url: '/deliverables',
+                url: '/deliverables?fy',
                 abstract: true,
-                template: '<div ui-view class="fadeIn primary-view"></div>'
+                template: '<div ui-view class="fadeIn primary-view"></div>',
+                resolve: {
+                    fiscalYear: function($stateParams, calendarService) {
+                        return isNaN($stateParams.fy) ? calendarService.getCurrentFiscalYear() : parseInt($stateParams.fy);
+                    }
+                }
             })
 
-            .state('deliverables.main', {
-                url: '/main?fy&mo',
+            .state('deliverables.summary', {
+                url: '/summary',
+                templateUrl: 'modules/deliverables/views/deliverablesSummaryView.html',
+                controller: 'deliverableSummaryController',
+                controllerAs: 'vm'
+            })
+
+            .state('deliverables.monthly', {
+                url: '/main?mo',
                 templateUrl: 'modules/deliverables/views/deliverablesView.html',
                 controller: 'deliverablesController',
                 controllerAs: 'vm'
             })
 
             .state('deliverables.instances', {
-                url: '/instances?fy&id',
+                url: '/instances?id',
                 templateUrl: 'modules/deliverables/views/deliverableInstancesView.html',
                 controller: 'deliverableInstancesController',
                 controllerAs: 'vm',
                 resolve: {
-                    fiscalYear: function($stateParams, calendarService) {
-                        return isNaN($stateParams.fy) ? calendarService.getCurrentFiscalYear() : parseInt($stateParams.fy);
-                    },
                     fyDefinitions: function(deliverableDefinitionsModel, $stateParams, fiscalYear) {
                         return deliverableDefinitionsModel.getFyDefinitions(fiscalYear);
                     },
@@ -61,7 +70,7 @@ angular.module('pmam-deliverables')
             })
 
             .state('deliverables.types', {
-                url: '/types?fy',
+                url: '/types',
                 templateUrl: 'modules/deliverables/views/deliverableDefinitionsView.html',
                 controller: 'definitionsController',
                 controllerAs: 'vm'
