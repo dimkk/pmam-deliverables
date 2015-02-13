@@ -14,7 +14,7 @@
         .module('pmam-deliverables')
         .factory('deliverablesModel', deliverablesModel);
 
-    function deliverablesModel(_, apModelFactory, apDiscussionThreadFactory, moment, deliverableFeedbackModel,
+    function deliverablesModel($q, _, apModelFactory, apDiscussionThreadFactory, moment, deliverableFeedbackModel,
                                deliverableDefinitionsModel, calendarService, deliverableFrequenciesService, user,
                                deliverableAccessLogModel) {
 
@@ -31,6 +31,7 @@
          */
         var model = apModelFactory.create({
             getCachedDeliverablesByTypeId: getCachedDeliverablesByTypeId,
+            getDeliverablesForMonth: getDeliverablesForMonth,
             getFyDeliverables: getFyDeliverables,
             factory: Deliverable,
             /**
@@ -185,7 +186,7 @@
         /*********************************** Queries ***************************************/
 
         /**
-         * @name model.getFyDeliverables
+         * @name deliverablesModel.getFyDeliverables
          * @param {number} fy Fiscal year.
          * @description
          * @returns {*|Object}
@@ -213,6 +214,39 @@
 
             return model.executeQuery(fyCacheKey);
         }
+
+        /**
+         * @name deliverablesModel.getDeliverablesForMonth
+         * @param {number} fiscalYear Fiscal Year (October - September)
+         * @param {number} fiscalMonth Fiscal Month (1 - 12 starting with October)
+         * @returns {promise} object[]
+         */
+        function getDeliverablesForMonth( fiscalYear, fiscalMonth ) {
+
+            var deferred = $q.defer();
+
+            getFyDeliverables(fiscalYear)
+                .then(function (indexedCache) {
+                    var deliverablesForMonth = filterDeliverablesForFiscalMonth(fiscalMonth, indexedCache);
+                    deferred.resolve(deliverablesForMonth);
+                });
+            return deferred.promise;
+        }
+
+
+        /**
+         * @name deliverablesModel.filterDeliverablesForFiscalMonth
+         * @param {number} fiscalMonth Fiscal Month (1 - 12 starting with October)
+         * @param {Object|Array} deliverables
+         * @returns {Deliverable[]}  Array of deliverables for the month.
+         */
+        function filterDeliverablesForFiscalMonth(fiscalMonth, deliverables) {
+            var deliverablesForMonth = _.where(deliverables, function(deliverable) {
+                return deliverable.fiscalMonth === fiscalMonth;
+            });
+            return deliverablesForMonth;
+        }
+
 
 
         /********************* Model Specific Shared Functions ***************************************/

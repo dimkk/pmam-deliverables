@@ -14,7 +14,8 @@
         .module('pmam-deliverables')
         .factory('deliverableDefinitionsModel', deliverableDefinitionsModel);
 
-    function deliverableDefinitionsModel($modal, _, apModelFactory, $injector, deliverableFrequenciesService) {
+    function deliverableDefinitionsModel($q, $modal, _, apModelFactory, $injector, deliverableFrequenciesService,
+                                         calendarService) {
 
         /********************* Model Definition ***************************************/
 
@@ -28,6 +29,7 @@
             //Store a promise for each completed fy request so we only need to make the call once
             cachedFyRequests: {},
             factory: DeliverableDefinition,
+            getDeliverableDefinitionsForMonth: getDeliverableDefinitionsForMonth,
             getFyDefinitions: getFyDefinitions,
             /**
              * @ngdoc object
@@ -146,8 +148,12 @@
             self.dueDates = deliverableFrequenciesService.generateDeliverableDueDates(self);
         }
 
+        DeliverableDefinition.prototype.getAllFeedback = getAllFeedback;
         DeliverableDefinition.prototype.getDeliverableDueDatesForMonth = getDeliverableDueDatesForMonth;
         DeliverableDefinition.prototype.getDeliverablesForDefinition = getDeliverablesForDefinition;
+        DeliverableDefinition.prototype.getExpectedDeliverableCount = getExpectedDeliverableCount;
+        DeliverableDefinition.prototype.getLateCount = getLateCount;
+        DeliverableDefinition.prototype.getOnTimeCount = getOnTimeCount;
         DeliverableDefinition.prototype.stakeholdersModal = stakeholdersModal;
 
 
@@ -208,6 +214,57 @@
             return model.cachedFyRequests[fy];
         }
 
+        /**
+         * @name deliverableDefinitionsModel.getDeliverableDefinitionsForMonth
+         * @description Accepts a fiscal month and year and returns applicable definitions for that period
+         * @param {number} fiscalYear Fiscal Year (October - September)
+         * @param {number} fiscalMonth Fiscal Month (1 - 12 starting with October)
+         * @returns {object} Keys of definition ID and value of definition.
+         */
+        function getDeliverableDefinitionsForMonth( fiscalYear, fiscalMonth ) {
+
+            var deferred = $q.defer();
+
+            getFyDefinitions(fiscalYear)
+                .then(function( deliverableDefinitions ){
+                    var deliverableDefinitionsByMonth = filterDefinitionsForFiscalMonth(fiscalMonth, deliverableDefinitions);
+                    deferred.resolve(deliverableDefinitionsByMonth);
+                });
+
+            return deferred.promise;
+        }
+
+
+        /**
+         * @name deliverableDefinitionsModel.filterDefinitionsForFiscalMonth
+         * @param {number} fiscalMonth Fiscal Month (1 - 12 starting with October)
+         * @param {Object|Array} deliverableDefinitions
+         * @returns {Object} deliverableDefinitionsByMonth with keys of definition id and value of the definition.
+         */
+        function filterDefinitionsForFiscalMonth(fiscalMonth, deliverableDefinitions) {
+            //Need to get use calendar month instead of fiscal month in order to get due dates for a month
+            var calendarMonth = calendarService.getCalendarMonth(fiscalMonth);
+
+            var deliverableDefinitionsByMonth = {};
+
+            _.each(deliverableDefinitions, function( deliverableDefinition ) {
+
+                //Retrieve array of all due dates for this deliverable for the given month
+                var dueDatesThisMonth = deliverableDefinition.getDeliverableDueDatesForMonth(calendarMonth);
+
+                if( dueDatesThisMonth.length > 0) {
+                    deliverableDefinitionsByMonth[ deliverableDefinition.id ] = deliverableDefinition;
+                }
+
+            } );
+
+            return deliverableDefinitionsByMonth;
+        }
+
+
+
+
+
         /********************* Model Specific Shared Functions ***************************************/
 
         /**
@@ -234,11 +291,78 @@
          * @returns {object} Keys of deliverable id and values of the deliverables themselves.
          */
         function getDeliverablesForDefinition() {
-            var self = this;
+            var deliverableDefinition = this;
             /* Need to manually inject with $injector because deliverablesModel already has this model as a
              * dependency and they can't each directly depend on the other or neither will instantiate */
             var deliverablesModel = $injector.get('deliverablesModel');
-            return deliverablesModel.getCachedDeliverablesByTypeId(self.id);
+            return deliverablesModel.getCachedDeliverablesByTypeId(deliverableDefinition.id);
+        }
+
+        /**
+         * @name DeliverableDefinition.getExpectedDeliverableCount
+         * @description Returns the number of deliverables that should be in the system for the given definition
+         * @returns {Number}
+         */
+        function getExpectedDeliverableCount() {
+            var deliverableDefinition = this;
+            var today = new Date();
+            var expectedDueDates = _.where(deliverableDefinition.dueDates, function(date) {
+                return date < today;
+            });
+            return expectedDueDates.length;
+        }
+
+        /**
+         * @name DeliverableDefinition.getLateCount
+         * @returns {number} The number of deliverables that are still outstanding or were submitted after the due date
+         * up to this point for the fiscal year.
+         */
+        function getLateCount() {
+            var deliverableDefinition = this;
+            var deliverablesForDefinition = _.toArray(deliverableDefinition.getDeliverablesForDefinition());
+
+            /** The number of deliverables that still haven't been submitted */
+            var missingDeliverableCount = deliverableDefinition.getExpectedDeliverableCount() - deliverablesForDefinition.length;
+            /** Don't get extra credit for more deliverables than were supposed to be submitted so ignore negative number */
+            var lateCount = missingDeliverableCount < 0 ? 0 : missingDeliverableCount;
+            _.each(deliverablesForDefinition, function(deliverable) {
+                if(!deliverable.wasDeliveredOnTime()) {
+                    lateCount++;
+                }
+            });
+            return lateCount;
+        }
+
+
+        /**
+         * @name DeliverableDefinition.getOnTimeCount
+         * @returns {number} The number of deliverables that were turned in by or on the due date
+         */
+        function getOnTimeCount() {
+            var deliverableDefinition = this;
+            var onTimeCount = 0;
+            var deliverablesForDefinition = deliverableDefinition.getDeliverablesForDefinition();
+            _.each(deliverablesForDefinition, function(deliverable) {
+                if(deliverable.wasDeliveredOnTime()) {
+                    onTimeCount++;
+                }
+            });
+            return onTimeCount;
+        }
+
+        /**
+         * @name DeliverableDefinition.getAllFeedback
+         * @returns {Feedback[]} Array containing all feedback for all of the deliverables of this type.
+         */
+        function getAllFeedback() {
+            var deliverableDefinition = this;
+            var deliverablesForDefinition = deliverableDefinition.getDeliverablesForDefinition();
+            var feedbackForDefinition = [];
+            _.each(deliverablesForDefinition, function(deliverable) {
+                var feedback = _.toArray(deliverable.getCachedFeedbackByDeliverableId());
+                Array.prototype.push.apply(feedbackForDefinition, feedback);
+            });
+            return feedbackForDefinition;
         }
 
         return model;
