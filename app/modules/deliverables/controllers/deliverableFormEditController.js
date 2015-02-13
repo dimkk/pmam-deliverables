@@ -43,7 +43,7 @@
             if (!deliverableRecord) {
                 /** Redirect if a valid deliverable isn't found */
                 toastr.error('The requested deliverable wasn\'t found.');
-                return $state.go('deliverables.main');
+                return $state.go('deliverables.monthly');
             }
 
             $q.all([
@@ -139,7 +139,7 @@
         }
 
         function navigateBack() {
-            $state.go('deliverables.main', {
+            $state.go('deliverables.monthly', {
                 mo: deliverableRecord.fiscalMonth,
                 fy: deliverableRecord.fy
             });

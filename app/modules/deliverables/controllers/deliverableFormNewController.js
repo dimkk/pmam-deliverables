@@ -71,7 +71,7 @@
         }
 
         function cancel() {
-            $state.go('deliverables.main', {
+            $state.go('deliverables.monthly', {
                 mo: vm.deliverableRecord.fiscalMonth,
                 fy: vm.deliverableRecord.fy
             });
