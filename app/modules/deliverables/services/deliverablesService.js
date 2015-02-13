@@ -11,11 +11,13 @@
      * @description
      *
      */
-    function deliverablesService(_, $q, deliverablesModel, deliverableDefinitionsModel, calendarService) {
+    function deliverablesService(_, $q, deliverablesModel, deliverableDefinitionsModel) {
 
         var service = {
-            getDeliverablesForMonth: getDeliverablesForMonth,
-            getDeliverableDefinitionsForMonth: getDeliverableDefinitionsForMonth
+            createDeliverableSummaryObject: createDeliverableSummaryObject,
+            getGroupedFyDeliverablesByTaskNumber: getGroupedFyDeliverablesByTaskNumber,
+            groupDeliverablesByTaskNumber: groupDeliverablesByTaskNumber,
+            identifyOutstandingDefinitionsForMonth: identifyOutstandingDefinitionsForMonth
         };
 
         return service;
@@ -24,62 +26,98 @@
 
 
         /**
-         * @name deliverablesService.getDeliverableDefinitionsForMonth
-         * @description Accepts a fiscal month and year and returns applicable definitions for that period
+         * @name deliverablesService.getGroupedFyDeliverablesByTaskNumber
          * @param {number} fiscalYear Fiscal Year (October - September)
-         * @param {number} fiscalMonth Fiscal Month (1 - 12 starting with October)
-         * @returns {object} Keys of definition ID and value of definition.
+         * @returns {promise} Promise which resolves with an object with keys of deliverable task number and
+         * values being an array of deliverables for that task number.
          */
-        function getDeliverableDefinitionsForMonth( fiscalYear, fiscalMonth ) {
-
+        function getGroupedFyDeliverablesByTaskNumber(fiscalYear) {
             var deferred = $q.defer();
-
-            //Need to get use calendar month instead of fiscal month in order to get due dates for a month
-            var calendarMonth = calendarService.getCalendarMonth(fiscalMonth);
-
-
-            deliverableDefinitionsModel.getFyDefinitions(fiscalYear)
-                .then(function( deliverableDefinitions ){
-
-                    var deliverableDefinitionsByMonth = {};
-
-                    _.each(deliverableDefinitions, function( deliverableDefinition ) {
-
-
-                        //Retrieve array of all due dates for this deliverable for the given month
-                        var dueDatesThisMonth = deliverableDefinition.getDeliverableDueDatesForMonth(calendarMonth);
-
-                        if( dueDatesThisMonth.length > 0) {
-                            deliverableDefinitionsByMonth[ deliverableDefinition.id ] = deliverableDefinition;
-                        }
-
-                    } );
-
-                    deferred.resolve(deliverableDefinitionsByMonth);
+            /** Need to ensure definitions are also available although we don't need to reference the returned value */
+            $q.all([ deliverablesModel.getFyDeliverables(fiscalYear),
+                deliverableDefinitionsModel.getFyDefinitions(fiscalYear)])
+                .then(function (resolvedPromises) {
+                    var deliverables = resolvedPromises[0];
+                    var groupedDeliverables = groupDeliverablesByTaskNumber(deliverables);
+                    deferred.resolve(groupedDeliverables);
                 });
-
             return deferred.promise;
         }
 
         /**
-         * @name deliverablesService.getDeliverablesForMonth
-         * @param {number} fiscalYear Fiscal Year (October - September)
-         * @param {number} fiscalMonth Fiscal Month (1 - 12 starting with October)
-         * @returns {promise} object[]
+         * @name deliverablesService.groupDeliverablesByTaskNumber
+         * @description Grouping method that groups by task number.  Assumes deliverable definitions are already
+         * cached so we can make method synchronous
+         * @param {Object|Array} deliverables
+         * @returns Object with keys of deliverable task number and values being an array of deliverables
+         * for that task number
+         * @example
+         * //Output
+         *  {
+         *      '3.1': [Deliverable1, Deliverable2...],
+         *      '3.3': [Deliverable9, Deliverable14, ...]
+         *  }
          */
-        function getDeliverablesForMonth( fiscalYear, fiscalMonth ) {
+        function groupDeliverablesByTaskNumber(deliverables) {
+            /** Object with keys of deliverable task number and values being an array of deliverables for that task number */
+            var groupedDeliverablesByTaskNumber = {};
 
-            var deferred = $q.defer();
+            /** Add each deliverable to the applicable array */
+            _.each(deliverables, function(deliverable) {
+                var definition = deliverable.getDeliverableDefinition();
+                if(definition && definition.taskNumber) {
+                    groupedDeliverablesByTaskNumber[definition.taskNumber] =
+                        groupedDeliverablesByTaskNumber[definition.taskNumber] || [];
+                    groupedDeliverablesByTaskNumber[definition.taskNumber].push(deliverable);
+                }
+            });
 
-            deliverablesModel.getFyDeliverables(fiscalYear)
-                .then(function (indexedCache) {
-                    var deliverablesForMonth = _.where(indexedCache, function(deliverable) {
-                        return deliverable.fiscalMonth === fiscalMonth;
-                    });
-                    deferred.resolve(deliverablesForMonth);
-                });
-            return deferred.promise;
+            return groupedDeliverablesByTaskNumber;
         }
+
+        /**
+         * @name deliverablesService.identifyOutstandingDefinitionsForMonth
+         * @param {Object|Array} fiscalMonthDeliverables
+         * @param {Object|Array} fiscalMonthDefinitions
+         * @returns {DeliverableDefinition[]}  Array of all outstanding deliverables for a month.
+         */
+        function identifyOutstandingDefinitionsForMonth(fiscalMonthDeliverables, fiscalMonthDefinitions) {
+            /** Create object with keys equal to the deliverable type id of submitted deliverable */
+            var deliverablesIndexedByTypeId = _.indexBy(fiscalMonthDeliverables, function(deliverable) {
+                return deliverable.deliverableType.lookupId;
+            });
+
+            /** Find definitions with an ID that isn't found in the index above */
+            return _.where(fiscalMonthDefinitions, function(definition) {
+                return !deliverablesIndexedByTypeId[definition.id];
+            });
+        }
+
+        function createDeliverableSummaryObject(fyDefinitions) {
+            console.time("Summary");
+            var summaryObject = {
+                onTimePercentage: null,
+                onTimeCount: 0,
+                notOnTimeCount: 0,
+                qualityPercentage: null,
+                acceptableCount: 0,
+                unacceptableCount: 0,
+                anticipatedCount: 0,
+                actualCount: 0
+            };
+
+            _.each(fyDefinitions, function(definition) {
+                summaryObject.onTimeCount += definition.getOnTimeCount();
+                summaryObject.notOnTimeCount += definition.getLateCount();
+                summaryObject.anticipatedCount += definition.getExpectedDeliverableCount();
+                summaryObject.actualCount += _.toArray(definition.getDeliverablesForDefinition()).length;
+            });
+
+            summaryObject.onTimePercentage = Math.round(summaryObject.onTimeCount / (summaryObject.onTimeCount + summaryObject.notOnTimeCount) *1000) /1000;
+            console.timeEnd("Summary");
+            return summaryObject;
+        }
+
 
     }
 })();
