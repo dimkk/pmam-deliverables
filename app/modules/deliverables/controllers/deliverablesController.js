@@ -6,14 +6,14 @@
         .module( 'pmam-deliverables' )
         .controller( 'deliverablesController', deliverablesController );
 
-    function deliverablesController( $q, deliverableFeedbackModel, chartService, $state,
+    function deliverablesController( $q, deliverableFeedbackModel, chartService, $state, fiscalYear,
+                                     deliverableDefinitionsModel, deliverablesModel,
                                     deliverablesService, calendarService, deliverableAccessLogModel) {
 
         var vm = this;
 
         /** $state query string params return as strings, if they exist and can be converted to an int do it,
         otherwise use the current fiscal year and month */
-        var fiscalYear = isNaN($state.params.fy) ? calendarService.getCurrentFiscalYear() : parseInt($state.params.fy);
         var fiscalMonth = isNaN($state.params.mo) ? calendarService.getCurrentFiscalMonth() : parseInt($state.params.mo);
 
         vm.decreaseDate = decreaseDate;
@@ -34,14 +34,17 @@
             vm.gauge2 = new chartService.Gauge('OTD');
 
             $q.all([
-                deliverablesService.getDeliverablesForMonth( fiscalYear, fiscalMonth ),
-                deliverablesService.getDeliverableDefinitionsForMonth( fiscalYear, fiscalMonth ),
+                deliverablesModel.getDeliverablesForMonth( fiscalYear, fiscalMonth ),
+                deliverableDefinitionsModel.getDeliverableDefinitionsForMonth( fiscalYear, fiscalMonth ),
                 deliverableFeedbackModel.getFyFeedback(fiscalYear),
                 deliverableAccessLogModel.getFyAccessLogs(fiscalYear)
             ])
                 .then(function(resolvedPromises) {
                     vm.visibleDeliverables = resolvedPromises[0];
                     vm.deliverableDefinitionsByMonth = resolvedPromises[1];
+                    vm.outstandingDefinitions = deliverablesService
+                        .identifyOutstandingDefinitionsForMonth(vm.visibleDeliverables, vm.deliverableDefinitionsByMonth);
+
                     vm.deliverableFeedback = resolvedPromises[2];
 
                     vm.gauge1.updateGaugeValue(chartService.getSatisfactionRating(vm.visibleDeliverables));
@@ -63,7 +66,7 @@
                 updatedMonth = 1;
             }
 
-            $state.go('deliverables.main', {fy: updatedYear, mo: updatedMonth});
+            $state.go('deliverables.monthly', {fy: updatedYear, mo: updatedMonth});
         }
 
         function decreaseDate() {
@@ -76,7 +79,7 @@
                 updatedMonth = 12;
             }
 
-            $state.go('deliverables.main', {fy: updatedYear, mo: updatedMonth});
+            $state.go('deliverables.monthly', {fy: updatedYear, mo: updatedMonth});
         }
     }
 })();

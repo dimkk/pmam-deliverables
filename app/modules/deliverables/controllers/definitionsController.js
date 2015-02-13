@@ -8,12 +8,12 @@
         .controller('definitionsController', definitionsController);
 
     /* @ngInject */
-    function definitionsController($state, $q, _, deliverableDefinitionsModel, deliverablesModel, calendarService) {
+    function definitionsController($state, $q, _, deliverableDefinitionsModel, deliverablesModel, fiscalYear) {
 
         var vm = this;
 
         vm.deliverableCountByDefinition = deliverableCountByDefinition;
-        vm.fiscalYear = isNaN($state.params.fy) ? calendarService.getCurrentFiscalYear() : parseInt($state.params.fy);
+        vm.fiscalYear = fiscalYear;
         vm.fiscalYearDisplay = 'FY ' + vm.fiscalYear.toString().slice(-2);
         vm.searchString = '';
         vm.nextFiscalYear = nextFiscalYear;
