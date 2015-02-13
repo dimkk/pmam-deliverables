@@ -61,7 +61,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="definition in vm.deliverableDefinitionsByMonth | toArray | filter:vm.customArrayFilter | filter:vm.searchString | orderBy:'deliverableNumber' track by definition.id">
+                    <tr ng-repeat="definition in vm.outstandingDefinitions | filter:vm.searchString | orderBy:'deliverableNumber' track by definition.id">
                         <td>
                             <a ui-sref="deliverables.instances({fy:vm.fiscalYear, id:definition.id})">
                                 {{ definition.deliverableNumber }}
