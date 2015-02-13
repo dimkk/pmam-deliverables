@@ -2,8 +2,11 @@
 <div class="navbar navbar-inverse" role="navigation" ng-controller="navbarCtrl as vm">
     <div class="navbar-inner">
         <div class="brand pull-left">
-            <img src="images/usmc_40-inverse.png" alt="Logo"/>
-            <span class="title">ESED Deliverables</span>
+            <!--TODO Use better bootstrap formatting-->
+            <a ui-sref="deliverables.summary">
+                <img src="images/usmc_40-inverse.png" alt="Logo"/>
+                <span class="title">ESED Deliverables</span>
+            </a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
