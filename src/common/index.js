@@ -1,6 +1,8 @@
 'use strict';
 /*jshint esnext: true */
 
+import deliverableAccessLogModel from './models/deliverableAccessLogsModel.js';
+
 angular.module('pmam-deliverables', [
     //Angular Components
     'ngSanitize',
@@ -26,5 +28,8 @@ angular.module('pmam-deliverables', [
 
     //SP-Angular
     'angularPoint'
-]);
+])
+
+.service("deliverableAccessLogModel", deliverableAccessLogModel);
+
 
