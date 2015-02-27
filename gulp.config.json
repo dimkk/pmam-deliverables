@@ -1,31 +1,32 @@
 {
-    "client": "./app/",
-    "index": "./app/index.html",
+    "src": "./src/",
+    "tmp": "./.tmp/",
+    "index": "./src/index.html",
     "htmltemplates": [
-        "./app/**/*.html",
-        "!./app/index.html"
+        "./src/**/*.html",
+        "!./src/index.html"
     ],
     "projectcss": [
-        "./app/styles/**/*.css",
-        "!./app/styles/**/bootstrap.css",
-        "!./app/styles/**/bower.css"
+        "./src/styles/**/*.css",
+        "!./src/styles/**/bootstrap.css",
+        "!./src/styles/**/bower.css"
     ],
-    "projectless": "./app/styles/less/*.less",
+    "projectless": "./src/styles/less/*.less",
     "projectjs": [
-        "./app/**/*.js",
-        "!./app/common/app.module.js",
-        "!./app/**/*.spec.js",
-        "!./app/**/*.mock.js"
+        "./src/**/*.js",
+        "!./src/common/app.module.js",
+        "!./src/**/*.spec.js",
+        "!./src/**/*.mock.js"
     ],
     "specs": [
         "./test/**/*.spec.js",
-        "./app/**/*.spec.js"
+        "./src/**/*.spec.js"
     ],
     "fonts": [
         "./bower_components/font-awesome/fonts/**/*.*"
     ],
     "images": [
-        "./app/images/**/*.*"
+        "./src/images/**/*.*"
     ],
     "build": "./dist/",
     "report": "./report/",
@@ -50,7 +51,7 @@
         "./bower_components/angular-point/test/mock/apMockBackend.js"
     ],
     "distjs": [
-        "./app/common/app.module.js"
+        "./src/common/app.module.js"
     ],
     "modules": [
         "./bower_components/angular-point/dist/angular-point.js",
@@ -89,7 +90,7 @@
         "./bower_components/angular-loading-bar/build/loading-bar.css",
         "./bower_components/font-awesome/css/font-awesome.min.css",
         "./bower_components/angular-point-discussion-thread/dist/apDiscussionThread.css",
-        "./app/styles/**/*bootstrap.css",
-        "./app/styles/**/*bower.css"
+        "./src/styles/**/*bootstrap.css",
+        "./src/styles/**/*bower.css"
     ]
 }

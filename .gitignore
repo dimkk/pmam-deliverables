@@ -9,7 +9,7 @@ coverage
 report
 
 # Styles CSS gets built all the time so just store the LESS
-app/styles/css
+src/styles/css
 
 # IDE
 .idea

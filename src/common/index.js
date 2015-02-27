@@ -1,4 +1,5 @@
 'use strict';
+/*jshint esnext: true */
 
 angular.module('pmam-deliverables', [
     //Angular Components
@@ -26,3 +27,4 @@ angular.module('pmam-deliverables', [
     //SP-Angular
     'angularPoint'
 ]);
+
