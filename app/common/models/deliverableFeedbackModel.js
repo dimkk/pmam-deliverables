@@ -51,19 +51,12 @@
                 /** Array of objects mapping each SharePoint field to a property on a list item object */
                 /** If OneApp live templates have been imported type 'oafield' followed by the tab key for
                  /*  each field to quickly map with available options */
-                    //TODO These field names are pretty bad, think about fixing
-                    //Ex: {staticName: 'Title', objectType: 'Text', mappedName: 'title', readOnly: false}
                     {staticName: 'Title', objectType: 'Text', mappedName: 'title', readOnly: false},
                     {staticName: 'Comments', objectType: 'Note', mappedName: 'comments', readOnly: false},
+                    /** FY is October - September (Actually a string in SharePoint but we call it Integer for automatic type conversion*/
+                    {staticName: "FY", objectType: "Integer", mappedName: "fy", readOnly: false},
+                    {staticName: 'Acceptable', objectType: 'Boolean', mappedName: 'acceptable', readOnly: false},
                     {staticName: 'DeliverableDefinition', objectType: 'Lookup', mappedName: 'definition', readOnly: false},
-                    /* Dependent lookup, returns normal lookup but the lookupValue contains the FY
-                     value on the linked deliverable.  This value is read-only. */
-                    {
-                        staticName: 'Definition_x003a_FY',
-                        objectType: 'Lookup',
-                        mappedName: 'fy',
-                        readOnly: true
-                    },
                     {staticName: 'Deliverable', objectType: 'Lookup', mappedName: 'deliverable', readOnly: false},
                     {staticName: 'Rating', objectType: 'Integer', mappedName: 'rating', readOnly: false}
                 ]
@@ -142,7 +135,7 @@
                     '   <Where>' +
                     /** Return all records for this FY */
                     '       <Eq>' +
-                    '           <FieldRef Name="Definition_x003a_FY"/>' +
+                    '           <FieldRef Name="FY"/>' +
                     '           <Value Type="Text">' + fy + '</Value>' +
                     '       </Eq>' +
                     '   </Where>' +
