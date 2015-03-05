@@ -163,10 +163,14 @@
             }
             /** Create a placeholder if one is found */
             if(!feedbackForUser) {
+                var deliverableDefinition = self.getDeliverableDefinition();
                 feedbackForUser = deliverableFeedbackModel.createEmptyItem({
-                    rating: 0,
+                    acceptable: true,
+                    comments: '',
+                    definition: self.deliverableType,
                     deliverable: {lookupId: self.id},
-                    definition: self.deliverableType
+                    fy: deliverableDefinition.fy,
+                    rating: 0
                 });
             }
             return feedbackForUser;
