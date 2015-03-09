@@ -29,11 +29,11 @@
             });
 
 
-            //deliverablesService.getGroupedFyDeliverablesByTaskNumber(fiscalYear)
-            //    .then(function (groupedDeliverablesByTaskNumber) {
-            //        console.log(groupedDeliverablesByTaskNumber);
-            //        vm.groupedDeliverablesByTaskNumber = groupedDeliverablesByTaskNumber;
-            //    })
+            deliverablesService.getGroupedFyDeliverablesByTaskNumber(fiscalYear)
+                .then(function (groupedDeliverablesByTaskNumber) {
+                    console.log(groupedDeliverablesByTaskNumber);
+                    vm.groupedDeliverablesByTaskNumber = groupedDeliverablesByTaskNumber;
+                })
 
 
         }

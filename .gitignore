@@ -18,4 +18,7 @@ app/styles/css
 xml-cache
 test/mocks/offlineXML.js
 
+# Type Definitions
+typings/*/*
+
 npm-debug.log

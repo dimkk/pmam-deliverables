@@ -1,7 +1,7 @@
-(function () {
+(():void => {
     'use strict';
 
     angular
         .module('pmam-deliverables')
-        .constant('user', {lookupId: '', lookupValue:''});
+        .value('user', {lookupId: '', lookupValue:''});
 })();

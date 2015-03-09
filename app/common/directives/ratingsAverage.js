@@ -15,7 +15,7 @@
         //
         var directive = {
             link: link,
-            templateUrl: 'modules/deliverables/directives/ratingsAverageView.html',
+            templateUrl: 'common/directives/ratingsAverageView.html',
             scope: {deliverable: '='},
             restrict: 'EA'
         };

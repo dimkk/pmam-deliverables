@@ -156,21 +156,6 @@
 
         /********************* Model Specific Shared Functions ***************************************/
 
-        /**
-         * @name deliverableAccessLogModel.registerLogByDeliverable
-         * @description Adds a accessLog element to a cache that is grouped by deliverable to make later retrieval immediate
-         * @param {DeliverableAccessLog} accessLog
-         */
-        function registerLogByDeliverable(accessLog) {
-            if (accessLog.deliverable.lookupId) {
-                accessLogsByDeliverableId[accessLog.deliverable.lookupId] = accessLogsByDeliverableId[accessLog.deliverable.lookupId] || {};
-                /** Only register modifications that have been saved to the server and add to cache if not already there */
-                if (accessLog.id && !accessLogsByDeliverableId[accessLog.deliverable.lookupId][accessLog.id]) {
-                    accessLogsByDeliverableId[accessLog.deliverable.lookupId][accessLog.id] = accessLog;
-                }
-            }
-
-        }
 
         /**
          * @name deliverableAccessLogModel.removeLogByDeliverable

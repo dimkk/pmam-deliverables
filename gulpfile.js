@@ -12,7 +12,7 @@ var fs = require('fs');
 //var browserSync = require('browser-sync');
 var karma = require('karma').server;
 var merge = require('merge-stream');
-var paths = require('./gulp.config.json');
+var paths = require('./gulp.config.js')();
 
 var env = $.util.env;
 var log = $.util.log;
@@ -150,7 +150,7 @@ gulp.task('inject-dev', ['cacheXML', 'styles'], function () {
         .pipe(injectRelative('cdnjs', injectOptions))
         .pipe(injectNG('environmentjs', {src: paths.devjs, ignorePath: 'app/'}))
         .pipe(injectNG('projectjs', injectOptions))
-        .pipe(injectNG('modules', injectOptions))
+        .pipe(injectNG('components', injectOptions))
     /** Replace local jquery-ui css with cdn */
         .pipe($.replace('href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0',
             'href="bower_components/jquery-ui'))
@@ -169,7 +169,7 @@ gulp.task('inject-dist', ['styles'], function () {
     /** Replace local references with Google CDN references */
         .pipe(googlecdn(require('./bower.json')))
         .pipe(injectNG('projectjs'))
-        .pipe(injectNG('modules'))
+        .pipe(injectNG('components'))
     /** Replace local jquery-ui css with cdn */
         .pipe($.replace('href="bower_components/jquery-ui',
             'href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0'))

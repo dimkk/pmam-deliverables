@@ -34,6 +34,7 @@
     <link rel="stylesheet" href="styles/css/custom.css">
     <link rel="stylesheet" href="styles/css/main.css">
     <link rel="stylesheet" href="styles/css/overrides.css">
+    <link rel="stylesheet" href="styles/css/panel.css">
     <link rel="stylesheet" href="styles/css/print.css">
     <link rel="stylesheet" href="styles/css/utility.css">
     <link rel="stylesheet" href="styles/css/variables.css">
@@ -45,7 +46,7 @@
 </head>
 <body ng-app="pmam-deliverables" id="ng-app">
 
-<div ng-include="'modules/navbar/navbarView.html'"></div>
+<div ng-include="'components/navbar/navbarView.html'"></div>
 
 <div class="application-content">
     <div ui-view class="fadeIn">
@@ -73,6 +74,7 @@
 <!-- build:js scripts/vendor.js -->
 <!-- inject-vendorjs:js -->
 <script src="bower_components/moment/moment.js"></script>
+<script src="bower_components/moment-business/dist/moment-business.js"></script>
 <script src="bower_components/angular-google-chart/ng-google-chart.js"></script>
 <script src="bower_components/lodash/dist/lodash.js"></script>
 <script src="bower_components/lodash-deep/lodash-deep.js"></script>
@@ -93,7 +95,7 @@
 <!-- endbuild -->
 
 <!-- build:js scripts/scripts.js -->
-<!-- inject-modules:js -->
+<!-- inject-components:js -->
 <script src="bower_components/angular-point/dist/angular-point.js"></script>
 <script src="bower_components/angular-point-sync/dist/angular-point-sync.js"></script>
 <script src="bower_components/angular-point-offline-generator/dist/ap-offline-generator.js"></script>
@@ -113,29 +115,32 @@
 <!-- endinject -->
 
 <!-- inject-projectjs:js -->
-<script src="modules/deliverables/services/userService.js"></script>
-<script src="modules/deliverables/services/ratingsService.js"></script>
-<script src="modules/deliverables/services/deliverablesService.js"></script>
-<script src="modules/deliverables/services/deliverableFrequenciesService.js"></script>
-<script src="modules/deliverables/services/chartService.js"></script>
-<script src="modules/deliverables/services/calendarService.js"></script>
-<script src="modules/deliverables/directives/reviews.js"></script>
-<script src="modules/deliverables/directives/ratingsAverage.js"></script>
-<script src="modules/deliverables/controllers/deliverablesController.js"></script>
-<script src="modules/deliverables/controllers/deliverableInstancesController.js"></script>
-<script src="modules/deliverables/controllers/deliverableFormNewController.js"></script>
-<script src="modules/deliverables/controllers/deliverableFormEditController.js"></script>
-<script src="modules/deliverables/controllers/definitionsController.js"></script>
-<script src="modules/navbar/navbarCtrl.js"></script>
+<script src="components/deliverables/controllers/deliverablesController.js"></script>
+<script src="components/deliverables/controllers/deliverableSummaryController.js"></script>
+<script src="components/deliverables/controllers/deliverableInstancesController.js"></script>
+<script src="components/deliverables/controllers/deliverableDefinitionModalController.js"></script>
+<script src="components/deliverables/controllers/definitionsController.js"></script>
+<script src="components/navbar/navbarController.js"></script>
+<script src="components/deliverableForm/deliverableFormNewController.js"></script>
+<script src="components/deliverableForm/deliverableFormEditController.js"></script>
+<script src="common/services/userService.js"></script>
+<script src="common/services/ratingsService.js"></script>
+<script src="common/services/deliverablesService.js"></script>
+<script src="common/services/deliverableFrequenciesService.js"></script>
+<script src="common/services/chartService.js"></script>
+<script src="common/services/calendarService.js"></script>
 <script src="common/models/userSettingsModel.js"></script>
 <script src="common/models/deliverablesModel.js"></script>
 <script src="common/models/deliverableFeedbackModel.js"></script>
 <script src="common/models/deliverableDefinitionsModel.js"></script>
-<script src="common/user.js"></script>
-<script src="common/run.js"></script>
-<script src="common/routes.js"></script>
-<script src="common/constants.js"></script>
-<script src="common/config.js"></script>
+<script src="common/models/deliverableAccessLogsModel.js"></script>
+<script src="common/directives/reviews.js"></script>
+<script src="common/directives/ratingsAverage.js"></script>
+<script src="common/app.user.js"></script>
+<script src="common/app.run.js"></script>
+<script src="common/app.routes.js"></script>
+<script src="common/app.constants.js"></script>
+<script src="common/app.config.js"></script>
 <!-- endinject -->
 <!-- endbuild -->
 

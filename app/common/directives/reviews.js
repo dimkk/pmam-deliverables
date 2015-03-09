@@ -10,8 +10,10 @@
     function reviews(ratingsService) {
         var directive = {
             link: link,
-            templateUrl: 'modules/deliverables/directives/reviewsView.html',
-            scope: {feedback: '='},
+            templateUrl: 'common/directives/reviewsView.html',
+            scope: {
+                feedback: '='
+            },
             restrict: 'EA'
         };
         return directive;
