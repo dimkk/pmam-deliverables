@@ -22,7 +22,6 @@
         vm.fiscalYear = fiscalYear;
         vm.gotData = false;
         vm.increaseDate = increaseDate;
-        vm.showFeedbackPanel = false;
 
         activate();
 

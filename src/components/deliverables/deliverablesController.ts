@@ -4,18 +4,18 @@ module app.layout {
     'use strict';
 
     interface IDeliverablesController {
-        decreaseDate : Function;
-        displayPeriod : String;
-        fiscalMonth : Number;
+        decreaseDate: Function;
+        displayPeriod?: String;
+        fiscalMonth?: Number;
         fiscalYear : Number;
         gotData : Boolean;
         increaseDate : Function;
-        showFeedbackPanel : Boolean;
     }
 
     class deliverablesController implements IDeliverablesController {
+        gotData = false;
 
-        constructor($q: ng.IQService, deliverableFeedbackModel, chartService, private $state: ng.ui.IStateService, private fiscalYear:number,
+        constructor($q: ng.IQService, deliverableFeedbackModel, chartService, private $state: ng.ui.IState, public fiscalYear:number,
                     deliverableDefinitionsModel, deliverablesModel,
                     deliverablesService, calendarService, deliverableAccessLogModel) {
             var vm = this;

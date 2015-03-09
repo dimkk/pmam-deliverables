@@ -1,3 +1,6 @@
+/// <reference path="./typings/tsd.d.ts" />
+
+
 declare module ap {
 
     interface IndexedCache{
@@ -10,6 +13,8 @@ declare module ap {
         nthEntity: Function;
         removeEntity: Function;
         toArray: Function;
+        //Object with keys equaling ID and values being the individual list item
+        [key: number]: ListItem;
     }
 
     interface ListItemCrudOptions{
@@ -68,6 +73,10 @@ declare module ap {
         value:Object;
     }
 
+    interface Attachments{
+        value:string[];
+    }
+
     interface ListItem{
         id?:number;
         created?:Date;
@@ -78,7 +87,7 @@ declare module ap {
         uniqueId?:string;
         fileRef?:Lookup;
 
-        deleteAttachment?(url:string): ng.IDeferred<any>;
+        deleteAttachment?(url:string): ng.IPromise<any>;
         deleteItem?( options?:ListItemCrudOptions ): ng.IDeferred<any>;
         getAttachmentCollection?(): ng.IDeferred<string[]>;
         getAvailableWorkflows?(): ng.IDeferred<WorkflowDefinition[]>;
@@ -135,7 +144,27 @@ declare module ap {
         validateEntity?(entity:ListItem, options?:Object): boolean;
     }
 
+    interface DiscussionThread{
+        posts:DiscussionThreadPost[];
+        nextId:number;
+        getNextId():number;
+        createPost(parentId:number,content:string):DiscussionThreadPost;
+        getListItem():ListItem;
+        prune():void;
+        saveChanges():ng.IDeferred<ListItem>;
+    }
 
+    interface DiscussionThreadPost{
+        content:string;
+        id:number;
+        parentId:number;
+        created:Date;
+        user:User;
+        removePost():void;
+        deletePost():ng.IDeferred<ListItem>;
+        savePost():ng.IDeferred<ListItem>;
+        reply():ng.IDeferred<ListItem>;
+    }
 
     interface Cache{
         //TODO Populate me!
