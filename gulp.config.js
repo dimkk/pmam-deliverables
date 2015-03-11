@@ -1,9 +1,10 @@
 module.exports = function() {
 
-    var app = "./app/";
+    var app = "./src/";
     var bower = "./bower_components/";
 
     var config = {
+        "app": app,
         "client": app + "",
         "index": app + "index.html",
         "htmltemplates": [
@@ -17,6 +18,7 @@ module.exports = function() {
         ],
         "projectless": app + "styles/less/*.less",
         "projectjs": [
+            app + "shims/*.js",
             app + "**/*.js",
             "!" + app + "common/app.module.js",
             "!" + app + "**/*.spec.js",

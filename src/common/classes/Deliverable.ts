@@ -1,9 +1,4 @@
 /// <reference path="../../../typings/tsd.d.ts" />
-/// <reference path="./deliverableFeedbackModel.ts" />
-/// <reference path="./deliverableAccessLogsModel.ts" />
-/// <reference path="./deliverableAccessLog.ts" />
-/// <reference path="./deliverableDefinitionsModel.ts" />
-/// <reference path="./deliverablesModel.ts" />
 
 module app.models {
     'use strict';
@@ -42,7 +37,7 @@ module app.models {
         wasDeliveredOnTime():boolean;
     }
 
-    var DeliverablesModel = app.models.DeliverablesModel;
+    var model;
 
     export class Deliverable implements IDeliverable {
         title;
@@ -66,11 +61,13 @@ module app.models {
             var self = this;
             _.extend(self, obj);
             self.displayDate = moment(self.submissionDate).format('MMM YY');
+            model = model || this.getModel();
+
             /** Instantiate a new discussion object even if there isn't an active discussion */
-            self.discussionThread = DeliverablesModel.apDiscussionThreadFactory.createDiscussionObject(self, 'discussionThread');
+            self.discussionThread = self._model.apDiscussionThreadFactory.createDiscussionObject(self, 'discussionThread');
 
             /** Store in cached object so we can reference by deliverable type directly from the type without needing to iterate over anything*/
-            DeliverablesModel.registerDeliverableByType(self);
+            model.registerDeliverableByType(self);
             /** Modify standard prototype delete logic so we can remove from cache prior to actually deleting */
             self._deleteItem = self.deleteItem;
             self.deleteItem = () => {
@@ -85,7 +82,7 @@ module app.models {
          */
         estimateDeliverableDueDate():Date {
             var deliverable = this;
-            return DeliverablesModel.deliverableFrequenciesService.estimateDeliverableDueDate(deliverable);
+            return model.deliverableFrequenciesService.estimateDeliverableDueDate(deliverable);
         }
 
         /**
@@ -96,7 +93,7 @@ module app.models {
          */
         getCachedAccessLogsByDeliverableId():{ [key: number]: IDeliverableFeedback; } {
             var self = this;
-            return DeliverablesModel.deliverableAccessLogModel.getCachedLogByDeliverableId(self.id);
+            return model.deliverableAccessLogsModel.getCachedLogByDeliverableId(self.id);
         }
 
         /**
@@ -107,7 +104,7 @@ module app.models {
          */
         getCachedFeedbackByDeliverableId():{ [key: number]: IDeliverableFeedback; } {
             var self = this;
-            return DeliverablesModel.deliverableFeedbackModel.getCachedFeedbackByDeliverableId(self.id);
+            return model.deliverableFeedbackModel.getCachedFeedbackByDeliverableId(self.id);
         }
 
         /**
@@ -119,7 +116,7 @@ module app.models {
                 feedbackForDeliverable = self.getCachedFeedbackByDeliverableId();
             if (feedbackForDeliverable) {
                 _.each(feedbackForDeliverable, (feedback:IDeliverableFeedback) => {
-                    if (feedback.author.lookupId === DeliverablesModel.user.lookupId) {
+                    if (feedback.author.lookupId === model.user.lookupId) {
                         feedbackForUser = feedback;
                     }
                 });
@@ -127,7 +124,7 @@ module app.models {
             /** Create a placeholder if one is found */
             if (!feedbackForUser) {
                 var deliverableDefinition = self.getDeliverableDefinition();
-                feedbackForUser = DeliverablesModel.deliverableFeedbackModel.createEmptyItem({
+                feedbackForUser = model.deliverableFeedbackModel.createEmptyItem({
                     acceptable: true,
                     comments: '',
                     definition: self.deliverableType,
@@ -146,7 +143,7 @@ module app.models {
          */
         getCalendarMonth():number {
             var deliverable = this;
-            return DeliverablesModel.calendarService.getCalendarMonth(deliverable.fiscalMonth);
+            return model.calendarService.getCalendarMonth(deliverable.fiscalMonth);
         }
 
         /**
@@ -176,7 +173,7 @@ module app.models {
          */
         getDeliverableDefinition():IDeliverableDefinition {
             var self = this;
-            return DeliverablesModel.deliverableDefinitionsModel.getCachedEntity(self.deliverableType.lookupId);
+            return model.deliverableDefinitionsModel.getCachedEntity(self.deliverableType.lookupId);
         }
 
         /**
@@ -231,7 +228,7 @@ module app.models {
          */
         registerDeliverableAccessEvent():ng.IPromise<IDeliverableAccessLog> {
             var deliverable = this;
-            return DeliverablesModel.deliverableAccessLogModel.addNewItem({
+            return model.deliverableAccessLogsModel.addNewItem({
                 deliverable: {lookupId: deliverable.id},
                 fy: deliverable.fy
             });

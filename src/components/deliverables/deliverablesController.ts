@@ -17,7 +17,7 @@ module app.layout {
 
         constructor($q: ng.IQService, deliverableFeedbackModel, chartService, private $state: ng.ui.IState, public fiscalYear:number,
                     deliverableDefinitionsModel, deliverablesModel,
-                    deliverablesService, calendarService, deliverableAccessLogModel) {
+                    deliverablesService, calendarService, deliverableAccessLogsModel) {
             var vm = this;
 
             activate();
@@ -28,16 +28,16 @@ module app.layout {
 
                 /** $state query string params return as strings, if they exist and can be converted to an int do it,
                  otherwise use the current fiscal year and month */
-                this.fiscalMonth = isNaN($state.params.mo) ? calendarService.getCurrentFiscalMonth() : parseInt($state.params.mo);
+                vm.fiscalMonth = isNaN($state.params.mo) ? calendarService.getCurrentFiscalMonth() : parseInt($state.params.mo);
 
                 vm.gauge1 = new chartService.Gauge('Satisfaction');
                 vm.gauge2 = new chartService.Gauge('OTD');
 
                 $q.all([
-                    deliverablesModel.getDeliverablesForMonth( fiscalYear, this.fiscalMonth ),
-                    deliverableDefinitionsModel.getDeliverableDefinitionsForMonth( fiscalYear, this.fiscalMonth ),
+                    deliverablesModel.getDeliverablesForMonth( fiscalYear, vm.fiscalMonth ),
+                    deliverableDefinitionsModel.getDeliverableDefinitionsForMonth( fiscalYear, vm.fiscalMonth ),
                     deliverableFeedbackModel.getFyFeedback(fiscalYear),
-                    deliverableAccessLogModel.getFyAccessLogs(fiscalYear)
+                    deliverableAccessLogsModel.getFyAccessLogs(fiscalYear)
                 ])
                     .then(function(resolvedPromises) {
                         vm.visibleDeliverables = resolvedPromises[0];

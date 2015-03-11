@@ -1,0 +1,74 @@
+/*
+Can be used on any animation element (ng-hide, ng-show, ng-if, ng-include ...)  NG-Animate automatically adds the
+ng-enter or ng-move when an element is added/moved accordingly and ng-leave when an element is removed from the DOM.
+Therefore you can add one of the below animation classes to get the desired effect.
+
+Example:
+<div ng-if="state.ready" class="fadeIn"></>
+
+*/
+.fadeIn.ng-enter,
+.fadeIn.ng-move {
+  -webkit-animation: fadeIn 1s;
+  -moz-animation: fadeIn 1s;
+  -o-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+.fadeInDown.ng-enter,
+.fadeInDown.ng-move {
+  -webkit-animation: fadeInDown 1s;
+  -moz-animation: fadeInDown 1s;
+  -o-animation: fadeInDown 1s;
+  animation: fadeInDown 1s;
+}
+.fadeInLeft.ng-enter,
+.fadeInLeft.ng-move {
+  -webkit-animation: fadeInLeft 1s;
+  -moz-animation: fadeInLeft 1s;
+  -o-animation: fadeInLeft 1s;
+  animation: fadeInLeft 1s;
+}
+.fadeInRight.ng-enter,
+.fadeInRight.ng-move {
+  -webkit-animation: fadeInRight 1s;
+  -moz-animation: fadeInRight 1s;
+  -o-animation: fadeInRight 1s;
+  animation: fadeInRight 1s;
+}
+.fadeInUp.ng-enter,
+.fadeInUp.ng-move {
+  -webkit-animation: fadeInUp 1s;
+  -moz-animation: fadeInUp 1s;
+  -o-animation: fadeInUp 1s;
+  animation: fadeInUp 1s;
+}
+.fadeOut.ng-leave {
+  -webkit-animation: fadeOut 1s;
+  -moz-animation: fadeOut 1s;
+  -o-animation: fadeOut 1s;
+  animation: fadeOut 1s;
+}
+.fadeOutDown.ng-leave {
+  -webkit-animation: fadeOutDown 1s;
+  -moz-animation: fadeOutDown 1s;
+  -o-animation: fadeOutDown 1s;
+  animation: fadeOutDown 1s;
+}
+.fadeOutLeft.ng-leave {
+  -webkit-animation: fadeOutLeft 1s;
+  -moz-animation: fadeOutLeft 1s;
+  -o-animation: fadeOutLeft 1s;
+  animation: fadeOutLeft 1s;
+}
+.fadeOutRight.ng-leave {
+  -webkit-animation: fadeOutRight 1s;
+  -moz-animation: fadeOutRight 1s;
+  -o-animation: fadeOutRight 1s;
+  animation: fadeOutRight 1s;
+}
+.fadeOutUp.ng-leave {
+  -webkit-animation: fadeOutUp 1s;
+  -moz-animation: fadeOutUp 1s;
+  -o-animation: fadeOutUp 1s;
+  animation: fadeOutUp 1s;
+}

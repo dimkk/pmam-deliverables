@@ -1,0 +1,7 @@
+<!--view template for ratings by deliverable directive-->
+<rating ng-model="feedback.rating"
+        state-on="'fa fa-star fa-lg'" state-off="'fa fa-star-o fa-lg'"
+        max="5" readonly="true"></rating><br/>
+<strong>{{feedback.author.lookupValue}}</strong><br/>
+
+<p>{{feedback.comments}} <small>{{feedback.modified | date:'shortDate' }}</small></p>

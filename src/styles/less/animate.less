@@ -1,0 +1,57 @@
+//See http://daneden.github.io/animate.css/ for more animations
+//Creates something that looks like this
+//.fadeInRight{
+//    &.ng-enter,
+//    &.ng-move {
+//        -webkit-animation: fadeInRight 1s;
+//        -moz-animation: fadeInRight 1s;
+//        -o-animation: fadeInRight 1s;
+//        animation: fadeInRight 1s;
+//    }
+//}
+/*
+Can be used on any animation element (ng-hide, ng-show, ng-if, ng-include ...)  NG-Animate automatically adds the
+ng-enter or ng-move when an element is added/moved accordingly and ng-leave when an element is removed from the DOM.
+Therefore you can add one of the below animation classes to get the desired effect.
+
+Example:
+<div ng-if="state.ready" class="fadeIn"></>
+
+*/
+.animateEnter(@animation, @duration:1s) {
+    .@{animation} {
+        &.ng-enter,
+        &.ng-move {
+            -webkit-animation: @animation @duration;
+            -moz-animation: @animation @duration;
+            -o-animation: @animation @duration;
+            animation: @animation @duration;
+        }
+    }
+}
+
+.animateLeave(@animation, @duration:1s) {
+    .@{animation} {
+        &.ng-leave {
+            -webkit-animation: @animation @duration;
+            -moz-animation: @animation @duration;
+            -o-animation: @animation @duration;
+            animation: @animation @duration;
+        }
+    }
+}
+
+.animateEnter(fadeIn);
+.animateEnter(fadeInDown);
+.animateEnter(fadeInLeft);
+.animateEnter(fadeInRight);
+.animateEnter(fadeInUp);
+
+.animateLeave(fadeOut);
+.animateLeave(fadeOutDown);
+.animateLeave(fadeOutLeft);
+.animateLeave(fadeOutRight);
+.animateLeave(fadeOutUp);
+
+
+

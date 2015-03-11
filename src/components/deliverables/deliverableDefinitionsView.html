@@ -1,0 +1,92 @@
+<!-- renders deliverable types display -->
+<div class="navbar navbar-default hidden-print">
+    <div class="container-fluid">
+
+        <div class="navbar-left">
+            <span class="navbar-text h4"><i class="fa fa-lg fa-list-ol icon-padding"></i>FY DELIVERABLES</span>
+
+        </div>
+
+        <!--=========== Fiscal Month Toggle Control ===================-->
+        <form class="navbar-form navbar-right">
+            <div class="btn-group">
+
+                <button class="btn btn-default pull-left" type="button" ng-click="vm.priorFiscalYear()">
+                    <i class="fa fa-arrow-left"></i>
+                </button>
+
+                <span class="pull-left time-indicator text-muted">{{ vm.fiscalYearDisplay }}</span>
+
+                <button class="btn btn-default pull-left" type="button" ng-click="vm.nextFiscalYear()">
+                    <i class="fa fa-arrow-right"></i>
+                </button>
+
+            </div>
+        </form>
+
+        <!--=========== Filter ===================-->
+        <div class="navbar-form navbar-right">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Filter" ng-model="vm.searchString">
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Reference Number</th>
+                <th>Title</th>
+                <th>Schedule</th>
+                <th>Count</th>
+                <th style="width:30px">Create</th>
+                <th>To</th>
+                <th>CC</th>
+                <th style="width: 30px">Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="deliverables-data"
+                ng-repeat="deliverableDefinition in vm.deliverableDefinitions | toArray | filter:vm.searchString | orderBy:'deliverableNumber' track by deliverableDefinition.id">
+                <td>
+                    <a ui-sref="deliverables.instances({ fy:vm.fiscalYear, id:deliverableDefinition.id })">{{
+                        deliverableDefinition.deliverableNumber
+                        }}</a>
+                </td>
+                <td>{{ deliverableDefinition.title }}</td>
+                <td>{{ deliverableDefinition.deliverableFrequency }}</td>
+                <td>
+                    <a ui-sref="deliverables.instances({ fy:vm.fiscalYear, id:deliverableDefinition.id })"
+                        title="Click to view all deliverable instances of this type.">
+                        <span class="badge badge-info">{{ vm.deliverableCountByDefinition(deliverableDefinition) }}</span>
+                    </a>
+                </td>
+                <td>
+                    <a ui-sref="newInstance({ fy:vm.fiscalYear, deliverableTypeId:deliverableDefinition.id })"
+                        title="Create a new {{deliverableDefinition.title}}"><i class="fa fa-plus fa-lg"></i>
+                    </a>
+                </td>
+                <!-- Iterate over each stakeholder and display comma separated last names -->
+                <td>
+                    <span ng-repeat="stakeholder in deliverableDefinition.to | orderBy:'lookupValue' track by stakeholder.lookupId">{{ stakeholder.lookupValue.split(' ')[0] + (!$last ? ',&nbsp;' : '') }}</span>
+                </td>
+                <td>
+                    <span ng-repeat="stakeholder in deliverableDefinition.cc | orderBy:'lookupValue' track by stakeholder.lookupId">{{ stakeholder.lookupValue.split(' ')[0] + (!$last ? ',&nbsp;' : '') }}</span>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-link"
+                            ng-click="deliverableDefinition.stakeholdersModal()"
+                            title="Edit stakeholders">
+                        <i class="fa fa-users fa-lg"></i>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

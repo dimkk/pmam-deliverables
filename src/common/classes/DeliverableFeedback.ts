@@ -1,5 +1,4 @@
 /// <reference path="../../../typings/tsd.d.ts" />
-/// <reference path="./deliverableFeedbackModel.ts" />
 
 module app.models{
     export interface IDeliverableFeedback extends ap.ListItem {
@@ -11,8 +10,6 @@ module app.models{
         deliverable?:ap.Lookup;
         rating?:number;
     }
-
-    var model = <IDeliverableFeedbackModel>app.models.DeliverableFeedbackModel;
 
     export class DeliverableFeedback implements IDeliverableFeedback{
 

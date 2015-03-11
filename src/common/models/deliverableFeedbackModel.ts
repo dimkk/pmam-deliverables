@@ -1,5 +1,4 @@
 /// <reference path="../../../typings/tsd.d.ts" />
-/// <reference path="./DeliverableFeedback.ts" />
 
 
 module app.models {
@@ -16,10 +15,9 @@ module app.models {
 
     export class DeliverableFeedbackModel implements IDeliverableFeedbackModel {
         constructor(_, private apModelFactory) {
-            this.factory = app.models.IDeliverableFeedback;
             apModelFactory.create(this);
         }
-        factory;
+        factory = app.models.DeliverableFeedback;
         /** Local feedback cache organized by deliverable id */
         feedbackByDeliverableId = {};
         list = {

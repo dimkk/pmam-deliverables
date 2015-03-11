@@ -1,34 +1,21 @@
 /// <reference path="../../../typings/tsd.d.ts" />
-/// <reference path="./deliverableFeedbackModel.ts" />
-/// <reference path="./deliverableAccessLogsModel.ts" />
-/// <reference path="./deliverableDefinitionsModel.ts" />
-/// <reference path="./Deliverable.ts" />
 
 module app.models {
     'use strict';
 
-    export interface IDeliverablesModel extends ap.Model {
+    export interface IDeliverablesModel extends IModel {
         factory:Function;
-        list:ap.List;
         deliverableByTypeId:Object;
         getCachedDeliverablesByTypeId(deliverableTypeId:number):{ [key: number]: IDeliverable; };
         filterDeliverablesForFiscalMonth(fiscalMonth:number, deliverables:IDeliverable[]):IDeliverable[];
         getDeliverablesForMonth(fiscalYear:number, fiscalMonth:number):ng.IPromise<IDeliverable[]>
         getFyDeliverables(fy:number):ng.IPromise<ap.IndexedCache>;
         registerDeliverableByType(deliverable:IDeliverable):void;
-
-        apDiscussionThreadFactory:Object;
     }
 
-    export class DeliverablesModel implements IDeliverablesModel {
-        constructor(public $q:ng.IQService, public _, apModelFactory, public apDiscussionThreadFactory, moment, public deliverableFeedbackModel,
-                    public deliverableDefinitionsModel, public calendarService, public deliverableFrequenciesService, public user,
-                    public deliverableAccessLogModel) {
-            this.factory = app.models.Deliverable;
-            apModelFactory.create(this);
-        }
+    export class DeliverablesModel extends Model implements IDeliverablesModel {
 
-        factory;
+        factory = Deliverable;
 
         /** Local Deliverable cache organized by deliverable type id */
         deliverableByTypeId = {};
@@ -78,6 +65,10 @@ module app.models {
 
                 ]
         };
+
+        constructor() {
+            super();
+        }
 
 
         /**

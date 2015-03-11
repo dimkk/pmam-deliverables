@@ -1,7 +1,4 @@
 /// <reference path="../../../typings/tsd.d.ts" />
-/// <reference path="./deliverableFeedbackModel.ts" />
-/// <reference path="./deliverablesModel.ts" />
-/// <reference path="./DeliverableDefinition.ts" />
 
 module app.models {
     'use strict';

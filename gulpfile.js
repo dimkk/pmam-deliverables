@@ -101,7 +101,7 @@ gulp.task('html', ['inject-dist'], function () {
 gulp.task('styles', function () {
     return gulp.src(paths.projectless)
         .pipe($.less())
-        .pipe(gulp.dest('app/styles/css'))
+        .pipe(gulp.dest(paths.app + 'styles/css'))
         .pipe($.size());
 });
 
@@ -143,12 +143,12 @@ gulp.task('clean', function () {
 
 gulp.task('inject-dev', ['cacheXML', 'styles'], function () {
     /** We want to make all links relative to app so remove the app/ prefix on injected references */
-    var injectOptions = {ignorePath: 'app/'};
+    var injectOptions = {ignorePath: 'src/'};
 
     return gulp.src(paths.client + 'index.html')
         .pipe(injectRelative('vendorjs', injectOptions))
         .pipe(injectRelative('cdnjs', injectOptions))
-        .pipe(injectNG('environmentjs', {src: paths.devjs, ignorePath: 'app/'}))
+        .pipe(injectNG('environmentjs', {src: paths.devjs, ignorePath: 'src/'}))
         .pipe(injectNG('projectjs', injectOptions))
         .pipe(injectNG('components', injectOptions))
     /** Replace local jquery-ui css with cdn */
@@ -203,13 +203,13 @@ gulp.task('connect', function () {
     var serveIndex = require('serve-index');
     var app = require('connect')()
         .use(require('connect-livereload')({port: 35729}))
-        .use(serveStatic('app'))
+        .use(serveStatic('src'))
         // paths to bower_components should be relative to the current file
         // e.g. in app/index.html you should use ../bower_components
         .use('/bower_components', serveStatic('bower_components'))
         .use('/xml-cache', serveStatic('xml-cache'))
         .use('/test', serveStatic('test'))
-        .use(serveIndex('app'));
+        .use(serveIndex('src'));
 
     require('http').createServer(app)
         .listen(9000)

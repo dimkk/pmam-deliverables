@@ -1,0 +1,148 @@
+<!-- deliverable form template shared by create and edit deliverable form views -->
+<div class="row">
+
+    <!-- Only display review gutter on edit form -->
+    <div class="col-sm-{{ vm.deliverableRecord.id ? 7 : 12 }}">
+
+        <!-- TITLE -->
+        <div class="form-group"
+             ng-class="{ 'has-error': editDeliverable.title.$invalid  && editDeliverable.title.$dirty }">
+            <label class="deliverables-header" for="title">Title*</label>
+            <input type="text" class="form-control" placeholder="Enter a Title"
+                   ng-model="vm.deliverableRecord.title" name="title" ng-minlength="1" ng-maxlength="500" required/>
+
+            <div ng-messages="editDeliverable.title.$error" ng-if='editDeliverable.title.$dirty' class="form-error">
+                <div ng-message="required">You did not enter a Title</div>
+            </div>
+        </div>
+
+        <!-- DELIVERABLE TYPE -->
+        <div class="form-group">
+            <label class="deliverables-header" for="deliverableType">Deliverable Type*</label>
+            <select placeholder="Select Type" ng-required="true"
+                    ng-model="vm.deliverableRecord.deliverableType"
+                    ng-options="{lookupId: deliverableType.id, lookupValue: deliverableType.title} as deliverableType.title for deliverableType
+                                    in vm.deliverableTypes | toArray | orderBy:'title' track by deliverableType.lookupId || deliverableType.id"
+                    class="form-control" name="deliverableType">
+                <option value="">Select Deliverable Type</option>
+            </select>
+            <!-- Display additional deliverable details on the new form -->
+            <div class="help-block" ng-if="vm.deliverableRecord.deliverableType">
+                {{ vm.deliverableRecord.getDeliverableDefinition().deliverableNumber }}
+                <span class="pull-right hidden-sm"> Frequency: {{ vm.deliverableRecord.getDeliverableDefinition().frequencyDescription }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <!-- FISCAL YEAR -->
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group"
+                     ng-class="{ 'has-error': editDeliverable.fy.$invalid && editDeliverable.fy.$dirty }">
+                    <label class="deliverables-header" for="fy">Fiscal Year*</label>
+                    <input type="text" ng-maxlength="4" ng-required="true" ng-minlength="4" class="form-control"
+                           ng-model="vm.deliverableRecord.fy" name="fy"/>
+
+                    <div ng-messages="editDeliverable.fy.$error" ng-if='editDeliverable.fy.$dirty' class="form-error">
+                        <div ng-message="required">You did not enter a Fiscal Year</div>
+                        <div ng-message="minlength">Your Fiscal Year is too short</div>
+                        <div ng-message="maxlength">Your Fiscal Year is too long</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MONTH -->
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    <label class="deliverables-header" for="month">Month*</label>
+                    <select ng-required="true" name="month"
+                            ng-model="vm.deliverableRecord.fiscalMonth"
+                            class="form-control"
+                            ng-options="month.number as month.label for month in vm.monthOptions"></select>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <!--START DATE (Only visible on AD-Hoc type deliverables)-->
+            <div class="col-xs-12 col-sm-4" ng-if="vm.deliverableRecord.startDateIsRelevant()">
+                <div class="form-group" title="Date tasked by customer."
+                     ng-class="{ 'has-error': editDeliverable.startDate.$invalid && editDeliverable.startDate.$dirty }">
+                    <label class="deliverables-header" for="startDate">Start Date*</label>
+                    <input size="8" ng-required="true" placeholder="Select Start Date" name="startDate"
+                           ui-date class="form-control" ng-model="vm.deliverableRecord.startDate"/>
+                    <div ng-messages="editDeliverable.startDate.$error" ng-if='editDeliverable.startDate.$dirty'
+                         class="form-error">
+                        <div ng-message="required">You did not enter a Start Date</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBMISSION DATE -->
+            <div class="col-xs-12 col-sm-{{ vm.deliverableRecord.startDateIsRelevant() ? 4 : 6 }}">
+                <div class="form-group" title="Date submitted to customer."
+                     ng-class="{ 'has-error': editDeliverable.submissionDate.$invalid && editDeliverable.submissionDate.$dirty }">
+                    <label class="deliverables-header" for="submissionDate">Submission Date*</label>
+                    <input size="8" ng-required="true" placeholder="Select Submission Date"
+                           name="submissionDate" ui-date class="form-control"
+                           ng-model="vm.deliverableRecord.submissionDate"/>
+
+                    <div ng-messages="editDeliverable.submissionDate.$error"
+                         ng-if='editDeliverable.submissionDate.$dirty' class="form-error">
+                        <div ng-message="required">You did not enter a Submission Date</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Due DATE -->
+            <div class="col-xs-12 col-sm-{{ vm.deliverableRecord.startDateIsRelevant() ? 4 : 6 }} ">
+                <div class="form-group" title="Required submission due date."
+                     ng-class="{ 'has-error': editDeliverable.dueDate.$invalid && editDeliverable.dueDate.$dirty }">
+                    <label class="deliverables-header" for="dueDate">Due Date</label>
+                    <input size="8" placeholder="Select a Due Date"
+                           name="dueDate" ui-date class="form-control"
+                           ng-model="vm.deliverableRecord.dueDate"/>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-sm-5" ng-if="vm.deliverableRecord.id">
+        <!-- ATTACHMENTS -->
+        <div class="form-group">
+            <label for="attachments" class="deliverables-header">Attachments</label>
+            <span data-ap-attachments data-list-item="vm.deliverableRecord"></span>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+
+        <!-- DETAILS -->
+        <div class="form-group">
+            <label for="details" class="deliverables-header">Details</label>
+            <textarea rows="10" placeholder="Enter Details" class="form-control" ng-model="vm.deliverableRecord.details"
+                      name="details"/>
+        </div>
+
+
+        <!-- JUSTIFICATION -->
+        <button type="button" class="btn btn-link" ng-show="vm.deliverableRecord.justification.length === 0 && vm.userCanContribute()"
+           title="Optionally toggle the justification input."
+           ng-click="displayJustification = !displayJustification"><i class="fa fa-plus"></i> Add justification</button>
+        <div class="form-group" ng-show="vm.deliverableRecord.justification.length > 0 || displayJustification">
+            <label for="justification">Justification</label>
+            <textarea rows="4" placeholder="Enter a Justification" class="form-control"
+                      ng-model="vm.deliverableRecord.justification"
+                      name="justification"/>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,118 @@
+// Add anything custom here -- mixins, variable overrides.
+// by adding things here instead of overriding existing .LESS files, it makes merging changes on product updates easier
+@import "variables.less";
+@import "/bower_components/angular-point-styles/less/sidebar.less";
+@import "/bower_components/angular-point-styles/less/wells.less";
+@import "/bower_components/angular-point-styles/less/infobox.less";
+
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background: #eee;
+  color: #543729;
+}
+
+//Displays the Current FY between left/right nav buttons
+//Used in Health and FAR
+.time-indicator {
+    color: #333333;
+    background-color: #ffffff;
+    border-color: #cccccc;
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.428571429;
+    border-radius: 4px;
+    width: 75px;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+//[ Application loader and main body ]
+.application-content{
+//  margin-top: @navbar-height;
+}
+
+.primary-view{
+    margin-top: -20px;
+}
+
+//Ensure tab background matches well background in edit deliverables screen
+.nav-tabs > li.active.off-white-active > a{
+    background-color: rgb(251, 251, 251);
+}
+
+.splash {
+  text-align: center;
+  margin: 10% 0 0 0;
+  .message {
+    font-size: 5em;
+    line-height: 1.5em;
+    -webkit-text-shadow: rgba(0, 0, 0, 0.5) 0px 0px 15px;
+    text-shadow: rgba(0, 0, 0, 0.5) 0px 0px 15px;
+    text-transform: uppercase;
+  }
+  .icon-spinner {
+    text-align: center;
+    display: inline-block;
+    font-size: 5em;
+    margin-top: 50px;
+  }
+}
+
+.loader {
+  margin: 6px 8px 4px 8px;
+  visibility: hidden;
+  & .active {
+    visibility: visible;
+  }
+}
+
+.page-content {
+  margin: 0;
+  padding: 8px;
+}
+
+//Main table that we ng-include to display visible deliverables need to have bottom margin removed
+div.panel-table-include > table.table{
+    margin-bottom:0;
+}
+
+
+//BODY{
+//  overflow:inherit;
+//  height:auto;
+//}
+
+/*------------------------------------------------------------------
+[ Helper Classes ]
+*/
+.pointer{
+  cursor: pointer;
+}
+
+.no-wrap{
+  white-space: nowrap;
+}
+
+/*------------------------------------------------------------------
+[ Bootstrap Additions ]
+*/
+.list-group-item-sm {
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+.hr-sm {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+
+
+

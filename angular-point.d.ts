@@ -4,15 +4,15 @@
 declare module ap {
 
     interface IndexedCache{
-        addEntity: Function;
-        clear: Function;
-        count: Function;
-        first: Function;
-        keys: Function;
-        last: Function;
-        nthEntity: Function;
-        removeEntity: Function;
-        toArray: Function;
+        addEntity(entity:ListItem): void;
+        clear(): void;
+        count(): number;
+        first(): ListItem;
+        keys(): string[];
+        last(): ListItem;
+        nthEntity(index:number): ListItem;
+        removeEntity(entity:ListItem): void;
+        toArray(): ListItem[];
         //Object with keys equaling ID and values being the individual list item
         [key: number]: ListItem;
     }
@@ -88,20 +88,20 @@ declare module ap {
         fileRef?:Lookup;
 
         deleteAttachment?(url:string): ng.IPromise<any>;
-        deleteItem?( options?:ListItemCrudOptions ): ng.IDeferred<any>;
-        getAttachmentCollection?(): ng.IDeferred<string[]>;
-        getAvailableWorkflows?(): ng.IDeferred<WorkflowDefinition[]>;
+        deleteItem?( options?:ListItemCrudOptions ): ng.IPromise<any>;
+        getAttachmentCollection?(): ng.IPromise<string[]>;
+        getAvailableWorkflows?(): ng.IPromise<WorkflowDefinition[]>;
         getFieldChoices?( fieldName:string ): string[];
         getFieldDefinition?( fieldName:string ): FieldDefinition;
         getFieldDescription?( fieldName:string ): string;
         getFieldLabel?( fieldName:string ): string;
-        getFieldVersionHistory?(fieldNames:string[]): ng.IDeferred<ListItemVersion>;
+        getFieldVersionHistory?(fieldNames:string[]): ng.IPromise<ListItemVersion>;
         getFormattedValue?( fieldName:string, options:Object ): string;
         getLookupReference?( fieldName:string, lookupId:number ): ListItem;
         resolvePermissions?(): UserPermissionsObject;
-        saveChanges?( options?:ListItemCrudOptions ): ng.IDeferred<ListItem>;
-        saveFields?( fieldArray:string[], options?:ListItemCrudOptions ): ng.IDeferred<ListItem>;
-        startWorkflow?(options:StartWorkflowParams): ng.IDeferred<any>;
+        saveChanges?( options?:ListItemCrudOptions ): ng.IPromise<ListItem>;
+        saveFields?( fieldArray:string[], options?:ListItemCrudOptions ): ng.IPromise<ListItem>;
+        startWorkflow?(options:StartWorkflowParams): ng.IPromise<any>;
         validateEntity?( options?:Object ): boolean;
 
         //Added by Model Instantiation
@@ -126,17 +126,17 @@ declare module ap {
         factory:Function;
         list:List;
 
-        addNewItem?( entity:ListItem, options?:Object ): ng.IDeferred<ListItem>;
+        addNewItem?( entity:ListItem, options?:Object ): ng.IPromise<ListItem>;
         createEmptyItem?(overrides?:Object): ListItem;
-        executeQuery?(queryName?:string, options?:Object): ng.IDeferred<IndexedCache>;
-        extendListMetadata?(options:Object): ng.IDeferred<any>;
+        executeQuery?(queryName?:string, options?:Object): ng.IPromise<IndexedCache>;
+        extendListMetadata?(options:Object): ng.IPromise<any>;
         generateMockData?(options?:Object): ListItem[];
-        getAllListItems?(): ng.IDeferred<IndexedCache>;
+        getAllListItems?(): ng.IPromise<IndexedCache>;
         getCache?(queryName:string): Cache;
         getCachedEntity?(entityId:number): ListItem;
         getCachedEntities?(): IndexedCache;
         getFieldDefinition?(fieldName:string): FieldDefinition;
-        getListItemById?(entityId:number, options?:Object): ng.IDeferred<ListItem>;
+        getListItemById?(entityId:number, options?:Object): ng.IPromise<ListItem>;
         getQuery?(queryName:string): Query;
         isInitialised?(): boolean;
         resolvePermissions?(): UserPermissionsObject;
@@ -151,7 +151,7 @@ declare module ap {
         createPost(parentId:number,content:string):DiscussionThreadPost;
         getListItem():ListItem;
         prune():void;
-        saveChanges():ng.IDeferred<ListItem>;
+        saveChanges():ng.IPromise<ListItem>;
     }
 
     interface DiscussionThreadPost{
@@ -161,9 +161,9 @@ declare module ap {
         created:Date;
         user:User;
         removePost():void;
-        deletePost():ng.IDeferred<ListItem>;
-        savePost():ng.IDeferred<ListItem>;
-        reply():ng.IDeferred<ListItem>;
+        deletePost():ng.IPromise<ListItem>;
+        savePost():ng.IPromise<ListItem>;
+        reply():ng.IPromise<ListItem>;
     }
 
     interface Cache{
@@ -171,7 +171,7 @@ declare module ap {
     }
 
     interface Query{
-        execute?(options?:Object):IndexedCache;
+        execute?(options?:Object):ng.IPromise<IndexedCache>;
         operation?:string;
         cacheXML?:boolean;
         offlineXML?:string;

@@ -1,0 +1,104 @@
+<!-- wrapper for edit form view -->
+<div class="container-fluid">
+    <form name="editDeliverable" ng-submit="vm.save(editDeliverable)" role="form">
+
+        <div class="col-sm-10 col-xs-12">
+            <fieldset>
+                <legend>
+                    <div class="row">
+                        <div class="col-sm-12"><i class="fa fa-check-square icon-padding"></i>EDIT DELIVERABLE</div>
+                    </div>
+                </legend>
+
+                <!-- Only display save and delete options when the primary tab is visible -->
+                <div class="pull-right">
+                    <button type="submit" ng-show="vm.activeTab === 'main'" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-default" ng-click="vm.cancel()">Cancel</button>
+                    <button type="button" ng-show="vm.activeTab === 'main'" class="btn btn-default" ng-click="vm.deleteRecord()">Delete</button>
+                </div>
+
+
+                <!-- NAV TABS ['main', 'discussion'] -->
+                <ul class="nav nav-tabs">
+                    <li class="off-white-active" ng-class="{active: vm.activeTab !== 'discussion'}">
+                        <a ng-click="vm.activeTab = 'main'"> Main </a>
+                    </li>
+                    <li class="off-white-active" ng-class="{active: vm.activeTab === 'discussion'}">
+                        <a ng-click="vm.activeTab = 'discussion'"> Discussion <span class="badge">{{ vm.discussionBadgeValue() }}</span> </a>
+                    </li>
+                </ul>
+
+
+                <!-- include tab content -->
+                <div class="tab-content well well-clean" style="border-top:none">
+                    <div ng-switch="vm.activeTab">
+
+                        <!-- MAIN FORM TAB -->
+                        <div ng-switch-default>
+
+                            <!-- SHARED FORM FIELD TEMPLATE -->
+                            <div ng-include="'components/deliverableForm/deliverableFormTemplate.html'"></div>
+
+                            <!-- TO RECIPIENTS -->
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="to" class="deliverables-header">To</label>
+
+                                        <div ng-if="vm.dataReady">
+                                            <ui-select ng-model="vm.deliverableRecord.to" multiple data-reset-search-input="true">
+                                                <ui-select-match placeholder="Select TO Recipient">{{$item.lookupValue }}
+                                                </ui-select-match>
+                                                <ui-select-choices
+                                                    repeat="person in vm.personnelArray | filter: $select.search track by person.lookupId">
+                                                    <div ng-bind-html="person.lookupValue | highlight: $select.search"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- CC RECIPIENTS -->
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="cc" class="deliverables-header">CC</label>
+
+                                        <div ng-if="vm.dataReady">
+                                            <ui-select ng-model="vm.deliverableRecord.cc" multiple data-reset-search-input="true">
+                                                <ui-select-match placeholder="Select CC Recipient">{{$item.lookupValue }}
+                                                </ui-select-match>
+                                                <ui-select-choices
+                                                    repeat="person in vm.personnelArray | filter: $select.search track by person.lookupId">
+                                                    <div ng-bind-html="person.lookupValue | highlight: $select.search"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--DISCUSSION THREAD -->
+                        <div ng-switch-when="discussion">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div ap-discussion-thread
+                                         data-field-name="'discussionThread'"
+                                         data-list-item="vm.deliverableRecord"></div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </fieldset>
+
+        </div>
+
+        <!-- USER FEEDBACK COLUMN -->
+        <div class="col-sm-2 hidden-xs">
+            <div ng-include="'components/deliverables/views/deliverableFeedbackView.html'"></div>
+        </div>
+    </form>
+</div>

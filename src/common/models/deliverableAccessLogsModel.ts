@@ -1,5 +1,4 @@
 /// <reference path="../../../typings/tsd.d.ts" />
-/// <reference path="./DeliverableAccessLog.ts" />
 
 module app.models {
     'use strict';
@@ -14,14 +13,14 @@ module app.models {
 
     export class DeliverableAccessLogsModel implements IDeliverableAccessLogsModel {
         constructor(private _, private apModelFactory, private moment) {
-            this.factory = app.models.DeliverableAccessLog;
+            //this.factory = app.models.DeliverableAccessLog;
             apModelFactory.create(this);
         }
+        factory = app.models.DeliverableAccessLog;
 
         /** Local access log cache organized by deliverable id */
         accessLogsByDeliverableId = {};
         cachedFyRequests = {};
-        factory;
         list = {
             title: 'DeliverableAccessLogs',
             /**Maps to the offline XML file in dev folder (no spaces) */
@@ -36,7 +35,7 @@ module app.models {
         };
 
         /**
-         * @name deliverableAccessLogModel.getCachedLogByDeliverableId
+         * @name deliverableAccessLogsModel.getCachedLogByDeliverableId
          * @description Pulls cached logs for a given deliverable.
          * @param {number} deliverableId
          * @returns {DeliverableAccessLog[]} Array of matching access logs for a given deliverable.
@@ -46,7 +45,7 @@ module app.models {
         }
 
         /**
-         * @name deliverableAccessLogModel.registerLogByDeliverable
+         * @name deliverableAccessLogsModel.registerLogByDeliverable
          * @description Adds a accessLog element to a cache that is grouped by deliverable to make later retrieval immediate
          * @param {DeliverableAccessLog} accessLog
          */
@@ -61,7 +60,7 @@ module app.models {
         }
 
         /**
-         * @name deliverableAccessLogModel.removeLogByDeliverable
+         * @name deliverableAccessLogsModel.removeLogByDeliverable
          * @description Removes a accessLog element from the local cache.
          * @param {DeliverableAccessLog} accessLog
          */

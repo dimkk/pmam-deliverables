@@ -28,21 +28,21 @@
 
             .state('deliverables.summary', {
                 url: '/summary',
-                templateUrl: 'components/deliverables/views/deliverablesSummaryView.html',
+                templateUrl: 'components/deliverables/deliverablesSummaryView.html',
                 controller: 'deliverableSummaryController',
                 controllerAs: 'vm'
             })
 
             .state('deliverables.monthly', {
                 url: '/main?mo',
-                templateUrl: 'components/deliverables/views/deliverablesView.html',
+                templateUrl: 'components/deliverables/deliverablesView.html',
                 controller: 'deliverablesController',
                 controllerAs: 'vm'
             })
 
             .state('deliverables.instances', {
                 url: '/instances?id',
-                templateUrl: 'components/deliverables/views/deliverableInstancesView.html',
+                templateUrl: 'components/deliverables/deliverableInstancesView.html',
                 controller: 'deliverableInstancesController',
                 controllerAs: 'vm',
                 resolve: {
@@ -53,7 +53,7 @@
 
             .state('deliverables.types', {
                 url: '/types',
-                templateUrl: 'components/deliverables/views/deliverableDefinitionsView.html',
+                templateUrl: 'components/deliverables/deliverableDefinitionsView.html',
                 controller: 'definitionsController',
                 controllerAs: 'vm'
             })

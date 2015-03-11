@@ -1,0 +1,27 @@
+<!-- wrapper for create form view -->
+<fieldset>
+    <div class="container-fluid">
+        <legend>
+            <div class="row deliverables-paged fadeInDown">
+                <div class="col-sm-12"><i class="fa fa-check-square icon-padding"></i>ADD DELIVERABLE</div>
+            </div>
+        </legend>
+
+        <form name="editDeliverable" ng-submit="vm.save()">
+            <div class="well well-clean">
+
+                <!-- SHARED FORM FIELDS TEMPLATE -->
+                <div ng-include="'components/deliverableForm/deliverableFormTemplate.html'"></div>
+
+                <!-- SAVE AND PROCEED BUTTON -->
+                <div class="text-align-right">
+                    <div class="content-group">
+                        <button type="submit" class="btn btn-primary">Save and Add Attachments</button>
+                        <button type="button" class="btn btn-default" ng-click="vm.cancel()">Cancel</button>
+                    </div>
+                    <span class="help-text">*Denotes required field</span>
+                </div>
+            </div>
+        </form>
+    </div>
+</fieldset>

@@ -1,0 +1,2005 @@
+/* Project Specific Variables */
+/* Reference to files in smart-admin */
+/* Metro Colors */
+/* left side */
+/* right side */
+/* the color that flashes when you click on the first nav element */
+/* the plus icon that appears on the parent nav when expanding and collapsing */
+/* these values will only address the first parent in the entire nav */
+/* the plus & minus icons */
+/* margin top */
+/* Metro Colors */
+/* Create addition color options for Bootstrap Panels */
+.panel-metro-purple {
+  border-color: #6c00e6;
+}
+.panel-metro-purple > .panel-heading {
+  color: #ffffff;
+  background-color: #a200ff;
+  border-color: #6c00e6;
+}
+.panel-metro-purple > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #6c00e6;
+}
+.panel-metro-purple > .panel-heading .badge {
+  color: #a200ff;
+  background-color: #ffffff;
+}
+.panel-metro-purple > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #6c00e6;
+}
+.panel-metro-purple > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #a200ff 0%, #9200e6 100%);
+  background-image: -o-linear-gradient(top, #a200ff 0%, #9200e6 100%);
+  background-image: linear-gradient(to bottom, #a200ff 0%, #9200e6 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffa200ff', endColorstr='#ff9200e6', GradientType=0);
+}
+.panel-metro-purple > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-metro-purple > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #a200ff;
+}
+.panel-metro-purple > .panel-heading .panel-control .btn-link:hover,
+.panel-metro-purple > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-metro-magenta {
+  border-color: #e600ae;
+}
+.panel-metro-magenta > .panel-heading {
+  color: #ffffff;
+  background-color: #ff0097;
+  border-color: #e600ae;
+}
+.panel-metro-magenta > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #e600ae;
+}
+.panel-metro-magenta > .panel-heading .badge {
+  color: #ff0097;
+  background-color: #ffffff;
+}
+.panel-metro-magenta > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #e600ae;
+}
+.panel-metro-magenta > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #ff0097 0%, #e60088 100%);
+  background-image: -o-linear-gradient(top, #ff0097 0%, #e60088 100%);
+  background-image: linear-gradient(to bottom, #ff0097 0%, #e60088 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffff0097', endColorstr='#ffe60088', GradientType=0);
+}
+.panel-metro-magenta > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-metro-magenta > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #ff0097;
+}
+.panel-metro-magenta > .panel-heading .panel-control .btn-link:hover,
+.panel-metro-magenta > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-metro-teal {
+  border-color: #009278;
+}
+.panel-metro-teal > .panel-heading {
+  color: #ffffff;
+  background-color: #00aba9;
+  border-color: #009278;
+}
+.panel-metro-teal > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #009278;
+}
+.panel-metro-teal > .panel-heading .badge {
+  color: #00aba9;
+  background-color: #ffffff;
+}
+.panel-metro-teal > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #009278;
+}
+.panel-metro-teal > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #00aba9 0%, #009290 100%);
+  background-image: -o-linear-gradient(top, #00aba9 0%, #009290 100%);
+  background-image: linear-gradient(to bottom, #00aba9 0%, #009290 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff00aba9', endColorstr='#ff009290', GradientType=0);
+}
+.panel-metro-teal > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-metro-teal > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #00aba9;
+}
+.panel-metro-teal > .panel-heading .panel-control .btn-link:hover,
+.panel-metro-teal > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-metro-lime {
+  border-color: #93aa22;
+}
+.panel-metro-lime > .panel-heading {
+  color: #ffffff;
+  background-color: #8cbf26;
+  border-color: #93aa22;
+}
+.panel-metro-lime > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #93aa22;
+}
+.panel-metro-lime > .panel-heading .badge {
+  color: #8cbf26;
+  background-color: #ffffff;
+}
+.panel-metro-lime > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #93aa22;
+}
+.panel-metro-lime > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #8cbf26 0%, #7caa22 100%);
+  background-image: -o-linear-gradient(top, #8cbf26 0%, #7caa22 100%);
+  background-image: linear-gradient(to bottom, #8cbf26 0%, #7caa22 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff8cbf26', endColorstr='#ff7caa22', GradientType=0);
+}
+.panel-metro-lime > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-metro-lime > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #8cbf26;
+}
+.panel-metro-lime > .panel-heading .panel-control .btn-link:hover,
+.panel-metro-lime > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-metro-brown {
+  border-color: #872d00;
+}
+.panel-metro-brown > .panel-heading {
+  color: #ffffff;
+  background-color: #a05000;
+  border-color: #872d00;
+}
+.panel-metro-brown > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #872d00;
+}
+.panel-metro-brown > .panel-heading .badge {
+  color: #a05000;
+  background-color: #ffffff;
+}
+.panel-metro-brown > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #872d00;
+}
+.panel-metro-brown > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #a05000 0%, #874300 100%);
+  background-image: -o-linear-gradient(top, #a05000 0%, #874300 100%);
+  background-image: linear-gradient(to bottom, #a05000 0%, #874300 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffa05000', endColorstr='#ff874300', GradientType=0);
+}
+.panel-metro-brown > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-metro-brown > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #a05000;
+}
+.panel-metro-brown > .panel-heading .panel-control .btn-link:hover,
+.panel-metro-brown > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-metro-pink {
+  border-color: #e25bc4;
+}
+.panel-metro-pink > .panel-heading {
+  color: #ffffff;
+  background-color: #e671b8;
+  border-color: #e25bc4;
+}
+.panel-metro-pink > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #e25bc4;
+}
+.panel-metro-pink > .panel-heading .badge {
+  color: #e671b8;
+  background-color: #ffffff;
+}
+.panel-metro-pink > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #e25bc4;
+}
+.panel-metro-pink > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #e671b8 0%, #e25bad 100%);
+  background-image: -o-linear-gradient(top, #e671b8 0%, #e25bad 100%);
+  background-image: linear-gradient(to bottom, #e671b8 0%, #e25bad 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe671b8', endColorstr='#ffe25bad', GradientType=0);
+}
+.panel-metro-pink > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-metro-pink > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #e671b8;
+}
+.panel-metro-pink > .panel-heading .panel-control .btn-link:hover,
+.panel-metro-pink > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-metro-orange {
+  border-color: #d76408;
+}
+.panel-metro-orange > .panel-heading {
+  color: #ffffff;
+  background-color: #f09609;
+  border-color: #d76408;
+}
+.panel-metro-orange > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #d76408;
+}
+.panel-metro-orange > .panel-heading .badge {
+  color: #f09609;
+  background-color: #ffffff;
+}
+.panel-metro-orange > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #d76408;
+}
+.panel-metro-orange > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #f09609 0%, #d78708 100%);
+  background-image: -o-linear-gradient(top, #f09609 0%, #d78708 100%);
+  background-image: linear-gradient(to bottom, #f09609 0%, #d78708 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff09609', endColorstr='#ffd78708', GradientType=0);
+}
+.panel-metro-orange > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-metro-orange > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #f09609;
+}
+.panel-metro-orange > .panel-heading .panel-control .btn-link:hover,
+.panel-metro-orange > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-metro-blue {
+  border-color: #18afcb;
+}
+.panel-metro-blue > .panel-heading {
+  color: #ffffff;
+  background-color: #1ba1e2;
+  border-color: #18afcb;
+}
+.panel-metro-blue > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #18afcb;
+}
+.panel-metro-blue > .panel-heading .badge {
+  color: #1ba1e2;
+  background-color: #ffffff;
+}
+.panel-metro-blue > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #18afcb;
+}
+.panel-metro-blue > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #1ba1e2 0%, #1891cb 100%);
+  background-image: -o-linear-gradient(top, #1ba1e2 0%, #1891cb 100%);
+  background-image: linear-gradient(to bottom, #1ba1e2 0%, #1891cb 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff1ba1e2', endColorstr='#ff1891cb', GradientType=0);
+}
+.panel-metro-blue > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-metro-blue > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #1ba1e2;
+}
+.panel-metro-blue > .panel-heading .panel-control .btn-link:hover,
+.panel-metro-blue > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-metro-red {
+  border-color: #cc0010;
+}
+.panel-metro-red > .panel-heading {
+  color: #ffffff;
+  background-color: #e51400;
+  border-color: #cc0010;
+}
+.panel-metro-red > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #cc0010;
+}
+.panel-metro-red > .panel-heading .badge {
+  color: #e51400;
+  background-color: #ffffff;
+}
+.panel-metro-red > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #cc0010;
+}
+.panel-metro-red > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #e51400 0%, #cc1200 100%);
+  background-image: -o-linear-gradient(top, #e51400 0%, #cc1200 100%);
+  background-image: linear-gradient(to bottom, #e51400 0%, #cc1200 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe51400', endColorstr='#ffcc1200', GradientType=0);
+}
+.panel-metro-red > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-metro-red > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #e51400;
+}
+.panel-metro-red > .panel-heading .panel-control .btn-link:hover,
+.panel-metro-red > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-metro-green {
+  border-color: #3c862d;
+}
+.panel-metro-green > .panel-heading {
+  color: #ffffff;
+  background-color: #339933;
+  border-color: #3c862d;
+}
+.panel-metro-green > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #3c862d;
+}
+.panel-metro-green > .panel-heading .badge {
+  color: #339933;
+  background-color: #ffffff;
+}
+.panel-metro-green > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #3c862d;
+}
+.panel-metro-green > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #339933 0%, #2d862d 100%);
+  background-image: -o-linear-gradient(top, #339933 0%, #2d862d 100%);
+  background-image: linear-gradient(to bottom, #339933 0%, #2d862d 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff339933', endColorstr='#ff2d862d', GradientType=0);
+}
+.panel-metro-green > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-metro-green > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #339933;
+}
+.panel-metro-green > .panel-heading .panel-control .btn-link:hover,
+.panel-metro-green > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-material-red {
+  border-color: #f31e33;
+}
+.panel-material-red > .panel-heading {
+  color: #ffffff;
+  background-color: #f44336;
+  border-color: #f31e33;
+}
+.panel-material-red > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #f31e33;
+}
+.panel-material-red > .panel-heading .badge {
+  color: #f44336;
+  background-color: #ffffff;
+}
+.panel-material-red > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #f31e33;
+}
+.panel-material-red > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #f44336 0%, #f32c1e 100%);
+  background-image: -o-linear-gradient(top, #f44336 0%, #f32c1e 100%);
+  background-image: linear-gradient(to bottom, #f44336 0%, #f32c1e 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff44336', endColorstr='#fff32c1e', GradientType=0);
+}
+.panel-material-red > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-material-red > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #f44336;
+}
+.panel-material-red > .panel-heading .panel-control .btn-link:hover,
+.panel-material-red > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-material-pink {
+  border-color: #d81578;
+}
+.panel-material-pink > .panel-heading {
+  color: #ffffff;
+  background-color: #e91e63;
+  border-color: #d81578;
+}
+.panel-material-pink > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #d81578;
+}
+.panel-material-pink > .panel-heading .badge {
+  color: #e91e63;
+  background-color: #ffffff;
+}
+.panel-material-pink > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #d81578;
+}
+.panel-material-pink > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #e91e63 0%, #d81557 100%);
+  background-image: -o-linear-gradient(top, #e91e63 0%, #d81557 100%);
+  background-image: linear-gradient(to bottom, #e91e63 0%, #d81557 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe91e63', endColorstr='#ffd81557', GradientType=0);
+}
+.panel-material-pink > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-material-pink > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #e91e63;
+}
+.panel-material-pink > .panel-heading .panel-control .btn-link:hover,
+.panel-material-pink > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-material-purple {
+  border-color: #75229b;
+}
+.panel-material-purple > .panel-heading {
+  color: #ffffff;
+  background-color: #9c27b0;
+  border-color: #75229b;
+}
+.panel-material-purple > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #75229b;
+}
+.panel-material-purple > .panel-heading .badge {
+  color: #9c27b0;
+  background-color: #ffffff;
+}
+.panel-material-purple > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #75229b;
+}
+.panel-material-purple > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #9c27b0 0%, #89229b 100%);
+  background-image: -o-linear-gradient(top, #9c27b0 0%, #89229b 100%);
+  background-image: linear-gradient(to bottom, #9c27b0 0%, #89229b 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff9c27b0', endColorstr='#ff89229b', GradientType=0);
+}
+.panel-material-purple > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-material-purple > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #9c27b0;
+}
+.panel-material-purple > .panel-heading .panel-control .btn-link:hover,
+.panel-material-purple > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-material-deep-purple {
+  border-color: #4934a4;
+}
+.panel-material-deep-purple > .panel-heading {
+  color: #ffffff;
+  background-color: #673ab7;
+  border-color: #4934a4;
+}
+.panel-material-deep-purple > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #4934a4;
+}
+.panel-material-deep-purple > .panel-heading .badge {
+  color: #673ab7;
+  background-color: #ffffff;
+}
+.panel-material-deep-purple > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #4934a4;
+}
+.panel-material-deep-purple > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #673ab7 0%, #5c34a4 100%);
+  background-image: -o-linear-gradient(top, #673ab7 0%, #5c34a4 100%);
+  background-image: linear-gradient(to bottom, #673ab7 0%, #5c34a4 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff673ab7', endColorstr='#ff5c34a4', GradientType=0);
+}
+.panel-material-deep-purple > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-material-deep-purple > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #673ab7;
+}
+.panel-material-deep-purple > .panel-heading .panel-control .btn-link:hover,
+.panel-material-deep-purple > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-material-indigo {
+  border-color: #385aa2;
+}
+.panel-material-indigo > .panel-heading {
+  color: #ffffff;
+  background-color: #3f51b5;
+  border-color: #385aa2;
+}
+.panel-material-indigo > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #385aa2;
+}
+.panel-material-indigo > .panel-heading .badge {
+  color: #3f51b5;
+  background-color: #ffffff;
+}
+.panel-material-indigo > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #385aa2;
+}
+.panel-material-indigo > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #3f51b5 0%, #3849a2 100%);
+  background-image: -o-linear-gradient(top, #3f51b5 0%, #3849a2 100%);
+  background-image: linear-gradient(to bottom, #3f51b5 0%, #3849a2 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff3f51b5', endColorstr='#ff3849a2', GradientType=0);
+}
+.panel-material-indigo > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-material-indigo > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #3f51b5;
+}
+.panel-material-indigo > .panel-heading .panel-control .btn-link:hover,
+.panel-material-indigo > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-material-light-blue {
+  border-color: #03bcdb;
+}
+.panel-material-light-blue > .panel-heading {
+  color: #ffffff;
+  background-color: #03a9f4;
+  border-color: #03bcdb;
+}
+.panel-material-light-blue > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #03bcdb;
+}
+.panel-material-light-blue > .panel-heading .badge {
+  color: #03a9f4;
+  background-color: #ffffff;
+}
+.panel-material-light-blue > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #03bcdb;
+}
+.panel-material-light-blue > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #03a9f4 0%, #0398db 100%);
+  background-image: -o-linear-gradient(top, #03a9f4 0%, #0398db 100%);
+  background-image: linear-gradient(to bottom, #03a9f4 0%, #0398db 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff03a9f4', endColorstr='#ff0398db', GradientType=0);
+}
+.panel-material-light-blue > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-material-light-blue > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #03a9f4;
+}
+.panel-material-light-blue > .panel-heading .panel-control .btn-link:hover,
+.panel-material-light-blue > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-material-cyan {
+  border-color: #00bbb1;
+}
+.panel-material-cyan > .panel-heading {
+  color: #ffffff;
+  background-color: #00bcd4;
+  border-color: #00bbb1;
+}
+.panel-material-cyan > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #00bbb1;
+}
+.panel-material-cyan > .panel-heading .badge {
+  color: #00bcd4;
+  background-color: #ffffff;
+}
+.panel-material-cyan > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #00bbb1;
+}
+.panel-material-cyan > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #00bcd4 0%, #00a5bb 100%);
+  background-image: -o-linear-gradient(top, #00bcd4 0%, #00a5bb 100%);
+  background-image: linear-gradient(to bottom, #00bcd4 0%, #00a5bb 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff00bcd4', endColorstr='#ff00a5bb', GradientType=0);
+}
+.panel-material-cyan > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-material-cyan > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #00bcd4;
+}
+.panel-material-cyan > .panel-heading .panel-control .btn-link:hover,
+.panel-material-cyan > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-material-teal {
+  border-color: #007d5c;
+}
+.panel-material-teal > .panel-heading {
+  color: #ffffff;
+  background-color: #009688;
+  border-color: #007d5c;
+}
+.panel-material-teal > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #007d5c;
+}
+.panel-material-teal > .panel-heading .badge {
+  color: #009688;
+  background-color: #ffffff;
+}
+.panel-material-teal > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #007d5c;
+}
+.panel-material-teal > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #009688 0%, #007d71 100%);
+  background-image: -o-linear-gradient(top, #009688 0%, #007d71 100%);
+  background-image: linear-gradient(to bottom, #009688 0%, #007d71 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff009688', endColorstr='#ff007d71', GradientType=0);
+}
+.panel-material-teal > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-material-teal > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #009688;
+}
+.panel-material-teal > .panel-heading .panel-control .btn-link:hover,
+.panel-material-teal > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-material-light-green {
+  border-color: #93b73d;
+}
+.panel-material-light-green > .panel-heading {
+  color: #ffffff;
+  background-color: #8bc34a;
+  border-color: #93b73d;
+}
+.panel-material-light-green > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #93b73d;
+}
+.panel-material-light-green > .panel-heading .badge {
+  color: #8bc34a;
+  background-color: #ffffff;
+}
+.panel-material-light-green > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #93b73d;
+}
+.panel-material-light-green > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #8bc34a 0%, #7eb73d 100%);
+  background-image: -o-linear-gradient(top, #8bc34a 0%, #7eb73d 100%);
+  background-image: linear-gradient(to bottom, #8bc34a 0%, #7eb73d 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff8bc34a', endColorstr='#ff7eb73d', GradientType=0);
+}
+.panel-material-light-green > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-material-light-green > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #8bc34a;
+}
+.panel-material-light-green > .panel-heading .panel-control .btn-link:hover,
+.panel-material-light-green > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-material-lime {
+  border-color: #d6c926;
+}
+.panel-material-lime > .panel-heading {
+  color: #ffffff;
+  background-color: #cddc39;
+  border-color: #d6c926;
+}
+.panel-material-lime > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #d6c926;
+}
+.panel-material-lime > .panel-heading .badge {
+  color: #cddc39;
+  background-color: #ffffff;
+}
+.panel-material-lime > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #d6c926;
+}
+.panel-material-lime > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #cddc39 0%, #c6d626 100%);
+  background-image: -o-linear-gradient(top, #cddc39 0%, #c6d626 100%);
+  background-image: linear-gradient(to bottom, #cddc39 0%, #c6d626 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffcddc39', endColorstr='#ffc6d626', GradientType=0);
+}
+.panel-material-lime > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-material-lime > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #cddc39;
+}
+.panel-material-lime > .panel-heading .panel-control .btn-link:hover,
+.panel-material-lime > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-material-light-yellow {
+  border-color: #ffc321;
+}
+.panel-material-light-yellow > .panel-heading {
+  color: #ffffff;
+  background-color: #ffeb3b;
+  border-color: #ffc321;
+}
+.panel-material-light-yellow > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #ffc321;
+}
+.panel-material-light-yellow > .panel-heading .badge {
+  color: #ffeb3b;
+  background-color: #ffffff;
+}
+.panel-material-light-yellow > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #ffc321;
+}
+.panel-material-light-yellow > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #ffeb3b 0%, #ffe821 100%);
+  background-image: -o-linear-gradient(top, #ffeb3b 0%, #ffe821 100%);
+  background-image: linear-gradient(to bottom, #ffeb3b 0%, #ffe821 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffeb3b', endColorstr='#ffffe821', GradientType=0);
+}
+.panel-material-light-yellow > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-material-light-yellow > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #ffeb3b;
+}
+.panel-material-light-yellow > .panel-heading .panel-control .btn-link:hover,
+.panel-material-light-yellow > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-material-orange {
+  border-color: #e66300;
+}
+.panel-material-orange > .panel-heading {
+  color: #ffffff;
+  background-color: #ff9800;
+  border-color: #e66300;
+}
+.panel-material-orange > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #e66300;
+}
+.panel-material-orange > .panel-heading .badge {
+  color: #ff9800;
+  background-color: #ffffff;
+}
+.panel-material-orange > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #e66300;
+}
+.panel-material-orange > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #ff9800 0%, #e68900 100%);
+  background-image: -o-linear-gradient(top, #ff9800 0%, #e68900 100%);
+  background-image: linear-gradient(to bottom, #ff9800 0%, #e68900 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffff9800', endColorstr='#ffe68900', GradientType=0);
+}
+.panel-material-orange > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-material-orange > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #ff9800;
+}
+.panel-material-orange > .panel-heading .panel-control .btn-link:hover,
+.panel-material-orange > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-material-deep-orange {
+  border-color: #ff1b08;
+}
+.panel-material-deep-orange > .panel-heading {
+  color: #ffffff;
+  background-color: #ff5722;
+  border-color: #ff1b08;
+}
+.panel-material-deep-orange > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #ff1b08;
+}
+.panel-material-deep-orange > .panel-heading .badge {
+  color: #ff5722;
+  background-color: #ffffff;
+}
+.panel-material-deep-orange > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #ff1b08;
+}
+.panel-material-deep-orange > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #ff5722 0%, #ff4408 100%);
+  background-image: -o-linear-gradient(top, #ff5722 0%, #ff4408 100%);
+  background-image: linear-gradient(to bottom, #ff5722 0%, #ff4408 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffff5722', endColorstr='#ffff4408', GradientType=0);
+}
+.panel-material-deep-orange > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-material-deep-orange > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #ff5722;
+}
+.panel-material-deep-orange > .panel-heading .panel-control .btn-link:hover,
+.panel-material-deep-orange > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-material-grey {
+  border-color: #919191;
+}
+.panel-material-grey > .panel-heading {
+  color: #ffffff;
+  background-color: #9e9e9e;
+  border-color: #919191;
+}
+.panel-material-grey > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #919191;
+}
+.panel-material-grey > .panel-heading .badge {
+  color: #9e9e9e;
+  background-color: #ffffff;
+}
+.panel-material-grey > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #919191;
+}
+.panel-material-grey > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #9e9e9e 0%, #919191 100%);
+  background-image: -o-linear-gradient(top, #9e9e9e 0%, #919191 100%);
+  background-image: linear-gradient(to bottom, #9e9e9e 0%, #919191 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff9e9e9e', endColorstr='#ff919191', GradientType=0);
+}
+.panel-material-grey > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-material-grey > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #9e9e9e;
+}
+.panel-material-grey > .panel-heading .panel-control .btn-link:hover,
+.panel-material-grey > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-material-blue-grey {
+  border-color: #56767c;
+}
+.panel-material-blue-grey > .panel-heading {
+  color: #ffffff;
+  background-color: #607d8b;
+  border-color: #56767c;
+}
+.panel-material-blue-grey > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #56767c;
+}
+.panel-material-blue-grey > .panel-heading .badge {
+  color: #607d8b;
+  background-color: #ffffff;
+}
+.panel-material-blue-grey > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #56767c;
+}
+.panel-material-blue-grey > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #607d8b 0%, #566f7c 100%);
+  background-image: -o-linear-gradient(top, #607d8b 0%, #566f7c 100%);
+  background-image: linear-gradient(to bottom, #607d8b 0%, #566f7c 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff607d8b', endColorstr='#ff566f7c', GradientType=0);
+}
+.panel-material-blue-grey > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-material-blue-grey > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #607d8b;
+}
+.panel-material-blue-grey > .panel-heading .panel-control .btn-link:hover,
+.panel-material-blue-grey > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-material-brown {
+  border-color: #69433e;
+}
+.panel-material-brown > .panel-heading {
+  color: #ffffff;
+  background-color: #795548;
+  border-color: #69433e;
+}
+.panel-material-brown > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #69433e;
+}
+.panel-material-brown > .panel-heading .badge {
+  color: #795548;
+  background-color: #ffffff;
+}
+.panel-material-brown > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #69433e;
+}
+.panel-material-brown > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #795548 0%, #694a3e 100%);
+  background-image: -o-linear-gradient(top, #795548 0%, #694a3e 100%);
+  background-image: linear-gradient(to bottom, #795548 0%, #694a3e 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff795548', endColorstr='#ff694a3e', GradientType=0);
+}
+.panel-material-brown > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-material-brown > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #795548;
+}
+.panel-material-brown > .panel-heading .panel-control .btn-link:hover,
+.panel-material-brown > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-material-light-grey {
+  border-color: #dfdfdf;
+}
+.panel-material-light-grey > .panel-heading {
+  color: #ffffff;
+  background-color: #ececec;
+  border-color: #dfdfdf;
+}
+.panel-material-light-grey > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #dfdfdf;
+}
+.panel-material-light-grey > .panel-heading .badge {
+  color: #ececec;
+  background-color: #ffffff;
+}
+.panel-material-light-grey > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #dfdfdf;
+}
+.panel-material-light-grey > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #ececec 0%, #dfdfdf 100%);
+  background-image: -o-linear-gradient(top, #ececec 0%, #dfdfdf 100%);
+  background-image: linear-gradient(to bottom, #ececec 0%, #dfdfdf 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffececec', endColorstr='#ffdfdfdf', GradientType=0);
+}
+.panel-material-light-grey > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-material-light-grey > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #ececec;
+}
+.panel-material-light-grey > .panel-heading .panel-control .btn-link:hover,
+.panel-material-light-grey > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-blue-standard {
+  border-color: #2c7c9d;
+}
+.panel-base-blue-standard > .panel-heading {
+  color: #ffffff;
+  background-color: #3276b1;
+  border-color: #2c7c9d;
+}
+.panel-base-blue-standard > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #2c7c9d;
+}
+.panel-base-blue-standard > .panel-heading .badge {
+  color: #3276b1;
+  background-color: #ffffff;
+}
+.panel-base-blue-standard > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #2c7c9d;
+}
+.panel-base-blue-standard > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #3276b1 0%, #2c699d 100%);
+  background-image: -o-linear-gradient(top, #3276b1 0%, #2c699d 100%);
+  background-image: linear-gradient(to bottom, #3276b1 0%, #2c699d 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff3276b1', endColorstr='#ff2c699d', GradientType=0);
+}
+.panel-base-blue-standard > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-blue-standard > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #3276b1;
+}
+.panel-base-blue-standard > .panel-heading .panel-control .btn-link:hover,
+.panel-base-blue-standard > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-blue-sky {
+  border-color: #00a0c0;
+}
+.panel-base-blue-sky > .panel-heading {
+  color: #ffffff;
+  background-color: #0091d9;
+  border-color: #00a0c0;
+}
+.panel-base-blue-sky > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #00a0c0;
+}
+.panel-base-blue-sky > .panel-heading .badge {
+  color: #0091d9;
+  background-color: #ffffff;
+}
+.panel-base-blue-sky > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #00a0c0;
+}
+.panel-base-blue-sky > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #0091d9 0%, #0080c0 100%);
+  background-image: -o-linear-gradient(top, #0091d9 0%, #0080c0 100%);
+  background-image: linear-gradient(to bottom, #0091d9 0%, #0080c0 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0091d9', endColorstr='#ff0080c0', GradientType=0);
+}
+.panel-base-blue-sky > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-blue-sky > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #0091d9;
+}
+.panel-base-blue-sky > .panel-heading .panel-control .btn-link:hover,
+.panel-base-blue-sky > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-blue {
+  border-color: #4e848c;
+}
+.panel-base-blue > .panel-heading {
+  color: #ffffff;
+  background-color: #57889c;
+  border-color: #4e848c;
+}
+.panel-base-blue > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #4e848c;
+}
+.panel-base-blue > .panel-heading .badge {
+  color: #57889c;
+  background-color: #ffffff;
+}
+.panel-base-blue > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #4e848c;
+}
+.panel-base-blue > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #57889c 0%, #4e7a8c 100%);
+  background-image: -o-linear-gradient(top, #57889c 0%, #4e7a8c 100%);
+  background-image: linear-gradient(to bottom, #57889c 0%, #4e7a8c 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff57889c', endColorstr='#ff4e7a8c', GradientType=0);
+}
+.panel-base-blue > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-blue > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #57889c;
+}
+.panel-base-blue > .panel-heading .panel-control .btn-link:hover,
+.panel-base-blue > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-blue-light {
+  border-color: #849a9d;
+}
+.panel-base-blue-light > .panel-heading {
+  color: #ffffff;
+  background-color: #92a2a8;
+  border-color: #849a9d;
+}
+.panel-base-blue-light > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #849a9d;
+}
+.panel-base-blue-light > .panel-heading .badge {
+  color: #92a2a8;
+  background-color: #ffffff;
+}
+.panel-base-blue-light > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #849a9d;
+}
+.panel-base-blue-light > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #92a2a8 0%, #84969d 100%);
+  background-image: -o-linear-gradient(top, #92a2a8 0%, #84969d 100%);
+  background-image: linear-gradient(to bottom, #92a2a8 0%, #84969d 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff92a2a8', endColorstr='#ff84969d', GradientType=0);
+}
+.panel-base-blue-light > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-blue-light > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #92a2a8;
+}
+.panel-base-blue-light > .panel-heading .panel-control .btn-link:hover,
+.panel-base-blue-light > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-blue-dark {
+  border-color: #404346;
+}
+.panel-base-blue-dark > .panel-heading {
+  color: #ffffff;
+  background-color: #4c4f53;
+  border-color: #404346;
+}
+.panel-base-blue-dark > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #404346;
+}
+.panel-base-blue-dark > .panel-heading .badge {
+  color: #4c4f53;
+  background-color: #ffffff;
+}
+.panel-base-blue-dark > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #404346;
+}
+.panel-base-blue-dark > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #4c4f53 0%, #404246 100%);
+  background-image: -o-linear-gradient(top, #4c4f53 0%, #404246 100%);
+  background-image: linear-gradient(to bottom, #4c4f53 0%, #404246 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff4c4f53', endColorstr='#ff404246', GradientType=0);
+}
+.panel-base-blue-dark > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-blue-dark > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #4c4f53;
+}
+.panel-base-blue-dark > .panel-heading .panel-control .btn-link:hover,
+.panel-base-blue-dark > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-green {
+  border-color: #355d2d;
+}
+.panel-base-green > .panel-heading {
+  color: #ffffff;
+  background-color: #356e35;
+  border-color: #355d2d;
+}
+.panel-base-green > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #355d2d;
+}
+.panel-base-green > .panel-heading .badge {
+  color: #356e35;
+  background-color: #ffffff;
+}
+.panel-base-green > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #355d2d;
+}
+.panel-base-green > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #356e35 0%, #2d5d2d 100%);
+  background-image: -o-linear-gradient(top, #356e35 0%, #2d5d2d 100%);
+  background-image: linear-gradient(to bottom, #356e35 0%, #2d5d2d 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff356e35', endColorstr='#ff2d5d2d', GradientType=0);
+}
+.panel-base-green > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-green > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #356e35;
+}
+.panel-base-green > .panel-heading .panel-control .btn-link:hover,
+.panel-base-green > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-green-light {
+  border-color: #6c7337;
+}
+.panel-base-green-light > .panel-heading {
+  color: #ffffff;
+  background-color: #71843f;
+  border-color: #6c7337;
+}
+.panel-base-green-light > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #6c7337;
+}
+.panel-base-green-light > .panel-heading .badge {
+  color: #71843f;
+  background-color: #ffffff;
+}
+.panel-base-green-light > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #6c7337;
+}
+.panel-base-green-light > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #71843f 0%, #627337 100%);
+  background-image: -o-linear-gradient(top, #71843f 0%, #627337 100%);
+  background-image: linear-gradient(to bottom, #71843f 0%, #627337 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff71843f', endColorstr='#ff627337', GradientType=0);
+}
+.panel-base-green-light > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-green-light > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #71843f;
+}
+.panel-base-green-light > .panel-heading .panel-control .btn-link:hover,
+.panel-base-green-light > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-green-dark {
+  border-color: #435a3f;
+}
+.panel-base-green-dark > .panel-heading {
+  color: #ffffff;
+  background-color: #496949;
+  border-color: #435a3f;
+}
+.panel-base-green-dark > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #435a3f;
+}
+.panel-base-green-dark > .panel-heading .badge {
+  color: #496949;
+  background-color: #ffffff;
+}
+.panel-base-green-dark > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #435a3f;
+}
+.panel-base-green-dark > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #496949 0%, #3f5a3f 100%);
+  background-image: -o-linear-gradient(top, #496949 0%, #3f5a3f 100%);
+  background-image: linear-gradient(to bottom, #496949 0%, #3f5a3f 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff496949', endColorstr='#ff3f5a3f', GradientType=0);
+}
+.panel-base-green-dark > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-green-dark > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #496949;
+}
+.panel-base-green-dark > .panel-heading .panel-control .btn-link:hover,
+.panel-base-green-dark > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-green-bright {
+  border-color: #4b9826;
+}
+.panel-base-green-bright > .panel-heading {
+  color: #ffffff;
+  background-color: #40ac2b;
+  border-color: #4b9826;
+}
+.panel-base-green-bright > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #4b9826;
+}
+.panel-base-green-bright > .panel-heading .badge {
+  color: #40ac2b;
+  background-color: #ffffff;
+}
+.panel-base-green-bright > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #4b9826;
+}
+.panel-base-green-bright > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #40ac2b 0%, #389826 100%);
+  background-image: -o-linear-gradient(top, #40ac2b 0%, #389826 100%);
+  background-image: linear-gradient(to bottom, #40ac2b 0%, #389826 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff40ac2b', endColorstr='#ff389826', GradientType=0);
+}
+.panel-base-green-bright > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-green-bright > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #40ac2b;
+}
+.panel-base-green-bright > .panel-heading .panel-control .btn-link:hover,
+.panel-base-green-bright > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-red {
+  border-color: #90033a;
+}
+.panel-base-red > .panel-heading {
+  color: #ffffff;
+  background-color: #a90329;
+  border-color: #90033a;
+}
+.panel-base-red > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #90033a;
+}
+.panel-base-red > .panel-heading .badge {
+  color: #a90329;
+  background-color: #ffffff;
+}
+.panel-base-red > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #90033a;
+}
+.panel-base-red > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #a90329 0%, #900323 100%);
+  background-image: -o-linear-gradient(top, #a90329 0%, #900323 100%);
+  background-image: linear-gradient(to bottom, #a90329 0%, #900323 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffa90329', endColorstr='#ff900323', GradientType=0);
+}
+.panel-base-red > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-red > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #a90329;
+}
+.panel-base-red > .panel-heading .panel-control .btn-link:hover,
+.panel-base-red > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-yellow {
+  border-color: #a3804f;
+}
+.panel-base-yellow > .panel-heading {
+  color: #ffffff;
+  background-color: #b09b5b;
+  border-color: #a3804f;
+}
+.panel-base-yellow > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #a3804f;
+}
+.panel-base-yellow > .panel-heading .badge {
+  color: #b09b5b;
+  background-color: #ffffff;
+}
+.panel-base-yellow > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #a3804f;
+}
+.panel-base-yellow > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #b09b5b 0%, #a38e4f 100%);
+  background-image: -o-linear-gradient(top, #b09b5b 0%, #a38e4f 100%);
+  background-image: linear-gradient(to bottom, #b09b5b 0%, #a38e4f 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffb09b5b', endColorstr='#ffa38e4f', GradientType=0);
+}
+.panel-base-yellow > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-yellow > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #b09b5b;
+}
+.panel-base-yellow > .panel-heading .panel-control .btn-link:hover,
+.panel-base-yellow > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-orange {
+  border-color: #b1681d;
+}
+.panel-base-orange > .panel-heading {
+  color: #ffffff;
+  background-color: #c79121;
+  border-color: #b1681d;
+}
+.panel-base-orange > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #b1681d;
+}
+.panel-base-orange > .panel-heading .badge {
+  color: #c79121;
+  background-color: #ffffff;
+}
+.panel-base-orange > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #b1681d;
+}
+.panel-base-orange > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #c79121 0%, #b1811d 100%);
+  background-image: -o-linear-gradient(top, #c79121 0%, #b1811d 100%);
+  background-image: linear-gradient(to bottom, #c79121 0%, #b1811d 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffc79121', endColorstr='#ffb1811d', GradientType=0);
+}
+.panel-base-orange > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-orange > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #c79121;
+}
+.panel-base-orange > .panel-heading .panel-control .btn-link:hover,
+.panel-base-orange > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-orange-dark {
+  border-color: #905120;
+}
+.panel-base-orange-dark > .panel-heading {
+  color: #ffffff;
+  background-color: #a57225;
+  border-color: #905120;
+}
+.panel-base-orange-dark > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #905120;
+}
+.panel-base-orange-dark > .panel-heading .badge {
+  color: #a57225;
+  background-color: #ffffff;
+}
+.panel-base-orange-dark > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #905120;
+}
+.panel-base-orange-dark > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #a57225 0%, #906420 100%);
+  background-image: -o-linear-gradient(top, #a57225 0%, #906420 100%);
+  background-image: linear-gradient(to bottom, #a57225 0%, #906420 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffa57225', endColorstr='#ff906420', GradientType=0);
+}
+.panel-base-orange-dark > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-orange-dark > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #a57225;
+}
+.panel-base-orange-dark > .panel-heading .panel-control .btn-link:hover,
+.panel-base-orange-dark > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-pink {
+  border-color: #9b4a87;
+}
+.panel-base-pink > .panel-heading {
+  color: #ffffff;
+  background-color: #ac5287;
+  border-color: #9b4a87;
+}
+.panel-base-pink > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #9b4a87;
+}
+.panel-base-pink > .panel-heading .badge {
+  color: #ac5287;
+  background-color: #ffffff;
+}
+.panel-base-pink > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #9b4a87;
+}
+.panel-base-pink > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #ac5287 0%, #9b4a79 100%);
+  background-image: -o-linear-gradient(top, #ac5287 0%, #9b4a79 100%);
+  background-image: linear-gradient(to bottom, #ac5287 0%, #9b4a79 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffac5287', endColorstr='#ff9b4a79', GradientType=0);
+}
+.panel-base-pink > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-pink > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #ac5287;
+}
+.panel-base-pink > .panel-heading .panel-control .btn-link:hover,
+.panel-base-pink > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-pink-dark {
+  border-color: #9e739b;
+}
+.panel-base-pink-dark > .panel-heading {
+  color: #ffffff;
+  background-color: #a8829f;
+  border-color: #9e739b;
+}
+.panel-base-pink-dark > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #9e739b;
+}
+.panel-base-pink-dark > .panel-heading .badge {
+  color: #a8829f;
+  background-color: #ffffff;
+}
+.panel-base-pink-dark > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #9e739b;
+}
+.panel-base-pink-dark > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #a8829f 0%, #9e7393 100%);
+  background-image: -o-linear-gradient(top, #a8829f 0%, #9e7393 100%);
+  background-image: linear-gradient(to bottom, #a8829f 0%, #9e7393 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffa8829f', endColorstr='#ff9e7393', GradientType=0);
+}
+.panel-base-pink-dark > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-pink-dark > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #a8829f;
+}
+.panel-base-pink-dark > .panel-heading .panel-control .btn-link:hover,
+.panel-base-pink-dark > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-purple {
+  border-color: #5c4d6b;
+}
+.panel-base-purple > .panel-heading {
+  color: #ffffff;
+  background-color: #6e587a;
+  border-color: #5c4d6b;
+}
+.panel-base-purple > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #5c4d6b;
+}
+.panel-base-purple > .panel-heading .badge {
+  color: #6e587a;
+  background-color: #ffffff;
+}
+.panel-base-purple > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #5c4d6b;
+}
+.panel-base-purple > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #6e587a 0%, #614d6b 100%);
+  background-image: -o-linear-gradient(top, #6e587a 0%, #614d6b 100%);
+  background-image: linear-gradient(to bottom, #6e587a 0%, #614d6b 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff6e587a', endColorstr='#ff614d6b', GradientType=0);
+}
+.panel-base-purple > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-purple > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #6e587a;
+}
+.panel-base-purple > .panel-heading .panel-control .btn-link:hover,
+.panel-base-purple > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-darken {
+  border-color: #333333;
+}
+.panel-base-darken > .panel-heading {
+  color: #ffffff;
+  background-color: #404040;
+  border-color: #333333;
+}
+.panel-base-darken > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #333333;
+}
+.panel-base-darken > .panel-heading .badge {
+  color: #404040;
+  background-color: #ffffff;
+}
+.panel-base-darken > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #333333;
+}
+.panel-base-darken > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #404040 0%, #333333 100%);
+  background-image: -o-linear-gradient(top, #404040 0%, #333333 100%);
+  background-image: linear-gradient(to bottom, #404040 0%, #333333 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff404040', endColorstr='#ff333333', GradientType=0);
+}
+.panel-base-darken > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-darken > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #404040;
+}
+.panel-base-darken > .panel-heading .panel-control .btn-link:hover,
+.panel-base-darken > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-lighten {
+  border-color: #c3e2e4;
+}
+.panel-base-lighten > .panel-heading {
+  color: #ffffff;
+  background-color: #d5e7ec;
+  border-color: #c3e2e4;
+}
+.panel-base-lighten > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #c3e2e4;
+}
+.panel-base-lighten > .panel-heading .badge {
+  color: #d5e7ec;
+  background-color: #ffffff;
+}
+.panel-base-lighten > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #c3e2e4;
+}
+.panel-base-lighten > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #d5e7ec 0%, #c3dde4 100%);
+  background-image: -o-linear-gradient(top, #d5e7ec 0%, #c3dde4 100%);
+  background-image: linear-gradient(to bottom, #d5e7ec 0%, #c3dde4 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffd5e7ec', endColorstr='#ffc3dde4', GradientType=0);
+}
+.panel-base-lighten > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-lighten > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #d5e7ec;
+}
+.panel-base-lighten > .panel-heading .panel-control .btn-link:hover,
+.panel-base-lighten > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-white {
+  border-color: #f2f2f2;
+}
+.panel-base-white > .panel-heading {
+  color: #ffffff;
+  background-color: #ffffff;
+  border-color: #f2f2f2;
+}
+.panel-base-white > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #f2f2f2;
+}
+.panel-base-white > .panel-heading .badge {
+  color: #ffffff;
+  background-color: #ffffff;
+}
+.panel-base-white > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #f2f2f2;
+}
+.panel-base-white > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
+  background-image: -o-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
+  background-image: linear-gradient(to bottom, #ffffff 0%, #f2f2f2 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff2f2f2', GradientType=0);
+}
+.panel-base-white > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-white > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #ffffff;
+}
+.panel-base-white > .panel-heading .panel-control .btn-link:hover,
+.panel-base-white > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-grey-dark {
+  border-color: #454545;
+}
+.panel-base-grey-dark > .panel-heading {
+  color: #ffffff;
+  background-color: #525252;
+  border-color: #454545;
+}
+.panel-base-grey-dark > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #454545;
+}
+.panel-base-grey-dark > .panel-heading .badge {
+  color: #525252;
+  background-color: #ffffff;
+}
+.panel-base-grey-dark > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #454545;
+}
+.panel-base-grey-dark > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #525252 0%, #454545 100%);
+  background-image: -o-linear-gradient(top, #525252 0%, #454545 100%);
+  background-image: linear-gradient(to bottom, #525252 0%, #454545 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff525252', endColorstr='#ff454545', GradientType=0);
+}
+.panel-base-grey-dark > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-grey-dark > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #525252;
+}
+.panel-base-grey-dark > .panel-heading .panel-control .btn-link:hover,
+.panel-base-grey-dark > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-magenta {
+  border-color: #552e60;
+}
+.panel-base-magenta > .panel-heading {
+  color: #ffffff;
+  background-color: #6e3671;
+  border-color: #552e60;
+}
+.panel-base-magenta > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #552e60;
+}
+.panel-base-magenta > .panel-heading .badge {
+  color: #6e3671;
+  background-color: #ffffff;
+}
+.panel-base-magenta > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #552e60;
+}
+.panel-base-magenta > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #6e3671 0%, #5d2e60 100%);
+  background-image: -o-linear-gradient(top, #6e3671 0%, #5d2e60 100%);
+  background-image: linear-gradient(to bottom, #6e3671 0%, #5d2e60 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff6e3671', endColorstr='#ff5d2e60', GradientType=0);
+}
+.panel-base-magenta > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-magenta > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #6e3671;
+}
+.panel-base-magenta > .panel-heading .panel-control .btn-link:hover,
+.panel-base-magenta > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-teal {
+  border-color: #4c7a72;
+}
+.panel-base-teal > .panel-heading {
+  color: #ffffff;
+  background-color: #568a89;
+  border-color: #4c7a72;
+}
+.panel-base-teal > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #4c7a72;
+}
+.panel-base-teal > .panel-heading .badge {
+  color: #568a89;
+  background-color: #ffffff;
+}
+.panel-base-teal > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #4c7a72;
+}
+.panel-base-teal > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #568a89 0%, #4c7a79 100%);
+  background-image: -o-linear-gradient(top, #568a89 0%, #4c7a79 100%);
+  background-image: linear-gradient(to bottom, #568a89 0%, #4c7a79 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff568a89', endColorstr='#ff4c7a79', GradientType=0);
+}
+.panel-base-teal > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-teal > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #568a89;
+}
+.panel-base-teal > .panel-heading .panel-control .btn-link:hover,
+.panel-base-teal > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-red-light {
+  border-color: #954f5b;
+}
+.panel-base-red-light > .panel-heading {
+  color: #ffffff;
+  background-color: #a65858;
+  border-color: #954f5b;
+}
+.panel-base-red-light > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #954f5b;
+}
+.panel-base-red-light > .panel-heading .badge {
+  color: #a65858;
+  background-color: #ffffff;
+}
+.panel-base-red-light > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #954f5b;
+}
+.panel-base-red-light > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #a65858 0%, #954f4f 100%);
+  background-image: -o-linear-gradient(top, #a65858 0%, #954f4f 100%);
+  background-image: linear-gradient(to bottom, #a65858 0%, #954f4f 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffa65858', endColorstr='#ff954f4f', GradientType=0);
+}
+.panel-base-red-light > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-red-light > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #a65858;
+}
+.panel-base-red-light > .panel-heading .panel-control .btn-link:hover,
+.panel-base-red-light > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-red-bright {
+  border-color: #de123b;
+}
+.panel-base-red-bright > .panel-heading {
+  color: #ffffff;
+  background-color: #ed1c24;
+  border-color: #de123b;
+}
+.panel-base-red-bright > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #de123b;
+}
+.panel-base-red-bright > .panel-heading .badge {
+  color: #ed1c24;
+  background-color: #ffffff;
+}
+.panel-base-red-bright > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #de123b;
+}
+.panel-base-red-bright > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #ed1c24 0%, #de1219 100%);
+  background-image: -o-linear-gradient(top, #ed1c24 0%, #de1219 100%);
+  background-image: linear-gradient(to bottom, #ed1c24 0%, #de1219 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffed1c24', endColorstr='#ffde1219', GradientType=0);
+}
+.panel-base-red-bright > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-red-bright > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #ed1c24;
+}
+.panel-base-red-bright > .panel-heading .panel-control .btn-link:hover,
+.panel-base-red-bright > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-teal-light {
+  border-color: #098e48;
+}
+.panel-base-teal-light > .panel-heading {
+  color: #ffffff;
+  background-color: #0aa66e;
+  border-color: #098e48;
+}
+.panel-base-teal-light > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #098e48;
+}
+.panel-base-teal-light > .panel-heading .badge {
+  color: #0aa66e;
+  background-color: #ffffff;
+}
+.panel-base-teal-light > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #098e48;
+}
+.panel-base-teal-light > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #0aa66e 0%, #098e5e 100%);
+  background-image: -o-linear-gradient(top, #0aa66e 0%, #098e5e 100%);
+  background-image: linear-gradient(to bottom, #0aa66e 0%, #098e5e 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0aa66e', endColorstr='#ff098e5e', GradientType=0);
+}
+.panel-base-teal-light > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-teal-light > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #0aa66e;
+}
+.panel-base-teal-light > .panel-heading .panel-control .btn-link:hover,
+.panel-base-teal-light > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-yellow {
+  border-color: #a3804f;
+}
+.panel-base-yellow > .panel-heading {
+  color: #ffffff;
+  background-color: #b09b5b;
+  border-color: #a3804f;
+}
+.panel-base-yellow > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #a3804f;
+}
+.panel-base-yellow > .panel-heading .badge {
+  color: #b09b5b;
+  background-color: #ffffff;
+}
+.panel-base-yellow > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #a3804f;
+}
+.panel-base-yellow > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #b09b5b 0%, #a38e4f 100%);
+  background-image: -o-linear-gradient(top, #b09b5b 0%, #a38e4f 100%);
+  background-image: linear-gradient(to bottom, #b09b5b 0%, #a38e4f 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffb09b5b', endColorstr='#ffa38e4f', GradientType=0);
+}
+.panel-base-yellow > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-yellow > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #b09b5b;
+}
+.panel-base-yellow > .panel-heading .panel-control .btn-link:hover,
+.panel-base-yellow > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel-base-white {
+  border-color: #f2f2f2;
+}
+.panel-base-white > .panel-heading {
+  color: #ffffff;
+  background-color: #ffffff;
+  border-color: #f2f2f2;
+}
+.panel-base-white > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #f2f2f2;
+}
+.panel-base-white > .panel-heading .badge {
+  color: #ffffff;
+  background-color: #ffffff;
+}
+.panel-base-white > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #f2f2f2;
+}
+.panel-base-white > .panel-heading {
+  background-image: -webkit-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
+  background-image: -o-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
+  background-image: linear-gradient(to bottom, #ffffff 0%, #f2f2f2 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff2f2f2', GradientType=0);
+}
+.panel-base-white > .panel-heading .panel-control {
+  /* Highlight background of button on hover to match panel header */
+}
+.panel-base-white > .panel-heading .panel-control .btn-link.active {
+  background-color: #ffffff;
+  color: #ffffff;
+}
+.panel-base-white > .panel-heading .panel-control .btn-link:hover,
+.panel-base-white > .panel-heading .panel-control .btn-link:focus {
+  background-color: rgba(255, 255, 255, 0.23);
+}
+.panel .panel-heading .panel-control {
+  float: right;
+  padding-left: 25px;
+  margin-top: -6px;
+  margin-right: 0;
+}
+.panel .panel-heading .btn-link {
+  color: #f2f2f2;
+  margin-top: -3px;
+}
+.panel .panel-heading .btn-link:hover,
+.panel .panel-heading .btn-link:focus {
+  color: #ffffff;
+}
+/*Panel tabs*/
+.panel-tabs {
+  position: relative;
+  bottom: 30px;
+  clear: both;
+  border-bottom: 1px solid transparent;
+}
+.panel-tabs > li {
+  float: left;
+  margin-bottom: -1px;
+}
+.panel-tabs > li > a {
+  margin-right: 2px;
+  margin-top: 4px;
+  line-height: .85;
+  border: 1px solid transparent;
+  border-radius: 4px 4px 0 0;
+  color: #ffffff;
+}
+.panel-tabs > li > a:hover {
+  border-color: transparent;
+  color: #ffffff;
+  background-color: transparent;
+}
+.panel-tabs > li.active > a,
+.panel-tabs > li.active > a:hover,
+.panel-tabs > li.active > a:focus {
+  color: #fff;
+  cursor: default;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  background-color: rgba(255, 255, 255, 0.23);
+  border-bottom-color: transparent;
+}

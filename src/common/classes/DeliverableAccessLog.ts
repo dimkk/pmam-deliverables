@@ -1,7 +1,4 @@
 /// <reference path="../../../typings/tsd.d.ts" />
-/// <reference path="./deliverableFeedbackModel.ts" />
-/// <reference path="./deliverableAccessLogsModel.ts" />
-/// <reference path="./deliverableDefinitionsModel.ts" />
 
 module app.models {
     'use strict';
@@ -14,21 +11,23 @@ module app.models {
         getHumanizedReviewDuration():string;
     }
 
-    var DeliverableAccessLogsModel = app.models.DeliverableAccessLogsModel;
+    var model;
 
     export class DeliverableAccessLog implements IDeliverableAccessLog {
         modified:Date;
         created:Date;
         constructor(obj) {
             _.extend(this, obj);
+            model = model || this.getModel();
+
             /** Store in cached object so we can reference by requirement id when filtering */
-            DeliverableAccessLogsModel.registerLogByDeliverable(this);
+            model.registerLogByDeliverable(this);
 
             /** Modify standard prototype delete logic so we can remove from cache prior to actually deleting */
             this._deleteItem = this.deleteItem;
 
             this.deleteItem = function():ng.IPromise<any> {
-                DeliverableAccessLogsModel.removeLogByDeliverable(self);
+                model.removeLogByDeliverable(self);
                 return this._deleteItem();
             }
         }

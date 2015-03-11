@@ -1,5 +1,4 @@
 /// <reference path="../../../typings/tsd.d.ts" />
-/// <reference path="../models/deliverablesModel.ts" />
 
 module app.services {
     'use strict';
@@ -10,7 +9,6 @@ module app.services {
         getOnTimeDeliveryRating(deliverables:IDeliverable[]):number;
         getRandom():number;
         getSatisfactionRating(deliverables:IDeliverable[]):number;
-
     }
 
     class chartService implements IChartService {
