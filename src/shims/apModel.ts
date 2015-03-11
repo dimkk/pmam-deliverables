@@ -1,11 +1,11 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
-module app.models {
+module app {
 
     export interface IModel {
         deferredListDefinition:ng.IPromise<any>;
         factory:Function;
-        list:ap.List;
+        list?:ap.List;
         queries?:{[index:string]:ap.Query};
         _cachedIndexes?:{[index:string]:ap.Cache};
 

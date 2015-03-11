@@ -1,6 +1,6 @@
 /// <reference path="../../../typings/tsd.d.ts" />
 
-module app.services {
+module app {
     'use strict';
 
     interface IChartService {

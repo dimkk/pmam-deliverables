@@ -1,6 +1,6 @@
 /// <reference path="../../../typings/tsd.d.ts" />
 
-module app.models{
+module app{
     export interface IDeliverableFeedback extends ap.ListItem {
         title?:string;
         comments?:string;

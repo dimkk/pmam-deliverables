@@ -1,6 +1,6 @@
 /// <reference path="../../../typings/tsd.d.ts" />
 
-module app.models {
+module app {
     'use strict';
 
     export interface IDeliverableDefinitionsModel extends ap.Model{
@@ -17,7 +17,7 @@ module app.models {
         constructor(private $q, private $modal, private _, private apModelFactory, private $injector,
                     public deliverableFrequenciesService, private calendarService) {
 
-            this.factory = app.models.DeliverableDefinition;
+            this.factory = app.DeliverableDefinition;
             apModelFactory.create(this);
         }
 

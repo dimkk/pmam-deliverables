@@ -1,7 +1,7 @@
 /// <reference path="../../../typings/tsd.d.ts" />
 
 
-module app.models {
+module app {
     'use strict';
 
 
@@ -17,7 +17,7 @@ module app.models {
         constructor(_, private apModelFactory) {
             apModelFactory.create(this);
         }
-        factory = app.models.DeliverableFeedback;
+        factory = app.DeliverableFeedback;
         /** Local feedback cache organized by deliverable id */
         feedbackByDeliverableId = {};
         list = {

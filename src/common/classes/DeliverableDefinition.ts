@@ -1,6 +1,6 @@
 /// <reference path="../../../typings/tsd.d.ts" />
 
-module app.models{
+module app{
     export interface IDeliverableDefinition extends ap.ListItem {
         title?:string;
         deliverableNumber?:string;
@@ -27,7 +27,7 @@ module app.models{
         stakeholdersModal():ng.ui.bootstrap.IModalServiceInstance;
     }
 
-    var DeliverableDefinitionsModel = app.models.DeliverableDefinitionsModel;
+    var DeliverableDefinitionsModel = app.DeliverableDefinitionsModel;
 
     export class DeliverableDefinition implements IDeliverableDefinition{
         dueDates;

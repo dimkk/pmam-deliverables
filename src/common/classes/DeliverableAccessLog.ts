@@ -1,6 +1,6 @@
 /// <reference path="../../../typings/tsd.d.ts" />
 
-module app.models {
+module app {
     'use strict';
 
     export interface IDeliverableAccessLog extends ap.ListItem {

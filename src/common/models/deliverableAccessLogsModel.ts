@@ -1,6 +1,6 @@
 /// <reference path="../../../typings/tsd.d.ts" />
 
-module app.models {
+module app {
     'use strict';
 
     export interface IDeliverableAccessLogsModel extends ap.Model {
@@ -16,7 +16,7 @@ module app.models {
             //this.factory = app.models.DeliverableAccessLog;
             apModelFactory.create(this);
         }
-        factory = app.models.DeliverableAccessLog;
+        factory = app.DeliverableAccessLog;
 
         /** Local access log cache organized by deliverable id */
         accessLogsByDeliverableId = {};
