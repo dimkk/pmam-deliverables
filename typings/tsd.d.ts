@@ -1,6 +1,4 @@
-/// <reference path="../src/shims/apModel.ts" />
 /// <reference path="app.d.ts" />
-
 
 /// <reference path="jquery/jquery.d.ts" />
 /// <reference path="angularjs/angular.d.ts" />

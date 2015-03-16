@@ -9,3 +9,6 @@
 /// <reference path="../src/common/models/deliverableDefinitionsModel.ts" />
 /// <reference path="../src/common/models/deliverableFeedbackModel.ts" />
 /// <reference path="../src/common/models/deliverablesModel.ts" />
+
+/// <reference path="../src/shims/apModel.ts" />
+/// <reference path="../src/shims/apListItem.ts" />
