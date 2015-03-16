@@ -29,12 +29,34 @@ module app {
     }
 
     export class Model implements IModel {
-        static $inject = ['apCacheService', 'apDataService', 'apListFactory', 'apListItemFactory', 'apQueryFactory',
-        'apUtilityService', 'apFieldService', 'apConfig', 'apDecodeService', '$q', 'toastr'];
-        constructor(_, private apCacheService, private apDataService, apListFactory, private apListItemFactory,
-                    private apQueryFactory, private apUtilityService, private apFieldService, private apConfig,
-                    private apDecodeService, private $q:ng.IQService, private toastr) {
+        //static $inject = ['apCacheService', 'apDataService', 'apListFactory', 'apListItemFactory', 'apQueryFactory',
+        //'apUtilityService', 'apFieldService', 'apConfig', 'apDecodeService', '$q', 'toastr'];
+        constructor() {
+        //constructor(private apCacheService, private apDataService, apListFactory, private apListItemFactory,
+        //            private apQueryFactory, private apUtilityService, private apFieldService, private apConfig,
+        //            private apDecodeService, public $q:ng.IQService, private toastr) {
 
+            //var $injector = angular.injector();
+
+            this.$q = window.angular.injector(['ng']).get('$q');
+
+            var $injector = angular.injector(['angularPoint']);
+            this.apCacheService = $injector.get('apCacheService');
+            this.apDataService = $injector.get('apDataService');
+            this.apListFactory = $injector.get('apListFactory');
+            this.apListItemFactory = $injector.get('apListItemFactory');
+            this.apQueryFactory = $injector.get('apQueryFactory');
+            this.apUtilityService = $injector.get('apUtilityService');
+            this.apFieldService = $injector.get('apFieldService');
+            this.apConfig = $injector.get('apConfig');
+            this.apDecodeService = $injector.get('apDecodeService');
+
+            //
+            //
+            //$injector = window.angular.injector(['toastr']);
+            //this.toastr = $injector.get('toastr');
+            //
+            //this.factory = this.apListItemFactory.createGenericFactory();
             var model = this;
 
             /** Use list constructor to decorate */
@@ -87,16 +109,16 @@ module app {
 
         }
 
-        _cachedIndexes = null;
+        _cachedIndexes;
         data = [];
-        deferredListDefinition = null;
-        factory = this.apListItemFactory.createGenericFactory();
+        deferredListDefinition;
+        factory;
         fieldDefinitionsExtended = false;
         /** Date/Time of last communication with server */
-        lastServerUpdate = null;
-        list = null;
+        lastServerUpdate;
+        list;
         queries = <{[index:string]:ap.Query}>{};
-        requestForFieldDefinitions = null;
+        requestForFieldDefinitions;
 
         /**
          * @ngdoc function
@@ -842,9 +864,5 @@ module app {
         }
 
     }
-
-    angular
-        .module('pmam-deliverables')
-        .service('apModel', Model);
 
 }
