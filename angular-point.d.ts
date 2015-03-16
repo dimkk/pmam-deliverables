@@ -27,6 +27,7 @@ declare module ap {
         mappedName:string;
         readOnly?:boolean;
         required?:boolean;
+        description?:string;
         getDefinition?():string;
         getDefaultValueForType?():string;
         getMockData?(options?:Object):any;
