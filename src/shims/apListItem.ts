@@ -35,6 +35,14 @@ module app {
     }
 
     export class ListItem implements IListItem {
+        id;
+        created;
+        modified;
+        author;
+        editor;
+        permMask;
+        uniqueId;
+        fileRef;
         static $inject = ['$q', '_', 'apCacheService', 'apDataService', 'apEncodeService', 'apUtilityService',
             'apFormattedFieldValueService', 'apConfig'];
 
@@ -42,6 +50,7 @@ module app {
                     private apUtilityService, private apFormattedFieldValueService, private apConfig) {
 
         }
+
         getModel = function():ap.Model{return};
         getList = function():ap.List{return};
 
@@ -367,7 +376,7 @@ module app {
         getLookupReference(fieldName:string, lookupId:number):ListItem {
             var listItem = this;
             if (_.isUndefined(fieldName)) {
-                throw Error('A field name is required.', fieldName);
+                throw 'A field name is required.', fieldName;
             } else if (_.isEmpty(listItem[fieldName])) {
                 return '';
             } else {
@@ -379,8 +388,8 @@ module app {
                     var targetId = lookupId || listItem[fieldName].lookupId;
                     return this.apCacheService.getCachedEntity(fieldDefinition.List, targetId);
                 } else {
-                    throw Error('This isn\'t a valid Lookup field or the field definitions need to be extended ' +
-                    'before we can complete this request.', fieldName, lookupId);
+                    throw 'This isn\'t a valid Lookup field or the field definitions need to be extended ' +
+                    'before we can complete this request.', fieldName, lookupId;
                 }
             }
         }
