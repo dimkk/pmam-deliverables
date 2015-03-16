@@ -3,7 +3,7 @@
 module app {
     'use strict';
 
-    export interface IDeliverable extends ap.ListItem {
+    export interface IDeliverable extends IListItem {
         title?:string;
         deliverableType?:ap.Lookup;
         startDate?:Date;
@@ -39,7 +39,7 @@ module app {
 
     var model;
 
-    export class Deliverable implements IDeliverable {
+    export class Deliverable extends ListItem implements IDeliverable {
         title;
         deliverableType;
         startDate;
@@ -64,16 +64,17 @@ module app {
             model = model || this.getModel();
 
             /** Instantiate a new discussion object even if there isn't an active discussion */
-            self.discussionThread = self._model.apDiscussionThreadFactory.createDiscussionObject(self, 'discussionThread');
+            self.discussionThread = model.apDiscussionThreadFactory.createDiscussionObject(self, 'discussionThread');
 
             /** Store in cached object so we can reference by deliverable type directly from the type without needing to iterate over anything*/
             model.registerDeliverableByType(self);
             /** Modify standard prototype delete logic so we can remove from cache prior to actually deleting */
             self._deleteItem = self.deleteItem;
             self.deleteItem = () => {
-                removeDeliverableByType(self);
+                model.removeDeliverableByType(self);
                 return self._deleteItem();
             }
+            super();
         }
 
         /**

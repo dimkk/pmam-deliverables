@@ -3,7 +3,7 @@
 module app {
     'use strict';
 
-    export interface IDeliverablesModel extends IModel {
+    export interface IDeliverablesModel extends Model {
         factory:Function;
         deliverableByTypeId:Object;
         getCachedDeliverablesByTypeId(deliverableTypeId:number):{ [key: number]: IDeliverable; };
@@ -67,7 +67,11 @@ module app {
         };
 
         constructor() {
-            super();
+            //super();
+            //var parent = super;
+            //super.$inject = ['apCacheService', 'apDataService', 'apListFactory', 'apListItemFactory', 'apQueryFactory',
+            //    'apUtilityService', 'apFieldService', 'apConfig', 'apDecodeService', '$q', 'toastr'];
+            super()
         }
 
 
