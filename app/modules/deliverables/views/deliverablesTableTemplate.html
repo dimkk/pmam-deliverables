@@ -6,7 +6,9 @@
         <th>Submitted</th>
         <th>Due</th>
         <th>Schedule</th>
-        <th>Average Rating</th>
+        <th>On Time</th>
+        <th>Acceptable</th>
+        <!--<th>Average Rating</th>-->
         <th style="max-width:40px" class="hidden-sm"><i data-tooltip="Denotes an active discussion thread" class="fa fa-comments fa-lg"></i></th>
         <th style="max-width:40px"><span data-tooltip="The number of times a deliverable has been viewed" class="badge">#</span></th>
     </tr>
@@ -14,7 +16,6 @@
     <tbody>
     <tr ng-repeat="deliverable in vm.visibleDeliverables | filter:vm.searchString | orderBy:'submittedDate' track by deliverable.id">
         <td>
-            <image ng-src="{{deliverable.getDaysBetweenSubmittedAndDue() < 0 ? 'images/imnbusy.png' : 'images/imnon.png'}}" alt="Stoplight"></image>&nbsp;
             <a ui-sref="deliverable({id:deliverable.id})" title="View this deliverable">{{ deliverable.title }}</a>
         </td>
         <td>
@@ -24,11 +25,17 @@
         <td>{{ deliverable.submissionDate | date:'shortDate' }}</td>
         <td>{{ deliverable.dueDate | date:'shortDate' }}</td>
         <td>{{ deliverable.getDeliverableDefinition().deliverableFrequency }}</td>
-        <td class="no-wrap">
-            <!--<a ng-click="vm.getDeliverableFeedback( deliverable )" class="rating-data" title="View Details">-->
-                <ratings-average data-deliverable="deliverable"></ratings-average>
-            <!--</a>-->
+        <td class="text-align-center">
+            <on-time-check-mark data-deliverable="deliverable"></on-time-check-mark>
+            <!--<i class="fa {{ deliverable.getDaysBetweenSubmittedAndDue() < 0 ? 'fa-cc' : 'fa-check-square-o' }}"></i>-->
+            <!--<image ng-src="{{deliverable.getDaysBetweenSubmittedAndDue() < 0 ? 'images/imnbusy.png' : 'images/imnon.png'}}" alt="Stoplight"></image>-->
         </td>
+        <td class="text-align-center">
+            <rating-stoplight data-deliverable="deliverable"></rating-stoplight>
+        </td>
+        <!--<td class="no-wrap">-->
+            <!--<ratings-average data-deliverable="deliverable"></ratings-average>-->
+        <!--</td>-->
         <td class="hidden-sm">
             <a ng-show="deliverable.discussionThread.posts.length > 0"
                tooltip="Click to view discussion thread"
@@ -41,12 +48,12 @@
 
     <!-- NO DELIVERABLES FOUND FOR THE YEAR -->
     <tr ng-if="vm.visibleDeliverables && vm.visibleDeliverables.length < 1">
-        <td colspan="8" class="alert">No matching deliverables were found.</td>
+        <td colspan="9" class="alert">No matching deliverables were found.</td>
     </tr>
 
     <!-- LOADING MESSAGE -->
     <tr ng-if="!vm.gotData">
-        <td colspan="8" class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Loading deliverable information...</td>
+        <td colspan="9" class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Loading deliverable information...</td>
     </tr>
 
     </tbody>

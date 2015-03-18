@@ -88,9 +88,13 @@
             });
 
             /** Find definitions with an ID that isn't found in the index above */
-            return _.where(fiscalMonthDefinitions, function(definition) {
-                return !deliverablesIndexedByTypeId[definition.id];
+            var outstandingDefinitions = [];
+            _.each(fiscalMonthDefinitions, function(definition) {
+                if(!deliverablesIndexedByTypeId[definition.id]) {
+                    outstandingDefinitions.push(definition);
+                }
             });
+            return outstandingDefinitions;
         }
 
         function createDeliverableSummaryObject(fyDefinitions) {

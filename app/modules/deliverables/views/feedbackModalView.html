@@ -1,0 +1,43 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()" aria-hidden="true">
+        <i class="fa fa-times"></i>
+    </button>
+    <h4 class="modal-title">Feedback Edit Form <acceptable-feedback-label data-feedback="vm.userFeedback"></acceptable-feedback-label></h4>
+</div>
+<div class="modal-body">
+
+    <fieldset ng-disabled="!vm.userCanEdit">
+        <div class="form-group">
+            <label for="deliverable">Deliverable</label>
+            <div class="form-control" name="deliverable" id="deliverable">{{ vm.deliverable.title }}</div>
+        </div>
+        <div class="form-group">
+            <label for="acceptable">Acceptable*</label><br/>
+            <div class="btn-group" id="acceptable" required>
+                <label class="btn btn-success" ng-model="vm.userFeedback.acceptable" btn-radio="true"><i class="fa fa-thumbs-up"></i> Yes</label>
+                <label class="btn btn-danger" ng-model="vm.userFeedback.acceptable" btn-radio="false"><i class="fa fa-thumbs-down"></i> No</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="comments">Comments</label>
+            <textarea ng-model="vm.userFeedback.comments"
+                name="comments" id="comments" rows="10" class="form-control"></textarea>
+        </div>
+    </fieldset>
+    <div ng-if="vm.userFeedback.id">
+        <div class="row">
+            <div class="col-xs-6 text-align-left">Created: {{ vm.userFeedback.created | date:'shortDate' }}</div>
+            <div class="col-xs-6 text-align-right">Author: {{ vm.userFeedback.author.lookupValue }}</div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+<div class="modal-footer">
+    <!--Display delete button if user created feedback, user is admin, and feedback has been initially saved-->
+    <button type="button" class="btn btn-danger pull-left" ng-click="vm.deleteFeedback()" ng-show="vm.userCanDelete">Delete</button>
+    <button type="button" class="btn btn-primary" ng-click="vm.save()" ng-show="vm.userCanEdit">Save</button>
+    <button type="button" class="btn btn-default" ng-click="vm.cancel()">Cancel</button>
+</div>

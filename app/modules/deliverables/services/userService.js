@@ -104,7 +104,7 @@
         }
 
         function userIsAdmin() {
-            return userRoles['ESED Administrator'];
+            return userRoles['ESED Administrators'];
         }
     }
 })();

@@ -66,7 +66,7 @@
         "./bower_components/moment/moment.js",
         "./bower_components/moment-business/dist/moment-business.js",
         "./bower_components/angular-google-chart/ng-google-chart.js",
-        "./bower_components/lodash/dist/lodash.js",
+        "./bower_components/lodash/lodash.js",
         "./bower_components/lodash-deep/lodash-deep.js",
         "./bower_components/firebase/firebase.js",
         "./bower_components/angular-ui-router/release/angular-ui-router.js",

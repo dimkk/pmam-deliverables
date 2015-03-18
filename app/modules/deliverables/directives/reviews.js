@@ -6,18 +6,19 @@
         .module('pmam-deliverables')
         .directive('reviews', reviews);
 
-    /* @ngInject */
-    function reviews(ratingsService) {
+    function reviews() {
         var directive = {
-            link: link,
-            templateUrl: 'modules/deliverables/directives/reviewsView.html',
+            controller: reviewsController,
+            controllerAs: 'vm',
             scope: {feedback: '='},
-            restrict: 'EA'
+            templateUrl: 'modules/deliverables/directives/reviewsView.html'
         };
         return directive;
+    }
 
-        function link(scope, element, attrs) {
-            scope.starClass = ratingsService.starClass;
-        }
+    function reviewsController($scope) {
+        var vm = this;
+        vm.feedback = $scope.feedback;
+        //vm.starClass = ratingsService.starClass;
     }
 })();

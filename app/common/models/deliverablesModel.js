@@ -16,7 +16,7 @@
 
     function deliverablesModel($q, _, apModelFactory, apDiscussionThreadFactory, moment, deliverableFeedbackModel,
                                deliverableDefinitionsModel, calendarService, deliverableFrequenciesService, user,
-                               deliverableAccessLogModel) {
+                               deliverableAccessLogModel, userService) {
 
         /** Local Deliverable cache organized by deliverable type id */
         var deliverableByTypeId = {};
@@ -66,7 +66,7 @@
 
                 /** FY is October - September (Actually a string in SharePoint but we call it Integer for automatic type conversion*/
                     {staticName: "FY", objectType: "Integer", mappedName: "fy", readOnly: false},
-                    /** Fiscal month number (1-12) with 1 being October and 12 being September */
+                /** Fiscal month number (1-12) with 1 being October and 12 being September */
                     {staticName: 'Month', objectType: 'Integer', mappedName: 'fiscalMonth', readOnly: false},
                     {staticName: "Details", objectType: "Text", mappedName: "details", readOnly: false},
                     {staticName: "Justification", objectType: "Text", mappedName: "justification", readOnly: false},
@@ -111,7 +111,7 @@
             registerDeliverableByType(self);
             /** Modify standard prototype delete logic so we can remove from cache prior to actually deleting */
             self._deleteItem = self.deleteItem;
-            self.deleteItem = function() {
+            self.deleteItem = function () {
                 removeDeliverableByType(self);
                 return self._deleteItem();
             }
@@ -127,8 +127,10 @@
         Deliverable.prototype.getRatingsAverage = getRatingsAverage;
         Deliverable.prototype.getViewCount = getViewCount;
         Deliverable.prototype.hasFeedback = hasFeedback;
+        Deliverable.prototype.openFeedbackModal = openFeedbackModal;
         Deliverable.prototype.registerDeliverableAccessEvent = registerDeliverableAccessEvent;
         Deliverable.prototype.startDateIsRelevant = startDateIsRelevant;
+        Deliverable.prototype.userCanReview = userService.userCanReview;
         Deliverable.prototype.wasDeliveredOnTime = wasDeliveredOnTime;
 
         return model;
@@ -154,18 +156,18 @@
         function getCachedFeedbackForCurrentUser() {
             var self = this, feedbackForUser,
                 feedbackForDeliverable = self.getCachedFeedbackByDeliverableId();
-            if(feedbackForDeliverable) {
-                _.each(feedbackForDeliverable, function(feedback) {
-                    if(feedback.author.lookupId === user.lookupId) {
+            if (feedbackForDeliverable) {
+                _.each(feedbackForDeliverable, function (feedback) {
+                    if (feedback.author.lookupId === user.lookupId) {
                         feedbackForUser = feedback;
                     }
                 });
             }
             /** Create a placeholder if one is found */
-            if(!feedbackForUser) {
+            if (!feedbackForUser) {
                 var deliverableDefinition = self.getDeliverableDefinition();
                 feedbackForUser = deliverableFeedbackModel.createEmptyItem({
-                    acceptable: true,
+                    acceptable: null,
                     comments: '',
                     definition: self.deliverableType,
                     deliverable: {lookupId: self.id},
@@ -225,7 +227,7 @@
          * @param {number} fiscalMonth Fiscal Month (1 - 12 starting with October)
          * @returns {promise} object[]
          */
-        function getDeliverablesForMonth( fiscalYear, fiscalMonth ) {
+        function getDeliverablesForMonth(fiscalYear, fiscalMonth) {
 
             var deferred = $q.defer();
 
@@ -245,12 +247,8 @@
          * @returns {Deliverable[]}  Array of deliverables for the month.
          */
         function filterDeliverablesForFiscalMonth(fiscalMonth, deliverables) {
-            var deliverablesForMonth = _.where(deliverables, function(deliverable) {
-                return deliverable.fiscalMonth === fiscalMonth;
-            });
-            return deliverablesForMonth;
+            return _.where(deliverables, {fiscalMonth: fiscalMonth});
         }
-
 
 
         /********************* Model Specific Shared Functions ***************************************/
@@ -276,7 +274,7 @@
         }
 
         function removeDeliverableByType(deliverable) {
-            if(deliverableByTypeId[deliverable.deliverableType.lookupId][deliverable.id]) {
+            if (deliverableByTypeId[deliverable.deliverableType.lookupId][deliverable.id]) {
                 /** Remove cached deliverable */
                 delete deliverableByTypeId[deliverable.deliverableType.lookupId][deliverable.id];
             }
@@ -312,7 +310,7 @@
             var deliverableDefinition = deliverable.getDeliverableDefinition();
             var relevant = false;
 
-            if(deliverableDefinition) {
+            if (deliverableDefinition) {
                 relevant = deliverableDefinition.deliverableFrequency === 'As Required';
             }
             return relevant;
@@ -329,11 +327,11 @@
             //return moment(deliverable.dueDate).weekDays(moment(deliverable.submissionDate));
 
             //Number of actual days between dates
-            var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+            var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
             var firstDate = deliverable.dueDate || deliverable.estimateDeliverableDueDate();
             var secondDate = deliverable.submissionDate;
 
-            var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
+            var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay)));
 
             return secondDate < firstDate ? diffDays : -diffDays;
         }
@@ -368,14 +366,14 @@
                 averageRating;
             var feedbackRecords = _.toArray(deliverable.getCachedFeedbackByDeliverableId());
 
-            _.each(feedbackRecords, function(feedbackRecord) {
+            _.each(feedbackRecords, function (feedbackRecord) {
                 ratingSum += feedbackRecord.rating;
             });
-            if(!feedbackRecords.length) {
+            if (!feedbackRecords.length) {
                 /** Assume perfect score unless there are actual ratings */
                 averageRating = 5;
             } else {
-                averageRating = Math.round( (ratingSum / feedbackRecords.length) * 10) / 10;
+                averageRating = Math.round((ratingSum / feedbackRecords.length) * 10) / 10;
             }
             return averageRating;
         }
@@ -415,6 +413,15 @@
             var deliverable = this;
             var accessLogs = deliverable.getCachedAccessLogsByDeliverableId();
             return _.toArray(accessLogs).length;
+        }
+
+        function openFeedbackModal(overrides, feedback) {
+            var deliverable = this;
+
+            /** Get feedback and optionally extend with properties from the overrides object */
+            var userFeedback = _.extend(feedback || deliverable.getCachedFeedbackForCurrentUser(), overrides);
+
+            return userFeedback.openModal();
         }
 
 

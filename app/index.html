@@ -34,6 +34,7 @@
     <link rel="stylesheet" href="styles/css/custom.css">
     <link rel="stylesheet" href="styles/css/main.css">
     <link rel="stylesheet" href="styles/css/overrides.css">
+    <link rel="stylesheet" href="styles/css/panel.css">
     <link rel="stylesheet" href="styles/css/print.css">
     <link rel="stylesheet" href="styles/css/utility.css">
     <link rel="stylesheet" href="styles/css/variables.css">
@@ -73,8 +74,9 @@
 <!-- build:js scripts/vendor.js -->
 <!-- inject-vendorjs:js -->
 <script src="bower_components/moment/moment.js"></script>
+<script src="bower_components/moment-business/dist/moment-business.js"></script>
 <script src="bower_components/angular-google-chart/ng-google-chart.js"></script>
-<script src="bower_components/lodash/dist/lodash.js"></script>
+<script src="bower_components/lodash/lodash.js"></script>
 <script src="bower_components/lodash-deep/lodash-deep.js"></script>
 <script src="bower_components/firebase/firebase.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
@@ -121,16 +123,23 @@
 <script src="modules/deliverables/services/calendarService.js"></script>
 <script src="modules/deliverables/directives/reviews.js"></script>
 <script src="modules/deliverables/directives/ratingsAverage.js"></script>
+<script src="modules/deliverables/directives/ratingStoplight.js"></script>
+<script src="modules/deliverables/directives/onTimeCheckMark.js"></script>
+<script src="modules/deliverables/directives/acceptableFeedbackLabel.js"></script>
+<script src="modules/deliverables/controllers/feedbackModalController.js"></script>
 <script src="modules/deliverables/controllers/deliverablesController.js"></script>
+<script src="modules/deliverables/controllers/deliverableSummaryController.js"></script>
 <script src="modules/deliverables/controllers/deliverableInstancesController.js"></script>
 <script src="modules/deliverables/controllers/deliverableFormNewController.js"></script>
 <script src="modules/deliverables/controllers/deliverableFormEditController.js"></script>
+<script src="modules/deliverables/controllers/deliverableDefinitionModalController.js"></script>
 <script src="modules/deliverables/controllers/definitionsController.js"></script>
 <script src="modules/navbar/navbarCtrl.js"></script>
 <script src="common/models/userSettingsModel.js"></script>
 <script src="common/models/deliverablesModel.js"></script>
 <script src="common/models/deliverableFeedbackModel.js"></script>
 <script src="common/models/deliverableDefinitionsModel.js"></script>
+<script src="common/models/deliverableAccessLogsModel.js"></script>
 <script src="common/user.js"></script>
 <script src="common/run.js"></script>
 <script src="common/routes.js"></script>

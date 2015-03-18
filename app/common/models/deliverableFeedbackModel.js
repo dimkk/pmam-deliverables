@@ -14,7 +14,7 @@
         .module('pmam-deliverables')
         .factory('deliverableFeedbackModel', deliverableFeedbackModel);
 
-    function deliverableFeedbackModel(_, apModelFactory) {
+    function deliverableFeedbackModel(_, apModelFactory, $modal, userService, toastr, user) {
 
         /** Local feedback cache organized by deliverable id */
         var feedbackByDeliverableId = {};
@@ -85,6 +85,8 @@
             }
         }
 
+        DeliverableFeedback.prototype.openModal = openModal;
+
         /**
          * @description Adds a feedback element to a cache that is grouped by deliverable to make later retrieval immediate
          * @param {DeliverableFeedback} feedback
@@ -148,6 +150,43 @@
 
 
         /********************* Model Specific Shared Functions ***************************************/
+
+        function openModal() {
+            var userFeedback = this;
+
+            var userCanReview = userService.userCanReview();
+            if(!userCanReview && !userFeedback.id){
+                /** Don't allow users without necessary permission create reviews */
+                return toastr.warning('Only members of the "ESED Deliverables Reviewers" group may submit reviews.');
+            }
+
+            var backup = angular.copy(userFeedback);
+            var modalInstance = $modal.open({
+                templateUrl: 'modules/deliverables/views/feedbackModalView.html',
+                controller: 'feedbackModalController',
+                controllerAs: 'vm',
+                resolve: {
+                    userFeedback: function() {
+                        return userFeedback;
+                    },
+                    isAuthor: function() {
+                        /** This is the author if there is no author because it hasn't been saved or the author's id matches the current users id */
+                        return !userFeedback.author || userFeedback.author.lookupId === user.lookupId
+                    }
+                }
+            });
+
+            modalInstance.result
+                .then(function (updatedFeedback) {
+                    //User updated feedback so no action necessary
+                }, function () {
+                    //Revert back to backup state of feedback because user cancelled
+                    _.extend(userFeedback, backup);
+                });
+
+            return modalInstance.result;
+
+        }
 
 
         return model;

@@ -306,8 +306,11 @@
         function getExpectedDeliverableCount() {
             var deliverableDefinition = this;
             var today = new Date();
-            var expectedDueDates = _.where(deliverableDefinition.dueDates, function(date) {
-                return date < today;
+            var expectedDueDates = [];
+            _.each(deliverableDefinition.dueDates, function(date) {
+                if(date < today) {
+                    expectedDueDates.push(date);
+                }
             });
             return expectedDueDates.length;
         }

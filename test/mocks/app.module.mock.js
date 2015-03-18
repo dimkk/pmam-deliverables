@@ -33,6 +33,10 @@
 
 
         ])
+        .constant('mockUser', {
+            lookupId: 441,
+            lookupValue: "Hatcher CIV Scott B"
+        })
         .run(function ($httpBackend) {
 
             // Don't mock the html views

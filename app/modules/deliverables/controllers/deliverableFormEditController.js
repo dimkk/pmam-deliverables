@@ -8,7 +8,7 @@
 
     /* @ngInject */
     function deliverableFormEditController(deliverableFeedbackModel, toastr, $state, deliverableDefinitionsModel,
-                                       userService, $q, deliverableRecord, ratingsService, calendarService, $scope) {
+                                           userService, $q, deliverableRecord, ratingsService, calendarService, $scope) {
 
         //TODO Need to add logic to revert back to pristine deliverable in cache if entity is updated and user leaves without saving
         var vm = this;
@@ -23,11 +23,11 @@
         vm.getLabelClass = ratingsService.getLabelClass;
         vm.hoveringOver = hoveringOver;
         vm.monthOptions = calendarService.getMonthOptions();
+        vm.provideFeedback = provideFeedback;
         vm.save = save;
         vm.starClass = ratingsService.starClass;
         vm.updateFeedback = updateFeedback;
         vm.userCanContribute = userService.userCanContribute;
-        vm.userCanReview = userService.userCanReview;
 
         // rating settings
         vm.rate = 5;
@@ -61,7 +61,7 @@
                 vm.userDeliverableFeedback = deliverableRecord.getCachedFeedbackForCurrentUser();
 
                 //TODO Clean this up, currently it's here just to initialize the percent label if the user has feedback
-                if(vm.userDeliverableFeedback) {
+                if (vm.userDeliverableFeedback) {
                     vm.percent = 100 * (vm.userDeliverableFeedback.rating / vm.max);
                 }
 
@@ -72,7 +72,7 @@
             deliverableRecord.registerDeliverableAccessEvent()
                 .then(function (deliverableAccessEvent) {
                     /** Wait for user to leave current state so we can log it */
-                    $scope.$on('$stateChangeStart', function(){
+                    $scope.$on('$stateChangeStart', function () {
                         /** Causes modified date to reflect updated time so we can get delta between created and modified */
                         deliverableAccessEvent.saveChanges();
                     });
@@ -128,7 +128,7 @@
         function deleteMyFeedback(feedback) {
             //TODO This currently doesn't fully purge the cache and needs to be addressed
             var confirmation = window.confirm('Are you sure you want to delete your feedback?');
-            if(confirmation) {
+            if (confirmation) {
                 feedback.deleteItem()
                     .then(function () {
                         /** Record is deleted from server and local cache so instantiate a new feedback record */
@@ -144,6 +144,18 @@
                 fy: deliverableRecord.fy
             });
 
+        }
+
+        function provideFeedback(isAcceptable) {
+            var previousAcceptability = vm.userDeliverableFeedback.acceptable;
+            vm.deliverableRecord.openFeedbackModal({acceptable: isAcceptable}, vm.userDeliverableFeedback)
+                .then(function (updatedFeedback) {
+                    //No action necessary because user saved
+                    vm.userDeliverableFeedback = updatedFeedback;
+                }, function (err) {
+                    //Revert back to previous state of feedback because user cancelled
+                    vm.userDeliverableFeedback.acceptable = previousAcceptability;
+                });
         }
 
     }

@@ -13,44 +13,91 @@
     </legend>
 
 
-    <div ng-if="vm.userDeliverableFeedback && vm.userCanReview()">
-        <label>Rate this deliverable</label>
-        <rating ng-change="vm.updateFeedback()"
-                state-on="'fa fa-star fa-2x'" state-off="'fa fa-star-o fa-2x'"
-                ng-model="vm.userDeliverableFeedback.rating" max="5"
-                readonly="vm.isReadonly" on-hover="vm.hoveringOver(value)"
-                class="ratings-no-wrap {{ starClass(vm.userDeliverableFeedback.rating) }}"
-                on-leave="vm.overStar = null"></rating>
+    <div ng-if="!vm.userDeliverableFeedback.id && vm.deliverableRecord.userCanReview()" class="panel panel-default">
+
+        <!--<div class="form-group">-->
+        <div class="panel-heading">Your Review </div>
+
+        <div class="panel-body">
+            <label>Is this deliverable acceptable?</label>
+            <div class="btn-group btn-group-justified" id="acceptable">
+                <a href ng-click="vm.provideFeedback(true)" class="btn btn-success"
+                   ng-class="{ 'active': vm.userDeliverableFeedback.acceptable === true }">
+                    <i class="fa fa-thumbs-up"></i> Yes
+                </a>
+                <a href ng-click="vm.provideFeedback(false)" class="btn btn-danger"
+                   ng-class="{ 'active': vm.userDeliverableFeedback.acceptable === false }">
+                    <i class="fa fa-thumbs-down"></i> No
+                </a>
+            </div>
+            <!--<div ng-if="vm.userDeliverableFeedback.comments.length > 0"><br/>-->
+                <!--<label >Comments</label><br/>-->
+                <!--&lt;!&ndash;<reviews data-feedback="vm.userDeliverableFeedback"></reviews>&ndash;&gt;-->
+
+
+                <!--<span class="help-block">Created: {{ vm.userDeliverableFeedback.comments }}</span>-->
+            <!--</div>-->
+        </div>
+
+        <!--<label for="acceptable">Rate Acceptability</label><br/>-->
+            <!--<div class="btn-group btn-group-justified" id="acceptable">-->
+                <!--<a href ng-click="vm.provideFeedback(true)" class="btn btn-success"-->
+                        <!--ng-class="{ 'active': vm.userDeliverableFeedback.acceptable === true }">-->
+                    <!--<i class="fa fa-thumbs-up"></i> Yes-->
+                <!--</a>-->
+                <!--<a href ng-click="vm.provideFeedback(false)" class="btn btn-danger"-->
+                        <!--ng-class="{ 'active': vm.userDeliverableFeedback.acceptable === false }">-->
+                    <!--<i class="fa fa-thumbs-down"></i> No-->
+                <!--</a>-->
+            <!--</div>-->
+        <!--<h4>-->
+            <!--<acceptable-feedback-label data-feedback="vm.userDeliverableFeedback"></acceptable-feedback-label>-->
+        <!--</h4>-->
+        <!--</div>-->
+        <!--<div ng-if="vm.userDeliverableFeedback.comments.length > 0"><br/>-->
+            <!--<label >Comments</label><br/>-->
+            <!--&lt;!&ndash;<reviews data-feedback="vm.userDeliverableFeedback"></reviews>&ndash;&gt;-->
+
+
+            <!--<span class="help-block">Created: {{ vm.userDeliverableFeedback.comments }}</span>-->
+        <!--</div>-->
     </div>
 
 
     <!-- Current User's Comments -->
-    <div class="fadeIn" ng-if="vm.userDeliverableFeedback.id && vm.userCanReview()">
-        <h4><span class="pull-right label {{ vm.getLabelClass(vm.overStar || vm.userDeliverableFeedback.rating) }}"
-              ng-show="vm.overStar || vm.userDeliverableFeedback.rating">{{vm.percent}}%</span></h4>
+    <!--<div class="fadeIn" ng-if="vm.userDeliverableFeedback.id && vm.deliverableRecord.userCanReview()">-->
+        <!--<h4><span class="pull-right label {{ vm.getLabelClass(vm.overStar || vm.userDeliverableFeedback.rating) }}"-->
+              <!--ng-show="vm.overStar || vm.userDeliverableFeedback.rating">{{vm.percent}}%</span></h4>-->
 
-        <label for="comment">Feedback</label>
-        <textarea rows="6" class="form-control"
-                  ng-model="vm.userDeliverableFeedback.comments"
-                  ng-blur="vm.updateFeedback()"
-                  placeholder="Add a Comment" name="comment"
-                  title="Feedback comment is automatically updated after leaving this field."></textarea>
-        <button type="button" ng-click="vm.deleteMyFeedback(vm.userDeliverableFeedback)"
-                class="btn btn-link pull-right"
-                title="Delete your feedback."><i class="fa fa-trash"></i> delete</button>
+        <!--<label for="comment">Feedback</label>-->
+        <!--<textarea rows="6" class="form-control"-->
+                  <!--ng-model="vm.userDeliverableFeedback.comments"-->
+                  <!--ng-blur="vm.updateFeedback()"-->
+                  <!--placeholder="Add a Comment" name="comment"-->
+                  <!--title="Feedback comment is automatically updated after leaving this field."></textarea>-->
+        <!--<button type="button" ng-click="vm.deleteMyFeedback(vm.userDeliverableFeedback)"-->
+                <!--class="btn btn-link pull-right"-->
+                <!--title="Delete your feedback."><i class="fa fa-trash"></i> delete</button>-->
 
-        <br/>
-    </div>
-    <div ng-if="vm.deliverableFeedback">
-        <hr class="hr-sm">
-        <div ng-repeat="feedback in vm.deliverableFeedback track by feedback.id">
-            <div class="row">
-                <div class="col-sm-12">
-                    <!-- Don't display feedback for current user in this area -->
-                    <reviews data-feedback="feedback" ng-if="feedback.id && feedback.id !== vm.userDeliverableFeedback.id"></reviews>
-                </div>
-            </div>
-        </div>
+        <!--<br/>-->
+    <!--</div>-->
+    <div ng-if="vm.deliverableFeedback" class="panel panel-default">
+        <!--<hr class="hr hr-sm">-->
+        <!--<label>Other Reviews</label>-->
+        <div class="panel-heading">Other Reviews</div>
+        <li class="list-group-item" ng-repeat="feedback in vm.deliverableRecord.getCachedFeedbackByDeliverableId() track by feedback.id">
+            <reviews data-feedback="feedback"></reviews>
+            <!--<reviews data-feedback="feedback" ng-if="feedback.id && feedback.id !== vm.userDeliverableFeedback.id"></reviews>-->
+        </li>
+
+        <!--<div ng-repeat="feedback in vm.deliverableRecord.getCachedFeedbackByDeliverableId() track by feedback.id">-->
+            <!--<div class="row">-->
+                <!--<div class="col-sm-12">-->
+                    <!--&lt;!&ndash; Don't display feedback for current user in this area &ndash;&gt;-->
+                    <!--<reviews data-feedback="feedback" ng-if="feedback.id && feedback.id !== vm.userDeliverableFeedback.id"></reviews>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
     <div ng-if="!vm.deliverableFeedback">
         <hr class="hr-sm">

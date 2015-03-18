@@ -1,7 +1,11 @@
-<!--view template for ratings by deliverable directive-->
-<rating ng-model="feedback.rating"
-        state-on="'fa fa-star fa-lg'" state-off="'fa fa-star-o fa-lg'"
-        max="5" readonly="true"></rating><br/>
-<strong>{{feedback.author.lookupValue}}</strong><br/>
+<div style="font-size: large" class="text-center">
+    <acceptable-feedback-label data-feedback="vm.feedback"></acceptable-feedback-label>
+</div>
 
-<p>{{feedback.comments}} <small>{{feedback.modified | date:'shortDate' }}</small></p>
+<p>{{ vm.feedback.comments}}</p>
+<div class="small">By: {{ vm.feedback.author.lookupValue }}</div>
+<div class="small">Updated: {{vm.feedback.modified | date:'shortDate' }}</div>
+<div class="text-align-right">
+    <a href ng-click="feedback.openModal()"><i class="fa fa-pencil-square-o"></i> view</a>
+</div>
+
