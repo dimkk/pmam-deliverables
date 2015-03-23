@@ -24,21 +24,21 @@ angular.module('pmam-deliverables')
 
             .state('deliverables.summary', {
                 url: '/summary',
-                templateUrl: 'modules/deliverables/views/deliverablesSummaryView.html',
+                templateUrl: 'modules/deliverable_summary/deliverablesSummaryView.html',
                 controller: 'deliverableSummaryController',
                 controllerAs: 'vm'
             })
 
             .state('deliverables.monthly', {
                 url: '/main?mo',
-                templateUrl: 'modules/deliverables/views/deliverablesView.html',
+                templateUrl: 'modules/deliverables_by_month/deliverablesView.html',
                 controller: 'deliverablesController',
                 controllerAs: 'vm'
             })
 
             .state('deliverables.instances', {
                 url: '/instances?id',
-                templateUrl: 'modules/deliverables/views/deliverableInstancesView.html',
+                templateUrl: 'modules/deliverable_instances/deliverableInstancesView.html',
                 controller: 'deliverableInstancesController',
                 controllerAs: 'vm',
                 resolve: {
@@ -71,14 +71,14 @@ angular.module('pmam-deliverables')
 
             .state('deliverables.types', {
                 url: '/types',
-                templateUrl: 'modules/deliverables/views/deliverableDefinitionsView.html',
+                templateUrl: 'modules/deliverable_definitions/deliverableDefinitionsView.html',
                 controller: 'definitionsController',
                 controllerAs: 'vm'
             })
 
             .state('deliverable', {
                 url: '/deliverable/:id?activeTab', //['main', 'discussion'] with default = main
-                templateUrl: 'modules/deliverables/views/deliverableFormEditView.html',
+                templateUrl: 'modules/deliverable_forms/deliverableFormEditView.html',
                 controller: 'deliverableFormEditController',
                 controllerAs: 'vm',
                 resolve: {
@@ -114,7 +114,7 @@ angular.module('pmam-deliverables')
             //Todo Find a better name for this state (no caps)
             .state('newInstance', {
                 url: '/deliverable?fy&mo&deliverableTypeId',
-                templateUrl: 'modules/deliverables/views/deliverableFormNewView.html',
+                templateUrl: 'modules/deliverable_forms/deliverableFormNewView.html',
                 controller: 'deliverableFormNewController',
                 controllerAs: 'vm'
             })

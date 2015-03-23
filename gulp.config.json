@@ -77,6 +77,7 @@
         "./bower_components/angular-ui-date/src/date.js",
         "./bower_components/angular-ui-sortable/sortable.js",
         "./bower_components/ng-table/ng-table.js",
+        "./bower_components/angular-ui-grid/ui-grid.js",
         "./bower_components/angularfire/angularfire.js",
         "./bower_components/angular-toastr/dist/angular-toastr.js",
         "./bower_components/angular-loading-bar/build/loading-bar.js",
@@ -89,6 +90,7 @@
         "./bower_components/angular-loading-bar/build/loading-bar.css",
         "./bower_components/font-awesome/css/font-awesome.min.css",
         "./bower_components/angular-point-discussion-thread/dist/apDiscussionThread.css",
+        "./bower_components/angular-ui-grid/ui-grid.css",
         "./app/styles/**/*bootstrap.css",
         "./app/styles/**/*bower.css"
     ]

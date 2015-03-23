@@ -11,7 +11,7 @@
             controller: reviewsController,
             controllerAs: 'vm',
             scope: {feedback: '='},
-            templateUrl: 'modules/deliverables/directives/reviewsView.html'
+            templateUrl: 'common/directives/reviewsView.html'
         };
         return directive;
     }

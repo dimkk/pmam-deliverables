@@ -162,7 +162,7 @@
 
             var backup = angular.copy(userFeedback);
             var modalInstance = $modal.open({
-                templateUrl: 'modules/deliverables/views/feedbackModalView.html',
+                templateUrl: 'modules/deliverable_feedback/deliverableFeedbackModalView.html',
                 controller: 'feedbackModalController',
                 controllerAs: 'vm',
                 resolve: {

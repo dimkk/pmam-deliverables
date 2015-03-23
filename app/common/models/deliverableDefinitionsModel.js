@@ -160,7 +160,7 @@
         function stakeholdersModal() {
             var deliverableDefinition = this;
             return $modal.open({
-                templateUrl: 'modules/deliverables/views/deliverableDefinitionModalView.html',
+                templateUrl: 'modules/deliverable_definitions/deliverableDefinitionModalView.html',
                 controller: 'deliverableDefinitionModalController',
                 controllerAs: 'vm',
                 resolve: {

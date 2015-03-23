@@ -12,7 +12,7 @@
             scope: {
                 deliverable: '='
             },
-            templateUrl: 'modules/deliverables/directives/ratingStoplight.html'
+            templateUrl: 'common/directives/ratingStoplight.html'
         };
     }
 

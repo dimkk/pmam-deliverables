@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css">
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="bower_components/angular-point-discussion-thread/dist/apDiscussionThread.css">
+    <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.css">
     <link rel="stylesheet" href="styles/css/bootstrap.css">
     <link rel="stylesheet" href="styles/css/bower.css">
     <!-- endinject -->
@@ -87,6 +88,7 @@
 <script src="bower_components/angular-ui-date/src/date.js"></script>
 <script src="bower_components/angular-ui-sortable/sortable.js"></script>
 <script src="bower_components/ng-table/ng-table.js"></script>
+<script src="bower_components/angular-ui-grid/ui-grid.js"></script>
 <script src="bower_components/angularfire/angularfire.js"></script>
 <script src="bower_components/angular-toastr/dist/angular-toastr.js"></script>
 <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
@@ -115,31 +117,31 @@
 <!-- endinject -->
 
 <!-- inject-projectjs:js -->
-<script src="modules/deliverables/services/userService.js"></script>
-<script src="modules/deliverables/services/ratingsService.js"></script>
-<script src="modules/deliverables/services/deliverablesService.js"></script>
-<script src="modules/deliverables/services/deliverableFrequenciesService.js"></script>
-<script src="modules/deliverables/services/chartService.js"></script>
-<script src="modules/deliverables/services/calendarService.js"></script>
-<script src="modules/deliverables/directives/reviews.js"></script>
-<script src="modules/deliverables/directives/ratingsAverage.js"></script>
-<script src="modules/deliverables/directives/ratingStoplight.js"></script>
-<script src="modules/deliverables/directives/onTimeCheckMark.js"></script>
-<script src="modules/deliverables/directives/acceptableFeedbackLabel.js"></script>
-<script src="modules/deliverables/controllers/feedbackModalController.js"></script>
-<script src="modules/deliverables/controllers/deliverablesController.js"></script>
-<script src="modules/deliverables/controllers/deliverableSummaryController.js"></script>
-<script src="modules/deliverables/controllers/deliverableInstancesController.js"></script>
-<script src="modules/deliverables/controllers/deliverableFormNewController.js"></script>
-<script src="modules/deliverables/controllers/deliverableFormEditController.js"></script>
-<script src="modules/deliverables/controllers/deliverableDefinitionModalController.js"></script>
-<script src="modules/deliverables/controllers/definitionsController.js"></script>
 <script src="modules/navbar/navbarCtrl.js"></script>
+<script src="modules/deliverables_by_month/deliverablesController.js"></script>
+<script src="modules/deliverable_summary/deliverableSummaryController.js"></script>
+<script src="modules/deliverable_instances/deliverableInstancesController.js"></script>
+<script src="modules/deliverable_forms/deliverableFormNewController.js"></script>
+<script src="modules/deliverable_forms/deliverableFormEditController.js"></script>
+<script src="modules/deliverable_forms/deliverableDefinitionModalController.js"></script>
+<script src="modules/deliverable_feedback/feedbackModalController.js"></script>
+<script src="modules/deliverable_definitions/definitionsController.js"></script>
+<script src="common/services/userService.js"></script>
+<script src="common/services/ratingsService.js"></script>
+<script src="common/services/deliverablesService.js"></script>
+<script src="common/services/deliverableFrequenciesService.js"></script>
+<script src="common/services/chartService.js"></script>
+<script src="common/services/calendarService.js"></script>
 <script src="common/models/userSettingsModel.js"></script>
 <script src="common/models/deliverablesModel.js"></script>
 <script src="common/models/deliverableFeedbackModel.js"></script>
 <script src="common/models/deliverableDefinitionsModel.js"></script>
 <script src="common/models/deliverableAccessLogsModel.js"></script>
+<script src="common/directives/reviews.js"></script>
+<script src="common/directives/ratingsAverage.js"></script>
+<script src="common/directives/ratingStoplight.js"></script>
+<script src="common/directives/onTimeCheckMark.js"></script>
+<script src="common/directives/acceptableFeedbackLabel.js"></script>
 <script src="common/user.js"></script>
 <script src="common/run.js"></script>
 <script src="common/routes.js"></script>

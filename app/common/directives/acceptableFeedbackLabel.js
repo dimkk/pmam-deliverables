@@ -10,7 +10,7 @@
             controller: acceptableFeedbackLabelController,
             controllerAs: 'vm',
             scope: {feedback: '='},
-            templateUrl: 'modules/deliverables/directives/acceptableFeedbackLabel.html'
+            templateUrl: 'common/directives/acceptableFeedbackLabel.html'
         };
     }
 
