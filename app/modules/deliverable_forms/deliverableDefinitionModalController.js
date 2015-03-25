@@ -10,6 +10,7 @@
 
         vm.cancel = cancel;
         vm.save = save;
+        vm.deliverableDefinition = deliverableDefinition;
 
         /** Create a working copy of the fields we're interested in so we don't polute local cache if user cancels */
         vm.to = angular.copy(deliverableDefinition.to);

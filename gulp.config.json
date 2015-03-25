@@ -81,13 +81,15 @@
         "./bower_components/angularfire/angularfire.js",
         "./bower_components/angular-toastr/dist/angular-toastr.js",
         "./bower_components/angular-loading-bar/build/loading-bar.js",
-        "./bower_components/angular-filter/dist/angular-filter.js"
+        "./bower_components/angular-filter/dist/angular-filter.js",
+        "./bower_components/angular-elastic/elastic.js"
     ],
     "vendorcss": [
         "./bower_components/angular-ui-select/dist/select.css",
         "./bower_components/animate.css/animate.css",
         "./bower_components/angular-toastr/dist/angular-toastr.css",
         "./bower_components/angular-loading-bar/build/loading-bar.css",
+        "./bower_components/ng-table/ng-table.less",
         "./bower_components/font-awesome/css/font-awesome.min.css",
         "./bower_components/angular-point-discussion-thread/dist/apDiscussionThread.css",
         "./bower_components/angular-ui-grid/ui-grid.css",

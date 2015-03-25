@@ -68,8 +68,8 @@
                     {staticName: "FY", objectType: "Integer", mappedName: "fy", readOnly: false},
                 /** Fiscal month number (1-12) with 1 being October and 12 being September */
                     {staticName: 'Month', objectType: 'Integer', mappedName: 'fiscalMonth', readOnly: false},
-                    {staticName: "Details", objectType: "Text", mappedName: "details", readOnly: false},
-                    {staticName: "Justification", objectType: "Text", mappedName: "justification", readOnly: false},
+                    {staticName: "Details", objectType: "Note", mappedName: "details", readOnly: false},
+                    {staticName: "Justification", objectType: "Note", mappedName: "justification", readOnly: false},
                     {staticName: "To", objectType: "UserMulti", mappedName: "to", readOnly: false},
                     {staticName: "CC", objectType: "UserMulti", mappedName: "cc", readOnly: false},
                     {

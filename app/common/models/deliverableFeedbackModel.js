@@ -14,7 +14,9 @@
         .module('pmam-deliverables')
         .factory('deliverableFeedbackModel', deliverableFeedbackModel);
 
-    function deliverableFeedbackModel(_, apModelFactory, $modal, userService, toastr, user) {
+    function deliverableFeedbackModel(_, apModelFactory, $modal, userService, toastr, user, lookupCacheService) {
+
+        var lookupFieldsToCache = ['deliverable'];
 
         /** Local feedback cache organized by deliverable id */
         var feedbackByDeliverableId = {};
@@ -75,51 +77,39 @@
         function DeliverableFeedback(obj) {
             var self = this;
             _.extend(self, obj);
-            /** Store in cached object so we can reference by requirement id when filtering */
-            registerFeedbackByDeliverable(self);
-            /** Modify standard prototype delete logic so we can remove from cache prior to actually deleting */
-            self._deleteItem = self.deleteItem;
-            self.deleteItem = function() {
-                removeFeedbackByDeliverable(self);
-                return self._deleteItem();
+
+            if(self.id) {
+                /** Store in cached object so we can reference from lookup reference */
+                lookupCacheService.cacheEntityByLookupId(self, lookupFieldsToCache);
+                /** Modify standard delete logic so we can remove from cache prior to actually deleting */
+                self._deleteItem = self.deleteItem;
+                self.deleteItem = function() {
+                    lookupCacheService.removeEntityFromLookupCaches(self, lookupFieldsToCache);
+                    return self._deleteItem();
+                }
             }
+
+            ///** Store in cached object so we can reference by requirement id when filtering */
+            //lookupCacheService
+            //registerFeedbackByDeliverable(self);
+            ///** Modify standard prototype delete logic so we can remove from cache prior to actually deleting */
+            //self._deleteItem = self.deleteItem;
+            //self.deleteItem = function() {
+            //    removeFeedbackByDeliverable(self);
+            //    return self._deleteItem();
+            //}
         }
 
         DeliverableFeedback.prototype.openModal = openModal;
 
         /**
-         * @description Adds a feedback element to a cache that is grouped by deliverable to make later retrieval immediate
-         * @param {DeliverableFeedback} feedback
-         */
-        function registerFeedbackByDeliverable(feedback) {
-            if (feedback.deliverable.lookupId) {
-                feedbackByDeliverableId[feedback.deliverable.lookupId] = feedbackByDeliverableId[feedback.deliverable.lookupId] || {};
-                /** Only register modifications that have been saved to the server and add to cache if not already there */
-                if (feedback.id && !feedbackByDeliverableId[feedback.deliverable.lookupId][feedback.id]) {
-                    feedbackByDeliverableId[feedback.deliverable.lookupId][feedback.id] = feedback;
-                }
-            }
-
-        }
-
-        /**
-         * @description Removes a feedback element from the local cache.
-         * @param {DeliverableFeedback} feedback
-         */
-        function removeFeedbackByDeliverable(feedback) {
-            if(feedbackByDeliverableId[feedback.deliverable.lookupId][feedback.id]) {
-                /** Remove cached feedback */
-                delete feedbackByDeliverableId[feedback.deliverable.lookupId][feedback.id];
-            }
-        }
-
-        /**
          * @description Pulls cached feedback for a given deliverable.
          * @param {number} deliverableId
+         * @param {boolean} [asObject=false]  Optionally prevent conversion to an array.
          * @returns {DeliverableFeedback[]} Array of matching feedback for a given deliverable.
          */
-        function getCachedFeedbackByDeliverableId(deliverableId) {
-            return feedbackByDeliverableId[deliverableId];
+        function getCachedFeedbackByDeliverableId(deliverableId, asObject) {
+            return lookupCacheService.retrieveLookupCacheById('deliverable', model.list.getListId(), deliverableId, asObject);
         }
 
         /*********************************** Queries ***************************************/

@@ -2,69 +2,79 @@
      <!--ui-grid-selection-->
      <!--ui-grid-resize-columns></div>-->
 
-<div ui-grid="vm.deliverableGrid"
-     ui-grid-resize-columns
-     ui-grid-pinning
-     ui-grid-auto-resize
-     ui-grid-exporter></div>
+<div ng-if="vm.deliverableGrid.data.length > 0">
+    <div ui-grid="vm.deliverableGrid"
+         ui-grid-resize-columns
+         ui-grid-pinning
+         ui-grid-auto-resize
+         ui-grid-exporter></div>
+</div>
 
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th>Title</th>
-        <th>Type</th>
-        <th>Submitted</th>
-        <th>Due</th>
-        <th>Schedule</th>
-        <th>On Time</th>
-        <th>Acceptable</th>
-        <!--<th>Average Rating</th>-->
-        <th style="max-width:40px" class="hidden-sm"><i data-tooltip="Denotes an active discussion thread" class="fa fa-comments fa-lg"></i></th>
-        <th style="max-width:40px"><span data-tooltip="The number of times a deliverable has been viewed" class="badge">#</span></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="deliverable in vm.visibleDeliverables | filter:vm.searchString | orderBy:'submittedDate' track by deliverable.id">
-        <td>
-            <a ui-sref="deliverable({id:deliverable.id})" title="View this deliverable">{{ deliverable.title }}</a>
-        </td>
-        <td>
-            <a ui-sref="deliverables.instances({fy:deliverable.fy, id:deliverable.deliverableType.lookupId})"
-               title="View all deliverables of this type">{{ deliverable.deliverableType.lookupValue }}</a>
-        </td>
-        <td>{{ deliverable.submissionDate | date:'shortDate' }}</td>
-        <td>{{ deliverable.dueDate | date:'shortDate' }}</td>
-        <td>{{ deliverable.getDeliverableDefinition().deliverableFrequency }}</td>
-        <td class="text-align-center">
-            <on-time-check-mark data-deliverable="deliverable"></on-time-check-mark>
-            <!--<i class="fa {{ deliverable.getDaysBetweenSubmittedAndDue() < 0 ? 'fa-cc' : 'fa-check-square-o' }}"></i>-->
-            <!--<image ng-src="{{deliverable.getDaysBetweenSubmittedAndDue() < 0 ? 'images/imnbusy.png' : 'images/imnon.png'}}" alt="Stoplight"></image>-->
-        </td>
-        <td class="text-align-center">
-            <rating-stoplight data-deliverable="deliverable"></rating-stoplight>
-        </td>
-        <!--<td class="no-wrap">-->
-            <!--<ratings-average data-deliverable="deliverable"></ratings-average>-->
+<!-- NO DELIVERABLES FOUND FOR THE YEAR -->
+<div ng-if="vm.visibleDeliverables && vm.visibleDeliverables.length < 1"
+     class="alert alert-warning">No matching deliverables were found.</div>
+
+<!-- LOADING MESSAGE -->
+<div ng-if="!vm.gotData" class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Loading deliverable information...</div>
+
+
+<!--<table class="table table-striped">-->
+    <!--<thead>-->
+    <!--<tr>-->
+        <!--<th>Title</th>-->
+        <!--<th>Type</th>-->
+        <!--<th>Submitted</th>-->
+        <!--<th>Due</th>-->
+        <!--<th>Schedule</th>-->
+        <!--<th>On Time</th>-->
+        <!--<th>Acceptable</th>-->
+        <!--&lt;!&ndash;<th>Average Rating</th>&ndash;&gt;-->
+        <!--<th style="max-width:40px" class="hidden-sm"><i data-tooltip="Denotes an active discussion thread" class="fa fa-comments fa-lg"></i></th>-->
+        <!--<th style="max-width:40px"><span data-tooltip="The number of times a deliverable has been viewed" class="badge">#</span></th>-->
+    <!--</tr>-->
+    <!--</thead>-->
+    <!--<tbody>-->
+    <!--<tr ng-repeat="deliverable in vm.visibleDeliverables | filter:vm.searchString | orderBy:'submittedDate' track by deliverable.id">-->
+        <!--<td>-->
+            <!--<a ui-sref="deliverable({id:deliverable.id})" title="View this deliverable">{{ deliverable.title }}</a>-->
         <!--</td>-->
-        <td class="hidden-sm">
-            <a ng-show="deliverable.discussionThread.posts.length > 0"
-               tooltip="Click to view discussion thread"
-               ui-sref="deliverable({id:deliverable.id, activeTab: 'discussion'})">
-                <i class="fa fa-comments fa-lg"></i>
-            </a>
-        </td>
-        <td><span class="badge">{{deliverable.getViewCount()}}</span></td>
-    </tr>
+        <!--<td>-->
+            <!--<a ui-sref="deliverables.instances({fy:deliverable.fy, id:deliverable.deliverableType.lookupId})"-->
+               <!--title="View all deliverables of this type">{{ deliverable.deliverableType.lookupValue }}</a>-->
+        <!--</td>-->
+        <!--<td>{{ deliverable.submissionDate | date:'shortDate' }}</td>-->
+        <!--<td>{{ deliverable.dueDate | date:'shortDate' }}</td>-->
+        <!--<td>{{ deliverable.getDeliverableDefinition().deliverableFrequency }}</td>-->
+        <!--<td class="text-align-center">-->
+            <!--<on-time-check-mark data-deliverable="deliverable"></on-time-check-mark>-->
+            <!--&lt;!&ndash;<i class="fa {{ deliverable.getDaysBetweenSubmittedAndDue() < 0 ? 'fa-cc' : 'fa-check-square-o' }}"></i>&ndash;&gt;-->
+            <!--&lt;!&ndash;<image ng-src="{{deliverable.getDaysBetweenSubmittedAndDue() < 0 ? 'images/imnbusy.png' : 'images/imnon.png'}}" alt="Stoplight"></image>&ndash;&gt;-->
+        <!--</td>-->
+        <!--<td class="text-align-center">-->
+            <!--<rating-stoplight data-deliverable="deliverable"></rating-stoplight>-->
+        <!--</td>-->
+        <!--&lt;!&ndash;<td class="no-wrap">&ndash;&gt;-->
+            <!--&lt;!&ndash;<ratings-average data-deliverable="deliverable"></ratings-average>&ndash;&gt;-->
+        <!--&lt;!&ndash;</td>&ndash;&gt;-->
+        <!--<td class="hidden-sm">-->
+            <!--<a ng-show="deliverable.discussionThread.posts.length > 0"-->
+               <!--tooltip="Click to view discussion thread"-->
+               <!--ui-sref="deliverable({id:deliverable.id, activeTab: 'discussion'})">-->
+                <!--<i class="fa fa-comments fa-lg"></i>-->
+            <!--</a>-->
+        <!--</td>-->
+        <!--<td><span class="badge">{{deliverable.getViewCount()}}</span></td>-->
+    <!--</tr>-->
 
-    <!-- NO DELIVERABLES FOUND FOR THE YEAR -->
-    <tr ng-if="vm.visibleDeliverables && vm.visibleDeliverables.length < 1">
-        <td colspan="9" class="alert">No matching deliverables were found.</td>
-    </tr>
+    <!--&lt;!&ndash; NO DELIVERABLES FOUND FOR THE YEAR &ndash;&gt;-->
+    <!--<tr ng-if="vm.visibleDeliverables && vm.visibleDeliverables.length < 1">-->
+        <!--<td colspan="9" class="alert">No matching deliverables were found.</td>-->
+    <!--</tr>-->
 
-    <!-- LOADING MESSAGE -->
-    <tr ng-if="!vm.gotData">
-        <td colspan="9" class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Loading deliverable information...</td>
-    </tr>
+    <!--&lt;!&ndash; LOADING MESSAGE &ndash;&gt;-->
+    <!--<tr ng-if="!vm.gotData">-->
+        <!--<td colspan="9" class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Loading deliverable information...</td>-->
+    <!--</tr>-->
 
-    </tbody>
-</table>
+    <!--</tbody>-->
+<!--</table>-->

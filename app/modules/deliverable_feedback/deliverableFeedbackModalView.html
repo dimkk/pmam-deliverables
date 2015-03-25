@@ -9,7 +9,7 @@
     <fieldset ng-disabled="!vm.userCanEdit">
         <div class="form-group">
             <label for="deliverable">Deliverable</label>
-            <div class="form-control" name="deliverable" id="deliverable">{{ vm.deliverable.title }}</div>
+            <input type="text" class="form-control" name="deliverable" id="deliverable" disabled ng-model="vm.deliverable.title">
         </div>
         <div class="form-group">
             <label for="acceptable">Acceptable*</label><br/>

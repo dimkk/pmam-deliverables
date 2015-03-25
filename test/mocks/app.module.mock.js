@@ -36,6 +36,7 @@
             'toastr',
             'angular-loading-bar',
             'angular.filter',
+            'monospaced.elastic',
 
             //SP-Angular
             'angularPoint',

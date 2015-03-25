@@ -128,18 +128,19 @@
         <!-- DETAILS -->
         <div class="form-group">
             <label for="details" class="deliverables-header">Details</label>
-            <textarea rows="10" placeholder="Enter Details" class="form-control" ng-model="vm.deliverableRecord.details"
+            <textarea msd-elastic placeholder="Enter Details" class="form-control" ng-model="vm.deliverableRecord.details"
                       name="details"/>
         </div>
 
 
         <!-- JUSTIFICATION -->
-        <button type="button" class="btn btn-link" ng-show="vm.deliverableRecord.justification.length === 0 && vm.userCanContribute()"
+        <a href type="button" class="btn btn-link" ng-show="vm.deliverableRecord.justification.length === 0 && vm.userCanContribute()"
            title="Optionally toggle the justification input."
-           ng-click="displayJustification = !displayJustification"><i class="fa fa-plus"></i> Add justification</button>
+           ng-click="displayJustification = !displayJustification">
+            <i class="fa fa-plus"></i> {{displayJustification ? 'Hide' : 'Add' }} justification</a>
         <div class="form-group" ng-show="vm.deliverableRecord.justification.length > 0 || displayJustification">
             <label for="justification">Justification</label>
-            <textarea rows="4" placeholder="Enter a Justification" class="form-control"
+            <textarea msd-elastic placeholder="Enter a Justification" class="form-control"
                       ng-model="vm.deliverableRecord.justification"
                       name="justification"/>
         </div>

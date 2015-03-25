@@ -1,9 +1,9 @@
 // Add anything custom here -- mixins, variable overrides.
 // by adding things here instead of overriding existing .LESS files, it makes merging changes on product updates easier
 @import "variables.less";
-@import "/bower_components/angular-point-styles/less/sidebar.less";
-@import "/bower_components/angular-point-styles/less/wells.less";
-@import "/bower_components/angular-point-styles/less/infobox.less";
+@import "../../../bower_components/angular-point-styles/less/sidebar.less";
+@import "../../../bower_components/angular-point-styles/less/wells.less";
+@import "../../../bower_components/angular-point-styles/less/infobox.less";
 
 body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -80,8 +80,13 @@ body {
 }
 
 //Main table that we ng-include to display visible deliverables need to have bottom margin removed
-div.panel-table-include > table.table{
-    margin-bottom:0;
+div.panel-table-include{
+    & > table.table {
+        margin-bottom:0;
+    }
+    & .alert{
+        margin-bottom: 0;
+    }
 }
 
 

@@ -8,8 +8,9 @@
         .controller('deliverableInstancesController', deliverableInstancesController);
 
     /* @ngInject */
-    function deliverableInstancesController($state, $q, deliverableFeedbackModel, deliverablesModel, chartService,
-                                            fyDefinitions, selectedDefinition, fiscalYear, deliverableAccessLogModel) {
+    function deliverableInstancesController($state, $q, $scope, $filter, deliverableFeedbackModel, deliverablesModel,
+                                            chartService, fyDefinitions, selectedDefinition, fiscalYear,
+                                            deliverableAccessLogModel, uiGridService) {
 
         var vm = this;
 
@@ -22,6 +23,19 @@
         vm.dropdownLabel = dropdownLabel;
         vm.nextFiscalYear = nextFiscalYear;
         vm.priorFiscalYear = priorFiscalYear;
+        vm.searchString = '';
+
+        vm.deliverableGrid = {
+            enableFiltering: true,
+            useExternalFiltering: true,
+            autoResize: true,
+            enableGridMenu: true,
+            enableSorting: true,
+            //showGridFooter: true,
+            showGroupPanel: true,
+            columnDefs: uiGridService.getDeliverableFields()
+        };
+
 
         /** Stop Everything if a valid definition isn't available */
         if(!selectedDefinition) {
@@ -46,6 +60,8 @@
 
                 vm.gauge1.updateGaugeValue(chartService.getSatisfactionRating(vm.visibleDeliverables));
                 vm.gauge2.updateGaugeValue(chartService.getOnTimeDeliveryRating(vm.visibleDeliverables));
+
+                vm.deliverableGrid.data = vm.visibleDeliverables;
 
                 vm.gotData = true;
 

@@ -20,6 +20,7 @@
         vm.deleteRecord = deleteRecord;
         vm.deliverableRecord = deliverableRecord;
         vm.discussionBadgeValue = discussionBadgeValue;
+        vm.getFeedbackArray = getFeedbackArray;
         vm.getLabelClass = ratingsService.getLabelClass;
         vm.hoveringOver = hoveringOver;
         vm.monthOptions = calendarService.getMonthOptions();
@@ -136,6 +137,10 @@
                         toastr.success('Feedback successfully removed.')
                     })
             }
+        }
+
+        function getFeedbackArray() {
+            return _.toArray(vm.deliverableRecord.getCachedFeedbackByDeliverableId());
         }
 
         function navigateBack() {

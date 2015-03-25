@@ -6,9 +6,9 @@
         .module( 'pmam-deliverables' )
         .controller( 'deliverablesController', deliverablesController );
 
-    function deliverablesController( $q, deliverableFeedbackModel, chartService, $state, fiscalYear,
-                                     deliverableDefinitionsModel, deliverablesModel,
-                                    deliverablesService, calendarService, deliverableAccessLogModel) {
+    function deliverablesController( $scope, $q, $filter, deliverableFeedbackModel, chartService, $state, fiscalYear,
+                                     deliverableDefinitionsModel, deliverablesModel, deliverablesService,
+                                     calendarService, deliverableAccessLogModel, uiGridService) {
 
         var vm = this;
 
@@ -22,40 +22,19 @@
         vm.fiscalYear = fiscalYear;
         vm.gotData = false;
         vm.increaseDate = increaseDate;
+        vm.searchString = '';
         vm.showFeedbackPanel = false;
-        var iconWidth = 75;
 
         vm.deliverableGrid = {
+            enableFiltering: true,
+            useExternalFiltering: true,
+            autoResize: true,
             enableGridMenu: true,
             enableSorting: true,
-            showGridFooter: true,
+            //showGridFooter: true,
             showGroupPanel: true,
-            autoResize: true,
-            columnDefs: [
-                { field: 'title', cellTemplate: '<div class="ui-grid-cell-contents">\n    <a ui-sref="deliverable({id:row.entity.id})" title="View this deliverable">{{ row.entity.title }}</a>\n</div>' },
-                { field: 'type' , cellTemplate: '<div class="ui-grid-cell-contents">\n    <a ui-sref="deliverables.instances({fy:row.entity.fy, id:row.entity.deliverableType.lookupId})"\n       title="View all deliverables of this type">{{ row.entity.deliverableType.lookupValue }}</a>\n</div>' },
-                { name: 'submissionDate', cellTemplate: dateField() },
-                { name: 'dueDate', cellTemplate: dateField() },
-                { field: 'getDeliverableDefinition().deliverableFrequency', name: 'frequency' },
-                { name: 'On Time', width: iconWidth, cellTemplate: '<div class="ui-grid-cell-contents">\n    <on-time-check-mark data-deliverable="row.entity"></on-time-check-mark>\n</div>'},
-                { name: 'Acceptable', width: iconWidth, cellTemplate: '<div class="ui-grid-cell-contents">\n    <rating-stoplight data-deliverable="row.entity"></rating-stoplight>\n</div>'},
-                { name: 'Discussion', width: iconWidth, cellTemplate: '<div class="ui-grid-cell-contents">\n            <a ng-show="deliverable.discussionThread.posts.length > 0"\n               tooltip="Click to view discussion thread"\n               ui-sref="deliverable({id:deliverable.id, activeTab: \'discussion\'})">\n                <i class="fa fa-comments fa-lg"></i>\n            </a>\n</div>'},
-                { name: 'Views', width: iconWidth, cellTemplate: '<div class="ui-grid-cell-contents">\n<span class="badge">{{row.entity.getViewCount()}}</span></div>'}
-            ]
+            columnDefs: uiGridService.getDeliverableFields()
         };
-
-        function generateOpenModalLink() {
-            return '' +
-                '<div class="ui-grid-cell-contents">' +
-                '       <a style="color: #428bca" href ng-click="row.entity.openModal()">' +
-                '           {{ grid.getCellValue(row, col) }}' +
-                '       </a>' +
-                '</div>'
-        }
-
-        function dateField() {
-            return  '<div class="ui-grid-cell-contents">{{ grid.getCellValue(row, col) | date:\'shortDate\' }}</div>';
-        }
 
         activate();
 
@@ -83,7 +62,15 @@
                     vm.gauge1.updateGaugeValue(chartService.getSatisfactionRating(vm.visibleDeliverables));
                     vm.gauge2.updateGaugeValue(chartService.getOnTimeDeliveryRating(vm.visibleDeliverables));
 
-                    vm.deliverableGrid.data = vm.visibleDeliverables;
+                    //Create a copy of the array and references
+                    vm.deliverableGrid.data = vm.visibleDeliverables.slice(0);
+
+                    /** Filter grid contents when filter string is updated */
+                    $scope.$watch('vm.searchString', function (newVal, oldVal) {
+                        if(newVal !== oldVal) {
+                            vm.deliverableGrid.data = $filter('filter')(vm.visibleDeliverables, newVal);
+                        }
+                    });
 
                     vm.gotData = true;
                 });

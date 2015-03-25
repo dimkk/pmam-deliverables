@@ -8,19 +8,31 @@
         <!-- TO RECIPIENTS -->
         <div class="row">
             <div class="col-sm-6">
-                <div class="form-group">
-                    <label for="to" class="deliverables-header">To</label>
+                <div data-ap-input-group
+                     data-entity="vm.deliverableDefinition"
+                     data-field-name="'to'" data-lookupOptions="vm.personnelArray"></div>
 
-                    <div ng-if="vm.personnelArray">
-                        <ui-select ng-model="vm.to" multiple data-reset-search-input="true">
-                            <ui-select-match placeholder="Select TO Recipient">{{$item.lookupValue }}</ui-select-match>
-                            <ui-select-choices
-                                repeat="person in vm.personnelArray | filter:{lookupValue: $select.search} track by person.lookupId">
-                                <div ng-bind-html="person.lookupValue | highlight: $select.search"></div>
-                            </ui-select-choices>
-                        </ui-select>
-                    </div>
-                </div>
+                <!--<div class="form-group">-->
+                    <!--<label for="to" class="deliverables-header">To</label>-->
+
+                    <!--&lt;!&ndash;<div ng-if="vm.personnelArray">&ndash;&gt;-->
+                        <!--<ui-select multiple ng-model="vm.to" close-on-select="true" title="Choose a person">-->
+                            <!--<ui-select-match placeholder="Select TO recipient...">{{$item.lookupValue}}</ui-select-match>-->
+                            <!--<ui-select-choices repeat="person as person in vm.personnelArray | filter: {lookupValue: $select.search} track by 'lookupId'">-->
+                                <!--<div ng-bind-html="person.lookupValue | highlight: $select.search"></div>-->
+                            <!--</ui-select-choices>-->
+                        <!--</ui-select>-->
+
+
+                        <!--&lt;!&ndash;<ui-select multiple  close-on-select="false" ng-model="vm.to">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<ui-select-match placeholder="Select TO Recipient">{{$item.lookupValue }}</ui-select-match>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<ui-select-choices&ndash;&gt;-->
+                                <!--&lt;!&ndash;repeat="person in vm.personnelArray | filter:{lookupValue: $select.search} track by person.lookupId">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<div ng-bind-html="person.lookupValue | highlight: $select.search"></div>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</ui-select-choices>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</ui-select>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--</div>-->
             </div>
 
             <!-- CC RECIPIENTS -->
