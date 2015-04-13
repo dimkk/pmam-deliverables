@@ -22,23 +22,25 @@
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="bower_components/angular-point-discussion-thread/dist/apDiscussionThread.css">
     <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.css">
-    <link rel="stylesheet" href="styles/css/bootstrap.css">
+    <link rel="stylesheet" href="app/styles/css/bootstrap.css">
     <!-- endinject -->
     <!-- endbuild -->
 
 
     <!-- build:css styles/main.css -->
     <!-- inject-projectcss:css -->
-    <link rel="stylesheet" href="styles/css/animate.css">
-    <link rel="stylesheet" href="styles/css/color-pallete.css">
-    <link rel="stylesheet" href="styles/css/custom.css">
-    <link rel="stylesheet" href="styles/css/main.css">
-    <link rel="stylesheet" href="styles/css/overrides.css">
-    <link rel="stylesheet" href="styles/css/panel.css">
-    <link rel="stylesheet" href="styles/css/print.css">
-    <link rel="stylesheet" href="styles/css/utility.css">
-    <link rel="stylesheet" href="styles/css/variables.css">
-    <link rel="stylesheet" href="styles/css/widget.css">
+    <link rel="stylesheet" href="app/styles/css/animate.css">
+    <link rel="stylesheet" href="app/styles/css/bootstrap.css">
+    <link rel="stylesheet" href="app/styles/css/color-pallete.css">
+    <link rel="stylesheet" href="app/styles/css/custom.css">
+    <link rel="stylesheet" href="app/styles/css/main.css">
+    <link rel="stylesheet" href="app/styles/css/overrides.css">
+    <link rel="stylesheet" href="app/styles/css/panel.css">
+    <link rel="stylesheet" href="app/styles/css/print.css">
+    <link rel="stylesheet" href="app/styles/css/utility.css">
+    <link rel="stylesheet" href="app/styles/css/variables.css">
+    <link rel="stylesheet" href="app/styles/css/widget.css">
+    <link rel="stylesheet" href="bower_components/angular-point-discussion-thread/dist/apDiscussionThread.css">
     <!-- endinject -->
     <!-- endbuild -->
 
@@ -63,7 +65,6 @@
 <!-- inject-cdnjs:js -->
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/angular/angular.js"></script>
-<script src="bower_components/angular-messages/angular-messages.js"></script>
 <script src="bower_components/jquery-ui/jquery-ui.js"></script>
 <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 <script src="bower_components/angular-animate/angular-animate.js"></script>
@@ -88,8 +89,9 @@
 <script src="bower_components/angular-ui-sortable/sortable.js"></script>
 <script src="bower_components/ng-table/ng-table.js"></script>
 <script src="bower_components/angular-ui-grid/ui-grid.js"></script>
-<script src="bower_components/angularfire/angularfire.js"></script>
+<script src="bower_components/angularfire/dist/angularfire.js"></script>
 <script src="bower_components/angular-toastr/dist/angular-toastr.js"></script>
+<script src="bower_components/angular-toastr/dist/angular-toastr.tpls.min.js"></script>
 <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
 <script src="bower_components/angular-filter/dist/angular-filter.js"></script>
 <script src="bower_components/angular-elastic/elastic.js"></script>
@@ -99,9 +101,10 @@
 <!-- build:js scripts/scripts.js -->
 <!-- inject-modules:js -->
 <script src="bower_components/angular-point/dist/angular-point.js"></script>
-<script src="bower_components/angular-point-sync/dist/angular-point-sync.js"></script>
+<script src="bower_components/angular-point-sync/dist/index.js"></script>
 <script src="bower_components/angular-point-offline-generator/dist/ap-offline-generator.js"></script>
 <script src="bower_components/angular-point-form-control/dist/apInputControl.js"></script>
+<script src="bower_components/angular-point-lookup-cache/dist/index.js"></script>
 <script src="bower_components/angular-point-group-manager/dist/apGroupManager.js"></script>
 <script src="bower_components/angular-point-modal/dist/apModalService.js"></script>
 <script src="bower_components/angular-point-discussion-thread/dist/apDiscussionThread.js"></script>
@@ -111,49 +114,52 @@
 <!-- inject-environmentjs:js -->
 <script src="bower_components/angular-point/test/mock/apMockBackend.js"></script>
 <script src="bower_components/angular-mocks/angular-mocks.js"></script>
-<script src="test/mocks/app.module.mock.js"></script>
-<script src="test/mocks/offlineXML.js"></script>
+<script src=".tmp/offlineXML/offlineXML.js"></script>
 <script src="bower_components/chance/chance.js"></script>
 <!-- endinject -->
 
+<!-- inject-ts:js -->
+<script src=".tmp/serve/common/app.module.js"></script>
+<script src=".tmp/serve/angular-point-tools/ts/ListItem.js"></script>
+<script src=".tmp/serve/angular-point-tools/ts/Model.js"></script>
+<script src=".tmp/serve/common/models/deliverableDefinitionsModel.js"></script>
+<script src=".tmp/serve/common/models/deliverableFeedbackModel.js"></script>
+<script src=".tmp/serve/common/models/deliverablesModel.js"></script>
+<!-- endinject -->
+
+
 <!-- inject-projectjs:js -->
-<script src="modules/deliverables/controllers/deliverablesController.js"></script>
-<script src="modules/deliverables_by_month/deliverablesController.js"></script>
-<script src="modules/navbar/navbarCtrl.js"></script>
-<script src="modules/deliverable_summary/deliverableSummaryController.js"></script>
-<script src="modules/deliverable_instances/deliverableInstancesController.js"></script>
-<script src="modules/deliverable_forms/deliverableFormNewController.js"></script>
-<script src="modules/deliverable_forms/deliverableFormEditController.js"></script>
-<script src="modules/deliverable_forms/deliverableDefinitionModalController.js"></script>
-<script src="modules/deliverable_feedback/feedbackModalController.js"></script>
-<script src="modules/deliverable_definitions/definitionsController.js"></script>
-<script src="common/services/userService.js"></script>
-<script src="common/services/uiGridService.js"></script>
-<script src="common/services/ratingsService.js"></script>
-<script src="common/services/lookupCacheService.js"></script>
-<script src="common/services/deliverablesService.js"></script>
-<script src="common/services/deliverableFrequenciesService.js"></script>
-<script src="common/services/chartService.js"></script>
-<script src="common/services/calendarService.js"></script>
-<script src="common/directives/reviews.js"></script>
-<script src="common/directives/ratingsAverage.js"></script>
-<script src="common/directives/ratingStoplight.js"></script>
-<script src="common/directives/onTimeCheckMark.js"></script>
-<script src="common/directives/acceptableFeedbackLabel.js"></script>
-<script src="common/models/userSettingsModel.js"></script>
-<script src="common/models/deliverablesModel.js"></script>
-<script src="common/models/deliverableFeedbackModel.js"></script>
-<script src="common/models/deliverableDefinitionsModel.js"></script>
-<script src="common/models/deliverableAccessLogsModel.js"></script>
-<script src="common/user.js"></script>
-<script src="common/run.js"></script>
-<script src="common/routes.js"></script>
-<script src="common/constants.js"></script>
-<script src="common/config.js"></script>
+<script src="app/modules/navbar/navbarCtrl.js"></script>
+<script src="app/modules/deliverables_by_month/deliverablesController.js"></script>
+<script src="app/modules/deliverable_summary/deliverableSummaryController.js"></script>
+<script src="app/modules/deliverable_instances/deliverableInstancesController.js"></script>
+<script src="app/modules/deliverable_forms/deliverableFormNewController.js"></script>
+<script src="app/modules/deliverable_forms/deliverableFormEditController.js"></script>
+<script src="app/modules/deliverable_forms/deliverableDefinitionModalController.js"></script>
+<script src="app/modules/deliverable_feedback/feedbackModalController.js"></script>
+<script src="app/modules/deliverable_definitions/definitionsController.js"></script>
+<script src="app/common/services/userService.js"></script>
+<script src="app/common/services/uiGridService.js"></script>
+<script src="app/common/services/ratingsService.js"></script>
+<script src="app/common/services/lookupCacheService.js"></script>
+<script src="app/common/services/deliverablesService.js"></script>
+<script src="app/common/services/deliverableFrequenciesService.js"></script>
+<script src="app/common/services/chartService.js"></script>
+<script src="app/common/services/calendarService.js"></script>
+<script src="app/common/models/userSettingsModel.js"></script>
+<script src="app/common/models/deliverableAccessLogsModel.js"></script>
+<script src="app/common/directives/reviews.js"></script>
+<script src="app/common/directives/ratingsAverage.js"></script>
+<script src="app/common/directives/ratingStoplight.js"></script>
+<script src="app/common/directives/onTimeCheckMark.js"></script>
+<script src="app/common/directives/acceptableFeedbackLabel.js"></script>
+<script src="app/common/user.js"></script>
+<script src="app/common/run.js"></script>
+<script src="app/common/routes.js"></script>
+<script src="app/common/constants.js"></script>
+<script src="app/common/config.js"></script>
 <!-- endinject -->
 <!-- endbuild -->
-
-<script src="scripts/templates.js"></script>
 
 </body>
 </html>

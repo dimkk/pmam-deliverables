@@ -4,6 +4,7 @@ angular.module('pmam-deliverables')
         toastrConfig.positionClass = 'toast-bottom-right';
 
         uiSelectConfig.theme = 'bootstrap';
+        uiSelectConfig.resetSearchInput = true;
 
         apConfig.firebaseURL = apConfig.offline ?
             'https://pmam-deliverables.firebaseIO.com/offline/' : 'https://pmam-deliverables.firebaseIO.com/';
