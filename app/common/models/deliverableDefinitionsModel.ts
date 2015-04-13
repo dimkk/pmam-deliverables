@@ -2,8 +2,12 @@
 module app {
     'use strict';
 
-    var model, $q, $modal, $injector, deliverableFrequenciesService, calendarService;
+    var model:DeliverableDefinitionsModel, $q, $modal, $injector,
+        deliverableFrequenciesService:DeliverableFrequenciesService, calendarService:CalendarService;
 
+    interface IFilteredDefinitions {
+        [key: number]: DeliverableDefinition
+    }
     /**
      * @ngdoc function
      * @name deliverableDefinitionsModel.DeliverableDefinition
@@ -154,9 +158,11 @@ module app {
     }
 
 
-    class DeliverableDefinitionsModel extends ap.Model {
-        constructor(_$q_, _$modal_, _$injector_, _deliverableFrequenciesService_, _calendarService_,
-                    ListItemFactory, ModelFactory) {
+    export class DeliverableDefinitionsModel extends ap.Model {
+        cachedFyRequests = {};
+
+        constructor(_$q_, _$modal_, _$injector_, _deliverableFrequenciesService_:DeliverableFrequenciesService,
+                    _calendarService_, ListItemFactory, ModelFactory) {
             model = this;
             $q = _$q_;
             $modal = _$modal_;
@@ -174,7 +180,6 @@ module app {
              */
             super({
                 //Store a promise for each completed fy request so we only need to make the call once
-                cachedFyRequests: {},
                 factory: DeliverableDefinition,
                 /**
                  * @ngdoc object
@@ -287,13 +292,6 @@ module app {
                 }
             });
 
-
-            /*********************************** Queries ***************************************/
-
-
-            /********************* Model Specific Shared Functions ***************************************/
-
-
         }
 
 
@@ -303,7 +301,7 @@ module app {
          * @param {Object|Array} deliverableDefinitions
          * @returns {Object} deliverableDefinitionsByMonth with keys of definition id and value of the definition.
          */
-        filterDefinitionsForFiscalMonth(fiscalMonth: number, deliverableDefinitions: ap.IIndexedCache<DeliverableDefinition>) {
+        filterDefinitionsForFiscalMonth(fiscalMonth:number, deliverableDefinitions:ap.IIndexedCache<DeliverableDefinition>):IFilteredDefinitions {
             //Need to get use calendar month instead of fiscal month in order to get due dates for a month
             var calendarMonth = calendarService.getCalendarMonth(fiscalMonth);
 
@@ -323,6 +321,17 @@ module app {
             return deliverableDefinitionsByMonth;
         }
 
+        getDeliverableDefinitionsByTaskNumber(fiscalYear:number, taskNumber:number|string) {
+            var deferred = $q.defer();
+            model.getFyDefinitions(fiscalYear)
+                .then((deliverableDefinitions) => {
+                    var deliverableDefinitionsByTaskNumber = _.filter(deliverableDefinitions, {taskNumber: taskNumber});
+                    deferred.resolve(deliverableDefinitionsByTaskNumber);
+                });
+            return deferred.promise;
+
+        }
+
         /**
          * @name deliverableDefinitionsModel.getDeliverableDefinitionsForMonth
          * @description Accepts a fiscal month and year and returns applicable definitions for that period
@@ -330,7 +339,7 @@ module app {
          * @param {number} fiscalMonth Fiscal Month (1 - 12 starting with October)
          * @returns {object} Keys of definition ID and value of definition.
          */
-        getDeliverableDefinitionsForMonth(fiscalYear:number, fiscalMonth:number) {
+        getDeliverableDefinitionsForMonth(fiscalYear:number, fiscalMonth:number):ng.IPromise<IFilteredDefinitions> {
 
             var deferred = $q.defer();
 
@@ -350,7 +359,7 @@ module app {
          * @param {number|string} fy Fiscal Year
          * @returns {*}
          */
-        getFyDefinitions(fy) {
+        getFyDefinitions(fy:number):ng.IPromise<ap.IIndexedCache<DeliverableDefinition>> {
             /** Unique query name (ex: fy2013) */
             var fyCacheKey = 'fy' + fy;
 
@@ -384,6 +393,57 @@ module app {
             return model.cachedFyRequests[fy];
         }
 
+        /**
+         * @name DeliverableDefinitionsModel.getGroupedFyDeliverablesByTaskNumber
+         * @param {number} fiscalYear Fiscal Year (October - September)
+         * @returns {promise} Promise which resolves with an object with keys of deliverable task number and
+         * values being an array of deliverables for that task number.
+         */
+        getGroupedFyDeliverablesByTaskNumber(fiscalYear:number):ng.IPromise<{[key: string]: Deliverable[]}> {
+            var deliverablesModel:DeliverablesModel = $injector.get('deliverablesModel');
+            var deferred = $q.defer();
+            /** Need to ensure definitions are also available although we don't need to reference the returned value */
+            $q.all([deliverablesModel.getFyDeliverables(fiscalYear),
+                model.getFyDefinitions(fiscalYear)])
+                .then(function (resolvedPromises) {
+                    var deliverables = resolvedPromises[0];
+                    var groupedDeliverables = model.groupDeliverablesByTaskNumber(deliverables);
+                    deferred.resolve(groupedDeliverables);
+                });
+            return deferred.promise;
+        }
+
+        /**
+         * @name DeliverableDefinitionsModel.groupDeliverablesByTaskNumber
+         * @description Grouping method that groups by task number.  Assumes deliverable definitions are already
+         * cached so we can make method synchronous
+         * @param {Object|Array} deliverables
+         * @returns Object with keys of deliverable task number and values being an array of deliverables
+         * for that task number
+         * @example
+         * //Output
+         *  {
+         *      '3.1': [Deliverable1, Deliverable2...],
+         *      '3.3': [Deliverable9, Deliverable14, ...]
+         *  }
+         */
+        groupDeliverablesByTaskNumber(deliverables:Deliverable[]):{[key:string]:Deliverable[] } {
+            /** Object with keys of deliverable task number and values being an array of deliverables for that task number */
+            var groupedDeliverablesByTaskNumber = {};
+
+            /** Add each deliverable to the applicable array */
+            _.each(deliverables, function (deliverable) {
+                var definition = deliverable.getDeliverableDefinition();
+                if (definition && definition.taskNumber) {
+                    groupedDeliverablesByTaskNumber[definition.taskNumber] =
+                        groupedDeliverablesByTaskNumber[definition.taskNumber] || [];
+                    groupedDeliverablesByTaskNumber[definition.taskNumber].push(deliverable);
+                }
+            });
+
+            return groupedDeliverablesByTaskNumber;
+        }
+
 
     }
 
@@ -392,9 +452,6 @@ module app {
      * @name deliverableDefinitionsModel
      * @model
      * @description
-     *
-     *
-     * @requires apModelFactory
      */
     angular
         .module('pmam-deliverables')

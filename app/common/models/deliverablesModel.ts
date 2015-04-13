@@ -2,9 +2,10 @@
 module app {
     'use strict';
 
-    var model, $q, apDiscussionThreadFactory, deliverableFeedbackModel,
-        deliverableDefinitionsModel, calendarService, deliverableFrequenciesService, user,
-        deliverableAccessLogModel, userService;
+    var model:DeliverablesModel, $q, apDiscussionThreadFactory, deliverableFeedbackModel:DeliverableFeedbackModel,
+        deliverableDefinitionsModel:DeliverableDefinitionsModel, calendarService:CalendarService,
+        deliverableFrequenciesService:DeliverableFrequenciesService, user:IUser,
+        deliverableAccessLogModel:DeliverableAccessLogModel, userService:UserService;
 
     /**
      * @ngdoc function
@@ -206,10 +207,11 @@ module app {
          */
         registerDeliverableAccessEvent():ng.IPromise<DeliverableAccessLog> {
             var deliverable = this;
-            return deliverableAccessLogModel.addNewItem({
+            var newEvent = deliverableAccessLogModel.createEmptyItem({
                 deliverable: {lookupId: deliverable.id},
                 fy: deliverable.fy
             });
+            return newEvent.saveChanges();
         }
 
         /**
@@ -381,7 +383,7 @@ module app {
          * @description
          * @returns {*|Object}
          */
-        getFyDeliverables(fy: number): ap.IIndexedCache<Deliverable> {
+        getFyDeliverables(fy: number): ng.IPromise<ap.IIndexedCache<Deliverable>> {
             /** Unique query name (ex: fy2013) */
             var fyCacheKey = 'fy' + fy;
 

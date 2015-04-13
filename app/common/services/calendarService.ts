@@ -1,9 +1,9 @@
-(function () {
+/// <reference path="../../../typings/app.d.ts" />
+module app {
     'use strict';
 
-    angular
-        .module('pmam-deliverables')
-        .factory('calendarService', calendarService);
+    var service:CalendarService;
+
 
     /**
      * @ngdoc service
@@ -11,34 +11,13 @@
      * @description
      *
      */
-    function calendarService() {
-        var service = {
-            getCalendarMonth: getCalendarMonth,
-            getCalendarYear: getCalendarYear,
-            getCurrentFiscalMonth: getCurrentFiscalMonth,
-            getCurrentFiscalYear: getCurrentFiscalYear,
-            getMonthOptions: getMonthOptions,
-            generateDisplayPeriod: generateDisplayPeriod
-        };
-
-        return service;
-
-        /**==================PRIVATE==================*/
-        function getCurrentFiscalYear() {
-            var today = new Date();
-            return today.getMonth() < 3 ? today.getFullYear() : today.getFullYear() - 1;
+    export class CalendarService {
+        constructor() {
+            service = this;
         }
 
-        function getCurrentFiscalMonth() {
-            var calendarMonthNumber = new Date().getMonth() + 4;
-            if(calendarMonthNumber > 12) {
-                calendarMonthNumber = calendarMonthNumber - 12;
-            }
-            return calendarMonthNumber
-        }
-
-        function generateDisplayPeriod(fiscalMonth, fiscalYear) {
-            var monthNames = ["OCT","NOV","DEC","JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP"],
+        generateDisplayPeriod(fiscalMonth:number, fiscalYear:number):string {
+            var monthNames = ["OCT", "NOV", "DEC", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP"],
                 calendarYear = fiscalMonth < 4 ? fiscalYear - 1 : fiscalYear,
                 twoDigitYear = (calendarYear.toString()).substr(2);
             //Month is (1-12) so we need to add 1 to find value in 0 based monthName array
@@ -51,9 +30,9 @@
          * @param {number} fiscalMonth Fiscal month (1-12)
          * @returns {number} Calendar month number (0-11)
          */
-        function getCalendarMonth(fiscalMonth) {
+        getCalendarMonth(fiscalMonth:number):number {
             var calendarMonthNumber = fiscalMonth - 4;
-            if(calendarMonthNumber < 0) {
+            if (calendarMonthNumber < 0) {
                 calendarMonthNumber = calendarMonthNumber + 12;
             }
             return calendarMonthNumber
@@ -66,12 +45,24 @@
          * @param {number} monthNumber
          * @returns {number} Calendar Year
          */
-        function getCalendarYear(fiscalYear, monthNumber) {
+        getCalendarYear(fiscalYear:number, monthNumber:number):number {
             return monthNumber < 9 ? fiscalYear : fiscalYear - 1;
         }
 
+        getCurrentFiscalMonth():number {
+            var calendarMonthNumber = new Date().getMonth() + 4;
+            if (calendarMonthNumber > 12) {
+                calendarMonthNumber = calendarMonthNumber - 12;
+            }
+            return calendarMonthNumber
+        }
 
-        function getMonthOptions() {
+        getCurrentFiscalYear():number {
+            var today = new Date();
+            return today.getMonth() < 3 ? today.getFullYear() : today.getFullYear() - 1;
+        }
+
+        getMonthOptions():{number:number; label:string}[] {
             return [
                 {number: 4, label: 'January'},
                 {number: 5, label: 'February'},
@@ -87,9 +78,10 @@
                 {number: 3, label: 'December'}
             ]
         }
-
-
-
-
     }
-})();
+
+    angular
+        .module('pmam-deliverables')
+        .service('calendarService', CalendarService);
+
+}

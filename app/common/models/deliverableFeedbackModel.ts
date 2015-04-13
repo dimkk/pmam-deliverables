@@ -3,7 +3,7 @@ module app {
     'use strict';
 
 
-    var model, lookupCacheService, $modal, userService, toastr, user;
+    var model:DeliverableFeedbackModel, apLookupCacheService, $modal, userService:UserService, toastr, user:IUser;
 
     /**
      * @ngdoc function
@@ -31,11 +31,11 @@ module app {
 
             if (self.id) {
                 /** Store in cached object so we can reference from lookup reference */
-                lookupCacheService.cacheEntityByLookupId(self, model.lookupFieldsToCache);
+                apLookupCacheService.cacheEntityByLookupId(self, model.lookupFieldsToCache);
                 /** Modify standard delete logic so we can remove from cache prior to actually deleting */
                 self._deleteItem = self.deleteItem;
                 self.deleteItem = function () {
-                    lookupCacheService.removeEntityFromLookupCaches(self, model.lookupFieldsToCache);
+                    apLookupCacheService.removeEntityFromLookupCaches(self, model.lookupFieldsToCache);
                     return self._deleteItem();
                 }
             }
@@ -84,9 +84,9 @@ module app {
 
     export class DeliverableFeedbackModel extends ap.Model {
         lookupFieldsToCache = ['deliverable'];
-        constructor(_$modal_, _userService_, _toastr_, _user_, _lookupCacheService_, ListItemFactory, ModelFactory) {
+        constructor(_$modal_, _userService_, _toastr_, _user_, _apLookupCacheService_:ap.apLookupCacheService, ListItemFactory, ModelFactory) {
             $modal = _$modal_;
-            lookupCacheService = _lookupCacheService_;
+            apLookupCacheService = _apLookupCacheService_;
             model = this;
             toastr = _toastr_;
             user = _user_;
@@ -149,7 +149,7 @@ module app {
          * @returns {DeliverableFeedback[]} Array of matching feedback for a given deliverable.
          */
         getCachedFeedbackByDeliverableId(deliverableId, asObject) {
-            return lookupCacheService.retrieveLookupCacheById('deliverable', model.list.getListId(), deliverableId, asObject);
+            return apLookupCacheService.retrieveLookupCacheById('deliverable', model.list.getListId(), deliverableId, asObject);
         }
 
 

@@ -1,9 +1,9 @@
-(function () {
+/// <reference path="../../../typings/app.d.ts" />
+module app {
     'use strict';
 
-    angular
-        .module('pmam-deliverables')
-        .factory('uiGridService', uiGridService);
+    var service:UIGridService;
+
 
     /**
      * @ngdoc service
@@ -11,17 +11,13 @@
      * @description
      *
      */
-    function uiGridService(_) {
-        var iconWidth = 100;
-        var service = {
-            getDeliverableFields: getDeliverableFields
-        };
+    class UIGridService{
+        iconWidth = 100;
+        constructor() {
+            service = this;
+        }
 
-        return service;
-
-        /**==================PRIVATE==================*/
-
-        function getDeliverableFields() {
+        getDeliverableFields() {
             var deliverableFields = [
                 {
                     displayName: 'Title',
@@ -53,20 +49,20 @@
                 {
                     displayName: 'On Time',
                     field: 'wasDeliveredOnTime()',
-                    width: iconWidth,
+                    width: service.iconWidth,
                     cellTemplate: '<div class="ui-grid-cell-contents">\n    <on-time-check-mark data-deliverable="row.entity"></on-time-check-mark>\n</div>'
                 },
                 {
                     displayName: 'Acceptable',
                     field: 'acceptable',
-                    width: iconWidth,
+                    width: service.iconWidth,
                     cellTemplate: '<div class="ui-grid-cell-contents">\n    <rating-stoplight data-deliverable="row.entity"></rating-stoplight>\n</div>'
                 },
                 discussionThread(),
                 {
                     displayName: 'Views',
                     field: 'getViewCount()',
-                    width: iconWidth,
+                    width: service.iconWidth,
                     cellTemplate: '<div class="ui-grid-cell-contents">\n<span class="badge">{{row.entity.getViewCount()}}</span></div>'
                 },
                 {
@@ -116,68 +112,78 @@
 
         }
 
-        function createColumnDef(model, fieldName, options) {
-            var columnDef = {
-                name: fieldName,
-                field: 'getFormattedValue("' + fieldName + '")'
+    }
+
+    /**==================PRIVATE==================*/
+
+
+    function createColumnDef(model, fieldName, options) {
+        var columnDef = {
+            name: fieldName,
+            field: 'getFormattedValue("' + fieldName + '")',
+            filters: undefined
+        };
+
+        var fieldDefinition = model.getFieldDefinition(fieldName);
+
+        if (fieldDefinition.Choices) {
+            var filter = {
+                type: 'select',
+                selectOptions: []
             };
 
-            var fieldDefinition = model.getFieldDefinition(fieldName);
-
-            if (fieldDefinition.Choices) {
-                var filter = {
-                    type: 'select',
-                    selectOptions: []
-                };
-
-                _.each(fieldDefinition.Choices, function (choiceString) {
-                    filter.selectOptions.push({label: choiceString, value: choiceString});
-                });
-                columnDef.filters = [filter];
-            }
-
-            return _.extend({}, columnDef, options);
-
+            _.each(fieldDefinition.Choices, function (choiceString) {
+                filter.selectOptions.push({label: choiceString, value: choiceString});
+            });
+            columnDef.filters = [filter];
         }
 
-        function containsString(searchTerm, cellValue) {
-            return cellValue.match(searchTerm);
-        }
+        return _.extend({}, columnDef, options);
 
-        function generateOpenModalLink() {
-            return '' +
-                '<div class="ui-grid-cell-contents">' +
-                '       <a style="color: #428bca" href ng-click="row.entity.openModal()">' +
-                '           {{ grid.getCellValue(row, col) }}' +
-                '       </a>' +
-                '</div>'
+    }
 
-        }
+    function containsString(searchTerm, cellValue) {
+        return cellValue.match(searchTerm);
+    }
 
-        function dateField() {
-            return '<div class="ui-grid-cell-contents">{{ grid.getCellValue(row, col) | date:\'shortDate\' }}</div>';
-        }
+    function generateOpenModalLink() {
+        return '' +
+            '<div class="ui-grid-cell-contents">' +
+            '       <a style="color: #428bca" href ng-click="row.entity.openModal()">' +
+            '           {{ grid.getCellValue(row, col) }}' +
+            '       </a>' +
+            '</div>'
 
-        function discussionThread() {
-            return {
-                displayName: 'Discussion',
-                field: 'discussionThread.posts.length',
-                cellTemplate: '<div class="ui-grid-cell-contents">\n    <i ng-if="row.entity.discussionThread.posts && row.entity.discussionThread.posts.length > 0"\n       title="Contains an active discussion thread."\n       class="fa fa-comments"></i>\n</div>',
-                filter: {
-                    type: 'select',
-                    selectOptions: [{value: 'true', label: 'True'}, {value: 'false', label: 'False'}],
-                    width: iconWidth,
-                    condition: function (searchTerm, cellValue) {
-                        if (searchTerm === 'true') {
-                            return cellValue.posts.length > 0;
-                        } else {
-                            return cellValue.posts.length === 0;
-                        }
+    }
+
+    function dateField() {
+        return '<div class="ui-grid-cell-contents">{{ grid.getCellValue(row, col) | date:\'shortDate\' }}</div>';
+    }
+
+    function discussionThread() {
+        return {
+            displayName: 'Discussion',
+            field: 'discussionThread.posts.length',
+            cellTemplate: '<div class="ui-grid-cell-contents">\n    <i ng-if="row.entity.discussionThread.posts && row.entity.discussionThread.posts.length > 0"\n       title="Contains an active discussion thread."\n       class="fa fa-comments"></i>\n</div>',
+            filter: {
+                type: 'select',
+                selectOptions: [{value: 'true', label: 'True'}, {value: 'false', label: 'False'}],
+                width: service.iconWidth,
+                condition: function (searchTerm, cellValue) {
+                    if (searchTerm === 'true') {
+                        return cellValue.posts.length > 0;
+                    } else {
+                        return cellValue.posts.length === 0;
                     }
                 }
             }
-
         }
 
     }
-})();
+
+
+    angular
+        .module('pmam-deliverables')
+        .service('uiGridService', UIGridService);
+
+}

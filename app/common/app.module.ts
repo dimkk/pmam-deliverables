@@ -19,6 +19,9 @@ module app {
         offline = true;
         /** Add in mock library if working offline to prevent us from making outside requests */
         modules.push('ngMockE2E');
+    } else {
+        /** Reference the module used by template cache */
+        modules.push('templateCache');
     }
 
     angular.module('pmam-deliverables', modules);
