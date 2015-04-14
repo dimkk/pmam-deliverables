@@ -59,7 +59,7 @@ module app {
 
         getCurrentFiscalYear():number {
             var today = new Date();
-            return today.getMonth() < 3 ? today.getFullYear() : today.getFullYear() - 1;
+            return today.getMonth() < 9 ? today.getFullYear() : today.getFullYear() + 1;
         }
 
         getMonthOptions():{number:number; label:string}[] {

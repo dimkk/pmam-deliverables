@@ -29,7 +29,6 @@ module app {
         }
 
         createDeliverableSummaryObject(fyDefinitions:DeliverableDefinition[]):ISummaryObject {
-            console.time("Summary");
             var summaryObject = {
                 acceptableCount: 0,
                 actualCount: 0,
@@ -49,7 +48,6 @@ module app {
             });
 
             summaryObject.onTimePercentage = Math.round(summaryObject.onTimeCount / (summaryObject.onTimeCount + summaryObject.notOnTimeCount) * 1000) / 1000;
-            console.timeEnd("Summary");
             return summaryObject;
         }
 

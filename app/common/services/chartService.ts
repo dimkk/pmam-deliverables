@@ -2,7 +2,13 @@
 module app {
     'use strict';
     // calculates and renders overall metrics into gauges using google charts
-    var service:ChartService, $timeout;
+    var service:ChartService, $timeout, deliverablesService;
+
+    export interface IChartType{
+        type:string;
+        label:string;
+        options?:Object;
+    }
 
     /**
      * @ngdoc service
@@ -10,11 +16,23 @@ module app {
      * @description
      *
      */
-    class ChartService {
+    export class ChartService {
         Gauge = Gauge;
-        constructor(_$timeout_) {
+        AcceptabilityChart = AcceptabilityChart;
+        OnTimeChart = OnTimeChart;
+        chartTypes:IChartType[] = [
+            {type: 'AreaChart', label: 'Area Chart'},
+            {type: 'google.charts.Bar', label: 'Bar Chart', options:{bars:'horizontal'}},
+            {type: 'google.charts.Bar', label: 'Column Chart', options:{bars:'vertical'}},
+            {type: 'google.charts.Line', label: 'Line'},
+            {type: 'Table', label: 'Table'}
+        ];
+
+        constructor(_$timeout_, _deliverablesService_) {
             service = this;
             $timeout = _$timeout_;
+            deliverablesService = _deliverablesService_;
+
 
         }
 
@@ -60,10 +78,11 @@ module app {
      * @param {object} [options] Object with properties to override default options.
      * @constructor
      */
-    class Gauge{
+    class Gauge {
         options;
         data:{rows:Array};
         updateGaugeValue:Function;
+
         constructor(label:string, options?:Object) {
             var self = this;
             _.assign(self, {
@@ -120,6 +139,172 @@ module app {
             };
         }
     }
+
+    //function generateColumnData(deliverableDefinitions:DeliverableDefinition[]):{cols:Object[]; rows:Object[];} {
+    //    //var dataArray = [
+    //    //    ['Deliverable Type', 'Acceptable', 'Not Rated', 'Unacceptable']
+    //    //];
+    //    var data = {
+    //        cols: [
+    //            {label: 'Deliverable Type', type: 'string'},
+    //            {label: 'Acceptable', type: 'number'},
+    //            {label: 'Not Rated', type: 'number'},
+    //            {label: 'Unacceptable', type: 'number'}
+    //        ],
+    //        rows: []
+    //    };
+    //    _.each(deliverableDefinitions, function (definition:DeliverableDefinition) {
+    //        var row = [{v: definition.title}];
+    //        var deliverables = definition.getDeliverablesForDefinition();
+    //        var definitionSummary = deliverablesService.createDeliverableSummaryObject([definition]);
+    //        row.push({v: definitionSummary.acceptableCount});
+    //        row.push({v: definitionSummary.actualCount - (definitionSummary.acceptableCount + definitionSummary.unacceptableCount)});
+    //        row.push({v: definitionSummary.unacceptableCount});
+    //        data.rows.push({c: row});
+    //    });
+    //    return data;
+    //}
+    //
+    //function generatePlaceholderData(deliverableDefinitions:DeliverableDefinition[]):{cols:Object[]; rows:Object[];} {
+    //    var data = {
+    //        cols: [
+    //            {label: 'Deliverable Type', type: 'string'},
+    //            {label: 'Acceptable', type: 'number'},
+    //            {label: 'Not Rated', type: 'number'},
+    //            {label: 'Unacceptable', type: 'number'}
+    //        ],
+    //        rows: []
+    //    };
+    //
+    //    _.each(deliverableDefinitions, function (definition:DeliverableDefinition) {
+    //        var row = [{v: definition.title}, {v: 0}, {v: 0}, {v: 0}];
+    //        data.rows.push({c: row});
+    //    });
+    //    return data;
+    //}
+
+    /**
+     * @name chartService.ColumnChart
+     * @param {string} label Label for visualization.
+     * @param {DeliverableDefinition[]} deliverableDefinitions Definitions to use for visualization.
+     * @param {IChartType} [activeChartType] Object with properties to override default options.
+     * @constructor
+     */
+    class AcceptabilityChart {
+        options;
+        data:{rows:Object[]; cols:Object[]};
+        constructor(label:string, deliverableDefinitions:DeliverableDefinition[], activeChartType?:IChartType) {
+            var self = this;
+            var data = {
+                cols: [
+                    {label: 'Deliverable Type', type: 'string'},
+                    {label: 'Acceptable', type: 'number'},
+                    {label: 'Not Rated', type: 'number'},
+                    {label: 'Unacceptable', type: 'number'}
+                ],
+                rows: []
+            };
+
+            _.each(deliverableDefinitions, function (definition:DeliverableDefinition) {
+                var row = [{v: definition.title}, {v: 0}, {v: 0}, {v: 0}];
+                data.rows.push({c: row});
+            });
+
+            _.assign(self, {
+                data: data,
+                options: {
+                    animation: {
+                        duration: 1000,
+                        easing: 'inAndOut'
+                    },
+                    isStacked: true,
+                    title: label,
+                    vAxis: {
+                        title: 'Deliverable Qty'
+                    }
+                }
+            }, activeChartType);
+
+            //_.assign(self.options, options);
+            /* Pause prior to triggering animation */
+            $timeout(function () {
+                var activeRowNumber = 0;
+                _.each(deliverableDefinitions, function (definition:DeliverableDefinition) {
+                    var activeRow = self.data.rows[activeRowNumber].c;
+                    var definitionSummary = deliverablesService.createDeliverableSummaryObject([definition]);
+                    activeRow[1].v = definitionSummary.acceptableCount;
+                    activeRow[2].v = definitionSummary.actualCount - (definitionSummary.acceptableCount + definitionSummary.unacceptableCount);
+                    activeRow[3].v = definitionSummary.unacceptableCount;
+                    activeRowNumber++;
+                });
+
+                //self.data = generateColumnData(deliverableDefinitions);
+
+            }, 750);
+        }
+
+    }
+
+    /**
+     * @name chartService.ColumnChart
+     * @param {string} label Label for visualization.
+     * @param {DeliverableDefinition[]} deliverableDefinitions Definitions to use for visualization.
+     * @param {IChartType} [activeChartType] Object with properties to override default options.
+     * @constructor
+     */
+    class OnTimeChart {
+        options;
+        data:{rows:Object[]; cols:Object[]};
+        constructor(label:string, deliverableDefinitions:DeliverableDefinition[], activeChartType?:IChartType) {
+            var self = this;
+            var data = {
+                cols: [
+                    {label: 'Deliverable Type', type: 'string'},
+                    {label: 'On Time', type: 'number'},
+                    {label: 'Late', type: 'number'}
+                ],
+                rows: []
+            };
+
+            _.each(deliverableDefinitions, function (definition:DeliverableDefinition) {
+                var row = [{v: definition.title}, {v: 0}, {v: 0}];
+                data.rows.push({c: row});
+            });
+
+            _.assign(self, {
+                data: data,
+                options: {
+                    animation: {
+                        duration: 1000,
+                        easing: 'inAndOut'
+                    },
+                    isStacked: true,
+                    title: label,
+                    vAxis: {
+                        title: 'Deliverable Qty'
+                    }
+                }
+            }, activeChartType);
+
+            //_.assign(self.options, options);
+            /* Pause prior to triggering animation */
+            $timeout(function () {
+                var activeRowNumber = 0;
+                _.each(deliverableDefinitions, function (definition:DeliverableDefinition) {
+                    var activeRow = self.data.rows[activeRowNumber].c;
+                    var definitionSummary = deliverablesService.createDeliverableSummaryObject([definition]);
+                    activeRow[1].v = definitionSummary.onTimeCount;
+                    activeRow[2].v = definitionSummary.actualCount - definitionSummary.onTimeCount;
+                    activeRowNumber++;
+                });
+
+                //self.data = generateColumnData(deliverableDefinitions);
+
+            }, 750);
+        }
+
+    }
+
 
 
     angular
