@@ -18,11 +18,11 @@
             <div class="btn-group btn-group-justified" id="acceptable">
                 <a href ng-click="vm.provideFeedback(true)" class="btn btn-success"
                    ng-class="{ 'active': vm.userDeliverableFeedback.acceptable === true }">
-                    <i class="fa fa-thumbs-up"></i> Yes
+                    <i class="fa fa-thumbs-up"></i><i class="hidden-sm"> Yes</i>
                 </a>
                 <a href ng-click="vm.provideFeedback(false)" class="btn btn-danger"
                    ng-class="{ 'active': vm.userDeliverableFeedback.acceptable === false }">
-                    <i class="fa fa-thumbs-down"></i> No
+                    <i class="fa fa-thumbs-down"></i><i class="hidden-sm"> No</i>
                 </a>
             </div>
 

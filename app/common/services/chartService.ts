@@ -10,6 +10,27 @@ module app {
         options?:Object;
     }
 
+    export interface IGoogleChartData{
+        cols:IGoogleChartColumn[];
+        rows:IGoogleChartRow[];
+    }
+
+
+    interface IGoogleChartColumn{
+        id?:string;
+        label?:string;
+        type:string;
+    }
+
+    interface IGoogleChartColumnValue{
+        v:number;
+        f?:string;
+    }
+
+    interface IGoogleChartRow {
+        c: IGoogleChartColumnValue[]
+    }
+
     /**
      * @ngdoc service
      * @name chartService
@@ -17,9 +38,9 @@ module app {
      *
      */
     export class ChartService {
-        Gauge = Gauge;
-        AcceptabilityChart = AcceptabilityChart;
-        OnTimeChart = OnTimeChart;
+        Gauge: Gauge;
+        AcceptabilityChart: AcceptabilityChart;
+        OnTimeChart: OnTimeChart;
         chartTypes:IChartType[] = [
             {type: 'AreaChart', label: 'Area Chart'},
             {type: 'google.charts.Bar', label: 'Bar Chart', options:{bars:'horizontal'}},
@@ -32,6 +53,11 @@ module app {
             service = this;
             $timeout = _$timeout_;
             deliverablesService = _deliverablesService_;
+
+            this.Gauge = Gauge;
+            this.AcceptabilityChart = AcceptabilityChart;
+            this.OnTimeChart = OnTimeChart;
+
 
 
         }
@@ -80,7 +106,7 @@ module app {
      */
     class Gauge {
         options;
-        data:{rows:Array};
+        data:IGoogleChartData;
         updateGaugeValue:Function;
 
         constructor(label:string, options?:Object) {
@@ -140,49 +166,6 @@ module app {
         }
     }
 
-    //function generateColumnData(deliverableDefinitions:DeliverableDefinition[]):{cols:Object[]; rows:Object[];} {
-    //    //var dataArray = [
-    //    //    ['Deliverable Type', 'Acceptable', 'Not Rated', 'Unacceptable']
-    //    //];
-    //    var data = {
-    //        cols: [
-    //            {label: 'Deliverable Type', type: 'string'},
-    //            {label: 'Acceptable', type: 'number'},
-    //            {label: 'Not Rated', type: 'number'},
-    //            {label: 'Unacceptable', type: 'number'}
-    //        ],
-    //        rows: []
-    //    };
-    //    _.each(deliverableDefinitions, function (definition:DeliverableDefinition) {
-    //        var row = [{v: definition.title}];
-    //        var deliverables = definition.getDeliverablesForDefinition();
-    //        var definitionSummary = deliverablesService.createDeliverableSummaryObject([definition]);
-    //        row.push({v: definitionSummary.acceptableCount});
-    //        row.push({v: definitionSummary.actualCount - (definitionSummary.acceptableCount + definitionSummary.unacceptableCount)});
-    //        row.push({v: definitionSummary.unacceptableCount});
-    //        data.rows.push({c: row});
-    //    });
-    //    return data;
-    //}
-    //
-    //function generatePlaceholderData(deliverableDefinitions:DeliverableDefinition[]):{cols:Object[]; rows:Object[];} {
-    //    var data = {
-    //        cols: [
-    //            {label: 'Deliverable Type', type: 'string'},
-    //            {label: 'Acceptable', type: 'number'},
-    //            {label: 'Not Rated', type: 'number'},
-    //            {label: 'Unacceptable', type: 'number'}
-    //        ],
-    //        rows: []
-    //    };
-    //
-    //    _.each(deliverableDefinitions, function (definition:DeliverableDefinition) {
-    //        var row = [{v: definition.title}, {v: 0}, {v: 0}, {v: 0}];
-    //        data.rows.push({c: row});
-    //    });
-    //    return data;
-    //}
-
     /**
      * @name chartService.ColumnChart
      * @param {string} label Label for visualization.
@@ -192,10 +175,10 @@ module app {
      */
     class AcceptabilityChart {
         options;
-        data:{rows:Object[]; cols:Object[]};
+        data:IGoogleChartData;
         constructor(label:string, deliverableDefinitions:DeliverableDefinition[], activeChartType?:IChartType) {
             var self = this;
-            var data = {
+            var data:IGoogleChartData = {
                 cols: [
                     {label: 'Deliverable Type', type: 'string'},
                     {label: 'Acceptable', type: 'number'},
@@ -210,22 +193,24 @@ module app {
                 data.rows.push({c: row});
             });
 
-            _.assign(self, {
+            _.assign(self, activeChartType, {
                 data: data,
                 options: {
                     animation: {
                         duration: 1000,
                         easing: 'inAndOut'
                     },
+                    colors:['#0F9D58', '#F4B400', '#DB4437'],
                     isStacked: true,
+                    subtitle:'FY Acceptability Summary',
                     title: label,
                     vAxis: {
                         title: 'Deliverable Qty'
                     }
                 }
-            }, activeChartType);
+            });
 
-            //_.assign(self.options, options);
+
             /* Pause prior to triggering animation */
             $timeout(function () {
                 var activeRowNumber = 0;
@@ -237,8 +222,6 @@ module app {
                     activeRow[3].v = definitionSummary.unacceptableCount;
                     activeRowNumber++;
                 });
-
-                //self.data = generateColumnData(deliverableDefinitions);
 
             }, 750);
         }
@@ -254,7 +237,7 @@ module app {
      */
     class OnTimeChart {
         options;
-        data:{rows:Object[]; cols:Object[]};
+        data:IGoogleChartData;
         constructor(label:string, deliverableDefinitions:DeliverableDefinition[], activeChartType?:IChartType) {
             var self = this;
             var data = {
@@ -266,28 +249,30 @@ module app {
                 rows: []
             };
 
+
             _.each(deliverableDefinitions, function (definition:DeliverableDefinition) {
                 var row = [{v: definition.title}, {v: 0}, {v: 0}];
                 data.rows.push({c: row});
             });
 
-            _.assign(self, {
+            _.assign(this, activeChartType, {
                 data: data,
                 options: {
                     animation: {
                         duration: 1000,
                         easing: 'inAndOut'
                     },
+                    colors:['#0F9D58', '#DB4437'],
                     isStacked: true,
+                    subtitle:'FY On Time Delivery Summary',
                     title: label,
                     vAxis: {
                         title: 'Deliverable Qty'
                     }
                 }
-            }, activeChartType);
+            });
 
-            //_.assign(self.options, options);
-            /* Pause prior to triggering animation */
+                /* Pause prior to triggering animation */
             $timeout(function () {
                 var activeRowNumber = 0;
                 _.each(deliverableDefinitions, function (definition:DeliverableDefinition) {
@@ -298,9 +283,11 @@ module app {
                     activeRowNumber++;
                 });
 
-                //self.data = generateColumnData(deliverableDefinitions);
-
             }, 750);
+
+            //self.options.colors = ['#0F9D58', '#BA3B2E'];
+            console.log(self);
+
         }
 
     }

@@ -2,7 +2,7 @@
 <div class="row">
 
     <!-- Only display review gutter on edit form -->
-    <div class="col-sm-{{ vm.deliverableRecord.id ? 6 : 12 }}">
+    <div class="col-sm-12" ng-class="{'col-md-6': vm.deliverableRecord.id }">
 
         <!-- TITLE -->
         <div class="form-group"
@@ -62,9 +62,6 @@
                 </div>
             </div>
 
-        </div>
-
-        <div class="row">
 
             <!--START DATE (Only visible on AD-Hoc type deliverables)-->
             <div class="col-xs-12 col-sm-4" ng-if="vm.deliverableRecord.startDateIsRelevant()">
@@ -112,7 +109,7 @@
         </div>
     </div>
 
-    <div class="col-sm-6" ng-if="vm.deliverableRecord.id">
+    <div class="col-sm-12 col-md-6" ng-if="vm.deliverableRecord.id">
         <!-- ATTACHMENTS -->
         <div class="form-group">
             <label for="attachments" class="deliverables-header">Attachments</label>
