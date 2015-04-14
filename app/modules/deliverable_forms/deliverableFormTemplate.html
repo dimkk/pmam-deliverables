@@ -2,7 +2,7 @@
 <div class="row">
 
     <!-- Only display review gutter on edit form -->
-    <div class="col-sm-{{ vm.deliverableRecord.id ? 7 : 12 }}">
+    <div class="col-sm-{{ vm.deliverableRecord.id ? 6 : 12 }}">
 
         <!-- TITLE -->
         <div class="form-group"
@@ -112,7 +112,7 @@
         </div>
     </div>
 
-    <div class="col-sm-5" ng-if="vm.deliverableRecord.id">
+    <div class="col-sm-6" ng-if="vm.deliverableRecord.id">
         <!-- ATTACHMENTS -->
         <div class="form-group">
             <label for="attachments" class="deliverables-header">Attachments</label>
