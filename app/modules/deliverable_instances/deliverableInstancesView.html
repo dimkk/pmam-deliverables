@@ -1,74 +1,71 @@
-<div>
-    <!-- renders view of deliverables by type -->
-    <div class="navbar navbar-default hidden-print">
-        <div class="container-fluid">
-
-            <div class="navbar-left">
-            <span class="navbar-text h4"><i class="fa fa-check-square icon-padding"></i>
-                RELATED <span class="hidden-sm">DELIVERABLES</span>
-            </span>
-
-            </div>
-
-            <!--=========== Fiscal Month Toggle Control ===================-->
-            <form class="navbar-form navbar-right">
-                <div class="btn-group">
-
-                    <button class="btn btn-default pull-left" type="button" ng-click="vm.priorFiscalYear()">
-                        <i class="fa fa-arrow-left"></i>
-                    </button>
-
-                    <span class="pull-left time-indicator text-muted">{{ vm.fiscalYearDisplay }}</span>
-
-                    <button class="btn btn-default pull-left" type="button" ng-click="vm.nextFiscalYear()">
-                        <i class="fa fa-arrow-right"></i>
-                    </button>
-
-                </div>
-            </form>
-
-            <!--=========== Filter ===================-->
-            <div class="navbar-form navbar-right" ng-if="vm.fyDefinitions.count() > 0">
-                <div class="form-group">
-                    <label>Type&nbsp;</label>
-                    <select
-                        ng-model="vm.selectedDefinition"
-                        ng-change="vm.getUpdateState()"
-                        class="form-control"
-                        data-ng-options="vm.dropdownLabel(deliverableDefinition) for deliverableDefinition in vm.fyDefinitions | toArray | orderBy: 'title' track by deliverableDefinition.id">
-                    </select>
-
-                    <!--<input type="text" class="form-control" placeholder="Filter" ng-model="vm.searchString">-->
-                </div>
-            </div>
-
-        </div>
-    </div>
-
+<!-- renders view of deliverables by type -->
+<div class="navbar navbar-default hidden-print sub-nav">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-10 col-sm-9 col-xs-12">
 
-                <div class="panel panel-default" ng-if="vm.selectedDefinition">
-                    <div class="panel-heading" ng-if="vm.selectedDefinition">
-                        {{ vm.selectedDefinition.deliverableNumber }}
-                        <div class="pull-right">Frequency: {{ vm.selectedDefinition.frequencyDescription }}</div>
+        <div class="navbar-left">
+                <span class="navbar-text h4"><i class="fa fa-check-square icon-padding"></i>
+                    RELATED <span class="hidden-sm">DELIVERABLES</span>
+                </span>
+        </div>
 
-                    </div>
+        <!--=========== Fiscal Month Toggle Control ===================-->
+        <form class="navbar-form navbar-right">
+            <div class="btn-group">
 
-                    <div class="panel-table-include"
-                         ng-include="'common/templates/deliverablesTableTemplate.html'"></div>
+                <button class="btn btn-default pull-left" type="button" ng-click="vm.priorFiscalYear()">
+                    <i class="fa fa-arrow-left"></i>
+                </button>
+
+                <span class="pull-left time-indicator text-muted">{{ vm.fiscalYearDisplay }}</span>
+
+                <button class="btn btn-default pull-left" type="button" ng-click="vm.nextFiscalYear()">
+                    <i class="fa fa-arrow-right"></i>
+                </button>
+
+            </div>
+        </form>
+
+        <!--=========== Filter ===================-->
+        <div class="navbar-form navbar-right" ng-if="vm.fyDefinitions.count() > 0">
+            <div class="form-group">
+                <label>Type&nbsp;</label>
+                <select
+                    ng-model="vm.selectedDefinition"
+                    ng-change="vm.getUpdateState()"
+                    class="form-control"
+                    data-ng-options="vm.dropdownLabel(deliverableDefinition) for deliverableDefinition in vm.fyDefinitions | toArray | orderBy: 'title' track by deliverableDefinition.id">
+                </select>
+
+                <!--<input type="text" class="form-control" placeholder="Filter" ng-model="vm.searchString">-->
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-10 col-sm-9 col-xs-12">
+
+            <div class="panel panel-default" ng-if="vm.selectedDefinition">
+                <div class="panel-heading" ng-if="vm.selectedDefinition">
+                    {{ vm.selectedDefinition.deliverableNumber }}
+                    <div class="pull-right">Frequency: {{ vm.selectedDefinition.frequencyDescription }}</div>
 
                 </div>
 
-                <!-- Display message when a valid definition isn't found -->
-                <div ng-if="!vm.selectedDefinition" class="alert alert-info">No matching definitions were found.</div>
+                <div class="panel-table-include"
+                     ng-include="'common/templates/deliverablesTableTemplate.html'"></div>
+
             </div>
 
-            <!-- METRICS -->
-            <div class="col-md-2 col-sm-3 hidden-xs"
-                 ng-include="'common/templates/deliverableMetricsTemplate.html'"></div>
+            <!-- Display message when a valid definition isn't found -->
+            <div ng-if="!vm.selectedDefinition" class="alert alert-info">No matching definitions were found.</div>
         </div>
-    </div>
 
+        <!-- METRICS -->
+        <div class="col-md-2 col-sm-3 hidden-xs"
+             ng-include="'common/templates/deliverableMetricsTemplate.html'"></div>
+    </div>
 </div>
+

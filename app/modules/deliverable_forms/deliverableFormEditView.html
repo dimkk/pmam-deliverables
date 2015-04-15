@@ -2,7 +2,7 @@
 <div class="container-fluid">
     <form name="editDeliverable" ng-submit="vm.save(editDeliverable)" role="form">
 
-        <div class="col-sm-10 col-xs-12">
+        <div class="col-lg-8 col-md-9 col-sm-10 col-xs-12">
             <fieldset>
                 <legend>
                     <div class="row">
@@ -30,7 +30,7 @@
 
 
                 <!-- include tab content -->
-                <div class="tab-content well well-clean" style="border-top:none">
+                <div class="tab-content well well-light" style="border-top:none">
                     <div ng-switch="vm.activeTab">
 
                         <!-- MAIN FORM TAB -->
@@ -97,7 +97,7 @@
         </div>
 
         <!-- USER FEEDBACK COLUMN -->
-        <div class="col-sm-2 hidden-xs">
+        <div class="col-lg-4 col-md-3 col-sm-2 hidden-xs">
             <div ng-include="'modules/deliverable_feedback/deliverableFeedbackView.html'"></div>
         </div>
     </form>
