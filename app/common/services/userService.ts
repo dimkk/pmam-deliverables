@@ -42,7 +42,7 @@ module app {
          * can use directly in user lookup controls.
          * @returns {promise} Deferred object that resolves with an array of user lookup objects.
          */
-        getUserLookupValues():ap.IUser[] {
+        getUserLookupValues():ng.IPromise<ap.IUser[]> {
             var deferred = service.$q.defer();
             service.getUsers().then(function (userArray) {
                 var userLookupValues = _.map(userArray, function (user) {

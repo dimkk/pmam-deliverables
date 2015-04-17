@@ -120,7 +120,24 @@ module app {
                     url: '/deliverable?fy&mo&deliverableTypeId',
                     templateUrl: 'modules/deliverable_forms/deliverableFormNewView.html',
                     controller: 'deliverableFormNewController',
-                    controllerAs: 'vm'
+                    controllerAs: 'vm',
+                    resolve: {
+                        deliverableRecord:(calendarService:CalendarService,
+                                           $stateParams:{fy?:string; mo?:string; deliverableTypeId?:string;},
+                                           deliverablesModel:DeliverablesModel) => {
+
+                            var fiscalYear = isNaN($stateParams.fy) ? calendarService.getCurrentFiscalYear() : parseInt($stateParams.fy);
+                            var fiscalMonth = isNaN($stateParams.mo) ? calendarService.getCurrentFiscalMonth() : parseInt($stateParams.mo);
+                            /** Instantiate new deliverable record with default values */
+                            return deliverablesModel.createEmptyItem({
+                                fy: fiscalYear,
+                                fiscalMonth: fiscalMonth,
+                                startDate: new Date(),
+                                submissionDate: new Date()
+                            });
+                        }
+
+                    }
                 })
 
                 //Group Manager

@@ -84,7 +84,8 @@ module app {
 
     export class DeliverableFeedbackModel extends ap.Model {
         lookupFieldsToCache = ['deliverable'];
-        constructor(_$modal_, _userService_, _toastr_, _user_, _apLookupCacheService_:ap.apLookupCacheService, ListItemFactory, ModelFactory) {
+        constructor(_$modal_, _userService_, _toastr_, _user_, _apLookupCacheService_,
+                    ListItemFactory, ModelFactory) {
             $modal = _$modal_;
             apLookupCacheService = _apLookupCacheService_;
             model = this;
@@ -148,12 +149,12 @@ module app {
          * @param {boolean} [asObject=false]  Optionally prevent conversion to an array.
          * @returns {DeliverableFeedback[]} Array of matching feedback for a given deliverable.
          */
-        getCachedFeedbackByDeliverableId(deliverableId, asObject) {
+        getCachedFeedbackByDeliverableId(deliverableId:number, asObject:boolean=false):DeliverableFeedback[] {
             return apLookupCacheService.retrieveLookupCacheById('deliverable', model.list.getListId(), deliverableId, asObject);
         }
 
 
-        getFyFeedback(fy) {
+        getFyFeedback(fy:number):ng.IPromise<{[key:number]: DeliverableFeedback}> {
             /** Unique query name (ex: fy2013) */
             var fyCacheKey = 'fy' + fy;
 

@@ -1,27 +1,27 @@
-(function () {
+/// <reference path="../../../typings/app.d.ts" />
+module app {
     'use strict';
 
     // I calculate and render the average rating of a deliverable based on user reviews
-
-    angular
-        .module('pmam-deliverables')
-        .directive('ratingsAverage', ratingsAverage);
+    var template = `<rating state-on="'fa fa-star fa-lg'" state-off="'fa fa-star-o fa-lg'"
+                        disabled="disabled"
+                        ng-model="state.average" tooltip="{{state.tooltipText}}"
+                        max="5" readonly="true">
+                    </rating>`;
 
     /* @ngInject */
-    function ratingsAverage(_) {
-        // Usage:
-        //
-        // Creates:
-        //
+    function RatingsAverage() {
         var directive = {
-            link: link,
-            templateUrl: 'common/directives/ratingsAverageView.html',
+            link: Link,
+            template: template,
             scope: {deliverable: '='},
             restrict: 'EA'
         };
         return directive;
+    }
 
-        function link(scope, element, attrs) {
+    class Link{
+        constructor(scope, element, attrs) {
             var feedbackRecords = _.toArray(scope.deliverable.getCachedFeedbackByDeliverableId());
             var feedbackCount = feedbackRecords.length;
             scope.state = {
@@ -33,7 +33,7 @@
             if (feedbackCount > 0) {
                 scope.state.average = scope.deliverable.getRatingsAverage();
                 scope.state.tooltipText = 'Average rating of ' + scope.state.average + ' ' +
-                ' (' + feedbackCount + ' review' + (feedbackCount === 1 ? '' : 's') + ')';
+                    ' (' + feedbackCount + ' review' + (feedbackCount === 1 ? '' : 's') + ')';
             }
 
             scope.hoveringOver = function (value) {
@@ -42,4 +42,10 @@
             };
         }
     }
-})();
+
+    angular
+        .module('pmam-deliverables')
+        .directive('ratingsAverage', RatingsAverage);
+
+
+}

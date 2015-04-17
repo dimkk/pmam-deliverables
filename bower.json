@@ -1,13 +1,13 @@
 {
   "name": "pmam-deliverables",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "appPath": "app",
   "main": "./dist/index.html",
   "dependencies": {
-    "angular": "^1.4.0-beta.6",
-    "angular-animate": "^1.4.0-beta.6",
+    "angular": "^1.4.0-rc.0",
+    "angular-animate": "^1.4.0-rc.0",
     "angular-bootstrap": "^0.12.1",
-    "angular-cookies": "^1.4.0-beta.6",
+    "angular-cookies": "^1.4.0-rc.0",
     "angular-elastic": "^2.4.0",
     "angular-google-chart": "^0.0.11",
     "angular-loading-bar": "^0.7.1",
@@ -21,10 +21,10 @@
     "angular-point-offline-generator": "https://github.com/scatcher/angular-point-offline-generator.git#master",
     "angular-point-styles": "https://github.com/scatcher/angular-point-styles.git#master",
     "angular-point-sync": "^1.0.0",
-    "angular-sanitize": "^1.4.0-beta.6",
+    "angular-sanitize": "^1.4.0-rc.0",
     "angular-toastr": "^1.1.0",
-    "angular-touch": "^1.4.0-beta.6",
-    "angular-ui-bootstrap": "~0.12.1",
+    "angular-touch": "^1.4.0-rc.0",
+    "angular-ui-bootstrap": "^0.12.1",
     "angular-ui-date": "^0.0.7",
     "angular-ui-grid": "3.0.0-rc.20",
     "angular-ui-router": "^0.2.10",
@@ -37,17 +37,16 @@
     "jquery-ui": "^1.11.4",
     "lodash": "^3.6.0",
     "moment": "^2.8.3",
-    "ng-table": "0.3.2",
-    "ng-grid": "^3.0.0-rc.20"
+    "ng-table": "0.3.2"
   },
   "devDependencies": {
-    "angular-mocks": "^1.4.0-beta.6",
-    "angular-scenario": "^1.4.0-beta.6",
+    "angular-mocks": "^1.4.0-rc.0",
+    "angular-scenario": "^1.4.0-rc.0",
     "chance": "^0.6.1",
     "angular-ui-grid": "3.0.0-rc.20"
   },
   "resolutions": {
-    "angular": "^1.4.0-beta.6",
+    "angular": "^1.4.0-rc.0",
     "angular-bootstrap": "^0.12",
     "angular-point": "^2.0.0",
     "angular-toastr": "^1.1.0",

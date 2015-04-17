@@ -46,7 +46,7 @@ module app {
          */
         getReviewDuration():number {
             /** Get the number of milliseconds between modified and created */
-            var milliseconds = moment(this.modified).diff(this.created);
+            var milliseconds:number = moment(this.modified).diff(this.created);
             return milliseconds;
         }
 

@@ -1,0 +1,45 @@
+<div class="row">
+    <div class="col-xs-8 text-left h5">
+        Version Snapshot
+            <span ng-show="vm.activeVersion !== vm.availableVersions"
+                  class="label label-default">v{{ vm.activeVersion + 1 }}</span>
+            <span ng-show="vm.activeVersion === vm.availableVersions"
+                class="label label-default">Active</span>
+    </div>
+    <div class="col-xs-4 text-right">
+        <div class="btn-group">
+            <!-- Minus button to decrement visible version -->
+            <button class="btn btn-primary btn-sm" ng-click="vm.updateVersion(-1)"
+                    ng-disabled="vm.activeVersion === 0">
+                <i class="fa fa-minus"></i>
+            </button>
+            <!-- Active Version Number -->
+            <button class="btn btn-white btn-sm" disabled style="color:black">{{vm.activeVersion + 1}}</button>
+
+            <!-- Plus button to increment visible version -->
+            <button class="btn btn-primary btn-sm" ng-click="vm.updateVersion(1)"
+                    ng-disabled="vm.activeVersion === vm.availableVersions"><i class="fa fa-plus"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<hr class="hr-sm">
+<fieldset disabled >
+    <!-- Include Template passed into directive -->
+    <div ng-if="vm.historyReady">
+        <div ng-include="vm.template"></div>
+
+        <!-- Footer metadata -->
+        <div class="row">
+            <div class="col-xs-12">
+                <span class="pull-left help-block">Modified: {{ vm.versionHistory[vm.activeVersion].modified | date:'short'}}</span>
+                <span class="pull-right help-block">Modified By: {{ vm.versionHistory[vm.activeVersion].editor.lookupValue }}</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div ng-show="!vm.historyReady" style="min-height: 400px" class="fadeInDown">
+        <div class="alert alert-warning"><i class="fa fa-spinner fa-spin"></i> Gathering information from the server...</div>
+    </div>
+</fieldset>

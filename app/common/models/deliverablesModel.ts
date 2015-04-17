@@ -5,7 +5,8 @@ module app {
     var model:DeliverablesModel, $q, apDiscussionThreadFactory, deliverableFeedbackModel:DeliverableFeedbackModel,
         deliverableDefinitionsModel:DeliverableDefinitionsModel, calendarService:CalendarService,
         deliverableFrequenciesService:DeliverableFrequenciesService, user:IUser,
-        deliverableAccessLogModel:DeliverableAccessLogModel, userService:UserService;
+        deliverableAccessLogModel:DeliverableAccessLogModel, userService:UserService,
+        deliverableNotificationsModel:DeliverableNotificationsModel;
 
     /**
      * @ngdoc function
@@ -26,7 +27,8 @@ module app {
         fiscalMonth:number;
         fy:number;
         justification:string;
-        stakeholdersNotified:boolean;
+        stakeholderNotificationDate:Date;
+        //stakeholdersNotified:boolean;
         startDate:Date;
         submissionDate:Date;
         title:string;
@@ -61,6 +63,21 @@ module app {
         }
 
         /**
+         * @name Deliverable.generateNewDeliverableNotification
+         * @returns {IPromise<TResult>}
+         */
+         generateNewDeliverableNotification():ng.IPromise<void> {
+            var emailPromise = deliverableNotificationsModel.generateNewDeliverableNotification(this);
+
+            /** Log date/time email generated and prevent future notifications from being generated. */
+            emailPromise.then( () => {
+                this.stakeholderNotificationDate = new Date();
+                this.saveChanges();
+            });
+            return emailPromise;
+        }
+
+        /**
          * @name Deliverable.getCachedAccessLogsByDeliverableId
          * @description Allows us to retrieve all feedback for a given deliverable which have already been
          * grouped/cached by deliverable id.
@@ -76,8 +93,8 @@ module app {
          * grouped/cached by deliverable id.
          * @returns {object} Keys of deliverable feedback id's and values of the feedback themselves.
          */
-        getCachedFeedbackByDeliverableId():ap.IIndexedCache<DeliverableFeedback> {
-            return deliverableFeedbackModel.getCachedFeedbackByDeliverableId(this.id);
+        getCachedFeedbackByDeliverableId(asObject?:boolean):DeliverableFeedback[] {
+            return deliverableFeedbackModel.getCachedFeedbackByDeliverableId(this.id, asObject);
         }
 
         /**
@@ -146,6 +163,7 @@ module app {
         getDeliverableDefinition(): DeliverableDefinition {
             return deliverableDefinitionsModel.getCachedEntity(this.deliverableType.lookupId);
         }
+
 
         /**
          * @name Deliverable.getRatingsAverage
@@ -230,6 +248,7 @@ module app {
             return relevant;
         }
 
+        userCanContribute = userService.userCanContribute;
         userCanReview = userService.userCanReview;
 
         /**
@@ -249,7 +268,8 @@ module app {
 
         constructor(_$q_, _apDiscussionThreadFactory_, _deliverableFeedbackModel_:DeliverableFeedbackModel,
                     _deliverableDefinitionsModel_, _calendarService_, _deliverableFrequenciesService_, _user_,
-                    _deliverableAccessLogModel_, _userService_, ListItemFactory, ModelFactory) {
+                    _deliverableAccessLogModel_, _userService_, _deliverableNotificationsModel_,
+                    ListItemFactory, ModelFactory) {
 
             $q = _$q_;
             apDiscussionThreadFactory = _apDiscussionThreadFactory_;
@@ -260,6 +280,8 @@ module app {
             deliverableFrequenciesService = _deliverableFrequenciesService_;
             user = _user_;
             userService = _userService_;
+            deliverableNotificationsModel = _deliverableNotificationsModel_;
+
 
 
             model = this;
@@ -317,11 +339,17 @@ module app {
                             mappedName: 'discussionThread',
                             readOnly: false
                         },
-                    /** Flagged once To/CC emails have been generated to notify stakeholders. */
+                    ///** Flagged once To/CC emails have been generated to notify stakeholders. */
+                        //{
+                        //    staticName: 'StakeholdersNotified',
+                        //    objectType: 'Boolean',
+                        //    mappedName: 'stakeholdersNotified',
+                        //    readOnly: false
+                        //},
                         {
-                            staticName: 'StakeholdersNotified',
-                            objectType: 'Boolean',
-                            mappedName: 'stakeholdersNotified',
+                            staticName: 'StakeholderNotificationDate',
+                            objectType: 'DateTime',
+                            mappedName: 'stakeholderNotificationDate',
                             readOnly: false
                         },
                         {

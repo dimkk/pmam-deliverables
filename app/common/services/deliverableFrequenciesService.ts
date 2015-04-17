@@ -2,8 +2,7 @@
 module app {
     'use strict';
 
-
-    var service;
+    var service:DeliverableFrequenciesService;
 
     export interface IDeliverableFrequency {
         title:string;
