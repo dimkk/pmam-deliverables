@@ -35,7 +35,7 @@ module app {
                     }
 
                     /** Add to scope so we can add watch which will update default when the type is changed */
-                    $scope.$watch('vm.deliverableRecord.deliverableType', function(newVal, oldVal) {
+                    $scope.$watch('vm.deliverableRecord.deliverableType', (newVal, oldVal) => {
                         if(newVal && newVal !== oldVal && newVal.lookupId) {
                             setDeliverableDefaults(newVal.lookupId);
                         }
@@ -44,7 +44,7 @@ module app {
                 });
 
             userService.getUserLookupValues()
-                .then(function (result) {
+                .then( (result) => {
                     vm.personnelArray = result;
                     vm.dataReady = true;
                 });
@@ -56,7 +56,6 @@ module app {
             function setDeliverableDefaults(deliverableTypeId) {
 
                 var selectedDeliverableType = vm.deliverableTypes[deliverableTypeId];
-                console.log(deliverableTypeId);
 
                 if (selectedDeliverableType) {
                     if(vm.deliverableRecord.deliverableType.lookupId !== deliverableTypeId) {
@@ -85,14 +84,15 @@ module app {
             });
         }
 
-        save() {
+        save(form) {
+            if(form.$invalid) {
+                return vm.toastr.warning('Please ensure all required fields are populated.');
+            }
             vm.deliverableRecord.saveChanges()
-                .then(function (newDeliverable) {
+                .then( (newDeliverable) => {
                     vm.toastr.success("Deliverable updated");
                     vm.$state.go('deliverable', {id: newDeliverable.id});
-                }, function () {
-                    vm.toastr.error("There was a problem creating this deliverable record");
-                });
+                }, () => vm.toastr.error("There was a problem creating this deliverable record") );
         }
 
     }

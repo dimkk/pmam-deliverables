@@ -72,10 +72,10 @@
                 </td>
                 <!-- Iterate over each stakeholder and display comma separated last names -->
                 <td>
-                    <span ng-repeat="stakeholder in deliverableDefinition.to | orderBy:'lookupValue' track by stakeholder.lookupId">{{ stakeholder.lookupValue.split(' ')[0] + (!$last ? ',&nbsp;' : '') }}</span>
+                    <span ng-repeat="stakeholder in deliverableDefinition.to | orderBy:'lookupValue' track by stakeholder.lookupId">{{ stakeholder.lookupValue.split(' ')[0] + (!$last ? ', ' : '') }}</span>
                 </td>
                 <td>
-                    <span ng-repeat="stakeholder in deliverableDefinition.cc | orderBy:'lookupValue' track by stakeholder.lookupId">{{ stakeholder.lookupValue.split(' ')[0] + (!$last ? ',&nbsp;' : '') }}</span>
+                    <span ng-repeat="stakeholder in deliverableDefinition.cc | orderBy:'lookupValue' track by stakeholder.lookupId">{{ stakeholder.lookupValue.split(' ')[0] + (!$last ? ', ' : '') }}</span>
                 </td>
                 <td>
                     <button type="button" class="btn btn-link"

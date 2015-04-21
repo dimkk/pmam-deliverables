@@ -9,6 +9,16 @@ module.exports = function (projectDir) {
         //app: app,
         //test: test,
         //tmp:tmp,
+        cdnjs: [
+            bowerDir + "jquery/dist/jquery.js",
+            bowerDir + "angular/angular.js",
+            bowerDir + "jquery-ui/jquery-ui.js",
+            bowerDir + "angular-sanitize/angular-sanitize.js",
+            bowerDir + "angular-animate/angular-animate.js",
+            bowerDir + "angular-resource/angular-resource.js",
+            bowerDir + "angular-touch/angular-touch.js",
+            bowerDir + "angular-messages/angular-messages.js"
+        ],
         modules: [
             bowerDir + "angular-point/dist/angular-point.js",
             bowerDir + "angular-point-attachments/dist/apAttachments.js",

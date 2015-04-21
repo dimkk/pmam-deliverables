@@ -50,7 +50,7 @@ module app {
 
         }
         activate() {
-
+            console.log(JSON.stringify(vm.deliverableRecord));
             if (!vm.deliverableRecord) {
                 /** Redirect if a valid deliverable isn't found */
                 vm.toastr.error('The requested deliverable wasn\'t found.');
@@ -123,7 +123,7 @@ module app {
 
         discussionBadgeValue() {
             /** Display the number of posts if greater than 0 */
-            return vm.deliverableRecord.discussionThread.posts.length > 0 ?
+            return vm.deliverableRecord.discussionThread.posts && vm.deliverableRecord.discussionThread.posts.length > 0 ?
                 vm.deliverableRecord.discussionThread.posts.length : '';
         }
 
@@ -158,6 +158,9 @@ module app {
         }
 
         submit() {
+            if(!vm.deliverableRecord.to || vm.deliverableRecord.to.length === 0) {
+                return vm.toastr.error('At least "To" recipient is required before a notification can be generated.');
+            }
             vm.negotiatingWithServer = true;
             vm.deliverableRecord.generateNewDeliverableNotification()
                 .then(vm.navigateBack);

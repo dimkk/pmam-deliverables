@@ -38,19 +38,19 @@ module app {
 
         constructor(obj) {
             super();
-            var self = this;
-            _.assign(self, obj);
-            self.displayDate = moment(self.submissionDate).format('MMM YY');
+            _.assign(this, obj);
+
+            this.displayDate = moment(this.submissionDate).format('MMM YY');
             /** Instantiate a new discussion object even if there isn't an active discussion */
-            self.discussionThread = apDiscussionThreadFactory.createDiscussionObject(self, 'discussionThread');
+            this.discussionThread = apDiscussionThreadFactory.createDiscussionObject(this, 'discussionThread');
 
             /** Store in cached object so we can reference by deliverable type directly from the type without needing to iterate over anything*/
-            model.registerDeliverableByType(self);
+            model.registerDeliverableByType(this);
             /** Modify standard prototype delete logic so we can remove from cache prior to actually deleting */
-            self._deleteItem = self.deleteItem;
-            self.deleteItem = () => {
-                model.removeDeliverableByType(self);
-                return self._deleteItem();
+            this._deleteItem = this.deleteItem;
+            this.deleteItem = () => {
+                model.removeDeliverableByType(this);
+                return this._deleteItem();
             }
         }
 
@@ -150,8 +150,8 @@ module app {
             var firstDate = deliverable.dueDate || deliverable.estimateDeliverableDueDate();
             var secondDate = deliverable.submissionDate;
 
-            var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay)));
-
+            var diffDays = Math.round((firstDate.getTime() - secondDate.getTime()) / (oneDay));
+            //var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay)));
             return secondDate < firstDate ? diffDays : -diffDays;
         }
 
@@ -339,13 +339,6 @@ module app {
                             mappedName: 'discussionThread',
                             readOnly: false
                         },
-                    ///** Flagged once To/CC emails have been generated to notify stakeholders. */
-                        //{
-                        //    staticName: 'StakeholdersNotified',
-                        //    objectType: 'Boolean',
-                        //    mappedName: 'stakeholdersNotified',
-                        //    readOnly: false
-                        //},
                         {
                             staticName: 'StakeholderNotificationDate',
                             objectType: 'DateTime',
@@ -398,7 +391,7 @@ module app {
             var deferred = $q.defer();
 
             model.getFyDeliverables(fiscalYear)
-                .then(function (indexedCache) {
+                .then( (indexedCache) => {
                     var deliverablesForMonth = model.filterDeliverablesForFiscalMonth(fiscalMonth, indexedCache);
                     deferred.resolve(deliverablesForMonth);
                 });

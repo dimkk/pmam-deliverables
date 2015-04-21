@@ -95,9 +95,8 @@ module app {
 
 
         generateReviewNotificationBody(deliverable:Deliverable) {
-            var emailBody = `
-            <p>A new ${deliverable.deliverableType.lookupValue} has been uploaded to the PM-Ammo
-            Deliverable Tracker and is ready for your review.</p><br/>
+            var emailBody = `<p>A new ${deliverable.deliverableType.lookupValue} has been uploaded to the PM-Ammo
+            Deliverable Tracker and is ready for your review.</p>
 
             <div>STEPS TO COMPLETE TASK</div>
             <ol>
@@ -106,7 +105,7 @@ module app {
                 <li>Provide input regarding acceptability using the review controlls on the
                 right side of the page.</li>
             </ol>
-            <br/>
+
             ${model.generateDocumentDetails(deliverable)}`;
 
             return emailBody;
@@ -142,16 +141,15 @@ module app {
 
 
         generateDocumentDetails(deliverable:Deliverable) {
-            return `
-            <div>Name: ${deliverable.title}</div>
-            <div>Type: ${deliverable.deliverableType.lookupValue}</div>
-            <div>Submission Date: ${moment(deliverable.submissionDate).format('dddd MMM Do YYYY')}</div>
-            <div>Due Date: ${deliverable.dueDate ? moment(deliverable.dueDate).format('dddd MMM Do YYYY') : 'N/A'}</div>
-            <div>Attachment Count: ${deliverable.attachments.length}</div>
-            <div>Details: ${deliverable.details}</div>
-            <br/>
-            <div>Deliverable Dashboard:</div>
-            <div>${model.generateDashboardUrl(deliverable)}</div>`;
+            return `<div>Name: ${deliverable.title}</div>
+                    <div>Type: ${deliverable.deliverableType.lookupValue}</div>
+                    <div>Submission Date: ${moment(deliverable.submissionDate).format('dddd MMM Do YYYY')}</div>
+                    <div>Due Date: ${deliverable.dueDate ? moment(deliverable.dueDate).format('dddd MMM Do YYYY') : 'N/A'}</div>
+                    <div>Attachment Count: ${deliverable.attachments.length}</div>
+                    <div>Details: ${deliverable.details}</div>
+
+                    <div>Deliverable Dashboard:</div>
+                    <div>${model.generateDashboardUrl(deliverable)}</div>`;
         }
 
         generateDashboardUrl(deliverable:Deliverable) {

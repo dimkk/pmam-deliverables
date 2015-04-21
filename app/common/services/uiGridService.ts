@@ -23,13 +23,20 @@ module app {
                     displayName: 'Title',
                     field: 'title',
                     width: '30%',
-                    cellTemplate: '<div class="ui-grid-cell-contents">\n    <a ui-sref="deliverable({id:row.entity.id})" title="View this deliverable">{{ row.entity.title }}</a>\n</div>'
+                    cellTemplate: ''+
+                    `<div class="ui-grid-cell-contents">
+                        <a ui-sref="deliverable({id:row.entity.id})" title="View this deliverable">{{ row.entity.title }}</a>
+                    </div>`
                 },
                 {
                     displayName: 'Type',
                     width: '15%',
                     field: 'deliverableType.lookupValue',
-                    cellTemplate: '<div class="ui-grid-cell-contents">\n    <a ui-sref="deliverables.instances({fy:row.entity.fy, id:row.entity.deliverableType.lookupId})"\n       title="View all deliverables of this type">{{ row.entity.deliverableType.lookupValue }}</a>\n</div>'
+                    cellTemplate: `
+                    <div class="ui-grid-cell-contents">
+                        <a ui-sref="deliverables.instances({fy:row.entity.fy, id:row.entity.deliverableType.lookupId})"
+                            title="View all deliverables of this type">{{ row.entity.deliverableType.lookupValue }}</a>
+                    </div>`
                 },
                 {
                     displayName: 'Submission Date',
@@ -50,20 +57,29 @@ module app {
                     displayName: 'On Time',
                     field: 'wasDeliveredOnTime()',
                     width: service.iconWidth,
-                    cellTemplate: '<div class="ui-grid-cell-contents">\n    <on-time-check-mark data-deliverable="row.entity"></on-time-check-mark>\n</div>'
+                    cellTemplate: `
+                    <div class="ui-grid-cell-contents">
+                        <on-time-check-mark data-deliverable="row.entity"></on-time-check-mark>
+                    </div>`
                 },
                 {
                     displayName: 'Acceptable',
                     field: 'acceptable',
                     width: service.iconWidth,
-                    cellTemplate: '<div class="ui-grid-cell-contents">\n    <rating-stoplight data-deliverable="row.entity"></rating-stoplight>\n</div>'
+                    cellTemplate: `
+                    <div class="ui-grid-cell-contents">
+                        <rating-stoplight data-deliverable="row.entity"></rating-stoplight>
+                    </div>`
                 },
                 discussionThread(),
                 {
                     displayName: 'Views',
                     field: 'getViewCount()',
                     width: service.iconWidth,
-                    cellTemplate: '<div class="ui-grid-cell-contents">\n<span class="badge">{{row.entity.getViewCount()}}</span></div>'
+                    cellTemplate: `
+                    <div class="ui-grid-cell-contents">
+                        <span class="badge">{{row.entity.getViewCount()}}</span>
+                    </div>`
                 },
                 {
                     displayName: 'Start Date',
@@ -147,24 +163,28 @@ module app {
     }
 
     function generateOpenModalLink() {
-        return '' +
-            '<div class="ui-grid-cell-contents">' +
-            '       <a style="color: #428bca" href ng-click="row.entity.openModal()">' +
-            '           {{ grid.getCellValue(row, col) }}' +
-            '       </a>' +
-            '</div>'
+        return `
+            <div class="ui-grid-cell-contents">
+                   <a style="color: #428bca" href ng-click="row.entity.openModal()">
+                       {{ grid.getCellValue(row, col) }}
+                   </a>
+            </div>`;
 
     }
 
     function dateField() {
-        return '<div class="ui-grid-cell-contents">{{ grid.getCellValue(row, col) | date:\'shortDate\' }}</div>';
+        return `<div class="ui-grid-cell-contents">{{ grid.getCellValue(row, col) | date:'shortDate' }}</div>`;
     }
 
     function discussionThread() {
         return {
             displayName: 'Discussion',
             field: 'discussionThread.posts.length',
-            cellTemplate: '<div class="ui-grid-cell-contents">\n    <i ng-if="row.entity.discussionThread.posts && row.entity.discussionThread.posts.length > 0"\n       title="Contains an active discussion thread."\n       class="fa fa-comments"></i>\n</div>',
+            cellTemplate: '' +
+            `<div class="ui-grid-cell-contents">
+                <i ng-if="row.entity.discussionThread.posts && row.entity.discussionThread.posts.length > 0"
+                    title="Contains an active discussion thread." class="fa fa-comments"></i>
+            </div>`,
             filter: {
                 type: 'select',
                 selectOptions: [{value: 'true', label: 'True'}, {value: 'false', label: 'False'}],

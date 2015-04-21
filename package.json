@@ -1,7 +1,7 @@
 {
   "name": "pmam-deliverables",
   "module": "pmam-deliverables",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "dependencies": {},
   "devDependencies": {
     "angular-point-tools": "^1.0.5",

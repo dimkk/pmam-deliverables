@@ -1,6 +1,6 @@
 {
   "name": "pmam-deliverables",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "appPath": "app",
   "main": "./dist/index.html",
   "dependencies": {

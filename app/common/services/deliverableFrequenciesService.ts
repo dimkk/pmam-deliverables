@@ -35,16 +35,19 @@ module app {
         /**
          * @name deliverableFrequenciesService.estimateDeliverableDueDate
          * @param {Deliverable} deliverable Deliverable object.
-         * @returns {Date} The due date or null if one isn't found.
+         * @returns {Date} The due date or undefined if one isn't found.
          */
         estimateDeliverableDueDate(deliverable:Deliverable):Date {
             var deliverableDefinition:DeliverableDefinition = deliverable.getDeliverableDefinition(), dueDate;
 
+            if(!deliverableDefinition) {
+                return;
+            }
+
             /** Support ad-hoc deliverables that are based on  */
             if (deliverableDefinition.deliverableFrequency === 'As Required') {
                 /** Add the appropriate number of business days to the start date */
-                dueDate = moment(deliverable.startDate).addWorkDays(deliverableDefinition.dateOffset).toDate();
-
+                dueDate = moment(deliverable.startDate).addWorkDays(deliverableDefinition.dateOffset).startOf('day').toDate();
             } else {
                 /** Attempt to auto populate the due date based on current month and deliverable definition */
                 var calendarMonth = deliverable.getCalendarMonth();
@@ -119,6 +122,10 @@ module app {
          */
         processMonths(deliverableDefinition:DeliverableDefinition, evalMonth:Function) {
             var dueDates = [];
+
+            if(!deliverableDefinition.fy) {
+                throw 'A valid deliverable definition requires an FY.';
+            }
 
             for (var i = 0; i < 12; i++) {
                 var calendarYear = service.calendarService.getCalendarYear(deliverableDefinition.fy, i);

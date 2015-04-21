@@ -34,8 +34,15 @@ module app {
                 .state('deliverables.monthly', {
                     url: '/main?mo',
                     templateUrl: 'modules/deliverables_by_month/deliverablesView.html',
-                    controller: 'deliverablesController',
-                    controllerAs: 'vm'
+                    controller: 'deliverablesByMonthController',
+                    controllerAs: 'vm',
+                    resolve: {
+                        fiscalMonth: function($stateParams, calendarService:CalendarService) {
+                            /** $state query string params return as strings, if they exist and can be converted to an int do it,
+                             otherwise use the current fiscal year and month */
+                            return isNaN($stateParams.mo) ? calendarService.getCurrentFiscalMonth() : parseInt($stateParams.mo);
+                        }
+                    }
                 })
 
                 .state('deliverables.instances', {

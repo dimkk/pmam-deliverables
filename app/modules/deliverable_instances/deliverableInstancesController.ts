@@ -8,33 +8,35 @@ module app {
 
     /* @ngInject */
     class DeliverableInstancesController {
+        //gauge1:Object;
+        //gauge2:Object;
+        deliverableGrid:Object;
         fiscalYearDisplay:string;
         gotData = false;
         searchString = '';
-        showFeedback = false;
-        deliverableGrid:Object;
-        gauge1:Object;
-        gauge2:Object;
+        //showFeedback = false;
         visibleDeliverables: Deliverable[] = [];
-        constructor(private $state, $q,  deliverableFeedbackModel:DeliverableFeedbackModel,
-                    deliverablesModel:DeliverablesModel, chartService, private fyDefinitions:DeliverableDefinition[],
-                    private selectedDefinition:DeliverableDefinition, private fiscalYear:number,
-                    deliverableAccessLogModel:DeliverableAccessLogModel, uiGridService) {
+
+        deliverableGrid = {
+            enableFiltering: true,
+            useExternalFiltering: true,
+            autoResize: true,
+            enableGridMenu: true,
+            enableSorting: true,
+            //showGridFooter: true,
+            showGroupPanel: true,
+            columnDefs: undefined
+        };
+        constructor(private $state, $q,  deliverableFeedbackModel: DeliverableFeedbackModel,
+                    deliverablesModel: DeliverablesModel, chartService, private fyDefinitions: DeliverableDefinition[],
+                    private selectedDefinition: DeliverableDefinition, private fiscalYear: number,
+                    deliverableAccessLogModel: DeliverableAccessLogModel, uiGridService) {
 
             vm = this;
 
+            vm.deliverableGrid.columnDefs = uiGridService.getDeliverableFields();
             vm.fiscalYearDisplay = 'FY ' + fiscalYear.toString().slice(-2);
 
-            vm.deliverableGrid = {
-                enableFiltering: true,
-                useExternalFiltering: true,
-                autoResize: true,
-                enableGridMenu: true,
-                enableSorting: true,
-                //showGridFooter: true,
-                showGroupPanel: true,
-                columnDefs: uiGridService.getDeliverableFields()
-            };
 
 
             /** Stop Everything if a valid definition isn't available */
@@ -48,8 +50,8 @@ module app {
 
             function activate() {
 
-                vm.gauge1 = new chartService.Gauge('Satisfaction');
-                vm.gauge2 = new chartService.Gauge('OTD');
+                //vm.gauge1 = new chartService.Gauge('Satisfaction');
+                //vm.gauge2 = new chartService.Gauge('OTD');
 
                 $q.all([
                     deliverablesModel.getFyDeliverables(fiscalYear),
@@ -57,13 +59,12 @@ module app {
                     deliverableAccessLogModel.getFyAccessLogs(fiscalYear)
                 ]).then(function (resolvedPromises) {
                     vm.visibleDeliverables = _.toArray(selectedDefinition.getDeliverablesForDefinition());
-
-                    vm.gauge1.updateGaugeValue(chartService.getSatisfactionRating(vm.visibleDeliverables));
-                    vm.gauge2.updateGaugeValue(chartService.getOnTimeDeliveryRating(vm.visibleDeliverables));
-
                     vm.deliverableGrid.data = vm.visibleDeliverables;
-
                     vm.gotData = true;
+
+                    //vm.gauge1.updateGaugeValue(chartService.getSatisfactionRating(vm.visibleDeliverables));
+                    //vm.gauge2.updateGaugeValue(chartService.getOnTimeDeliveryRating(vm.visibleDeliverables));
+
 
                 });
             }

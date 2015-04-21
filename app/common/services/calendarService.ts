@@ -16,12 +16,18 @@ module app {
             service = this;
         }
 
+        /**
+         * @name calendarService.generateDisplayPeriod
+         * @param {number} fiscalMonth
+         * @param {number} fiscalYear
+         * @returns {string}
+         */
         generateDisplayPeriod(fiscalMonth:number, fiscalYear:number):string {
-            var monthNames = ["OCT", "NOV", "DEC", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP"],
-                calendarYear = fiscalMonth < 4 ? fiscalYear - 1 : fiscalYear,
-                twoDigitYear = (calendarYear.toString()).substr(2);
-            //Month is (1-12) so we need to add 1 to find value in 0 based monthName array
-            return monthNames[fiscalMonth - 1] + " " + twoDigitYear
+            var calendarMonth = this.getCalendarMonth(fiscalMonth);
+            var calendarYear = this.getCalendarYear(fiscalYear, calendarMonth);
+            var monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+            var twoDigitYear = (calendarYear.toString()).substr(2);
+            return monthNames[calendarMonth] + " " + twoDigitYear
         }
 
         /**
@@ -49,19 +55,34 @@ module app {
             return monthNumber < 9 ? fiscalYear : fiscalYear - 1;
         }
 
-        getCurrentFiscalMonth():number {
-            var calendarMonthNumber = new Date().getMonth() + 4;
+        /**
+         * @name calendarService.getCurrentFiscalMonth
+         * @param {Date} [dateOverride] Optionally provide a date to base calculation on.
+         * @returns {number}
+         */
+        getCurrentFiscalMonth(dateOverride?:Date):number {
+            var today = dateOverride || new Date();
+            var calendarMonthNumber = today.getMonth() + 4;
             if (calendarMonthNumber > 12) {
                 calendarMonthNumber = calendarMonthNumber - 12;
             }
             return calendarMonthNumber
         }
 
-        getCurrentFiscalYear():number {
-            var today = new Date();
+        /**
+         * @name calendarService.getCurrentFiscalYear
+         * @param {Date} [dateOverride] Optionally provide a date to base calculation on.
+         * @returns {number}
+         */
+        getCurrentFiscalYear(dateOverride?:Date):number {
+            var today = dateOverride || new Date();
             return today.getMonth() < 9 ? today.getFullYear() : today.getFullYear() + 1;
         }
 
+        /**
+         * @name calendarService.getMonthOptions
+         * @returns {{number:number, label:string}[]}
+         */
         getMonthOptions():{number:number; label:string}[] {
             return [
                 {number: 4, label: 'January'},

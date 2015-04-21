@@ -7,7 +7,7 @@
             </div>
         </legend>
 
-        <form name="editDeliverable" ng-submit="vm.save()">
+        <div ng-form="form">
             <div class="well well-clean">
 
                 <!-- SHARED FORM FIELDS TEMPLATE -->
@@ -16,12 +16,12 @@
                 <!-- SAVE AND PROCEED BUTTON -->
                 <div class="text-align-right">
                     <div class="content-group">
-                        <button type="submit" class="btn btn-primary">Save and Add Attachments</button>
+                        <button type="submit" ng-click="vm.save(form)" class="btn btn-primary">Save and Add Attachments</button>
                         <button type="button" class="btn btn-default" ng-click="vm.cancel()">Cancel</button>
                     </div>
                     <span class="help-text">*Denotes required field</span>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 </fieldset>
