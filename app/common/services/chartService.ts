@@ -149,7 +149,7 @@ module app {
                 }
             });
 
-            _.assign(self.options, options);
+            _.extend(self.options, options);
 
             self.updateGaugeValue = function (val:number, label:string):void {
                 /* Pause prior to triggering animation */
@@ -255,7 +255,7 @@ module app {
                 data.rows.push({c: row});
             });
 
-            _.assign(this, activeChartType, {
+            _.extend(this, activeChartType, {
                 data: data,
                 options: {
                     animation: {

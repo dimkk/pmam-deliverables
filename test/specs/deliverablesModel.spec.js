@@ -48,18 +48,16 @@ describe('Model: deliverablesModel', function () {
         it('correctly estimates deliverable due date for a monthly deliverable.', function () {
 
             var deliverableDefinition = deliverableDefinitionsModel.createEmptyItem({
-                id:1,
-                deliverableFrequency:'Monthly',
-                dayOfMonthDue:10,
-                fy:2015
+                id: 1,
+                deliverableFrequency: 'Monthly',
+                dayOfMonthDue: 10,
+                fy: 2015
             });
 
             apCacheService.registerEntity(deliverableDefinition);
 
             var deliverable = deliverablesModel.createEmptyItem({
                 fiscalMonth: 7,
-                startDate: new Date(2015, 3, 1),
-                submissionDate: new Date(2015, 3, 1),
                 deliverableType: {lookupId: 1}
             });
 
@@ -87,43 +85,86 @@ describe('Model: deliverablesModel', function () {
             //$httpBackend.flush();
 
         });
-        it('correctly estimates deliverable due date for a bi-monthly deliverable.', function () {
+        it('estimates deliverable due date for a bi-monthly deliverable.', function () {
 
             var deliverableDefinition = deliverableDefinitionsModel.createEmptyItem({
-                id:2,
-                deliverableFrequency:'Bimonthly',
-                dayOfMonthDue:10
+                id: 2,
+                deliverableFrequency: 'Bimonthly',
+                dayOfMonthDue: 10,
+                fy: 2015
             });
 
             apCacheService.registerEntity(deliverableDefinition);
 
+
             var deliverable = deliverablesModel.createEmptyItem({
-                fiscalMonth: 7,
-                startDate: new Date(2015, 3, 1),
-                submissionDate: new Date(2015, 3, 1),
+                fiscalMonth: 8,
                 deliverableType: {lookupId: 2}
             });
 
-            expect(deliverable.estimateDeliverableDueDate()).toEqual(new Date(2015, 3, 17));
+            expect(deliverable.estimateDeliverableDueDate()).toEqual(new Date(2015, 4, 10));
 
 
         });
-    });
 
-    describe('Method: getDaysBetweenSubmittedAndDue', function () {
-        it('returns the delta between submitted and due.', function () {
-            var deliverable = deliverablesModel.createEmptyItem({
-                fiscalMonth: 7,
-                startDate: new Date(2015, 3, 1),
-                submissionDate: new Date(2015, 3, 1),
-                deliverableType: {lookupId: 34}
+        it('does not return a due date for a bi-monthly deliverable on an even month.', function () {
+
+            var deliverableDefinition = deliverableDefinitionsModel.createEmptyItem({
+                id: 2,
+                deliverableFrequency: 'Bimonthly',
+                dayOfMonthDue: 10,
+                fy: 2015
             });
 
-            /** Ensure deliverables are available */
-            expect(deliverable.estimateDeliverableDueDate()).toEqual(new Date(2015, 3, 17));
+            apCacheService.registerEntity(deliverableDefinition);
+
+
+            var deliverable = deliverablesModel.createEmptyItem({
+                fiscalMonth: 7,
+                deliverableType: {lookupId: 2}
+            });
+
+            expect(deliverable.estimateDeliverableDueDate()).toBeUndefined();
+
 
         });
+
+        //it('doesn\'t return a date for a month for a due date for a bi-monthly deliverable.', function () {
+        //
+        //    var deliverableDefinition = deliverableDefinitionsModel.createEmptyItem({
+        //        id:2,
+        //        deliverableFrequency:'Bimonthly',
+        //        dayOfMonthDue:10,
+        //        fy:2015
+        //    });
+        //
+        //    apCacheService.registerEntity(deliverableDefinition);
+        //
+        //    var deliverable = deliverablesModel.createEmptyItem({
+        //        fiscalMonth: 8,
+        //        deliverableType: {lookupId: 2}
+        //    });
+        //
+        //    expect(deliverable.estimateDeliverableDueDate()).toEqual(new Date(2015, 4, 17));
+        //
+        //
+        //});
     });
+
+    //describe('Method: getDaysBetweenSubmittedAndDue', function () {
+    //    it('returns the delta between submitted and due.', function () {
+    //        var deliverable = deliverablesModel.createEmptyItem({
+    //            fiscalMonth: 7,
+    //            startDate: new Date(2015, 3, 1),
+    //            submissionDate: new Date(2015, 3, 1),
+    //            deliverableType: {lookupId: 34}
+    //        });
+    //
+    //        /** Ensure deliverables are available */
+    //        expect(deliverable.estimateDeliverableDueDate()).toEqual(new Date(2015, 3, 17));
+    //
+    //    });
+    //});
 
 
 });

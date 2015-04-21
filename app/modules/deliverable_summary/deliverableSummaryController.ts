@@ -44,6 +44,7 @@ module app {
 
         }
 
+        //TODO: Figure out why changing chart types blows away defined colors
         toggleChartTypes(updatedChartType) {
             //var updatedChartType = this.acceptabilityChart21.type === 'ColumnChart' ? 'BarChart' : 'ColumnChart';
             _.assign(this.acceptabilityChart21, updatedChartType);
