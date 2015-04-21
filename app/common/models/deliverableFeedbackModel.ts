@@ -147,9 +147,9 @@ module app {
          * @description Pulls cached feedback for a given deliverable.
          * @param {number} deliverableId
          * @param {boolean} [asObject=false]  Optionally prevent conversion to an array.
-         * @returns {DeliverableFeedback[]} Array of matching feedback for a given deliverable.
+         * @returns {ap.IIndexedCache<DeliverableFeedback>|DeliverableFeedback[]} Indexed cache of feedback for deliverable.
          */
-        getCachedFeedbackByDeliverableId(deliverableId:number, asObject:boolean=false):DeliverableFeedback[] {
+        getCachedFeedbackByDeliverableId(deliverableId:number, asObject:boolean=false):ap.IIndexedCache<DeliverableFeedback>|DeliverableFeedback[] {
             return apLookupCacheService.retrieveLookupCacheById('deliverable', model.list.getListId(), deliverableId, asObject);
         }
 

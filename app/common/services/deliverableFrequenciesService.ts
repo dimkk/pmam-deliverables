@@ -46,8 +46,13 @@ module app {
 
             /** Support ad-hoc deliverables that are based on  */
             if (deliverableDefinition.deliverableFrequency === 'As Required') {
+                if(!deliverable.startDate || !deliverableDefinition.dateOffset) {
+                    throw 'A Start Date is required for a "As Required" deliverable and a date offset is required for ' +
+                    'a deliverable definition.';
+                }
+
                 /** Add the appropriate number of business days to the start date */
-                dueDate = moment(deliverable.startDate).addWorkDays(deliverableDefinition.dateOffset).startOf('day').toDate();
+                dueDate = moment(deliverable.startDate).startOf('day').add(deliverableDefinition.dateOffset, 'day').toDate();
             } else {
                 /** Attempt to auto populate the due date based on current month and deliverable definition */
                 var calendarMonth = deliverable.getCalendarMonth();
@@ -74,7 +79,7 @@ module app {
             if (deliverableDefinition.specifiedDates.length > 0) {
                 /** Dates were manually entered so no need to compute */
                 _.each(deliverableDefinition.specifiedDates, function (dateString) {
-                    dueDates.push(new Date(dateString));
+                    dueDates.push(moment(dateString).toDate());
                 });
 
             } else if (deliverableDefinition.dynamicDate) {

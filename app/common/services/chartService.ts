@@ -87,14 +87,14 @@ module app {
             return (Math.random() * 5).toFixed(1);
         }
 
-        getSatisfactionRating(deliverables:Deliverable[]):number {
-            var ratingSum = 0;
-            var deliverableArray = _.isArray(deliverables) ? deliverables : _.toArray(deliverables);
-            _.each(deliverableArray, function (deliverable) {
-                ratingSum += deliverable.getRatingsAverage();
-            });
-            return Math.round((ratingSum / deliverableArray.length) * 10) / 10;
-        }
+        //getSatisfactionRating(deliverables:Deliverable[]):number {
+        //    var ratingSum = 0;
+        //    var deliverableArray = _.isArray(deliverables) ? deliverables : _.toArray(deliverables);
+        //    _.each(deliverableArray, function (deliverable) {
+        //        ratingSum += deliverable.getRatingsAverage();
+        //    });
+        //    return Math.round((ratingSum / deliverableArray.length) * 10) / 10;
+        //}
 
     }
 

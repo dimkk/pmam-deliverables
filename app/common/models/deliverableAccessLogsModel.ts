@@ -46,7 +46,7 @@ module app {
          */
         getReviewDuration():number {
             /** Get the number of milliseconds between modified and created */
-            var milliseconds:number = moment(this.modified).diff(this.created);
+            var milliseconds:number = moment(this.modified).diff(moment(this.created), 'millisecond', false );
             return milliseconds;
         }
 
@@ -92,9 +92,9 @@ module app {
          * @description Pulls cached feedback for a given deliverable.
          * @param {number} deliverableId
          * @param {boolean} [asObject=false]  Optionally prevent conversion to an array.
-         * @returns {DeliverableFeedback[]} Array of matching feedback for a given deliverable.
+         * @returns { ap.IIndexedCache<DeliverableAccessLog> | DeliverableAccessLog[] } IndexedCache.
          */
-        getCachedLogByDeliverableId(deliverableId: number, asObject?:boolean): DeliverableAccessLog[] {
+        getCachedLogByDeliverableId(deliverableId: number, asObject?:boolean): ap.IIndexedCache<DeliverableAccessLog> | DeliverableAccessLog[] {
             return apLookupCacheService.retrieveLookupCacheById('deliverable', model.list.getListId(), deliverableId, asObject);
         }
 

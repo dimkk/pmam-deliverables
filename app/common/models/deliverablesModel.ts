@@ -2,6 +2,8 @@
 module app {
     'use strict';
 
+    //TODO Add apIndexedCacheService to handle caching deliverables by type
+
     var model:DeliverablesModel, $q, apDiscussionThreadFactory, deliverableFeedbackModel:DeliverableFeedbackModel,
         deliverableDefinitionsModel:DeliverableDefinitionsModel, calendarService:CalendarService,
         deliverableFrequenciesService:DeliverableFrequenciesService, user:IUser,
@@ -81,19 +83,19 @@ module app {
          * @name Deliverable.getCachedAccessLogsByDeliverableId
          * @description Allows us to retrieve all feedback for a given deliverable which have already been
          * grouped/cached by deliverable id.
-         * @returns {object} Keys of deliverable feedback id's and values of the feedback themselves.
+         * @returns {ap.IIndexedCache<DeliverableAccessLog> | DeliverableAccessLog[]} Keys of deliverable access log id's and value of log object.
          */
-        getCachedAccessLogsByDeliverableId() {
-            return deliverableAccessLogModel.getCachedLogByDeliverableId(this.id);
+        getCachedAccessLogsByDeliverableId(asObject?:boolean):ap.IIndexedCache<DeliverableAccessLog> | DeliverableAccessLog[] {
+            return deliverableAccessLogModel.getCachedLogByDeliverableId(this.id, asObject);
         }
 
         /**
          * @name Deliverable.getCachedFeedbackByDeliverableId
          * @description Allows us to retrieve all feedback for a given deliverable which have already been
          * grouped/cached by deliverable id.
-         * @returns {object} Keys of deliverable feedback id's and values of the feedback themselves.
+         * @returns {ap.IIndexedCache<DeliverableFeedback>|DeliverableFeedback[]} Keys of deliverable feedback id's and values of the feedback themselves.
          */
-        getCachedFeedbackByDeliverableId(asObject?:boolean):DeliverableFeedback[] {
+        getCachedFeedbackByDeliverableId(asObject?:boolean):ap.IIndexedCache<DeliverableFeedback> | DeliverableFeedback[] {
             return deliverableFeedbackModel.getCachedFeedbackByDeliverableId(this.id, asObject);
         }
 
@@ -142,17 +144,13 @@ module app {
         getDaysBetweenSubmittedAndDue() {
             var deliverable = this;
 
-            //TODO get this working once the current bug in moment-business is resolved
-            //return moment(deliverable.dueDate).weekDays(moment(deliverable.submissionDate));
-
-            //Number of actual days between dates
-            var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
             var firstDate = deliverable.dueDate || deliverable.estimateDeliverableDueDate();
-            var secondDate = deliverable.submissionDate;
+            if(!firstDate) {
+                throw 'A valid due date could not be found.';
+            }
+            var secondDate = deliverable.submissionDate || moment().startOf('day').toDate();
 
-            var diffDays = Math.round((firstDate.getTime() - secondDate.getTime()) / (oneDay));
-            //var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay)));
-            return secondDate < firstDate ? diffDays : -diffDays;
+            return moment(firstDate).diff(moment(secondDate), 'days', false);
         }
 
         /**
@@ -169,23 +167,23 @@ module app {
          * @name Deliverable.getRatingsAverage
          * @returns {number} Average of all ratings for this deliverable.
          */
-        getRatingsAverage():number {
-            var deliverable = this,
-                ratingSum = 0,
-                averageRating;
-            var feedbackRecords = _.toArray(deliverable.getCachedFeedbackByDeliverableId());
-
-            _.each(feedbackRecords, (feedbackRecord) => {
-                ratingSum += feedbackRecord.rating;
-            });
-            if (!feedbackRecords.length) {
-                /** Assume perfect score unless there are actual ratings */
-                averageRating = 5;
-            } else {
-                averageRating = Math.round((ratingSum / feedbackRecords.length) * 10) / 10;
-            }
-            return averageRating;
-        }
+        //getRatingsAverage():number {
+        //    var deliverable = this,
+        //        ratingSum = 0,
+        //        averageRating;
+        //    var feedbackRecords = _.toArray(deliverable.getCachedFeedbackByDeliverableId());
+        //
+        //    _.each(feedbackRecords, (feedbackRecord) => {
+        //        ratingSum += feedbackRecord.rating;
+        //    });
+        //    if (!feedbackRecords.length) {
+        //        /** Assume perfect score unless there are actual ratings */
+        //        averageRating = 5;
+        //    } else {
+        //        averageRating = Math.round((ratingSum / feedbackRecords.length) * 10) / 10;
+        //    }
+        //    return averageRating;
+        //}
 
         /**
          * @name Deliverable.getViewCount
@@ -194,8 +192,8 @@ module app {
          */
         getViewCount(): number {
             var deliverable = this;
-            var accessLogs = deliverable.getCachedAccessLogsByDeliverableId();
-            return _.toArray(accessLogs).length;
+            var accessLogs:ap.IIndexedCache<DeliverableAccessLog> = deliverable.getCachedAccessLogsByDeliverableId(true);
+            return accessLogs.count();
         }
 
         /**
@@ -205,7 +203,7 @@ module app {
          */
         hasFeedback():boolean {
             /** Force a boolean response */
-            return !!this.getCachedFeedbackByDeliverableId();
+            return this.getCachedFeedbackByDeliverableId(true).count() > 0;
         }
 
         openFeedbackModal(overrides, feedback) {
