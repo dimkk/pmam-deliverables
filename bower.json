@@ -16,7 +16,7 @@
     "angular-point-discussion-thread": "^0.1.1",
     "angular-point-form-control": "latest",
     "angular-point-group-manager": "master",
-    "angular-point-lookup-cache": "^1.0.1",
+    "angular-point-lookup-cache": "^2.0.0",
     "angular-point-modal": "latest",
     "angular-point-offline-generator": "https://github.com/scatcher/angular-point-offline-generator.git#master",
     "angular-point-styles": "https://github.com/scatcher/angular-point-styles.git#master",

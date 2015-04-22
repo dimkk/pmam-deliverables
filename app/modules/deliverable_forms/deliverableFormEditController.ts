@@ -50,7 +50,6 @@ module app {
 
         }
         activate() {
-            console.log(JSON.stringify(vm.deliverableRecord));
             if (!vm.deliverableRecord) {
                 /** Redirect if a valid deliverable isn't found */
                 vm.toastr.error('The requested deliverable wasn\'t found.');
