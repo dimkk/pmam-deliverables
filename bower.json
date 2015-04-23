@@ -11,7 +11,9 @@
     "angular-elastic": "^2.4.0",
     "angular-google-chart": "^0.0.11",
     "angular-loading-bar": "^0.7.1",
-    "angular-point": "^2.0.0",
+      "angular-messages": "^1.4.0-rc.0",
+
+      "angular-point": "^2.0.0",
     "angular-point-attachments": "latest",
     "angular-point-discussion-thread": "^0.1.1",
     "angular-point-form-control": "latest",
