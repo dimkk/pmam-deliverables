@@ -56,7 +56,7 @@ module app {
     export class DeliverableAccessLogModel extends ap.Model {
         cachedFyRequests = {};
         lookupFieldsToCache = ['deliverable'];
-        constructor(_apLookupCacheService_, ListItemFactory, ModelFactory) {
+        constructor(_apLookupCacheService_, apListItemFactory, apModelFactory) {
             apLookupCacheService = _apLookupCacheService_;
             model = this;
             super({
@@ -117,15 +117,15 @@ module app {
                     name: fyCacheKey,
                     operation: 'GetListItems',
                     query: '' +
-                    '<Query>' +
-                    '   <Where>' +
                     /** Return all records for this FY */
-                    '       <Eq>' +
-                    '           <FieldRef Name="FY"/>' +
-                    '           <Value Type="Text">' + fy + '</Value>' +
-                    '       </Eq>' +
-                    '   </Where>' +
-                    '</Query>'
+                    `<Query>
+                       <Where>
+                           <Eq>
+                               <FieldRef Name="FY"/>
+                               <Value Type="Text">${fy}</Value>
+                           </Eq>
+                       </Where>
+                    </Query>`
                 });
 
                 /** Cache promise so we can return for future calls */

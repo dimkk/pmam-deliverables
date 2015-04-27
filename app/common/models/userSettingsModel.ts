@@ -14,7 +14,7 @@ module app {
 
     export class UserSettingsModel extends ap.Model {
         ready:ng.IPromise<UserSettings>;
-        constructor($q, private user:IUser, ListItemFactory, ModelFactory) {
+        constructor($q, private user:IUser, apListItemFactory, apModelFactory) {
             model = this;
             /** Model Constructor */
             /** Adds "addNewItem" and "getAllListItems" to the model and ensures "data", "queries", and "ready" have been added */
@@ -46,20 +46,20 @@ module app {
                 operation: 'GetListItems',
                 CAMLRowLimit: 1,
                 query: '' +
-                '<Query>' +
-                '   <Where>' +
-                '       <And>' +
-                '           <Eq>' +
-                '               <FieldRef Name="Author" LookupId="TRUE" />' +
-                '               <Value Type="Integer"><UserID /></Value>' +
-                '           </Eq>' +
-                '           <Eq>' +
-                '               <FieldRef Name="Title"/>' +
-                '               <Value Type="Text">ESED Deliverables</Value>' +
-                '           </Eq>' +
-                '       </And>' +
-                '   </Where>' +
-                '</Query>'
+                `<Query>
+                   <Where>
+                       <And>
+                           <Eq>
+                               <FieldRef Name="Author" LookupId="TRUE" />
+                               <Value Type="Integer"><UserID /></Value>
+                           </Eq>
+                           <Eq>
+                               <FieldRef Name="Title"/>
+                               <Value Type="Text">ESED Deliverables</Value>
+                           </Eq>
+                       </And>
+                   </Where>
+                </Query>`
             });
 
         }

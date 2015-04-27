@@ -267,7 +267,7 @@ module app {
         constructor(_$q_, _apDiscussionThreadFactory_, _deliverableFeedbackModel_:DeliverableFeedbackModel,
                     _deliverableDefinitionsModel_, _calendarService_, _deliverableFrequenciesService_, _user_,
                     _deliverableAccessLogModel_, _userService_, _deliverableNotificationsModel_,
-                    ListItemFactory, ModelFactory) {
+                    apListItemFactory, apModelFactory) {
 
             $q = _$q_;
             apDiscussionThreadFactory = _apDiscussionThreadFactory_;
@@ -411,15 +411,15 @@ module app {
                 model.registerQuery({
                     name: fyCacheKey,
                     query: '' +
-                    '<Query>' +
-                    '   <Where>' +
                     /** Return all records for this FY */
-                    '       <Eq>' +
-                    '           <FieldRef Name="FY"/>' +
-                    '           <Value Type="Text">' + fy + '</Value>' +
-                    '       </Eq>' +
-                    '   </Where>' +
-                    '</Query>'
+                    `<Query>
+                       <Where>
+                           <Eq>
+                               <FieldRef Name="FY"/>
+                               <Value Type="Text">${fy}</Value>
+                           </Eq>
+                       </Where>
+                    </Query>`
                 });
             }
 

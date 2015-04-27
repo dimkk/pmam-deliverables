@@ -22,13 +22,13 @@ module.exports = function (projectDir) {
         modules: [
             bowerDir + "angular-point/dist/angular-point.js",
             bowerDir + "angular-point-attachments/dist/apAttachments.js",
-            bowerDir + "angular-point-discussion-thread/dist/apDiscussionThread.js",
+            //bowerDir + "angular-point-discussion-thread/dist/apDiscussionThread.js",
             bowerDir + "angular-point-modal/dist/apModalService.js",
             bowerDir + "angular-point-group-manager/dist/apGroupManager.js",
-            bowerDir + "angular-point-lookup-cache/dist/index.js",
+            //bowerDir + "angular-point-lookup-cache/dist/index.js",
             bowerDir + "angular-point-form-control/dist/apInputControl.js",
-            bowerDir + "angular-point-offline-generator/dist/ap-offline-generator.js",
-            bowerDir + "angular-point-sync/dist/index.js"
+            bowerDir + "angular-point-offline-generator/dist/ap-offline-generator.js"
+            //bowerDir + "angular-point-sync/dist/index.js"
         ],
         vendorjs: [
             bowerDir + 'moment/moment.js',
@@ -47,7 +47,6 @@ module.exports = function (projectDir) {
             bowerDir + 'ng-table/ng-table.js',
             bowerDir + 'angular-ui-grid/ui-grid.js',
             bowerDir + 'angularfire/dist/angularfire.js',
-            bowerDir + "angular-toastr/dist/angular-toastr.js",
             bowerDir + "angular-toastr/dist/angular-toastr.tpls.min.js",
             bowerDir + 'angular-loading-bar/build/loading-bar.js',
             bowerDir + 'angular-filter/dist/angular-filter.js',

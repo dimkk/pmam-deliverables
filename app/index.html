@@ -16,11 +16,9 @@
     <!-- build:css styles/vendor.css -->
     <!-- inject-vendorcss:css -->
     <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css">
-    <link rel="stylesheet" href="bower_components/animate.css/animate.css">
     <link rel="stylesheet" href="bower_components/angular-toastr/dist/angular-toastr.css">
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css">
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="bower_components/angular-point-discussion-thread/dist/apDiscussionThread.css">
     <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.css">
     <link rel="stylesheet" href="app/styles/css/bootstrap.css">
     <!-- endinject -->
@@ -40,7 +38,6 @@
     <link rel="stylesheet" href="app/styles/css/utility.css">
     <link rel="stylesheet" href="app/styles/css/variables.css">
     <link rel="stylesheet" href="app/styles/css/widget.css">
-    <link rel="stylesheet" href="bower_components/angular-point-discussion-thread/dist/apDiscussionThread.css">
     <!-- endinject -->
     <!-- endbuild -->
 
@@ -76,7 +73,6 @@
 <!-- build:js scripts/vendor.js -->
 <!-- inject-vendorjs:js -->
 <script src="bower_components/moment/moment.js"></script>
-<script src="bower_components/moment-business/dist/moment-business.js"></script>
 <script src="bower_components/angular-google-chart/ng-google-chart.js"></script>
 <script src="bower_components/lodash/lodash.js"></script>
 <script src="bower_components/lodash-deep/lodash-deep.js"></script>
@@ -87,11 +83,8 @@
 <script src="bower_components/angular-ui-utils/ui-utils.js"></script>
 <script src="bower_components/angular-ui-select/dist/select.js"></script>
 <script src="bower_components/angular-ui-date/src/date.js"></script>
-<script src="bower_components/angular-ui-sortable/sortable.js"></script>
-<script src="bower_components/ng-table/ng-table.js"></script>
 <script src="bower_components/angular-ui-grid/ui-grid.js"></script>
 <script src="bower_components/angularfire/dist/angularfire.js"></script>
-<script src="bower_components/angular-toastr/dist/angular-toastr.js"></script>
 <script src="bower_components/angular-toastr/dist/angular-toastr.tpls.min.js"></script>
 <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
 <script src="bower_components/angular-filter/dist/angular-filter.js"></script>
@@ -102,18 +95,15 @@
 <!-- build:js scripts/scripts.js -->
 <!-- inject-modules:js -->
 <script src="bower_components/angular-point/dist/angular-point.js"></script>
-<script src="bower_components/angular-point-sync/dist/index.js"></script>
 <script src="bower_components/angular-point-offline-generator/dist/ap-offline-generator.js"></script>
 <script src="bower_components/angular-point-form-control/dist/apInputControl.js"></script>
-<script src="bower_components/angular-point-lookup-cache/dist/index.js"></script>
 <script src="bower_components/angular-point-group-manager/dist/apGroupManager.js"></script>
 <script src="bower_components/angular-point-modal/dist/apModalService.js"></script>
-<script src="bower_components/angular-point-discussion-thread/dist/apDiscussionThread.js"></script>
 <script src="bower_components/angular-point-attachments/dist/apAttachments.js"></script>
 <!-- endinject -->
 
 <!-- inject-environmentjs:js -->
-<script src="bower_components/angular-point/test/mock/apMockBackend.js"></script>
+<script src="bower_components/angular-point/test/mock/apMockBackend.mock.js"></script>
 <script src="bower_components/angular-mocks/angular-mocks.js"></script>
 <script src=".tmp/offlineXML/offlineXML.js"></script>
 <script src="bower_components/chance/chance.js"></script>
@@ -121,13 +111,16 @@
 
 <!-- inject-ts:js -->
 <script src=".tmp/serve/common/app.module.js"></script>
-<script src=".tmp/serve/angular-point-tools/ts/ListItem.js"></script>
-<script src=".tmp/serve/angular-point-tools/ts/Model.js"></script>
 <script src=".tmp/serve/common/config.js"></script>
 <script src=".tmp/serve/common/constants.js"></script>
 <script src=".tmp/serve/common/routes.js"></script>
 <script src=".tmp/serve/common/run.js"></script>
 <script src=".tmp/serve/common/user.js"></script>
+<script src=".tmp/serve/common/directives/acceptableFeedbackLabel.js"></script>
+<script src=".tmp/serve/common/directives/listItemHistory.js"></script>
+<script src=".tmp/serve/common/directives/onTimeCheckMark.js"></script>
+<script src=".tmp/serve/common/directives/ratingStoplight.js"></script>
+<script src=".tmp/serve/common/directives/reviews.js"></script>
 <script src=".tmp/serve/common/models/deliverableAccessLogsModel.js"></script>
 <script src=".tmp/serve/common/models/deliverableDefinitionsModel.js"></script>
 <script src=".tmp/serve/common/models/deliverableFeedbackModel.js"></script>
@@ -141,20 +134,18 @@
 <script src=".tmp/serve/common/services/ratingsService.js"></script>
 <script src=".tmp/serve/common/services/uiGridService.js"></script>
 <script src=".tmp/serve/common/services/userService.js"></script>
-<script src=".tmp/serve/common/directives/acceptableFeedbackLabel.js"></script>
-<script src=".tmp/serve/common/directives/listItemHistory.js"></script>
-<script src=".tmp/serve/common/directives/onTimeCheckMark.js"></script>
-<script src=".tmp/serve/common/directives/ratingStoplight.js"></script>
-<script src=".tmp/serve/common/directives/reviews.js"></script>
 <script src=".tmp/serve/modules/deliverable_definitions/definitionsController.js"></script>
 <script src=".tmp/serve/modules/deliverable_feedback/feedbackModalController.js"></script>
+<script src=".tmp/serve/modules/deliverable_summary/deliverableSummaryController.js"></script>
+<script src=".tmp/serve/modules/deliverable_instances/deliverableInstancesController.js"></script>
 <script src=".tmp/serve/modules/deliverable_forms/deliverableDefinitionModalController.js"></script>
 <script src=".tmp/serve/modules/deliverable_forms/deliverableFormEditController.js"></script>
 <script src=".tmp/serve/modules/deliverable_forms/deliverableFormNewController.js"></script>
-<script src=".tmp/serve/modules/deliverable_instances/deliverableInstancesController.js"></script>
-<script src=".tmp/serve/modules/navbar/navbarController.js"></script>
 <script src=".tmp/serve/modules/deliverables_by_month/deliverablesByMonthController.js"></script>
-<script src=".tmp/serve/modules/deliverable_summary/deliverableSummaryController.js"></script>
+<script src=".tmp/serve/modules/navbar/navbarController.js"></script>
+<script src=".tmp/serve/angular-point-discussion-thread/ts/apDiscussionThreadFactory.js"></script>
+<script src=".tmp/serve/angular-point-discussion-thread/ts/templates.js"></script>
+<script src=".tmp/serve/angular-point-discussion-thread/ts/index.js"></script>
 <script src=".tmp/serve/angular-point-lookup-cache/ts/index.js"></script>
 <script src=".tmp/serve/angular-point-sync/ts/index.js"></script>
 <!-- endinject -->

@@ -162,7 +162,7 @@ module app {
         cachedFyRequests = {};
 
         constructor(_$q_, _$modal_, _$injector_, _deliverableFrequenciesService_:DeliverableFrequenciesService,
-                    _calendarService_, ListItemFactory, ModelFactory) {
+                    _calendarService_, apListItemFactory, apModelFactory) {
             model = this;
             $q = _$q_;
             $modal = _$modal_;
@@ -370,18 +370,18 @@ module app {
                     name: fyCacheKey,
                     operation: 'GetListItems',
                     query: '' +
-                    '<Query>' +
-                    '   <OrderBy>' +
-                    '       <FieldRef Name="ID" Ascending="TRUE"/>' +
-                    '   </OrderBy>' +
-                    '   <Where>' +
                     /** Return all records for this FY */
-                    '       <Eq>' +
-                    '           <FieldRef Name="FY"/>' +
-                    '           <Value Type="Text">' + fy + '</Value>' +
-                    '       </Eq>' +
-                    '   </Where>' +
-                    '</Query>'
+                    `<Query>
+                       <OrderBy>
+                           <FieldRef Name="ID" Ascending="TRUE"/>
+                       </OrderBy>
+                       <Where>
+                           <Eq>
+                               <FieldRef Name="FY"/>
+                               <Value Type="Text">${fy}</Value>
+                           </Eq>
+                       </Where>
+                    </Query>`
                 });
 
                 /** Cache promise so we can return for future calls */

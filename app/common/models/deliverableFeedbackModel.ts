@@ -85,7 +85,7 @@ module app {
     export class DeliverableFeedbackModel extends ap.Model {
         lookupFieldsToCache = ['deliverable'];
         constructor(_$modal_, _userService_, _toastr_, _user_, _apLookupCacheService_,
-                    ListItemFactory, ModelFactory) {
+                    apListItemFactory, apModelFactory) {
             $modal = _$modal_;
             apLookupCacheService = _apLookupCacheService_;
             model = this;
@@ -163,15 +163,15 @@ module app {
                 model.registerQuery({
                     name: fyCacheKey,
                     query: '' +
-                    '<Query>' +
-                    '   <Where>' +
                     /** Return all records for this FY */
-                    '       <Eq>' +
-                    '           <FieldRef Name="FY"/>' +
-                    '           <Value Type="Text">' + fy + '</Value>' +
-                    '       </Eq>' +
-                    '   </Where>' +
-                    '</Query>'
+                    `<Query>
+                       <Where>
+                           <Eq>
+                               <FieldRef Name="FY"/>
+                               <Value Type="Text">${fy}</Value>
+                           </Eq>
+                       </Where>
+                    </Query>`
                 });
             }
 

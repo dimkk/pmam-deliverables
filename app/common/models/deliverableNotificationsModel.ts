@@ -16,7 +16,7 @@ module app {
     }
 
     export class DeliverableNotificationsModel extends ap.Model{
-        constructor(private toastr, ListItemFactory, ModelFactory) {
+        constructor(private toastr, apListItemFactory, apModelFactory) {
 
             /********************* Model Definition ***************************************/
             model = this;
