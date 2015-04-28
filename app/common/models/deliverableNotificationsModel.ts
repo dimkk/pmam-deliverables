@@ -10,7 +10,6 @@ module app {
         title:string;
         to:ap.IUser[];
         constructor(obj) {
-            super();
             _.assign(this, obj);
         }
     }

@@ -10,7 +10,6 @@ module app {
         fy:number;
         _deleteItem();
         constructor(obj) {
-            super();
             _.assign(this, obj);
             var self = this;
 

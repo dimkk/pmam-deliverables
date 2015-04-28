@@ -39,7 +39,6 @@ module app {
         _deleteItem();
 
         constructor(obj) {
-            super();
             _.assign(this, obj);
 
             this.displayDate = moment(this.submissionDate).format('MMM YY');
@@ -191,8 +190,7 @@ module app {
          * @returns {Number}
          */
         getViewCount(): number {
-            var deliverable = this;
-            var accessLogs:ap.IIndexedCache<DeliverableAccessLog> = deliverable.getCachedAccessLogsByDeliverableId(true);
+            var accessLogs:ap.IIndexedCache<DeliverableAccessLog> = this.getCachedAccessLogsByDeliverableId(true);
             return accessLogs.count();
         }
 

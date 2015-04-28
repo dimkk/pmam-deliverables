@@ -25,7 +25,6 @@ module app {
         _deleteItem();
 
         constructor(obj) {
-            super();
             _.assign(this, obj);
             var self = this;
 

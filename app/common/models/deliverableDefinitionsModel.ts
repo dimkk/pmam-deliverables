@@ -35,7 +35,6 @@ module app {
         dueDates:Date[];
 
         constructor(obj) {
-            super();
             _.assign(this, obj);
             /** Identify all due dates for this deliverable definition and store for later use */
             this.dueDates = deliverableFrequenciesService.generateDeliverableDueDates(this);
