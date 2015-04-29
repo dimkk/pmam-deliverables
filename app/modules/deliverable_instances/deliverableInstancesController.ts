@@ -81,12 +81,12 @@ module app {
 
         nextFiscalYear() {
             var updatedFiscalYear = vm.fiscalYear + 1;
-            vm.$state.go('deliverables.instances', {fy: updatedFiscalYear, id: null});
+            vm.$state.go('deliverables.instances', {fy: updatedFiscalYear, id: undefined}, {reload:true});
         }
 
         priorFiscalYear() {
             var updatedFiscalYear = vm.fiscalYear - 1;
-            vm.$state.go('deliverables.instances', {fy: updatedFiscalYear, id: null});
+            vm.$state.go('deliverables.instances', {fy: updatedFiscalYear, id: undefined}, {reload:true});
         }
     }
 
