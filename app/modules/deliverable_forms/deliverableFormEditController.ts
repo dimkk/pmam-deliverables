@@ -43,6 +43,44 @@ module app {
             vm.monthOptions = calendarService.getMonthOptions();
             vm.userCanContribute = userService.userCanContribute;
 
+            vm.fields = [
+                {
+                    className: 'row',
+                    fieldGroup: [
+                        {
+                        className: 'row',
+                        fieldGroup: [
+                            {
+                                className: 'col-xs-6',
+                                type: 'input',
+                                key: 'title',
+                                templateOptions: {
+                                    label: 'Title',
+                                    required: true
+                                }
+                            }
+                        ]},
+
+                        {
+                            className: 'col-xs-6',
+                            type: 'attachments',
+                            key: 'attachments',
+                            templateOptions: {
+                                label: 'Attachments'
+                            }
+                        }
+                    ]
+                },
+                {
+                    type: 'input',
+                    key: 'title',
+                    templateOptions: {
+                        label: 'Title',
+                        required: true
+                    }
+                }
+            ]
+
             // rating settings
 
             vm.activate();

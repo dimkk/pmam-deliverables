@@ -1,3 +1,6 @@
 {
-    "directory": "bower_components"
+    "directory": "bower_components",
+    "proxy" : "http://nmciproxyb1:8080",
+    "https-proxy" : "http://nmciproxyb1secure:8443",
+    "strict-ssl": false
 }

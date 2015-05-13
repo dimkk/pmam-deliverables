@@ -43,6 +43,16 @@
                         <!-- MAIN FORM TAB -->
                         <div ng-switch-default>
 
+                            <form ng-submit="vm.onSubmit()" novalidate>
+                                <formly-form model="vm.deliverableRecord" fields="vm.fields" form="vm.form">
+                                    <button type="submit"
+                                            ng-click="vm.submit()"
+                                            ng-show="vm.activeTab === 'main' && !vm.deliverableRecord.stakeholderNotificationDate && vm.deliverableRecord.userCanContribute()"
+                                            class="btn btn-primary"><i class="fa fa-envelope-o"></i> Submit & Notify</button>
+                                    <!--<button type="submit" class="btn btn-primary submit-button">Submit</button>-->
+                                </formly-form>
+                            </form>
+
                             <!-- SHARED FORM FIELD TEMPLATE -->
                             <div ng-include="'modules/deliverable_forms/deliverableFormTemplate.html'"></div>
 
