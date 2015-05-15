@@ -8,15 +8,14 @@ module app {
                 <label>Type&nbsp;</label>
                 <select ng-model="vm.$scope.selectedDefinition"
                         class="form-control"
-                        data-ng-options="deliverableDefinition.title for deliverableDefinition in vm.definitions | toArray | orderBy: 'title' track by deliverableDefinition.id"></select>
-            </div>
-                `;
-    // //data-ng-options="vm.dropdownLabel(deliverableDefinition) for deliverableDefinition in vm.definitions | toArray | orderBy: 'title' track by deliverableDefinition.id"></select>
+                        data-ng-options="vm.dropdownLabel(deliverableDefinition) for deliverableDefinition in vm.definitions | toArray | orderBy: 'title' track by deliverableDefinition.id"></select>
+
+            </div>`;
     function definitionSelector() {
         return {
             controller: definitionSelectorController,
             controllerAs: 'vm',
-            scope: { selectedTask: '=', fiscalYear: '=', selectedDefinition: '='},
+            scope: { selectedTask: '=', fiscalYear: '=', selectedDefinition: '=' },
             template: template
         };
     }
@@ -26,15 +25,15 @@ module app {
         isVisible: boolean;
         constructor(private $scope, private deliverableDefinitionsModel: DeliverableDefinitionsModel) {
             vm = this;
-            
+
             vm.isVisible = ($scope.visible !== undefined ? $scope.visible : true);
 
 
-            vm.definitions =deliverableDefinitionsModel.getDeliverableDefinitionsByTaskNumber($scope.fiscalYear, ($scope.selectedTask == 'All' ? undefined : $scope.selectedTask))
+            deliverableDefinitionsModel.getDeliverableDefinitionsByTaskNumber($scope.fiscalYear, ($scope.selectedTask == 'All' ? undefined : $scope.selectedTask))
                 .then(function (resolvedPromise) {
                 vm.definitions = _.toArray(resolvedPromise);
-                
-               
+
+
                 var count = 0;
                 _.each(vm.definitions, (deliverableDefinition) => {
                     if (deliverableDefinition.id === $scope.selectedDefinition.id)
@@ -43,13 +42,13 @@ module app {
 
                 if (count === 0)
                     $scope.selectedDefinition = vm.definitions[0];
-                 
+
             });
 
         }
-        
+
         getUpdateState() {
-            
+
             vm.$scope.selectedDefinition = vm.selectedDefinition;
         }
         dropdownLabel(deliverableDefinition) {
@@ -66,7 +65,6 @@ module app {
 
 }
 
- 
 
 
- 
+
