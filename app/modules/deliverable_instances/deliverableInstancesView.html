@@ -1,48 +1,5 @@
 <!-- renders view of deliverables by type -->
-<div class="navbar navbar-default hidden-print sub-nav">
-    <div class="container-fluid">
-
-        <div class="navbar-left">
-                <span class="navbar-text h4"><i class="fa fa-check-square icon-padding"></i>
-                    RELATED <span class="hidden-sm">DELIVERABLES</span>
-                </span>
-        </div>
-
-        <!--=========== Fiscal Month Toggle Control ===================-->
-        <form class="navbar-form navbar-right">
-            <div class="btn-group">
-
-                <button class="btn btn-default pull-left" type="button" ng-click="vm.priorFiscalYear()">
-                    <i class="fa fa-arrow-left"></i>
-                </button>
-
-                <span class="pull-left time-indicator text-muted">{{ vm.fiscalYearDisplay }}</span>
-
-                <button class="btn btn-default pull-left" type="button" ng-click="vm.nextFiscalYear()">
-                    <i class="fa fa-arrow-right"></i>
-                </button>
-
-            </div>
-        </form>
-
-        <!--=========== Filter ===================-->
-        <div class="navbar-form navbar-right" ng-if="vm.fyDefinitions.count() > 0">
-            <div class="form-group">
-                <label>Type&nbsp;</label>
-                <select
-                    ng-model="vm.selectedDefinition"
-                    ng-change="vm.getUpdateState()"
-                    class="form-control"
-                    data-ng-options="vm.dropdownLabel(deliverableDefinition) for deliverableDefinition in vm.fyDefinitions | toArray | orderBy: 'title' track by deliverableDefinition.id">
-                </select>
-
-                <!--<input type="text" class="form-control" placeholder="Filter" ng-model="vm.searchString">-->
-            </div>
-        </div>
-
-    </div>
-</div>
-
+<div ng-include="'modules/sub_navbar/subNavbarView.html'"></div>        
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">

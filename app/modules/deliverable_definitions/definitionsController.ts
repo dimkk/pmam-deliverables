@@ -2,42 +2,51 @@
 module app {
     'use strict';
 
+    var vm: DefinitionsController;
 
     class DefinitionsController {
-        fiscalYearDisplay:string;
         searchString = '';
-        deliverableDefinitions:{[key:number]:DeliverableDefinition};
-        constructor(private $state:angular.ui.IStateService, $q,
+        deliverableDefinitions: { [key: number]: DeliverableDefinition };
+        subTitle: string;
+        subTitleInfo: string;
+        subTitleIcon: string;
+        fiscalData;
+        showDefintions: boolean;
+        
+        constructor(private $scope, private $state:angular.ui.IStateService, $q,
                     private deliverableDefinitionsModel:DeliverableDefinitionsModel,
                     private deliverablesModel:DeliverablesModel, private fiscalYear:number) {
 
-            var vm = this;
+            vm = this;
 
-            vm.fiscalYearDisplay = 'FY ' + vm.fiscalYear.toString().slice(-2);
+            //SubTitle and Icon
+            vm.subTitle = "FY DELIVERABLES";
+            vm.subTitleIcon = "fa fa-lg fa-list-ol icon-padding";
+                                    
+            //Fiscal Data and Watch
+            vm.fiscalData = { fiscalMonth: undefined, fiscalYear: fiscalYear };
+            $scope.$watch('vm.fiscalData', (newVal, oldVal) => {
+                if (newVal && newVal !== oldVal) {
+                    vm.$state.go('deliverables.types', { fy: vm.fiscalData.fiscalYear });
+                }
+            }, true);
 
             $q.all([
                 deliverableDefinitionsModel.getFyDefinitions(vm.fiscalYear),
                 deliverablesModel.getFyDeliverables(vm.fiscalYear)
             ])
                 .then((resolvedPromises) => vm.deliverableDefinitions = resolvedPromises[0]);
-
+           
+            
         }
 
         deliverableCountByDefinition(definition) {
+          
             var deliverableInstances = definition.getDeliverablesForDefinition();
             return _.toArray(deliverableInstances).length;
         }
 
-        nextFiscalYear() {
-            var updatedFiscalYear = this.fiscalYear + 1;
-            this.$state.go('deliverables.types', {fy: updatedFiscalYear});
-
-        }
-
-        priorFiscalYear() {
-            var updatedFiscalYear = this.fiscalYear - 1;
-            this.$state.go('deliverables.types', {fy: updatedFiscalYear});
-        }
+        
     }
 
     angular

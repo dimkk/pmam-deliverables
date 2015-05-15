@@ -14,21 +14,31 @@ module app {
 
             $stateProvider
                 .state('deliverables', {
-                    url: '/deliverables?fy',
-                    abstract: true,
-                    template: '<div ui-view />',
-                    resolve: {
-                        fiscalYear: function ($stateParams, calendarService:CalendarService) {
-                            return isNaN($stateParams.fy) ? calendarService.getCurrentFiscalYear() : parseInt($stateParams.fy);
-                        }
+                url: '/deliverables?fy&task',
+                abstract: true,
+                template: '<div ui-view />',
+
+                resolve: {
+                    fiscalYear: function ($stateParams, calendarService: CalendarService) {
+                        return isNaN($stateParams.fy) ? calendarService.getCurrentFiscalYear() : parseInt($stateParams.fy);
+                    },
+                    selectedTask: function ($stateParams) {
+                        return ($stateParams.task) ? $stateParams.task : "All";
                     }
-                })
+                }
+            })
 
                 .state('deliverables.summary', {
-                    url: '/summary',
-                    templateUrl: 'modules/deliverable_summary/deliverablesSummaryView.html',
-                    controller: 'deliverableSummaryController',
-                    controllerAs: 'vm'
+                url: '/summary?ct',
+                templateUrl: 'modules/deliverable_summary/deliverablesSummaryView.html',
+                controller: 'deliverableSummaryController',
+                controllerAs: 'vm',
+               // params: { 'task': null, 'chartType': null },
+                resolve: {
+                    selectedChart: function ($stateParams) {
+                        return ($stateParams.ct) ? $stateParams.ct :  "Column Chart";
+                        }
+                    }
                 })
 
                 .state('deliverables.monthly', {
@@ -52,15 +62,15 @@ module app {
                     controllerAs: 'vm',
                     resolve: {
                         fyDefinitions: function (deliverableDefinitionsModel:DeliverableDefinitionsModel,
-                                                 $stateParams:angular.ui.IStateParamsService,
-                                                 fiscalYear:number) {
-                            return deliverableDefinitionsModel.getFyDefinitions(fiscalYear);
-                        },
-                        selectedDefinition: function ($stateParams:{id?:string}, $q, fyDefinitions:ap.IIndexedCache<DeliverableDefinition>) {
+                                                 $stateParams,$filter,
+                                                 fiscalYear: number) {
+                           return deliverableDefinitionsModel.getFyDefinitions(fiscalYear);
+                         },
+                        selectedDefinition: function ($stateParams, $q, fyDefinitions: ap.IIndexedCache<DeliverableDefinition>) {
                             var deferred = $q.defer();
+                            
                             if (isNaN($stateParams.id)) {
                                 /** No ID was provided */
-
                                 if (fyDefinitions.count() < 1) {
                                     /** No definitions for this month were found */
                                     deferred.resolve(null);
@@ -68,12 +78,10 @@ module app {
                                     /** Set to the first definition */
                                     deferred.resolve(fyDefinitions.first());
                                 }
-
                             } else {
                                 var definitionId = parseInt($stateParams.id);
                                 deferred.resolve(fyDefinitions[definitionId]);
                             }
-
                             return deferred.promise;
                         }
                     }

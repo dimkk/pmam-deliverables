@@ -2,16 +2,19 @@
 module app {
     'use strict';
 
+    var vm: DeliverablesByMonthController;
 
     class DeliverablesByMonthController {
         deliverableDefinitionsByMonth:DeliverableDefinition[];
         deliverableFeedback:{[key:number]:DeliverableFeedback};
-        displayPeriod:string;
         gotData = false;
         outstandingDefinitions:DeliverableDefinition[];
         searchString = '';
         visibleDeliverables:Deliverable[];
-        //showFeedbackPanel = false;
+        subTitle: string;
+        subTitleInfo: string;
+        subTitleIcon: string;
+        fiscalData;
 
         deliverableGrid = {
             //showGridFooter: true,
@@ -33,18 +36,28 @@ module app {
                     private calendarService:CalendarService, private deliverableAccessLogModel:DeliverableAccessLogModel,
                     private uiGridService) {
 
-            var vm = this;
-
-            vm.displayPeriod = calendarService.generateDisplayPeriod(fiscalMonth, fiscalYear);
+            vm = this;
+            
             //vm.showFeedbackPanel = false;
             vm.deliverableGrid.columnDefs = uiGridService.getDeliverableFields();
 
-            vm.activate();
+            //SubTitle and Icon
+            vm.subTitle = "MONTHLY SNAPSHOT";
+            vm.subTitleIcon = "fa fa-calendar icon-padding";
 
+            //Fiscal Data and Watch
+            vm.fiscalData = { fiscalMonth: fiscalMonth, fiscalYear: fiscalYear };
+            $scope.$watch('vm.fiscalData', (newVal, oldVal) => {
+                if (newVal && newVal !== oldVal) {
+                    vm.$state.go('deliverables.monthly', { fy: vm.fiscalData.fiscalYear, mo: vm.fiscalData.fiscalMonth });
+                }
+            }, true);
+            
+            vm.activate();
         }
 
         activate() {
-            var vm = this;
+            //var vm = this;
             //vm.gauge1 = new chartService.Gauge('Satisfaction');
             //vm.gauge2 = new chartService.Gauge('OTD');
 
@@ -62,6 +75,7 @@ module app {
 
                     vm.deliverableFeedback = resolvedPromises[2];
 
+                    
                     //vm.gauge1.updateGaugeValue(chartService.getSatisfactionRating(vm.visibleDeliverables));
                     //vm.gauge2.updateGaugeValue(chartService.getOnTimeDeliveryRating(vm.visibleDeliverables));
 
@@ -79,37 +93,6 @@ module app {
                 });
 
         }
-
-        decreaseDate() {
-            var vm = this;
-            var updatedMonth = vm.fiscalMonth - 1;
-            var updatedYear = vm.fiscalYear;
-
-            // if we're flipping to the previous year, decrement current fiscal year bucket
-            if (updatedMonth === 0) {
-                updatedYear = updatedYear - 1;
-                updatedMonth = 12;
-            }
-
-            vm.$state.go('deliverables.monthly', {fy: updatedYear, mo: updatedMonth});
-        }
-
-        // 10/1 starts the new fiscal year
-        increaseDate() {
-            var vm = this;
-            var updatedMonth = vm.fiscalMonth + 1;
-            var updatedYear = vm.fiscalYear;
-
-            // if we're flipping to the new year, increment current fiscal year bucket
-            if (updatedMonth > 12) {
-                updatedYear = vm.fiscalYear + 1;
-                updatedMonth = 1;
-            }
-
-            vm.$state.go('deliverables.monthly', {fy: updatedYear, mo: updatedMonth});
-        }
-
-
     }
 
     angular

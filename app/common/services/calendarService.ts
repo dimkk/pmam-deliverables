@@ -22,7 +22,7 @@ module app {
          * @param {number} fiscalYear
          * @returns {string}
          */
-        generateDisplayPeriod(fiscalMonth:number, fiscalYear:number):string {
+        generateDisplayPeriod(fiscalMonth: number, fiscalYear: number): string {
             var calendarMonth = this.getCalendarMonth(fiscalMonth);
             var calendarYear = this.getCalendarYear(fiscalYear, calendarMonth);
             var monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];

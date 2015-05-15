@@ -171,12 +171,13 @@ module app {
      * @param {string} label Label for visualization.
      * @param {DeliverableDefinition[]} deliverableDefinitions Definitions to use for visualization.
      * @param {IChartType} [activeChartType] Object with properties to override default options.
+     * @param {boolean} [allData] option to restrict data to only categories that have deliverables. Default to true.
      * @constructor
      */
     class AcceptabilityChart {
         options;
         data:IGoogleChartData;
-        constructor(label:string, deliverableDefinitions:DeliverableDefinition[], activeChartType?:IChartType) {
+        constructor(label:string, deliverableDefinitions:DeliverableDefinition[], activeChartType?:IChartType, allData?:boolean) {
             var self = this;
             var data:IGoogleChartData = {
                 cols: [
@@ -188,11 +189,28 @@ module app {
                 rows: []
             };
 
-            _.each(deliverableDefinitions, function (definition:DeliverableDefinition) {
-                var row = [{v: definition.title}, {v: 0}, {v: 0}, {v: 0}];
-                data.rows.push({c: row});
-            });
+            var availableDefinitions = [];
+            var showAllData = (allData !== undefined ? allData  : true);
+            
+            if (!showAllData) {
+                _.each(deliverableDefinitions, function (definition: DeliverableDefinition) {
+                    var x = definition.getDeliverablesForDefinition();
+                    if (_.toArray(x).length > 0) {
+                        availableDefinitions.push(definition);
+                    }
+                });
+            }
+            else {
+                availableDefinitions = deliverableDefinitions;
+            }
+            
 
+            //TODO: confirm that its ok to only show categories that have deliverables
+            _.each(availableDefinitions, function (definition: DeliverableDefinition) {
+                    var row = [{ v: definition.title }, { v: 0 }, { v: 0 }, { v: 0 }];
+                    data.rows.push({ c: row });
+            });
+            
             _.assign(self, activeChartType, {
                 data: data,
                 options: {
@@ -214,13 +232,13 @@ module app {
             /* Pause prior to triggering animation */
             $timeout(function () {
                 var activeRowNumber = 0;
-                _.each(deliverableDefinitions, function (definition:DeliverableDefinition) {
-                    var activeRow = self.data.rows[activeRowNumber].c;
-                    var definitionSummary = deliverablesService.createDeliverableSummaryObject([definition]);
-                    activeRow[1].v = definitionSummary.acceptableCount;
-                    activeRow[2].v = definitionSummary.actualCount - (definitionSummary.acceptableCount + definitionSummary.unacceptableCount);
-                    activeRow[3].v = definitionSummary.unacceptableCount;
-                    activeRowNumber++;
+                _.each(availableDefinitions, function (definition: DeliverableDefinition) {
+                        var activeRow = self.data.rows[activeRowNumber].c;
+                        var definitionSummary = deliverablesService.createDeliverableSummaryObject([definition]);
+                        activeRow[1].v = definitionSummary.acceptableCount;
+                        activeRow[2].v = definitionSummary.actualCount - (definitionSummary.acceptableCount + definitionSummary.unacceptableCount);
+                        activeRow[3].v = definitionSummary.unacceptableCount;
+                        activeRowNumber++;
                 });
 
             }, 750);
@@ -233,12 +251,13 @@ module app {
      * @param {string} label Label for visualization.
      * @param {DeliverableDefinition[]} deliverableDefinitions Definitions to use for visualization.
      * @param {IChartType} [activeChartType] Object with properties to override default options.
+     * @param {boolean} [allData] option to restrict data to only categories that have deliverables. Default to true.
      * @constructor
      */
     class OnTimeChart {
         options;
         data:IGoogleChartData;
-        constructor(label:string, deliverableDefinitions:DeliverableDefinition[], activeChartType?:IChartType) {
+        constructor(label:string, deliverableDefinitions:DeliverableDefinition[], activeChartType?:IChartType,allData?:boolean) {
             var self = this;
             var data = {
                 cols: [
@@ -249,8 +268,21 @@ module app {
                 rows: []
             };
 
+            var availableDefinitions = [];
+            var showAllData = (allData !== undefined ? allData : true);
+            if (!showAllData) {
+                _.each(deliverableDefinitions, function (definition: DeliverableDefinition) {
+                    var x = definition.getDeliverablesForDefinition();
+                    if (_.toArray(x).length > 0) {
+                        availableDefinitions.push(definition);
+                    }
+                });
+            }
+            else {
+                availableDefinitions = deliverableDefinitions;
+            }
 
-            _.each(deliverableDefinitions, function (definition:DeliverableDefinition) {
+            _.each(availableDefinitions, function (definition:DeliverableDefinition) {
                 var row = [{v: definition.title}, {v: 0}, {v: 0}];
                 data.rows.push({c: row});
             });
@@ -275,7 +307,7 @@ module app {
                 /* Pause prior to triggering animation */
             $timeout(function () {
                 var activeRowNumber = 0;
-                _.each(deliverableDefinitions, function (definition:DeliverableDefinition) {
+                _.each(availableDefinitions, function (definition:DeliverableDefinition) {
                     var activeRow = self.data.rows[activeRowNumber].c;
                     var definitionSummary = deliverablesService.createDeliverableSummaryObject([definition]);
                     activeRow[1].v = definitionSummary.onTimeCount;
@@ -287,12 +319,8 @@ module app {
 
             //self.options.colors = ['#0F9D58', '#BA3B2E'];
             console.log(self);
-
         }
-
     }
-
-
 
     angular
         .module('pmam-deliverables')

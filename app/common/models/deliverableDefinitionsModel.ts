@@ -294,6 +294,22 @@ module app {
         }
 
 
+        getDeliverableDefinitionsByTaskNumber(fiscalYear: number, taskNumber: number): ng.IPromise<IFilteredDefinitions> {
+            var deferred = $q.defer();
+
+            model.getFyDefinitions(fiscalYear)
+                .then((deliverableDefinitions) => {
+                var definitions = deliverableDefinitions;
+                if (taskNumber)
+                    definitions = _.filter(deliverableDefinitions, { taskNumber: taskNumber });
+
+                deferred.resolve(definitions);
+            });
+            return deferred.promise;
+
+        }
+
+        
         /**
          * @name deliverableDefinitionsModel.filterDefinitionsForFiscalMonth
          * @param {number} fiscalMonth Fiscal Month (1 - 12 starting with October)
@@ -320,17 +336,7 @@ module app {
             return deliverableDefinitionsByMonth;
         }
 
-        getDeliverableDefinitionsByTaskNumber(fiscalYear:number, taskNumber:number|string) {
-            var deferred = $q.defer();
-            model.getFyDefinitions(fiscalYear)
-                .then((deliverableDefinitions) => {
-                    var deliverableDefinitionsByTaskNumber = _.filter(deliverableDefinitions, {taskNumber: taskNumber});
-                    deferred.resolve(deliverableDefinitionsByTaskNumber);
-                });
-            return deferred.promise;
-
-        }
-
+        
         /**
          * @name deliverableDefinitionsModel.getDeliverableDefinitionsForMonth
          * @description Accepts a fiscal month and year and returns applicable definitions for that period
@@ -441,6 +447,31 @@ module app {
             });
 
             return groupedDeliverablesByTaskNumber;
+        }
+
+           /**
+         * @name DeliverableDefinitionsModel.getAvailableTaskNumbers
+         * @param {number} fiscalYear Fiscal Year (October - September)
+         * @returns {promise} Promise which resolves with an object with keys of available task numbers for the selected fiscal year
+         */
+        getAvailableTaskNumbers(fiscalYear: number) {
+            var deferred = $q.defer();
+            var tasks = [];
+            model.getFyDefinitions(fiscalYear)
+                .then((deliverableDefinitions) => {
+
+                _.each(deliverableDefinitions, function (deliverable) {
+                    var currentTask = deliverable.taskNumber;
+                    if (currentTask !== '') {
+                        if (tasks.indexOf(currentTask) < 0) {
+                            tasks.push(currentTask);
+                        }
+                    }
+                });
+                deferred.resolve(tasks);
+                });
+            
+            return deferred.promise;
         }
 
 

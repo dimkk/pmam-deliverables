@@ -1,39 +1,5 @@
 <!-- renders deliverable types display -->
-<div class="navbar navbar-default hidden-print sub-nav">
-    <div class="container-fluid">
-
-        <div class="navbar-left">
-            <span class="navbar-text h4"><i class="fa fa-lg fa-list-ol icon-padding"></i>FY DELIVERABLES</span>
-
-        </div>
-
-        <!--=========== Fiscal Month Toggle Control ===================-->
-        <form class="navbar-form navbar-right">
-            <div class="btn-group">
-
-                <button class="btn btn-default pull-left" type="button" ng-click="vm.priorFiscalYear()">
-                    <i class="fa fa-arrow-left"></i>
-                </button>
-
-                <span class="pull-left time-indicator text-muted">{{ vm.fiscalYearDisplay }}</span>
-
-                <button class="btn btn-default pull-left" type="button" ng-click="vm.nextFiscalYear()">
-                    <i class="fa fa-arrow-right"></i>
-                </button>
-
-            </div>
-        </form>
-
-        <!--=========== Filter ===================-->
-        <div class="navbar-form navbar-right">
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Filter" ng-model="vm.searchString">
-            </div>
-        </div>
-
-    </div>
-</div>
-
+<div ng-include="'modules/sub_navbar/subNavbarView.html'"></div>        
 <div class="container-fluid">
     <div class="panel panel-default">
         <table class="table table-striped">
@@ -60,8 +26,8 @@
                 <td>{{ deliverableDefinition.title }}</td>
                 <td>{{ deliverableDefinition.deliverableFrequency }}</td>
                 <td>
-                    <a ui-sref="deliverables.instances({ fy:vm.fiscalYear, id:deliverableDefinition.id })"
-                        title="Click to view all deliverable instances of this type.">
+                    <a ui-sref="deliverables.instances({ fy:vm.fiscalYear, id:deliverableDefinition.id, task: 'All' })"
+                       title="Click to view all deliverable instances of this type.">
                         <span class="badge badge-info">{{ vm.deliverableCountByDefinition(deliverableDefinition) }}</span>
                     </a>
                 </td>

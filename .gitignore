@@ -19,3 +19,7 @@ xml-cache
 test/mocks/offlineXML.js
 
 npm-debug.log
+
+# visual studio
+.csproj
+.csproj.user

@@ -1,41 +1,29 @@
 
-
+<div ng-include="'modules/sub_navbar/subNavbarView.html'"></div>   
 <div class="container-fluid">
-    <div class="page-header" style="margin-top: 0;">
-        <h2>Deliverable Summary<small>&nbsp;Tasks 2.1 & 2.3</small>
-            <div class="form-inline pull-right">
-                <div class="form-group small">
-                    <label>Chart Type</label>&nbsp;
-                    <select class="form-control" ng-model="vm.activeChartType"
-                            ng-options="chartType as chartType.label for chartType in vm.chartTypes"
-                            ng-change="vm.toggleChartTypes(vm.activeChartType)">
-                        <!--<option value="AreaChart">AreaChart</option>-->
-                        <!--<option value="google.charts.Bar">ColumnChart</option>-->
-                        <!--<option value="google.charts.Line">LineChart</option>-->
-                        <!--<option value="Table">Table</option>-->
-                        <!--<option value="BarChart">BarChart</option>-->
-                    </select>
-                </div>
-            </div>
-
-        </h2>
-    </div>
-
+        
+    
+    
 
 
     <fieldset>
-        <legend>Task 2.1</legend>
-        <div google-chart chart="vm.acceptabilityChart21"></div>
-        <br/>
-        <div google-chart chart="vm.onTimeChart21"></div>
+        <!--<legend>
+            Task&nbsp;<select ng-model="vm.activeTask"
+                              ng-options="task as task for task in vm.availableTasks"
+                              ng-change="vm.taskSelected()"></select>
+        </legend>-->
+
+        <div google-chart chart="vm.acceptabilityChart"></div>
+        <br />
+        <div google-chart chart="vm.onTimeChart"></div>
     </fieldset>
-    <fieldset>
+    <!--<fieldset>
         <legend>Task 2.3</legend>
         <div google-chart chart="vm.acceptabilityChart23"></div>
         <br/>
         <div google-chart chart="vm.onTimeChart23"></div>
 
-    </fieldset>
+    </fieldset>-->
 
 
     <!--<div class="row">-->

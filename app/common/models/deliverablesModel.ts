@@ -360,7 +360,7 @@ module app {
          * @param {Object|Array} deliverables
          * @returns {Deliverable[]}  Array of deliverables for the month.
          */
-        filterDeliverablesForFiscalMonth(fiscalMonth:number, deliverables:ap.IIndexedCache<Deliverable>):Deliverable[] {
+        filterDeliverablesForFiscalMonth(fiscalMonth: number, deliverables: ap.IIndexedCache<Deliverable>): Deliverable[]{
             return _.filter(deliverables, {fiscalMonth: fiscalMonth});
         }
 

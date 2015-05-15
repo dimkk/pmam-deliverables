@@ -18,7 +18,7 @@
         <!-- DELIVERABLE TYPE -->
         <div class="form-group" ng-class="{ 'has-error': form.deliverableType.$invalid }">
             <label class="deliverables-header" for="deliverableType">Deliverable Type*</label>
-            <select id="deliverableType" placeholder="Select Type" ng-required="true"
+            <select id="deliverableType" placeholder="Select Type" ng-required="true" 
                     ng-model="vm.deliverableRecord.deliverableType"
                     ng-options="{lookupId: deliverableType.id, lookupValue: deliverableType.title} as deliverableType.title for deliverableType
                                     in vm.deliverableTypes | toArray | orderBy:'title' track by deliverableType.lookupId || deliverableType.id"

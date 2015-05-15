@@ -1,59 +1,110 @@
 /// <reference path="../../../typings/app.d.ts" />
 module app {
     'use strict';
+    var vm: DeliverableSummaryController;
 
     class DeliverableSummaryController {
-        //summary21;
-        //summary23;
-        acceptabilityChart21;
-        acceptabilityChart23;
+        acceptabilityChart;
         activeChartType;
         chartTypes:IChartType[];
-        onTimeChart21;
-        onTimeChart23;
+        onTimeChart;
+        fiscalData;
+        subTitle: string;
+        subTitleInfo: string;
+        subTitleIcon: string;
+        availableTasks: Object[];
+        activeTask: string;
+        deliverablesModel: DeliverablesModel;
+        deliverableDefinitionsModel: DeliverableDefinitionsModel;
 
-        constructor($q, deliverablesModel: DeliverablesModel,
-                    deliverableDefinitionsModel: DeliverableDefinitionsModel,
-                    deliverablesService: DeliverablesService,
-                    fiscalYear: number, private chartService) {
+        constructor(private $state, $scope: ng.IScope,private $q, deliverablesModel: DeliverablesModel,
+            deliverableDefinitionsModel: DeliverableDefinitionsModel,
+            deliverablesService: DeliverablesService,
+            fiscalYear: number, private chartService, selectedTask: string, selectedChart: string) {
+          
 
-            var vm = this;
+            vm = this;
+            
+            
+
+            //Chart Types
             vm.chartTypes = chartService.chartTypes;
-            vm.activeChartType = vm.chartTypes[2];
+            for (var idx in vm.chartTypes) {
+                if (vm.chartTypes[idx].label === selectedChart) {
+                    vm.activeChartType = vm.chartTypes[idx];
+                    break;
+                }
+            }
+            
 
-            $q.all([
-                deliverablesModel.getFyDeliverables(fiscalYear),
-                deliverableDefinitionsModel.getDeliverableDefinitionsByTaskNumber(fiscalYear, '2.1'),
-                deliverableDefinitionsModel.getDeliverableDefinitionsByTaskNumber(fiscalYear, '2.3')
-            ]).then(function (resolvedPromises) {
-                var deliverables = resolvedPromises[0];
-                var definitions21 = resolvedPromises[1];
-                var definitions23 = resolvedPromises[2];
+            //data
+            vm.deliverableDefinitionsModel = deliverableDefinitionsModel;
+            vm.deliverablesModel = deliverablesModel;
+                                  
+            //Fiscal Data and Watch
+            vm.fiscalData = {fiscalMonth: undefined, fiscalYear: fiscalYear};
+            $scope.$watch('vm.fiscalData', (newVal, oldVal) => {
+                if (newVal && newVal !== oldVal) {
+                   vm.$state.go('deliverables.summary', { fy: vm.fiscalData.fiscalYear, id: null,task: vm.activeTask }, { reload: true });
+                }
+            }, true);
 
-                //vm.summary21 = deliverablesService.createDeliverableSummaryObject(definitions21);
-                //vm.summary23 = deliverablesService.createDeliverableSummaryObject(definitions23);
-                //console.log(vm.summary21);
+            //task
+            vm.activeTask = selectedTask;
 
-                vm.acceptabilityChart21 = new vm.chartService.AcceptabilityChart('Acceptability (Task 2.1)', definitions21, vm.activeChartType);
-                vm.acceptabilityChart23 = new vm.chartService.AcceptabilityChart('Acceptability (Task 2.3)', definitions23, vm.activeChartType);
-                vm.onTimeChart21 = new vm.chartService.OnTimeChart('On Time (2.1)', definitions21, vm.activeChartType);
-                vm.onTimeChart23 = new vm.chartService.OnTimeChart('On Time (2.3)', definitions23, vm.activeChartType);
-
+            //Task watch
+            vm.activeTask = selectedTask;
+            $scope.$watch('vm.activeTask', (newVal, oldVal) => {
+                if (newVal && newVal !== oldVal)
+                    vm.$state.go('deliverables.summary', { fy: vm.fiscalData.fiscalYear, id: null, task: vm.activeTask }, { reload: true });
             });
+            
 
+            //Sub Navigation Title/Subtitle/Icon 
+            vm.subTitle = 'DELIVERABLE SUMMARY';
+            ///vm.subTitleInfo = 'Tasks 2.1 & 2.3';
+            vm.subTitleIcon = 'fa fa-bar-chart icon-padding';
+            
+           
+            $q.all([
+                deliverablesModel.getFyDeliverables(vm.fiscalData.fiscalYear),
+            ]).then(function (resolvedPromises) {
+                //vm.availableTasks = resolvedPromises[1];
 
+                //Update charts
+                vm.updateChart();
+            });
         }
 
-        //TODO: Figure out why changing chart types blows away defined colors
-        toggleChartTypes(updatedChartType) {
-            //var updatedChartType = this.acceptabilityChart21.type === 'ColumnChart' ? 'BarChart' : 'ColumnChart';
-            _.assign(this.acceptabilityChart21, updatedChartType);
-            _.assign(this.acceptabilityChart21, updatedChartType);
-            _.assign(this.acceptabilityChart23, updatedChartType);
-            _.assign(this.onTimeChart21, updatedChartType);
-            _.assign(this.onTimeChart23, updatedChartType);
-            console.log(updatedChartType);
+         //Updates Charts based on current data.  Needs to be called outside of the constructor bc of the new ability to change selected task
+        updateChart() {
+            var allTaskItem = 'All'; //to identify
+            var selectedTask: string = (vm.activeTask === allTaskItem ? undefined : vm.activeTask);
+            vm.$q.all([
+                vm.deliverableDefinitionsModel.getDeliverableDefinitionsByTaskNumber(vm.fiscalData.fiscalYear, selectedTask),
+            ]).then(function (resolvedPromises) {
+                var definitions = resolvedPromises[0];
 
+                //Set Charts
+                vm.acceptabilityChart = new vm.chartService.AcceptabilityChart('Acceptability (' + selectedTask + ')', definitions, vm.activeChartType,false); 
+                vm.onTimeChart = new vm.chartService.OnTimeChart('On Time (' + selectedTask + ')', definitions, vm.activeChartType,false);
+
+                //vm.summary21 = deliverablesService.createDeliverableSummaryObject(definitions21);
+                    //vm.summary23 = deliverablesService.createDeliverableSummaryObject(definitions23);
+
+                //This was put in to fix an issue observerd when chart was set to Bar chart and then task changed.  Active Chart Type was being lost and resulting in a column chart
+                _.assign(vm.acceptabilityChart, vm.activeChartType);
+                _.assign(vm.onTimeChart, vm.activeChartType);
+            });
+        }
+
+        //TODO: Figure out why changing chart types blows away defined colors  **Only changing color schemes on the area chart now
+        toggleChartTypes(updatedChartType) {
+            vm.activeChartType = updatedChartType;
+            vm.$state.go('deliverables.summary', { fy: vm.fiscalData.fiscalYear, id: null, task: vm.activeTask, ct: vm.activeChartType.label }, { reload: true });
+            
+            //_.assign(vm.acceptabilityChart, updatedChartType);
+            //_.assign(vm.onTimeChart, updatedChartType);
         }
     }
 

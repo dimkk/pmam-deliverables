@@ -19,6 +19,10 @@ module.exports = function (projectDir) {
             bowerDir + "angular-touch/angular-touch.js",
             bowerDir + "angular-messages/angular-messages.js"
         ],
+        projectjs: [
+            app + "**/*.module.js",
+            app + "**/*.js"
+        ],
         modules: [
             bowerDir + "angular-point/dist/angular-point.js",
             bowerDir + "angular-point-attachments/dist/apAttachments.js",

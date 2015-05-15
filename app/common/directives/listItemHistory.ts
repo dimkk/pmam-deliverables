@@ -34,12 +34,16 @@ module app {
         initialized = false;
         listItem;
         template:string;
-        versionHistory:ap.IListItemVersion[];
-        constructor($scope:IControllerScope) {
+        versionHistory: ap.IListItemVersion[];
+        monthOptions: { number: number; label: string }[];
+        deliverableTypes: DeliverableDefinition[];
+        constructor($scope: IControllerScope, private calendarService: CalendarService, private $q, private deliverableDefinitionsModel: DeliverableDefinitionsModel) {
             var vm = this;
 
             vm.listItem = $scope.listItem;
             vm.template = $scope.template;
+            vm.monthOptions = calendarService.getMonthOptions();
+            
 
             $scope.$watch('listItem', function (newVal, oldVal) {
 
@@ -56,7 +60,7 @@ module app {
                         /** Pull the version history for all non-readonly fields */
                         vm.listItem.getFieldVersionHistory()
                             .then(function (changes) {
-                                console.log(changes);
+                                
 
                                 setChanges(changes);
                             });
@@ -72,16 +76,25 @@ module app {
                 });
                 vm.availableVersions = _.size(changes) - 1;
                 vm.activeVersion = _.size(changes) - 1;
-
+                
                 /** Initialize with the current version */
                 vm.updateVersion(0);
             }
 
         }
+        
+
         updateVersion(incrementValue) {
-            this.activeVersion = this.activeVersion + incrementValue;
-            this.deliverableRecord = this.versionHistory[this.activeVersion];
-            this.historyReady = true;
+            
+            var vm = this;
+            vm.activeVersion = this.activeVersion + incrementValue;
+            vm.deliverableRecord = this.versionHistory[this.activeVersion];
+            vm.historyReady = true;
+
+            //this gets called based on the version
+            this.deliverableDefinitionsModel.getFyDefinitions(this.deliverableRecord.fy).then(function (data) {
+                vm.deliverableTypes = data; 
+            });
         }
     }
 
