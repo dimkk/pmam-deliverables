@@ -2,35 +2,38 @@
 module app {
     'use strict';
 
-    interface IStateParams extends angular.ui.IStateParamsService{
+    interface IStateParams extends angular.ui.IStateParamsService {
         activeTab?:string;
     }
 
-    var vm:DeliverableFormEditController;
+    var vm: DeliverableFormEditController;
 
 
-    class DeliverableFormEditController{
-        activeTab:string;
+    class DeliverableFormEditController {
+        activeTab: string;
         dataReady = false;
         isReadonly = false;
         max = 5;
         negotiatingWithServer = false;
         rate = 5;
-        personnelArray:ap.IUser[];
-        userDeliverableFeedback:DeliverableFeedback;
-        deliverableTypes:DeliverableDefinition[];
-        deliverableFeedback:DeliverableFeedback[];
-        percent:number;
-        userCanContribute:boolean;
-        deliverableBackup:Deliverable;
-        getLabelClass(rating:number):string;
-        monthOptions:{number:number; label:string}[];
-        constructor(private deliverableFeedbackModel:DeliverableFeedbackModel, private toastr,
-                    private $state:angular.ui.IStateService, private userService, private $q,
-                    private $stateParams:IStateParams,
-                    private deliverableDefinitionsModel:DeliverableDefinitionsModel,
-                    private deliverableRecord:Deliverable, private ratingsService:RatingsService,
-                    private calendarService:CalendarService, private $scope:ng.IScope) {
+        personnelArray: ap.IUser[];
+        userDeliverableFeedback: DeliverableFeedback;
+        deliverableTypes: DeliverableDefinition[];
+        deliverableFeedback: DeliverableFeedback[];
+        percent: number;
+        userCanContribute: boolean;
+        deliverableBackup: Deliverable;
+
+        getLabelClass(rating: number): string;
+
+        monthOptions: {number:number; label:string}[];
+
+        constructor(private deliverableFeedbackModel: DeliverableFeedbackModel, private toastr,
+                    private $state: angular.ui.IStateService, private userService, private $q,
+                    private $stateParams: IStateParams,
+                    private deliverableDefinitionsModel: DeliverableDefinitionsModel,
+                    private deliverableRecord: Deliverable, private ratingsService: RatingsService,
+                    private calendarService: CalendarService, private $scope: ng.IScope) {
 
             //TODO Need to add logic to revert back to pristine deliverable in cache if entity is updated and user leaves
             // without saving
@@ -43,43 +46,6 @@ module app {
             vm.monthOptions = calendarService.getMonthOptions();
             vm.userCanContribute = userService.userCanContribute;
 
-            vm.fields = [
-                {
-                    className: 'row',
-                    fieldGroup: [
-                        {
-                        className: 'row',
-                        fieldGroup: [
-                            {
-                                className: 'col-xs-6',
-                                type: 'input',
-                                key: 'title',
-                                templateOptions: {
-                                    label: 'Title',
-                                    required: true
-                                }
-                            }
-                        ]},
-
-                        {
-                            className: 'col-xs-6',
-                            type: 'attachments',
-                            key: 'attachments',
-                            templateOptions: {
-                                label: 'Attachments'
-                            }
-                        }
-                    ]
-                },
-                {
-                    type: 'input',
-                    key: 'title',
-                    templateOptions: {
-                        label: 'Title',
-                        required: true
-                    }
-                }
-            ]
 
             // rating settings
 
@@ -87,6 +53,7 @@ module app {
 
 
         }
+
         activate() {
             if (!vm.deliverableRecord) {
                 /** Redirect if a valid deliverable isn't found */
@@ -98,7 +65,7 @@ module app {
                 vm.userService.getUserLookupValues(),
                 vm.deliverableFeedbackModel.getFyFeedback(vm.deliverableRecord.fy),
                 vm.deliverableDefinitionsModel.getFyDefinitions(vm.deliverableRecord.fy)
-            ]).then( (resolvedPromises) => {
+            ]).then((resolvedPromises) => {
                 vm.personnelArray = resolvedPromises[0];
                 vm.deliverableTypes = resolvedPromises[2];
 
@@ -113,12 +80,73 @@ module app {
                     vm.percent = 100 * (vm.userDeliverableFeedback.rating / vm.max);
                 }
 
+                //vm.fields = [
+                //    {
+                //        type: 'input',
+                //        key: 'title',
+                //        templateOptions: {
+                //            label: 'Title',
+                //            required: true,
+                //            placeholder: 'Enter a title...'
+                //        }
+                //    },
+                //    {
+                //        type: 'lookup',
+                //        key: 'deliverableType',
+                //        templateOptions: {
+                //            label: 'Deliverable Type',
+                //            options: vm.deliverableTypes,
+                //            required: true,
+                //            template: `
+                //            <!-- Display additional deliverable details on the new form -->
+                //            <div class="help-block" ng-if="vm.deliverableRecord.deliverableType">
+                //                {{ vm.deliverableRecord.getDeliverableDefinition().deliverableNumber }}
+                //                <span class="pull-right hidden-sm"> Frequency: {{ vm.deliverableRecord.getDeliverableDefinition().frequencyDescription }}</span>
+                //            </div>`
+                //        }
+                //    },
+                //    {
+                //        className: 'row',
+                //        fieldGroup: [
+                //            {
+                //                className: 'col-xs-6',
+                //                type: 'input',
+                //                key: 'fy',
+                //                templateOptions: {
+                //                    type: 'number',
+                //                    label: 'Fiscal Year',
+                //                    required: true,
+                //                    minlength: 4,
+                //                    maxlength: 4
+                //                }
+                //            },
+                //            {
+                //                className: 'col-xs-6',
+                //                type: 'select',
+                //                key: 'fiscalMonth',
+                //                templateOptions: {
+                //                    label: 'Month',
+                //                    required: true,
+                //                    //valueProp: 'name',
+                //                    options: _.map(vm.monthOptions, function (option) {return {name: option.label} })
+                //                }
+                //            }
+                //        ]
+                //    },
+                //
+                //
+                //];
+                //
+                //console.log(vm.monthOptions);
+
+
+
                 vm.dataReady = true;
             });
 
             /** Create a log record so we can collect metrics on the average duration a user is on this page */
             vm.deliverableRecord.registerDeliverableAccessEvent()
-                .then( (deliverableAccessEvent) => {
+                .then((deliverableAccessEvent) => {
                     /** Wait for user to leave current state so we can log it */
                     vm.$scope.$on('$stateChangeStart', function () {
                         /** Causes modified date to reflect updated time so we can get delta between created and modified */
@@ -126,13 +154,14 @@ module app {
                     });
                 });
         }
+
         cancel() {
             /** Revert any changes made back to the original data */
             _.extend(vm.deliverableRecord, vm.deliverableBackup);
             vm.navigateBack();
         }
 
-        deleteMyFeedback(feedback:DeliverableFeedback) {
+        deleteMyFeedback(feedback: DeliverableFeedback) {
             //TODO This currently doesn't fully purge the cache and needs to be addressed
             var confirmation = window.confirm('Are you sure you want to delete your feedback?');
             if (confirmation) {
@@ -168,7 +197,7 @@ module app {
             return _.toArray(vm.deliverableRecord.getCachedFeedbackByDeliverableId());
         }
 
-        provideFeedback(isAcceptable:boolean) {
+        provideFeedback(isAcceptable: boolean) {
             var previousAcceptability = vm.userDeliverableFeedback.acceptable;
             vm.deliverableRecord.openFeedbackModal({acceptable: isAcceptable}, vm.userDeliverableFeedback)
                 .then(function (updatedFeedback) {
@@ -195,7 +224,7 @@ module app {
         }
 
         submit() {
-            if(!vm.deliverableRecord.to || vm.deliverableRecord.to.length === 0) {
+            if (!vm.deliverableRecord.to || vm.deliverableRecord.to.length === 0) {
                 return vm.toastr.error('At least "To" recipient is required before a notification can be generated.');
             }
             vm.negotiatingWithServer = true;
@@ -205,7 +234,7 @@ module app {
 
         updateFeedback() {
             vm.userDeliverableFeedback.saveChanges()
-                .then( (updatedFeedback:DeliverableFeedback) => {
+                .then((updatedFeedback: DeliverableFeedback) => {
                     vm.toastr.success("Feedback updated");
                     /** Ensure feedback reference is updated */
                     vm.userDeliverableFeedback = updatedFeedback;

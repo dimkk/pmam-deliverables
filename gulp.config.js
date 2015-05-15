@@ -21,7 +21,7 @@ module.exports = function (projectDir) {
         ],
         modules: [
             bowerDir + "angular-point/dist/angular-point.js",
-            bowerDir + "angular-point-attachments/dist/apAttachments.js",
+            bowerDir + "angular-point-attachments/apAttachments.js",
             //bowerDir + "angular-point-discussion-thread/dist/apDiscussionThread.js",
             //bowerDir + "angular-point-modal/dist/apModalService.js",
             bowerDir + "angular-point-group-manager/dist/apGroupManager.js",
@@ -46,7 +46,8 @@ module.exports = function (projectDir) {
             bowerDir + 'angular-ui-sortable/sortable.js',
             bowerDir + 'api-check/dist/api-check.js',
             bowerDir + 'angular-formly/dist/formly.js',
-            bowerDir + 'angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js',            bowerDir + 'ng-table/ng-table.js',
+            bowerDir + 'angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js',
+            bowerDir + 'ng-table/ng-table.js',
             bowerDir + 'angular-ui-grid/ui-grid.js',
             bowerDir + 'angularfire/dist/angularfire.js',
             bowerDir + "angular-toastr/dist/angular-toastr.tpls.min.js",
