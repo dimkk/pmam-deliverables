@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Model: deliverablesModel', function () {
-    var deliverablesModel, deliverableDefinitionsModel, monthlyDefinition, $httpBackend, apCacheService, apIndexedCacheFactory;
+    var deliverablesModel, deliverableDefinitionsModel, monthlyDefinition, $httpBackend, apCacheService, deliverableAccessMetricsModel, apIndexedCacheFactory;
 
 
     beforeEach(module('pmam-deliverables'));
@@ -14,7 +14,7 @@ describe('Model: deliverablesModel', function () {
         deliverableDefinitionsModel = $injector.get('deliverableDefinitionsModel');
         apCacheService = $injector.get('apCacheService');
         apIndexedCacheFactory = $injector.get('apIndexedCacheFactory');
-
+        deliverableAccessMetricsModel = $injector.get('deliverableAccessMetricsModel');
         monthlyDefinition = deliverableDefinitionsModel.createEmptyItem({
             id: 1,
             deliverableFrequency: 'Monthly',
@@ -68,16 +68,15 @@ describe('Model: deliverablesModel', function () {
 
     describe('Method: getViewCount', function () {
         it('returns the correct count when the deliverable has been viewed.', function () {
-            var deliverable = deliverablesModel.createEmptyItem();
-            var mockIndexedCache = apIndexedCacheFactory.create();
-            mockIndexedCache.addEntity({id:1});
-            mockIndexedCache.addEntity({id:2});
-            spyOn(deliverable, "getCachedAccessLogsByDeliverableId").and.returnValue(mockIndexedCache);
+
+            var deliverable = deliverablesModel.createEmptyItem(-1);
+            deliverableAccessMetricsModel.createEmptyItem({id: -1, accessEvents: [{}, {}]});
+
             expect(deliverable.getViewCount()).toEqual(2);
         });
         it('returns a count of 0 when the deliverable has not been viewed.', function () {
-            var deliverable = deliverablesModel.createEmptyItem();
-            spyOn(deliverable, "getCachedAccessLogsByDeliverableId").and.returnValue(apIndexedCacheFactory.create());
+            var deliverable = deliverablesModel.createEmptyItem({id: -2});
+            //spyOn(deliverable, "getCachedAccessLogsByDeliverableId").and.returnValue(apIndexedCacheFactory.create());
             expect(deliverable.getViewCount()).toEqual(0);
         });
 

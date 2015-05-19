@@ -8,6 +8,7 @@ module app {
 
     var vm:DeliverableFormEditController;
 
+    var accessTime: Date;
 
     class DeliverableFormEditController{
         activeTab:string;
@@ -56,6 +57,9 @@ module app {
                 return vm.$state.go('deliverables.monthly');
             }
 
+            /** Store the time the user opened the form */
+            accessTime = new Date();
+
             vm.$q.all([
                 vm.userService.getUserLookupValues(),
                 vm.deliverableFeedbackModel.getFyFeedback(vm.deliverableRecord.fy),
@@ -78,19 +82,20 @@ module app {
                 vm.dataReady = true;
             });
 
-            /** Create a log record so we can collect metrics on the average duration a user is on this page */
-            vm.deliverableRecord.registerDeliverableAccessEvent()
-                .then( (deliverableAccessEvent) => {
-                    /** Wait for user to leave current state so we can log it */
-                    vm.$scope.$on('$stateChangeStart', function () {
-                        /** Causes modified date to reflect updated time so we can get delta between created and modified */
-                        deliverableAccessEvent.saveChanges();
-                    });
-                });
+            ///** Create a log record so we can collect metrics on the average duration a user is on this page */
+            //vm.deliverableRecord.registerDeliverableAccessEvent()
+            //    .then( (deliverableAccessEvent) => {
+            //        /** Wait for user to leave current state so we can log it */
+            //        vm.$scope.$on('$stateChangeStart', function () {
+            //            /** Causes modified date to reflect updated time so we can get delta between created and modified */
+            //            deliverableAccessEvent.saveChanges();
+            //        });
+            //    });
         }
         cancel() {
             /** Revert any changes made back to the original data */
             _.extend(vm.deliverableRecord, vm.deliverableBackup);
+            vm.registerAccessEvent();
             vm.navigateBack();
         }
 
@@ -142,12 +147,22 @@ module app {
                 });
         }
 
+        registerAccessEvent() {
+            var closedTime = new Date();
+            var duration = moment(closedTime).diff(accessTime, 'seconds', false);
+            /** Only register a new event if the user is on the record for more than 5 seconds */
+            if(duration > 5) {
+                vm.deliverableRecord.registerDeliverableAccessEvent(accessTime, new Date());
+            }
+        }
+
         save() {
             vm.negotiatingWithServer = true;
             var saveRecord = vm.deliverableRecord.saveChanges();
 
             saveRecord.then(function () {
                 vm.toastr.success("Deliverable updated");
+                vm.registerAccessEvent();
                 vm.navigateBack();
             }, function () {
                 vm.toastr.error("There was a problem updating this deliverable record");
@@ -162,7 +177,10 @@ module app {
             }
             vm.negotiatingWithServer = true;
             vm.deliverableRecord.generateNewDeliverableNotification()
-                .then(vm.navigateBack);
+                .then(function() {
+                    vm.registerAccessEvent();
+                    vm.navigateBack();
+                });
         }
 
         updateFeedback() {

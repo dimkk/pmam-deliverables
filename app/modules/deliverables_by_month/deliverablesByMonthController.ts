@@ -33,11 +33,11 @@ module app {
                     private $state, private fiscalYear,
                     private fiscalMonth:number, private deliverableDefinitionsModel:DeliverableDefinitionsModel,
                     private deliverablesModel:DeliverablesModel, private deliverablesService:DeliverablesService,
-                    private calendarService:CalendarService, private deliverableAccessLogModel:DeliverableAccessLogModel,
+                    private calendarService:CalendarService, private deliverableAccessMetricsModel: DeliverableAccessMetricsModel,
                     private uiGridService) {
 
             vm = this;
-            
+
             //vm.showFeedbackPanel = false;
             vm.deliverableGrid.columnDefs = uiGridService.getDeliverableFields();
 
@@ -52,7 +52,7 @@ module app {
                     vm.$state.go('deliverables.monthly', { fy: vm.fiscalData.fiscalYear, mo: vm.fiscalData.fiscalMonth });
                 }
             }, true);
-            
+
             vm.activate();
         }
 
@@ -65,7 +65,7 @@ module app {
                 vm.deliverablesModel.getDeliverablesForMonth(vm.fiscalYear, vm.fiscalMonth),
                 vm.deliverableDefinitionsModel.getDeliverableDefinitionsForMonth(vm.fiscalYear, vm.fiscalMonth),
                 vm.deliverableFeedbackModel.getFyFeedback(vm.fiscalYear),
-                vm.deliverableAccessLogModel.getFyAccessLogs(vm.fiscalYear)
+                vm.deliverableAccessMetricsModel.getFyAccessMetrics(vm.fiscalYear)
             ])
                 .then(function (resolvedPromises) {
                     vm.visibleDeliverables = resolvedPromises[0];
@@ -75,7 +75,7 @@ module app {
 
                     vm.deliverableFeedback = resolvedPromises[2];
 
-                    
+
                     //vm.gauge1.updateGaugeValue(chartService.getSatisfactionRating(vm.visibleDeliverables));
                     //vm.gauge2.updateGaugeValue(chartService.getOnTimeDeliveryRating(vm.visibleDeliverables));
 

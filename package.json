@@ -1,10 +1,10 @@
 {
   "name": "pmam-deliverables",
   "module": "pmam-deliverables",
-  "version": "0.1.18",
+  "version": "0.1.19",
   "dependencies": {},
   "devDependencies": {
-      "angular-point-tools": "^2.0.0",
+    "angular-point-tools": "^2.0.0",
     "gulp": "^3.8.11"
   },
   "engines": {
