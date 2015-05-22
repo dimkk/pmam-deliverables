@@ -27,7 +27,7 @@ module app {
             enableSorting: true,
             showGroupPanel: true,
             useExternalFiltering: true
-            
+
         };
 
         constructor(private $scope, private $q, private $filter,
@@ -35,11 +35,11 @@ module app {
                     private $state, private fiscalYear,
                     private fiscalMonth:number, private deliverableDefinitionsModel:DeliverableDefinitionsModel,
                     private deliverablesModel:DeliverablesModel, private deliverablesService:DeliverablesService,
-                    private calendarService:CalendarService, private deliverableAccessLogModel:DeliverableAccessLogModel,
+                    private calendarService:CalendarService, private deliverableAccessMetricsModel: DeliverableAccessMetricsModel,
                     private uiGridService, selectedTask: string) {
 
             vm = this;
-            
+
             //vm.showFeedbackPanel = false;
             vm.deliverableGrid.columnDefs = uiGridService.getDeliverableFields();
 
@@ -62,7 +62,7 @@ module app {
                     vm.$state.go('deliverables.monthly', { fy: vm.fiscalData.fiscalYear, task: vm.activeTask , mo: vm.fiscalData.fiscalMonth });
                 }
             }, true);
-            
+
             vm.activate();
         }
 
@@ -78,12 +78,14 @@ module app {
                 vm.deliverableAccessMetricsModel.getFyAccessMetrics(vm.fiscalYear)
             ])
                 .then(function (resolvedPromises) {
+                    //TODO Merge Conflict on below line
+                    //vm.visibleDeliverables = resolvedPromises[0];
                     vm.deliverableDefinitionsByMonth = resolvedPromises[1];
-                   
+
                      //Unable to filter deliverables by task, supply the available definitions for the task and fy and fillter them
                     vm.visibleDeliverables = vm.deliverablesService
                         .identifyMatchingDeliverablesForMonth(resolvedPromises[0], vm.deliverableDefinitionsByMonth);
-              
+
                     vm.outstandingDefinitions = vm.deliverablesService
                         .identifyOutstandingDefinitionsForMonth(vm.visibleDeliverables, vm.deliverableDefinitionsByMonth);
 

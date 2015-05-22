@@ -36,12 +36,12 @@ module app {
             private deliverablesModel: DeliverablesModel, chartService, private fyDefinitions: DeliverableDefinition[],
             private deliverablesService: DeliverablesService,
             private deliverableDefinitionsModel: DeliverableDefinitionsModel,  private selectedDefinition: DeliverableDefinition, private fiscalYear: number,
-            deliverableAccessLogModel: DeliverableAccessLogModel, uiGridService, selectedTask, private availableStatus, private onTimeStatus) {
+            uiGridService, selectedTask, private availableStatus, private onTimeStatus) {
 
             vm = this;
             vm.deliverableGrid.columnDefs = uiGridService.getDeliverableFields();
 
-            
+
 
             //SubTitle and Icon
             vm.subTitle = 'RELATED DELIVERABLES';
@@ -50,36 +50,36 @@ module app {
 
             //Task
             vm.activeTask = selectedTask;
-            
+
             //active Filters
             if (availableStatus)
                 vm.activeFilters.push({ key: 'Acceptable', value: availableStatus });
             if (onTimeStatus)
                 vm.activeFilters.push({ key: 'On Time', value: onTimeStatus });
-          
-          
+
+
             /** Stop Everything if a valid definition isn't available */
-            if (!selectedDefinition) 
+            if (!selectedDefinition)
                 vm.selectedDefinition = { title: 'All', id: undefined, deliverableNumber: 'All Deliverables', frequencyDescription: 'NA' };
 
 
             //Fiscal Data and Watch
             vm.fiscalData = { fiscalMonth: undefined, fiscalYear: fiscalYear };
-            $scope.$watch('vm.fiscalData', (newVal, oldVal) => { 
-                if (newVal && newVal !== oldVal) 
+            $scope.$watch('vm.fiscalData', (newVal, oldVal) => {
+                if (newVal && newVal !== oldVal)
                     //vm.$state.go('deliverables.instances', vm.createArguments());//vm.$state.go('deliverables.instances', { fy: vm.fiscalData.fiscalYear, task: vm.activeTask, id: (vm.selectedDefinition.id ? vm.selectedDefinition.id : 0), onTime: undefined, availability: undefined});
                     vm.refreshInstancesView();
             }, true);
 
             $scope.$watch('vm.activeTask', (newVal, oldVal) => {
-                if (newVal && newVal !== oldVal) 
+                if (newVal && newVal !== oldVal)
                     //vm.$state.go('deliverables.instances', vm.createArguments());//vm.$state.go('deliverables.instances', { fy: vm.fiscalData.fiscalYear, task: vm.activeTask, id: (vm.selectedDefinition.id ? vm.selectedDefinition.id : 0), onTime: undefined, availability: undefined });
                     vm.refreshInstancesView();
             });
 
-            
+
             $scope.$watch('vm.selectedDefinition', (newVal, oldVal) => {
-                if (newVal && newVal !== oldVal) 
+                if (newVal && newVal !== oldVal)
                     //vm.$state.go('deliverables.instances', vm.createArguments());// vm.$state.go('deliverables.instances', { fy: vm.fiscalData.fiscalYear, task: vm.activeTask, id: (vm.selectedDefinition.id ? vm.selectedDefinition.id : 0),onTime: undefined,availability:undefined});
                     vm.refreshInstancesView();
             });
@@ -90,17 +90,17 @@ module app {
                     vm.refreshInstancesView();
                 }
             });
-            
+
          vm.activate();
         }
 
-        
+
         activate() {
             //vm.gauge1 = new chartService.Gauge('Satisfaction');
             //vm.gauge2 = new chartService.Gauge('OTD');
             // deliverableFeedbackModel.getFyFeedback(vm.fiscalData.fiscalYear),
             //deliverableAccessLogModel.getFyAccessLogs(vm.fiscalData.fiscalYear)
-            
+
             vm.deliverablesModel.getFyDeliverables(vm.fiscalData.fiscalYear)
                 .then(function (resolvedPromise) {
                 vm.getDeliverables(resolvedPromise)
@@ -128,24 +128,24 @@ module app {
             }
             return data;
         }
-                
+
         getDeliverables(data) {
             var deferred = vm.$q.defer();
             var filteredDeliverables;
             if (vm.selectedDefinition.title !== 'All') {
                 filteredDeliverables = _.toArray(vm.selectedDefinition.getDeliverablesForDefinition());
 
-                //filter 
+                //filter
                 filteredDeliverables = vm.filterDeliverables(filteredDeliverables);
 
-                deferred.resolve(filteredDeliverables); 
+                deferred.resolve(filteredDeliverables);
             }
             else {
                 vm.deliverableDefinitionsModel.getDeliverableDefinitionsByTaskNumber(vm.fiscalData.fiscalYear, vm.activeTask)
                     .then(function (resolvedPromise) {
                     filteredDeliverables = _.toArray(vm.deliverablesService.identifyDeliverablesForDefinitions(data, resolvedPromise));
-                   
-                    //filter 
+
+                    //filter
                     filteredDeliverables = vm.filterDeliverables(filteredDeliverables);
 
                     deferred.resolve(filteredDeliverables);

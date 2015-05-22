@@ -4,11 +4,17 @@ module app {
 
     //TODO Add apIndexedCacheService to handle caching deliverables by type
 
-    var model:DeliverablesModel, $q, apDiscussionThreadFactory, deliverableFeedbackModel:DeliverableFeedbackModel,
-        deliverableDefinitionsModel:DeliverableDefinitionsModel, calendarService:CalendarService,
-        deliverableFrequenciesService:DeliverableFrequenciesService, user:IUser,
-        deliverableAccessLogModel:DeliverableAccessLogModel, userService:UserService,
-        deliverableNotificationsModel:DeliverableNotificationsModel;
+    var $q,
+        apDiscussionThreadFactory,
+        calendarService: CalendarService,
+        deliverableAccessMetricsModel: DeliverableAccessMetricsModel,
+        deliverableDefinitionsModel: DeliverableDefinitionsModel,
+        deliverableFeedbackModel: DeliverableFeedbackModel,
+        deliverableFrequenciesService: DeliverableFrequenciesService,
+        deliverableNotificationsModel: DeliverableNotificationsModel,
+        model: DeliverablesModel,
+        user: IUser,
+        userService: UserService;
 
     /**
      * @ngdoc function
@@ -24,13 +30,11 @@ module app {
         deliverableType:ap.ILookup;
         details:string;
         discussionThread:ap.IDiscussionThread;
-        displayDate:string; //Calculated
         dueDate:Date;
         fiscalMonth:number;
         fy:number;
         justification:string;
         stakeholderNotificationDate:Date;
-        //stakeholdersNotified:boolean;
         startDate:Date;
         submissionDate:Date;
         title:string;
@@ -41,7 +45,6 @@ module app {
         constructor(obj) {
             _.assign(this, obj);
 
-            this.displayDate = moment(this.submissionDate).format('MMM YY');
             /** Instantiate a new discussion object even if there isn't an active discussion */
             this.discussionThread = apDiscussionThreadFactory.createDiscussionObject(this, 'discussionThread');
 
@@ -53,6 +56,10 @@ module app {
                 model.removeDeliverableByType(this);
                 return this._deleteItem();
             }
+        }
+
+        get displayDate(): string {
+            return moment(this.submissionDate).format('MMM YY');
         }
 
         /**
@@ -79,13 +86,11 @@ module app {
         }
 
         /**
-         * @name Deliverable.getCachedAccessLogsByDeliverableId
-         * @description Allows us to retrieve all feedback for a given deliverable which have already been
-         * grouped/cached by deliverable id.
-         * @returns {ap.IIndexedCache<DeliverableAccessLog> | DeliverableAccessLog[]} Keys of deliverable access log id's and value of log object.
+         * @description Returns the Access Metric record for a given deliverable if it exists.
+         * @returns {DeliverableAccessMetric}
          */
-        getCachedAccessLogsByDeliverableId(asObject?:boolean):ap.IIndexedCache<DeliverableAccessLog> | DeliverableAccessLog[] {
-            return deliverableAccessLogModel.getCachedLogByDeliverableId(this.id, asObject);
+        getCachedAccessMetrics(): DeliverableAccessMetric {
+            return deliverableAccessMetricsModel.getCachedAccessMetricsByDeliverableId(this.id);
         }
 
         /**
@@ -161,37 +166,14 @@ module app {
             return deliverableDefinitionsModel.getCachedEntity(this.deliverableType.lookupId);
         }
 
-
-        /**
-         * @name Deliverable.getRatingsAverage
-         * @returns {number} Average of all ratings for this deliverable.
-         */
-        //getRatingsAverage():number {
-        //    var deliverable = this,
-        //        ratingSum = 0,
-        //        averageRating;
-        //    var feedbackRecords = _.toArray(deliverable.getCachedFeedbackByDeliverableId());
-        //
-        //    _.each(feedbackRecords, (feedbackRecord) => {
-        //        ratingSum += feedbackRecord.rating;
-        //    });
-        //    if (!feedbackRecords.length) {
-        //        /** Assume perfect score unless there are actual ratings */
-        //        averageRating = 5;
-        //    } else {
-        //        averageRating = Math.round((ratingSum / feedbackRecords.length) * 10) / 10;
-        //    }
-        //    return averageRating;
-        //}
-
         /**
          * @name Deliverable.getViewCount
          * @description Returns the number of times a given deliverable has been viewed.
          * @returns {Number}
          */
         getViewCount(): number {
-            var accessLogs:ap.IIndexedCache<DeliverableAccessLog> = this.getCachedAccessLogsByDeliverableId(true);
-            return accessLogs.count();
+            var metricRecord = this.getCachedAccessMetrics();
+            return metricRecord ? metricRecord.accessEvents.length : 0;
         }
 
         /**
@@ -215,17 +197,17 @@ module app {
 
         /**
          * @name Deliverable.registerDeliverableAccessEvent
-         * @description Creates a log entry the first time a user views a deliverable then modifies once they leave
-         * so the delta from the two time will show how long they viewed the record.
+         * @description Creates a log entry so we can collect metrics on frequency and duration for the given deliverable.
          * @returns {promise}
          */
-        registerDeliverableAccessEvent():ng.IPromise<DeliverableAccessLog> {
+        registerDeliverableAccessEvent(opened: Date, closed: Date): ng.IPromise<DeliverableAccessMetric> {
             var deliverable = this;
-            var newEvent = deliverableAccessLogModel.createEmptyItem({
+            var metricRecord: DeliverableAccessMetric = this.getCachedAccessMetrics() || deliverableAccessMetricsModel.createEmptyItem({
+                    accessEvents: [],
                 deliverable: {lookupId: deliverable.id},
                 fy: deliverable.fy
             });
-            return newEvent.saveChanges();
+            return metricRecord.registerAccessEvent(opened, closed);
         }
 
         /**
@@ -291,21 +273,19 @@ module app {
         /** Local Deliverable cache organized by deliverable type id */
         deliverableByTypeId = {};
 
-        constructor(_$q_, _apDiscussionThreadFactory_, _deliverableFeedbackModel_:DeliverableFeedbackModel,
-                    _deliverableDefinitionsModel_, _calendarService_, _deliverableFrequenciesService_, _user_,
-                    _deliverableAccessLogModel_, _userService_, _deliverableNotificationsModel_,
-                    apListItemFactory, apModelFactory) {
+        constructor($injector) {
 
-            $q = _$q_;
-            apDiscussionThreadFactory = _apDiscussionThreadFactory_;
-            calendarService = _calendarService_;
-            deliverableAccessLogModel = _deliverableAccessLogModel_;
-            deliverableDefinitionsModel = _deliverableDefinitionsModel_;
-            deliverableFeedbackModel = _deliverableFeedbackModel_;
-            deliverableFrequenciesService = _deliverableFrequenciesService_;
-            user = _user_;
-            userService = _userService_;
-            deliverableNotificationsModel = _deliverableNotificationsModel_;
+            $q = $injector.get('$q');
+            apDiscussionThreadFactory = $injector.get('apDiscussionThreadFactory');
+            calendarService = $injector.get('calendarService');
+            //deliverableAccessLogModel = $injector.get('deliverableAccessLogModel');
+            deliverableAccessMetricsModel = $injector.get('deliverableAccessMetricsModel');
+            deliverableDefinitionsModel = $injector.get('deliverableDefinitionsModel');
+            deliverableFeedbackModel = $injector.get('deliverableFeedbackModel');
+            deliverableFrequenciesService = $injector.get('deliverableFrequenciesService');
+            deliverableNotificationsModel = $injector.get('deliverableNotificationsModel');
+            user = $injector.get('user');
+            userService = $injector.get('userService');
 
 
 
@@ -422,7 +402,7 @@ module app {
                         _.each(d, (childDeliverable) => {
                             deliverables.push(childDeliverable);
                         }
-                        
+
                     }
                 }
             });
@@ -448,7 +428,7 @@ module app {
             return deferred.promise;
         }
 
-        
+
         /**
          * @name deliverablesModel.getFyDeliverables
          * @param {number} fy Fiscal year.
