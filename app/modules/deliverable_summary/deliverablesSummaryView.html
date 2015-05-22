@@ -13,9 +13,9 @@
                               ng-change="vm.taskSelected()"></select>
         </legend>-->
 
-        <div google-chart chart="vm.acceptabilityChart"></div>
+        <div google-chart chart="vm.acceptabilityChart" on-select="vm.chartItemSelected(selectedItem,'acceptabilityChart')"></div>
         <br />
-        <div google-chart chart="vm.onTimeChart"></div>
+        <div google-chart chart="vm.onTimeChart" on-select="vm.chartItemSelected(selectedItem,'onTimeChart')"></div>
     </fieldset>
     <!--<fieldset>
         <legend>Task 2.3</legend>

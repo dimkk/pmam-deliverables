@@ -255,6 +255,35 @@ module app {
             var deliverable = this;
             return deliverable.getDaysBetweenSubmittedAndDue() >= 0;
         }
+        getAcceptableStatus(): string {
+            var deliverable = this;
+            var acceptableCount = 0;
+            var status = 'Not Rated';
+            deliverableFeedbackModel.getFyFeedback(deliverable.fy);
+            var feedbackRecords = _.toArray(deliverable.getCachedFeedbackByDeliverableId());
+
+            /** Increment for each feedback marked as acceptable */
+            _.each(feedbackRecords, function (feedbackRecord) {
+                if (feedbackRecord.acceptable) {
+                    acceptableCount++;
+                }
+            });
+
+            if (feedbackRecords.length > 0) {
+                if (feedbackRecords.length === acceptableCount) {
+                    /** All Acceptable */
+                    status = 'Acceptable';
+                } else if (acceptableCount === 0) {
+                    /** All unacceptable */
+                    status = 'Unacceptable';
+                } else {
+                    /** Combination of acceptable and unacceptable */
+                    status = 'Conflicted';
+                }
+            }
+
+            return status;
+        }
 
     }
 
@@ -360,7 +389,7 @@ module app {
          * @param {Object|Array} deliverables
          * @returns {Deliverable[]}  Array of deliverables for the month.
          */
-        filterDeliverablesForFiscalMonth(fiscalMonth: number, deliverables: ap.IIndexedCache<Deliverable>): Deliverable[]{
+        filterDeliverablesForFiscalMonth(fiscalMonth: number, deliverables: ap.IIndexedCache<Deliverable>, selectedTask? : string): Deliverable[]{
             return _.filter(deliverables, {fiscalMonth: fiscalMonth});
         }
 
@@ -377,6 +406,31 @@ module app {
         }
 
         /**
+        * @name deliverablesModel.getCachedDeliverablesByTypeId
+        * @param {number} deliverableTypeId
+        * @description Allows us to retrieve deliverables for a given definition which have already been
+        * grouped/cache by definition id.
+        * @returns {object} Keys of deliverable id and values of the deliverables themselves.
+        */
+        getCachedDeliverablesByDefinitions(deliverableDefinitions: DeliverableDefinition[]): ap.IIndexedCache<Deliverable> {
+            var deliverables= [];
+
+            _.each(deliverableDefinitions, (definition) => {
+                if (definition.id) {
+                    var d = model.deliverableByTypeId[definition.id];
+                    if (d) {
+                        _.each(d, (childDeliverable) => {
+                            deliverables.push(childDeliverable);
+                        }
+                        
+                    }
+                }
+            });
+            return deliverables;
+            //return model.deliverableByTypeId[deliverableTypeId];
+        }
+
+        /**
          * @name deliverablesModel.getDeliverablesForMonth
          * @param {number} fiscalYear Fiscal Year (October - September)
          * @param {number} fiscalMonth Fiscal Month (1 - 12 starting with October)
@@ -387,13 +441,14 @@ module app {
             var deferred = $q.defer();
 
             model.getFyDeliverables(fiscalYear)
-                .then( (indexedCache) => {
+                .then((indexedCache) => {
                     var deliverablesForMonth = model.filterDeliverablesForFiscalMonth(fiscalMonth, indexedCache);
                     deferred.resolve(deliverablesForMonth);
                 });
             return deferred.promise;
         }
 
+        
         /**
          * @name deliverablesModel.getFyDeliverables
          * @param {number} fy Fiscal year.

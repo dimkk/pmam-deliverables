@@ -19,13 +19,13 @@ module app {
 
         constructor(private $state, $scope: ng.IScope,private $q, deliverablesModel: DeliverablesModel,
             deliverableDefinitionsModel: DeliverableDefinitionsModel,
-            deliverablesService: DeliverablesService,
+            deliverablesService: DeliverablesService, private deliverableFeedbackModel: DeliverableFeedbackModel,
             fiscalYear: number, private chartService, selectedTask: string, selectedChart: string) {
           
 
             vm = this;
             
-            
+         
 
             //Chart Types
             vm.chartTypes = chartService.chartTypes;
@@ -36,6 +36,9 @@ module app {
                 }
             }
             
+
+            //test, Feedback seems to not be running
+            deliverableFeedbackModel.getFyFeedback(fiscalYear);
 
             //data
             vm.deliverableDefinitionsModel = deliverableDefinitionsModel;
@@ -84,27 +87,51 @@ module app {
                 vm.deliverableDefinitionsModel.getDeliverableDefinitionsByTaskNumber(vm.fiscalData.fiscalYear, selectedTask),
             ]).then(function (resolvedPromises) {
                 var definitions = resolvedPromises[0];
-
+                
                 //Set Charts
                 vm.acceptabilityChart = new vm.chartService.AcceptabilityChart('Acceptability (' + selectedTask + ')', definitions, vm.activeChartType,false); 
                 vm.onTimeChart = new vm.chartService.OnTimeChart('On Time (' + selectedTask + ')', definitions, vm.activeChartType,false);
 
+                var opt1 = vm.acceptabilityChart.options;
+
                 //vm.summary21 = deliverablesService.createDeliverableSummaryObject(definitions21);
                     //vm.summary23 = deliverablesService.createDeliverableSummaryObject(definitions23);
-
+                //console.log(vm.acceptabilityChart);
                 //This was put in to fix an issue observerd when chart was set to Bar chart and then task changed.  Active Chart Type was being lost and resulting in a column chart
                 _.assign(vm.acceptabilityChart, vm.activeChartType);
+                _.assign(vm.acceptabilityChart.options, opt1);
                 _.assign(vm.onTimeChart, vm.activeChartType);
             });
         }
 
-        //TODO: Figure out why changing chart types blows away defined colors  **Only changing color schemes on the area chart now
+        //TODO: Figure out why changing chart types blows away defined colors 
         toggleChartTypes(updatedChartType) {
             vm.activeChartType = updatedChartType;
             vm.$state.go('deliverables.summary', { fy: vm.fiscalData.fiscalYear, id: null, task: vm.activeTask, ct: vm.activeChartType.label }, { reload: true });
             
             //_.assign(vm.acceptabilityChart, updatedChartType);
             //_.assign(vm.onTimeChart, updatedChartType);
+        }
+
+        chartItemSelected(obj,chartType) {
+            var status;
+            var definition;
+                switch (chartType) {
+                    case 'acceptabilityChart':
+                        status = vm.acceptabilityChart.data.cols[obj.column];
+                        definition = vm.acceptabilityChart.data.rows[obj.row];
+                        if (definition && status) {
+                            vm.$state.go('deliverables.instances', { fy: vm.fiscalData.fiscalYear, id: definition.id, task: vm.activeTask, feedbackStatus: status.label }, { reload: true });
+                        }
+                        break;
+                    case 'onTimeChart':
+                        status = vm.onTimeChart.data.cols[obj.column];
+                        definition = vm.onTimeChart.data.rows[obj.row];
+                        if (definition && status) {
+                            vm.$state.go('deliverables.instances', { fy: vm.fiscalData.fiscalYear, id: definition.id, task: vm.activeTask, onTime: (status.label === 'Late' ? false : true) }, { reload: true });
+                        }
+                        break;
+                }
         }
     }
 

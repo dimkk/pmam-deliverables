@@ -45,11 +45,15 @@ module app {
                 summaryObject.notOnTimeCount += definition.getLateCount();
                 summaryObject.anticipatedCount += definition.getExpectedDeliverableCount();
                 summaryObject.actualCount += _.toArray(definition.getDeliverablesForDefinition()).length;
+                
+                summaryObject.acceptableCount += definition.getAcceptableCount();
+                summaryObject.unacceptableCount += definition.getUnacceptableCount();
             });
 
             summaryObject.onTimePercentage = Math.round(summaryObject.onTimeCount / (summaryObject.onTimeCount + summaryObject.notOnTimeCount) * 1000) / 1000;
             return summaryObject;
         }
+
 
 
         /**
@@ -74,6 +78,49 @@ module app {
             return outstandingDefinitions;
         }
 
+        /**
+         * @name deliverablesService.identifyOutstandingDefinitionsForMonth
+         * @param {Object|Array} fiscalMonthDeliverables
+         * @param {Object|Array} fiscalMonthDefinitions
+         * @returns {DeliverableDefinition[]}  Array of all  deliverables for a month based on available definitions supplied.
+         */
+        identifyMatchingDeliverablesForMonth(fiscalMonthDeliverables: Deliverable[], fiscalMonthDefinitions: DeliverableDefinition[]) {
+            /** Create object with keys equal to the defintion of submitted definition */
+            var definitionsIndexedByTypeId = _.indexBy(fiscalMonthDefinitions, function (definition) {
+                return definition.id;
+            });
+
+            /** Find deliverable with an lookupId that is found in the index above */
+            var matchingDeliverables = [];
+            _.each(fiscalMonthDeliverables, function (deliverable) {
+                if (definitionsIndexedByTypeId[deliverable.deliverableType.lookupId]) {
+                    matchingDeliverables.push(deliverable);
+                }
+            });
+            return matchingDeliverables;
+        }
+
+        /**
+         * @name deliverablesService.identifyOutstandingDefinitionsForMonth
+         * @param {Object|Array} selectedDeliverables
+         * @param {Object|Array} selectedDefinitions
+         * @returns {DeliverableDefinition[]}  Array of all  deliverables that match on the given definition set.
+         */
+        identifyDeliverablesForDefinitions(selectedDeliverables: Deliverable[], selectedDefinitions: DeliverableDefinition[]) {
+            /** Create object with keys equal to the defintion of submitted definition */
+            var definitionsIndexedByTypeId = _.indexBy(selectedDefinitions, function (definition) {
+                return definition.id;
+            });
+            
+            /** Find deliverable with an lookupId that is found in the index above */
+            var matchingDeliverables = [];
+            _.each(selectedDeliverables, function (deliverable) {
+                if (definitionsIndexedByTypeId[deliverable.deliverableType.lookupId]) {
+                    matchingDeliverables.push(deliverable);
+                }
+            });
+            return matchingDeliverables;
+        }
     }
 
     angular

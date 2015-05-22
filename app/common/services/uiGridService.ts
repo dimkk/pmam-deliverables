@@ -25,7 +25,7 @@ module app {
                     width: '30%',
                     cellTemplate: ''+
                     `<div class="ui-grid-cell-contents">
-                        <a ui-sref="deliverable({id:row.entity.id})" title="View this deliverable">{{ row.entity.title }}</a>
+                        <a ui-sref="deliverable({id:row.entity.id,task: 'All'})"   title="View this deliverable">{{ row.entity.title }}</a>
                     </div>`
                 },
                 {
@@ -127,7 +127,7 @@ module app {
             return deliverableFields;
 
         }
-
+      
     }
 
     /**==================PRIVATE==================*/

@@ -15,6 +15,7 @@ module app {
         subTitleInfo: string;
         subTitleIcon: string;
         fiscalData;
+        activeTask: string
 
         deliverableGrid = {
             //showGridFooter: true,
@@ -26,6 +27,7 @@ module app {
             enableSorting: true,
             showGroupPanel: true,
             useExternalFiltering: true
+            
         };
 
         constructor(private $scope, private $q, private $filter,
@@ -34,7 +36,7 @@ module app {
                     private fiscalMonth:number, private deliverableDefinitionsModel:DeliverableDefinitionsModel,
                     private deliverablesModel:DeliverablesModel, private deliverablesService:DeliverablesService,
                     private calendarService:CalendarService, private deliverableAccessLogModel:DeliverableAccessLogModel,
-                    private uiGridService) {
+                    private uiGridService, selectedTask : string) {
 
             vm = this;
             
@@ -45,11 +47,19 @@ module app {
             vm.subTitle = "MONTHLY SNAPSHOT";
             vm.subTitleIcon = "fa fa-calendar icon-padding";
 
+            //task
+            vm.activeTask = selectedTask;
+            $scope.$watch('vm.activeTask', (newVal, oldVal) => {
+                if (newVal && newVal !== oldVal)
+                    vm.$state.go('deliverables.monthly', { fy: vm.fiscalData.fiscalYear, task: vm.activeTask, mo: vm.fiscalData.fiscalMonth  });
+            });
+
+
             //Fiscal Data and Watch
             vm.fiscalData = { fiscalMonth: fiscalMonth, fiscalYear: fiscalYear };
             $scope.$watch('vm.fiscalData', (newVal, oldVal) => {
                 if (newVal && newVal !== oldVal) {
-                    vm.$state.go('deliverables.monthly', { fy: vm.fiscalData.fiscalYear, mo: vm.fiscalData.fiscalMonth });
+                    vm.$state.go('deliverables.monthly', { fy: vm.fiscalData.fiscalYear, task: vm.activeTask , mo: vm.fiscalData.fiscalMonth });
                 }
             }, true);
             
@@ -63,22 +73,24 @@ module app {
 
             vm.$q.all([
                 vm.deliverablesModel.getDeliverablesForMonth(vm.fiscalYear, vm.fiscalMonth),
-                vm.deliverableDefinitionsModel.getDeliverableDefinitionsForMonth(vm.fiscalYear, vm.fiscalMonth),
+                vm.deliverableDefinitionsModel.getDeliverableDefinitionsForMonth(vm.fiscalYear, vm.fiscalMonth,vm.activeTask),
                 vm.deliverableFeedbackModel.getFyFeedback(vm.fiscalYear),
                 vm.deliverableAccessLogModel.getFyAccessLogs(vm.fiscalYear)
             ])
                 .then(function (resolvedPromises) {
-                    vm.visibleDeliverables = resolvedPromises[0];
                     vm.deliverableDefinitionsByMonth = resolvedPromises[1];
+                   
+                     //Unable to filter deliverables by task, supply the available definitions for the task and fy and fillter them
+                    vm.visibleDeliverables = vm.deliverablesService
+                        .identifyMatchingDeliverablesForMonth(resolvedPromises[0], vm.deliverableDefinitionsByMonth);
+              
                     vm.outstandingDefinitions = vm.deliverablesService
                         .identifyOutstandingDefinitionsForMonth(vm.visibleDeliverables, vm.deliverableDefinitionsByMonth);
 
                     vm.deliverableFeedback = resolvedPromises[2];
-
                     
                     //vm.gauge1.updateGaugeValue(chartService.getSatisfactionRating(vm.visibleDeliverables));
                     //vm.gauge2.updateGaugeValue(chartService.getOnTimeDeliveryRating(vm.visibleDeliverables));
-
                     //Create a copy of the array and references
                     vm.deliverableGrid.data = vm.visibleDeliverables.slice(0);
 

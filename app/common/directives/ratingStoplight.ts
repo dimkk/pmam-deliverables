@@ -23,31 +23,25 @@ module app {
                 deliverable = $scope.deliverable,
                 acceptableCount = 0;
 
-            var feedbackRecords = _.toArray(deliverable.getCachedFeedbackByDeliverableId());
-
-            /** Increment for each feedback marked as acceptable */
-            _.each(feedbackRecords, function (feedbackRecord) {
-                if (feedbackRecord.acceptable) {
-                    acceptableCount++;
-                }
-            });
-
-            if (feedbackRecords.length > 0) {
-                if (feedbackRecords.length === acceptableCount) {
-                    /** All Acceptable */
+            switch (deliverable.getAcceptableStatus())
+            {
+                case "Acceptable":
                     vm.imageUrl = 'images/imnon.png';
                     vm.status = 'This deliverable has been rated as acceptable.';
-                } else if (acceptableCount === 0) {
-                    /** All unacceptable */
+                    break;
+                case "Unacceptable":
                     vm.imageUrl = 'images/imnbusy.png';
                     vm.status = 'This deliverable has been rated as unacceptable.';
-                } else {
-                    /** Combination of acceptable and unacceptable */
+                    break;
+                case "Not Rated":
+                    vm.imageUrl = 'images/imnoff.png';
+                    vm.status = 'No reviews have been submitted for this deliverable.';
+                    break;
+                default:
                     vm.imageUrl = 'images/imnaway.png';
                     vm.status = 'This deliverable has been rated as both acceptable and unacceptable by different reviewers.';
-                }
+                    break;
             }
-
         }
     }
 

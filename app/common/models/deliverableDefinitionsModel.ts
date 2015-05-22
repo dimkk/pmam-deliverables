@@ -140,6 +140,38 @@ module app {
             return onTimeCount;
         }
 
+         /**
+         * @name DeliverableDefinition.getAcceptableCount
+         * @returns {number} The number of deliverables that have all Feedback associated rated as 'Acceptable'
+         */
+        getAcceptableCount(): number {
+            var deliverableDefinition = this;
+            var acceptableCount = 0;
+            var deliverables = deliverableDefinition.getDeliverablesForDefinition();
+            _.each(deliverables, function (deliverable) {
+                if (deliverable.getAcceptableStatus() === "Acceptable")
+                    acceptableCount++;
+            });
+            return acceptableCount;
+        }
+
+        /**
+         * @name DeliverableDefinition.getUnacceptableCount
+         * @returns {number} The number of deliverables that have atleast 1 feedback item
+         * rated as 'Unacceptable'
+         */
+        getUnacceptableCount(): number {
+            var deliverableDefinition = this;
+            var UnacceptableCount = 0;
+            var deliverables = deliverableDefinition.getDeliverablesForDefinition();
+            _.each(deliverables, function (deliverable) {
+                if (deliverable.getAcceptableStatus() === 'Unacceptable' || deliverable.getAcceptableStatus() === 'Conflicted')
+                    UnacceptableCount++;
+            });
+            return UnacceptableCount;
+        }
+
+
         stakeholdersModal() {
             var deliverableDefinition = this;
             return $modal.open({
@@ -294,13 +326,13 @@ module app {
         }
 
 
-        getDeliverableDefinitionsByTaskNumber(fiscalYear: number, taskNumber: number): ng.IPromise<IFilteredDefinitions> {
+        getDeliverableDefinitionsByTaskNumber(fiscalYear: number, taskNumber: string): ng.IPromise<IFilteredDefinitions> {
             var deferred = $q.defer();
-
             model.getFyDefinitions(fiscalYear)
                 .then((deliverableDefinitions) => {
+                
                 var definitions = deliverableDefinitions;
-                if (taskNumber)
+                if (taskNumber && taskNumber !== 'All')
                     definitions = _.filter(deliverableDefinitions, { taskNumber: taskNumber });
 
                 deferred.resolve(definitions);
@@ -344,11 +376,11 @@ module app {
          * @param {number} fiscalMonth Fiscal Month (1 - 12 starting with October)
          * @returns {object} Keys of definition ID and value of definition.
          */
-        getDeliverableDefinitionsForMonth(fiscalYear:number, fiscalMonth:number):ng.IPromise<IFilteredDefinitions> {
+        getDeliverableDefinitionsForMonth(fiscalYear:number, fiscalMonth:number, selectedTask?: string):ng.IPromise<IFilteredDefinitions> {
 
             var deferred = $q.defer();
 
-            model.getFyDefinitions(fiscalYear)
+            model.getDeliverableDefinitionsByTaskNumber(fiscalYear, selectedTask)
                 .then((deliverableDefinitions) => {
                     var deliverableDefinitionsByMonth = model.filterDefinitionsForFiscalMonth(fiscalMonth, deliverableDefinitions);
                     deferred.resolve(deliverableDefinitionsByMonth);
