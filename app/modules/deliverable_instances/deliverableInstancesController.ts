@@ -56,7 +56,7 @@ module app {
                 vm.activeFilters.push({ key: 'Acceptable', value: availableStatus });
             if (onTimeStatus)
                 vm.activeFilters.push({ key: 'On Time', value: onTimeStatus });
-                            
+          
           
             /** Stop Everything if a valid definition isn't available */
             if (!selectedDefinition) 
@@ -79,7 +79,7 @@ module app {
 
             
             $scope.$watch('vm.selectedDefinition', (newVal, oldVal) => {
-                if (newVal && newVal !== oldVal)
+                if (newVal && newVal !== oldVal) 
                     //vm.$state.go('deliverables.instances', vm.createArguments());// vm.$state.go('deliverables.instances', { fy: vm.fiscalData.fiscalYear, task: vm.activeTask, id: (vm.selectedDefinition.id ? vm.selectedDefinition.id : 0),onTime: undefined,availability:undefined});
                     vm.refreshInstancesView();
             });
@@ -107,7 +107,7 @@ module app {
                     .then(function (resolvedDeliverables) {
                         vm.visibleDeliverables = resolvedDeliverables;
                         vm.deliverableGrid.data = resolvedDeliverables;
-                        vm.gotData = true;
+                vm.gotData = true;
                 });
             });
         }
@@ -128,7 +128,7 @@ module app {
             }
             return data;
         }
-
+                
         getDeliverables(data) {
             var deferred = vm.$q.defer();
             var filteredDeliverables;
@@ -149,8 +149,8 @@ module app {
                     filteredDeliverables = vm.filterDeliverables(filteredDeliverables);
 
                     deferred.resolve(filteredDeliverables);
-                });
-            }
+            });
+        }
             return deferred.promise;
         }
         refreshInstancesView() {

@@ -2,36 +2,43 @@
 module app {
     'use strict';
 
-    interface IStateParams extends angular.ui.IStateParamsService{
+    interface IStateParams extends angular.ui.IStateParamsService {
         activeTab?:string;
     }
 
-    var vm:DeliverableFormEditController;
+    var vm: DeliverableFormEditController;
 
+    var accessTime: Date;
 
-    class DeliverableFormEditController{
-        activeTab:string;
+    class DeliverableFormEditController {
+        activeTab: string;
         dataReady = false;
+        deliverableBackup: Deliverable;
+        deliverableFeedback: DeliverableFeedback[];
+        deliverableTypes: DeliverableDefinition[];
         isReadonly = false;
         max = 5;
+        monthOptions: {number:number; label:string}[];
         negotiatingWithServer = false;
+        percent: number;
+        personnelArray: ap.IUser[];
         rate = 5;
-        personnelArray:ap.IUser[];
-        userDeliverableFeedback:DeliverableFeedback;
-        deliverableTypes:DeliverableDefinition[];
-        deliverableFeedback:DeliverableFeedback[];
-        percent:number;
-        userCanContribute:boolean;
-        deliverableBackup:Deliverable;
-        getLabelClass(rating:number):string;
-        monthOptions:{number:number; label:string}[];
+        userCanContribute: boolean;
+        userDeliverableFeedback: DeliverableFeedback;
 
-        constructor(private deliverableFeedbackModel:DeliverableFeedbackModel, private toastr,
-                    private $state:angular.ui.IStateService, private userService, private $q,
-                    private $stateParams:IStateParams,
-                    private deliverableDefinitionsModel:DeliverableDefinitionsModel,
-                    private deliverableRecord:Deliverable, private ratingsService:RatingsService,
-                    private calendarService:CalendarService, private $scope:ng.IScope, private selectedTask) {
+        getLabelClass(rating: number): string;
+
+        constructor(private historyService: HistoryService,
+                    private $q,
+                    private $state: angular.ui.IStateService,
+                    private $stateParams: IStateParams,
+                    private calendarService: CalendarService,
+                    private deliverableDefinitionsModel: DeliverableDefinitionsModel,
+                    private deliverableRecord: Deliverable,
+                    private ratingsService: RatingsService,
+                    private toastr,
+                    private userService,
+                    private deliverableFeedbackModel: DeliverableFeedbackModel) {
 
             //TODO Need to add logic to revert back to pristine deliverable in cache if entity is updated and user leaves
             // without saving
@@ -50,24 +57,29 @@ module app {
 
 
         }
+
         activate() {
             if (!vm.deliverableRecord) {
                 /** Redirect if a valid deliverable isn't found */
                 vm.toastr.error('The requested deliverable wasn\'t found.');
-                return vm.$state.go('deliverables.monthly');
+                return this.navigateBack()
+                //return vm.$state.go('deliverables.monthly');
             }
+
+            /** Store the time the user opened the form */
+            accessTime = new Date();
 
             vm.$q.all([
                 vm.userService.getUserLookupValues(),
                 vm.deliverableFeedbackModel.getFyFeedback(vm.deliverableRecord.fy),
                 vm.deliverableDefinitionsModel.getFyDefinitions(vm.deliverableRecord.fy)
-            ]).then( (resolvedPromises) => {
+            ]).then((resolvedPromises) => {
                 vm.personnelArray = resolvedPromises[0];
                 vm.deliverableTypes = resolvedPromises[2];
 
                 // get all feedback for this deliverable
                 vm.deliverableFeedback = vm.deliverableRecord.getCachedFeedbackByDeliverableId();
-                
+
 
                 // get feedback for just the current user for this deliverable
                 vm.userDeliverableFeedback = vm.deliverableRecord.getCachedFeedbackForCurrentUser();
@@ -80,23 +92,16 @@ module app {
                 vm.dataReady = true;
             });
 
-            /** Create a log record so we can collect metrics on the average duration a user is on this page */
-            vm.deliverableRecord.registerDeliverableAccessEvent()
-                .then( (deliverableAccessEvent) => {
-                    /** Wait for user to leave current state so we can log it */
-                    vm.$scope.$on('$stateChangeStart', function () {
-                        /** Causes modified date to reflect updated time so we can get delta between created and modified */
-                        deliverableAccessEvent.saveChanges();
-                    });
-                });
         }
+
         cancel() {
             /** Revert any changes made back to the original data */
             _.extend(vm.deliverableRecord, vm.deliverableBackup);
+            vm.registerAccessEvent();
             vm.navigateBack();
         }
 
-        deleteMyFeedback(feedback:DeliverableFeedback) {
+        deleteMyFeedback(feedback: DeliverableFeedback) {
             //TODO This currently doesn't fully purge the cache and needs to be addressed
             var confirmation = window.confirm('Are you sure you want to delete your feedback?');
             if (confirmation) {
@@ -132,7 +137,7 @@ module app {
             return _.toArray(vm.deliverableRecord.getCachedFeedbackByDeliverableId());
         }
 
-        provideFeedback(isAcceptable:boolean) {
+        provideFeedback(isAcceptable: boolean) {
             var previousAcceptability = vm.userDeliverableFeedback.acceptable;
             vm.deliverableRecord.openFeedbackModal({acceptable: isAcceptable}, vm.userDeliverableFeedback)
                 .then(function (updatedFeedback) {
@@ -144,12 +149,22 @@ module app {
                 });
         }
 
+        registerAccessEvent() {
+            var closedTime = new Date();
+            var duration = moment(closedTime).diff(accessTime, 'seconds', false);
+            /** Only register a new event if the user is on the record for more than 5 seconds */
+            if (duration > 5) {
+                vm.deliverableRecord.registerDeliverableAccessEvent(accessTime, new Date());
+            }
+        }
+
         save() {
             vm.negotiatingWithServer = true;
             var saveRecord = vm.deliverableRecord.saveChanges();
 
             saveRecord.then(function () {
                 vm.toastr.success("Deliverable updated");
+                vm.registerAccessEvent();
                 vm.navigateBack();
             }, function () {
                 vm.toastr.error("There was a problem updating this deliverable record");
@@ -159,17 +174,20 @@ module app {
         }
 
         submit() {
-            if(!vm.deliverableRecord.to || vm.deliverableRecord.to.length === 0) {
+            if (!vm.deliverableRecord.to || vm.deliverableRecord.to.length === 0) {
                 return vm.toastr.error('At least "To" recipient is required before a notification can be generated.');
             }
             vm.negotiatingWithServer = true;
             vm.deliverableRecord.generateNewDeliverableNotification()
-                .then(vm.navigateBack);
+                .then(function () {
+                    vm.registerAccessEvent();
+                    vm.navigateBack();
+                });
         }
 
         updateFeedback() {
             vm.userDeliverableFeedback.saveChanges()
-                .then( (updatedFeedback:DeliverableFeedback) => {
+                .then((updatedFeedback: DeliverableFeedback) => {
                     vm.toastr.success("Feedback updated");
                     /** Ensure feedback reference is updated */
                     vm.userDeliverableFeedback = updatedFeedback;
@@ -177,13 +195,7 @@ module app {
         }
 
         navigateBack() {
-            console.log(vm.deliverableRecord.deliverableType);
-            vm.$state.go('deliverables.monthly', {
-                mo: vm.deliverableRecord.fiscalMonth,
-                fy: vm.deliverableRecord.fy
-                
-            });
-
+            this.historyService.back();
         }
     }
 

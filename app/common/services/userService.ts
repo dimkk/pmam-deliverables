@@ -62,7 +62,7 @@ module app {
                 _.each(service.userRoles, function (memberOf, groupName) {
                     requestQueue.push(service.apUserModel.checkIfMember(groupName)
                         .then(function (userMembership) {
-                            service.userRoles[groupName] = userMembership;
+                            service.userRoles[groupName] = !!userMembership;
                         }));
                 });
 

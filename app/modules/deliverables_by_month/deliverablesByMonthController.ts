@@ -36,7 +36,7 @@ module app {
                     private fiscalMonth:number, private deliverableDefinitionsModel:DeliverableDefinitionsModel,
                     private deliverablesModel:DeliverablesModel, private deliverablesService:DeliverablesService,
                     private calendarService:CalendarService, private deliverableAccessLogModel:DeliverableAccessLogModel,
-                    private uiGridService, selectedTask : string) {
+                    private uiGridService, selectedTask: string) {
 
             vm = this;
             
@@ -75,7 +75,7 @@ module app {
                 vm.deliverablesModel.getDeliverablesForMonth(vm.fiscalYear, vm.fiscalMonth),
                 vm.deliverableDefinitionsModel.getDeliverableDefinitionsForMonth(vm.fiscalYear, vm.fiscalMonth,vm.activeTask),
                 vm.deliverableFeedbackModel.getFyFeedback(vm.fiscalYear),
-                vm.deliverableAccessLogModel.getFyAccessLogs(vm.fiscalYear)
+                vm.deliverableAccessMetricsModel.getFyAccessMetrics(vm.fiscalYear)
             ])
                 .then(function (resolvedPromises) {
                     vm.deliverableDefinitionsByMonth = resolvedPromises[1];
@@ -88,7 +88,7 @@ module app {
                         .identifyOutstandingDefinitionsForMonth(vm.visibleDeliverables, vm.deliverableDefinitionsByMonth);
 
                     vm.deliverableFeedback = resolvedPromises[2];
-                    
+
                     //vm.gauge1.updateGaugeValue(chartService.getSatisfactionRating(vm.visibleDeliverables));
                     //vm.gauge2.updateGaugeValue(chartService.getOnTimeDeliveryRating(vm.visibleDeliverables));
                     //Create a copy of the array and references

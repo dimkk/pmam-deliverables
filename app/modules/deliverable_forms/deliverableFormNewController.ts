@@ -2,25 +2,30 @@
 module app {
     'use strict';
 
-    var vm:DeliverableFormNewController;
+    var vm: DeliverableFormNewController;
     // controller for handling new deliverable creation requests
 
-    interface IStateParams extends angular.ui.IStateParamsService{
-        fy?:string;
-        mo?:string;
-        deliverableTypeId?:string;
+    interface IStateParams extends angular.ui.IStateParamsService {
+        fy?: string;
+        mo?: string;
+        deliverableTypeId?: string;
     }
 
-    class DeliverableFormNewController{
-        deliverableTypes:ap.IIndexedCache<DeliverableDefinition>;
+    class DeliverableFormNewController {
+        deliverableTypes: ap.IIndexedCache<DeliverableDefinition>;
         dataReady = false;
-        monthOptions:{number:number; label:string}[];
-        personnelArray:ap.IUser[];
-        constructor(private deliverableRecord:Deliverable,
-                    $scope:ng.IScope, private toastr, private $state:angular.ui.IStateService,
-                    $stateParams:IStateParams,
-                    private deliverableDefinitionsModel:DeliverableDefinitionsModel,
-                    userService:UserService, calendarService:CalendarService) {
+        monthOptions: { number:number; label:string }[];
+        personnelArray: ap.IUser[];
+
+        constructor($scope: ng.IScope,
+                    $stateParams: IStateParams,
+                    calendarService: CalendarService,
+                    private historyService: HistoryService,
+                    private $state: angular.ui.IStateService,
+                    private deliverableDefinitionsModel: DeliverableDefinitionsModel,
+                    private deliverableRecord: Deliverable,
+                    private toastr,
+                    userService: UserService) {
 
             vm = this;
             vm.monthOptions = calendarService.getMonthOptions();
@@ -36,7 +41,7 @@ module app {
 
                     /** Add to scope so we can add watch which will update default when the type is changed */
                     $scope.$watch('vm.deliverableRecord.deliverableType', (newVal, oldVal) => {
-                        if(newVal && newVal !== oldVal && newVal.lookupId) {
+                        if (newVal && newVal !== oldVal && newVal.lookupId) {
                             setDeliverableDefaults(newVal.lookupId);
                         }
                     });
@@ -44,12 +49,10 @@ module app {
                 });
 
             userService.getUserLookupValues()
-                .then( (result) => {
+                .then((result) => {
                     vm.personnelArray = result;
                     vm.dataReady = true;
                 });
-
-
 
 
             /**==================PRIVATE==================*/
@@ -58,7 +61,7 @@ module app {
                 var selectedDeliverableType = vm.deliverableTypes[deliverableTypeId];
 
                 if (selectedDeliverableType) {
-                    if(vm.deliverableRecord.deliverableType.lookupId !== deliverableTypeId) {
+                    if (vm.deliverableRecord.deliverableType.lookupId !== deliverableTypeId) {
                         vm.deliverableRecord.deliverableType = {
                             lookupId: selectedDeliverableType.id,
                             lookupValue: selectedDeliverableType.title
@@ -70,29 +73,27 @@ module app {
                     vm.deliverableRecord.cc = selectedDeliverableType.cc;
 
                     var estimatedDueDate = vm.deliverableRecord.estimateDeliverableDueDate();
-                    if(_.isDate(estimatedDueDate)) {
+                    if (_.isDate(estimatedDueDate)) {
                         vm.deliverableRecord.dueDate = estimatedDueDate;
                     }
                 }
             }
 
         }
+
         cancel() {
-            vm.$state.go('deliverables.monthly', {
-                mo: vm.deliverableRecord.fiscalMonth,
-                fy: vm.deliverableRecord.fy
-            });
+            vm.historyService.back();
         }
 
         save(form) {
-            if(form.$invalid) {
+            if (form.$invalid) {
                 return vm.toastr.warning('Please ensure all required fields are populated.');
             }
             vm.deliverableRecord.saveChanges()
-                .then( (newDeliverable) => {
+                .then((newDeliverable) => {
                     vm.toastr.success("Deliverable updated");
                     vm.$state.go('deliverable', {id: newDeliverable.id});
-                }, () => vm.toastr.error("There was a problem creating this deliverable record") );
+                }, () => vm.toastr.error("There was a problem creating this deliverable record"));
         }
 
     }
