@@ -43,7 +43,7 @@ module app {
         OnTimeChart: OnTimeChart;
         chartTypes:IChartType[] = [
             {type: 'AreaChart', label: 'Area Chart'},
-            {type: 'google.charts.Bar', label: 'Bar Chart', options:{bars:'horizontal'}},
+            {type: 'google.charts.Bar', label: 'Bar Chart', options:{bars:'horizontal', height: 300}}, //todo: find a better way to do this!
             {type: 'google.charts.Bar', label: 'Column Chart', options:{bars:'vertical'}},
             {type: 'google.charts.Line', label: 'Line'},
             {type: 'Table', label: 'Table'}
@@ -194,8 +194,8 @@ module app {
             
             if (!showAllData) {
                 _.each(deliverableDefinitions, function (definition: DeliverableDefinition) {
-                    var x = definition.getDeliverablesForDefinition();
-                    if (_.toArray(x).length > 0) {
+                    var definitionsWithData = definition.getDeliverablesForDefinition();
+                    if (_.toArray(definitionsWithData).length > 0) {
                         availableDefinitions.push(definition);
                     }
                 });
@@ -207,9 +207,11 @@ module app {
 
             //TODO: confirm that its ok to only show categories that have deliverables
             _.each(availableDefinitions, function (definition: DeliverableDefinition) {
-                    var row = [{ v: definition.title }, { v: 0 }, { v: 0 }, { v: 0 }];
-                    data.rows.push({ c: row });
+                var row = [{ v: definition.title }, { v: 0 }, { v: 0 }, { v: 0 }];
+                    data.rows.push({ c: row , id: definition.id}); //added id for drilldown
             });
+
+
             
             _.assign(self, activeChartType, {
                 data: data,
@@ -220,14 +222,14 @@ module app {
                     },
                     colors:['#0F9D58', '#F4B400', '#DB4437'],
                     isStacked: true,
-                    subtitle:'FY Acceptability Summary',
+                    subtitle: 'FY Acceptability Summary',
                     title: label,
                     vAxis: {
                         title: 'Deliverable Qty'
                     }
                 }
-            });
 
+            });
 
             /* Pause prior to triggering animation */
             $timeout(function () {
@@ -240,10 +242,8 @@ module app {
                         activeRow[3].v = definitionSummary.unacceptableCount;
                         activeRowNumber++;
                 });
-
             }, 750);
         }
-
     }
 
     /**
@@ -284,7 +284,7 @@ module app {
 
             _.each(availableDefinitions, function (definition:DeliverableDefinition) {
                 var row = [{v: definition.title}, {v: 0}, {v: 0}];
-                data.rows.push({c: row});
+                data.rows.push({c: row, id: definition.id});
             });
 
             _.extend(this, activeChartType, {
@@ -318,7 +318,7 @@ module app {
             }, 750);
 
             //self.options.colors = ['#0F9D58', '#BA3B2E'];
-            console.log(self);
+            
         }
     }
 

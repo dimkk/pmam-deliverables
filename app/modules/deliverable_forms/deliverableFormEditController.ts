@@ -25,12 +25,13 @@ module app {
         deliverableBackup:Deliverable;
         getLabelClass(rating:number):string;
         monthOptions:{number:number; label:string}[];
+
         constructor(private deliverableFeedbackModel:DeliverableFeedbackModel, private toastr,
                     private $state:angular.ui.IStateService, private userService, private $q,
                     private $stateParams:IStateParams,
                     private deliverableDefinitionsModel:DeliverableDefinitionsModel,
                     private deliverableRecord:Deliverable, private ratingsService:RatingsService,
-                    private calendarService:CalendarService, private $scope:ng.IScope) {
+                    private calendarService:CalendarService, private $scope:ng.IScope, private selectedTask) {
 
             //TODO Need to add logic to revert back to pristine deliverable in cache if entity is updated and user leaves
             // without saving
@@ -66,6 +67,7 @@ module app {
 
                 // get all feedback for this deliverable
                 vm.deliverableFeedback = vm.deliverableRecord.getCachedFeedbackByDeliverableId();
+                
 
                 // get feedback for just the current user for this deliverable
                 vm.userDeliverableFeedback = vm.deliverableRecord.getCachedFeedbackForCurrentUser();
@@ -175,9 +177,11 @@ module app {
         }
 
         navigateBack() {
+            console.log(vm.deliverableRecord.deliverableType);
             vm.$state.go('deliverables.monthly', {
                 mo: vm.deliverableRecord.fiscalMonth,
                 fy: vm.deliverableRecord.fy
+                
             });
 
         }

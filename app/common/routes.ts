@@ -56,11 +56,17 @@ module app {
                 })
 
                 .state('deliverables.instances', {
-                    url: '/instances?id',
+                    url: '/instances?id&onTime&feedbackStatus',
                     templateUrl: 'modules/deliverable_instances/deliverableInstancesView.html',
                     controller: 'deliverableInstancesController',
                     controllerAs: 'vm',
                     resolve: {
+                        availableStatus: function ($stateParams) {
+                            return $stateParams.feedbackStatus;
+                        },
+                        onTimeStatus: function ($stateParams) {
+                            return $stateParams.onTime;
+                        },
                         fyDefinitions: function (deliverableDefinitionsModel:DeliverableDefinitionsModel,
                                                  $stateParams,$filter,
                                                  fiscalYear: number) {
@@ -96,7 +102,7 @@ module app {
                 })
 
                 .state('deliverable', {
-                    url: '/deliverable/:id?activeTab', //['main', 'discussion'] with default = main
+                    url: '/deliverable/:id?activeTab&task', //['main', 'discussion'] with default = main
                     templateUrl: 'modules/deliverable_forms/deliverableFormEditView.html',
                     controller: 'deliverableFormEditController',
                     controllerAs: 'vm',
@@ -126,6 +132,9 @@ module app {
 
                             return deferred.promise;
 
+                        },
+                        selectedTask: function ($stateParams) {
+                            return ($stateParams.task) ? $stateParams.task : "All";
                         }
                     }
                 })

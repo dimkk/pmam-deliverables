@@ -1,14 +1,17 @@
 <!-- renders view of deliverables by type -->
-<div ng-include="'modules/sub_navbar/subNavbarView.html'"></div>        
+<div ng-include="'modules/sub_navbar/subNavbarView.html'"></div>
+
 <div class="container-fluid">
     <div class="row">
+        <div class="col-sm-12">
+            <deliverable-filter filters="vm.activeFilters"></deliverable-filter>
+        </div>
         <div class="col-sm-12">
 
             <div class="panel panel-default" ng-if="vm.selectedDefinition">
                 <div class="panel-heading" ng-if="vm.selectedDefinition">
                     {{ vm.selectedDefinition.deliverableNumber }}
                     <div class="pull-right">Frequency: {{ vm.selectedDefinition.frequencyDescription }}</div>
-
                 </div>
 
                 <div class="panel-table-include"
@@ -22,7 +25,7 @@
 
         <!-- METRICS -->
         <!--<div class="col-md-2 col-sm-3 hidden-xs"-->
-             <!--ng-include="'common/templates/deliverableMetricsTemplate.html'"></div>-->
+        <!--ng-include="'common/templates/deliverableMetricsTemplate.html'"></div>-->
     </div>
 </div>
 

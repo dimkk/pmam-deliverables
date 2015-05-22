@@ -26,7 +26,7 @@
                 <td>{{ deliverableDefinition.title }}</td>
                 <td>{{ deliverableDefinition.deliverableFrequency }}</td>
                 <td>
-                    <a ui-sref="deliverables.instances({ fy:vm.fiscalYear, id:deliverableDefinition.id, task: 'All' })"
+                    <a ui-sref="deliverables.instances({ fy:vm.fiscalYear, id:deliverableDefinition.id, task: vm.activeTask })"
                        title="Click to view all deliverable instances of this type.">
                         <span class="badge badge-info">{{ vm.deliverableCountByDefinition(deliverableDefinition) }}</span>
                     </a>

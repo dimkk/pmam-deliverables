@@ -3,40 +3,25 @@
 
         <div class="navbar-left">
             <p class="navbar-text h4"><i class="{{ vm.subTitleIcon }}"></i>{{ vm.subTitle }}&nbsp;<small>{{ vm.subTitleInfo}}</small></p>
-            
+
         </div>
-        
-        
 
         <!--=========== Fiscal Selector ===================-->
         <fiscal-selector fiscal-year="vm.fiscalData.fiscalYear" fiscal-month="vm.fiscalData.fiscalMonth"></fiscal-selector>
-      
-        <!--=========== Filter ===================-->
+
+        <!--=========== Filter Textbox  ===================-->
         <div class="navbar-form navbar-right" ng-if="vm.searchString !== undefined">
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="Filter" ng-model="vm.searchString">
             </div>
         </div>
 
-        
-
-        <!--=========== Filter ===================-->
-        <!--<div class="navbar-form navbar-right" ng-if="vm.definitions.length > 0 ">" 
-            <div class="form-group">
-                <label>Type&nbsp;</label>
-                <select ng-model="vm.selectedDefinition"
-                        ng-change="vm.getUpdateState()"
-                        class="form-control"
-                        data-ng-options="vm.dropdownLabel(deliverableDefinition) for deliverableDefinition in vm.definitions | toArray | orderBy: 'title' track by deliverableDefinition.id"></select>
-            </div>
-        </div>-->
+        <!--=========== Filter Dropdown ===================-->
         <div class="navbar-form navbar-right" ng-if="vm.selectedDefinition">
-            <definition-selector  fiscal-year="vm.fiscalData.fiscalYear" selected-task="vm.activeTask" selected-definition="vm.selectedDefinition"></definition-selector>
+            <definition-selector fiscal-year="vm.fiscalData.fiscalYear" filters="vm.activeFilters" selected-task="vm.activeTask" selected-definition="vm.selectedDefinition"></definition-selector>
         </div>
 
-
-
-        <!--============Chart Types ===============-->
+        <!--============ Chart Types ===============-->
         <div class="navbar-form navbar-right" ng-if="vm.chartTypes">
             <div class="form-group">
                 <label>Chart Type</label>&nbsp;
@@ -45,8 +30,9 @@
                         ng-change="vm.toggleChartTypes(vm.activeChartType)"></select>
             </div>
         </div>
-        <!--=============Task Selector=====================-->
+
+        <!--=========== Task Selector=====================-->
         <div class="navbar-form navbar-right" ng-if="vm.activeTask">
             <task-selector fiscal-year="vm.fiscalData.fiscalYear" selected-task="vm.activeTask"></task-selector>
         </div>
-        </div>
+    </div>
