@@ -272,8 +272,8 @@ module app {
     export class DeliverablesModel extends ap.Model{
         /** Local Deliverable cache organized by deliverable type id */
         deliverableByTypeId = {};
-
-        constructor($injector) {
+        sync: ap.sync.ISyncPoint;
+        constructor($injector, apSyncService: ap.sync.ISyncService) {
 
             $q = $injector.get('$q');
             apDiscussionThreadFactory = $injector.get('apDiscussionThreadFactory');
@@ -360,6 +360,9 @@ module app {
                     ]
                 }
             });
+
+            /** Allows controllers to subscribe to change events made by other users within the application */
+            model.sync = apSyncService.createSyncPoint(model);
 
         }
 
