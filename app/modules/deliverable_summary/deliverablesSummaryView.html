@@ -1,72 +1,17 @@
+<div ng-include="'modules/sub_navbar/subNavbarView.html'"></div>
 
-<div ng-include="'modules/sub_navbar/subNavbarView.html'"></div>   
 <div class="container-fluid">
-        
-    
-    
-
 
     <fieldset>
-        <!--<legend>
-            Task&nbsp;<select ng-model="vm.activeTask"
-                              ng-options="task as task for task in vm.availableTasks"
-                              ng-change="vm.taskSelected()"></select>
-        </legend>-->
 
-        <div google-chart chart="vm.acceptabilityChart"  on-select="vm.chartItemSelected(selectedItem,'acceptabilityChart')"></div>
-        <br />
-        <div google-chart chart="vm.onTimeChart" on-select="vm.chartItemSelected(selectedItem,'onTimeChart')"></div>
-    </fieldset>
-    <!--<fieldset>
-        <legend>Task 2.3</legend>
-        <div google-chart chart="vm.acceptabilityChart23"></div>
+        <div google-chart chart="vm.acceptabilityChart" style="height: 400px"
+             on-select="vm.chartItemSelected(selectedItem,'acceptabilityChart')"></div>
+
         <br/>
-        <div google-chart chart="vm.onTimeChart23"></div>
 
-    </fieldset>-->
+        <div google-chart chart="vm.onTimeChart" style="height: 400px"
+             on-select="vm.chartItemSelected(selectedItem,'onTimeChart')"></div>
 
-
-    <!--<div class="row">-->
-    <!--<div class="col-sm-6">-->
-    <!--<div class="panel panel-primary">-->
-    <!--<div class="panel-heading">-->
-    <!--<h3>Task 2.1</h3>-->
-    <!--</div>-->
-    <!--<ul class="list-group">-->
-    <!--<li class="list-group-item">Acceptable <span class="badge">{{ vm.summary21.acceptableCount }}</span></li>-->
-    <!--<li class="list-group-item">Submitted <span class="badge">{{ vm.summary21.actualCount }}</span></li>-->
-    <!--<li class="list-group-item">Expected <span class="badge">{{ vm.summary21.anticipatedCount }}</span></li>-->
-    <!--<li class="list-group-item">Late <span class="badge">{{ vm.summary21.notOnTimeCount }}</span></li>-->
-    <!--<li class="list-group-item">On Time <span class="badge">{{ vm.summary21.onTimeCount }}</span></li>-->
-    <!--<li class="list-group-item">On Time % <span class="badge">{{ vm.summary21.onTimePercentage * 100 | number:1 }} %</span></li>-->
-    <!--<li class="list-group-item">Unacceptable <span class="badge">{{ vm.summary21.unacceptableCount }}</span></li>-->
-    <!--</ul>-->
-    <!--&lt;!&ndash;<div class="panel-body">&ndash;&gt;-->
-    <!--&lt;!&ndash;<pre>{{ vm.summary21 | json }}</pre>&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="col-sm-6">-->
-    <!--<div class="panel panel-primary">-->
-    <!--<div class="panel-heading">-->
-    <!--<h3>Task 2.3</h3>-->
-    <!--</div>-->
-    <!--<ul class="list-group">-->
-    <!--<li class="list-group-item">Acceptable <span class="badge">{{ vm.summary23.acceptableCount }}</span></li>-->
-    <!--<li class="list-group-item">Submitted <span class="badge">{{ vm.summary23.actualCount }}</span></li>-->
-    <!--<li class="list-group-item">Expected <span class="badge">{{ vm.summary23.anticipatedCount }}</span></li>-->
-    <!--<li class="list-group-item">Late <span class="badge">{{ vm.summary23.notOnTimeCount }}</span></li>-->
-    <!--<li class="list-group-item">On Time <span class="badge">{{ vm.summary23.onTimeCount }}</span></li>-->
-    <!--<li class="list-group-item">On Time % <span class="badge">{{ vm.summary23.onTimePercentage * 100 | number:1 }} %</span></li>-->
-    <!--<li class="list-group-item">Unacceptable <span class="badge">{{ vm.summary23.unacceptableCount }}</span></li>-->
-    <!--</ul>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<table class="table">-->
-    <!--<tr ng-repeat="(taskNumber, taskNumberGrouping) in vm.summary21">-->
-    <!--<td>{{taskNumber}}</td>-->
-    <!--</tr>-->
-    <!--</table>-->
+    </fieldset>
 
 </div>
