@@ -241,9 +241,9 @@ module app {
             var deliverable = this;
             var acceptableCount = 0;
             var status = 'Not Rated';
-            deliverableFeedbackModel.getFyFeedback(deliverable.fy);
+            //deliverableFeedbackModel.getFyFeedback(deliverable.fy);
             var feedbackRecords = _.toArray(deliverable.getCachedFeedbackByDeliverableId());
-            
+
             /** Increment for each feedback marked as acceptable */
             _.each(feedbackRecords, function (feedbackRecord) {
                 if (feedbackRecord.acceptable) {
