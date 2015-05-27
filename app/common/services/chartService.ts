@@ -42,10 +42,10 @@ module app {
         AcceptabilityChart: AcceptabilityChart;
         OnTimeChart: OnTimeChart;
         chartTypes:IChartType[] = [
-            {type: 'AreaChart', label: 'Area Chart'},
-            {type: 'google.charts.Bar', label: 'Bar Chart', options:{bars:'horizontal', height: 300}}, //todo: find a better way to do this!
-            {type: 'google.charts.Bar', label: 'Column Chart', options:{bars:'vertical'}},
-            {type: 'google.charts.Line', label: 'Line'},
+            { type: 'AreaChart', label: 'Area Chart', options: { isStacked: false}},
+            { type: 'BarChart', label: 'Bar Chart', options:{bars:'horizontal', height: 350}}, //todo: find a better way to do this!
+            { type: 'ColumnChart', label: 'Column Chart', options:{bars:'vertical'}},
+            { type: 'LineChart', label: 'Line'},
             {type: 'Table', label: 'Table'}
         ];
 
@@ -212,7 +212,6 @@ module app {
             });
 
 
-            
             _.assign(self, activeChartType, {
                 data: data,
                 options: {

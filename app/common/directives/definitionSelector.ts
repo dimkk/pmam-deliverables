@@ -59,17 +59,15 @@ module app {
         dropdownLabel(deliverableDefinition) {
             var deliverables = (deliverableDefinition.id ? deliverableDefinition.getDeliverablesForDefinition() : vm.deliverablesModel.getCachedDeliverablesByDefinitions(vm.definitions));
             _.each(vm.$scope.filters, (filter) => {
-                
                 switch (filter.key) {
                     case 'On Time':
-                        deliverables = _.remove(deliverables, function (n) {
-                            return n.wasDeliveredOnTime().toString() !== filter.value;
+                        deliverables = _.filter(deliverables, function (n) {
+                            return n.wasDeliveredOnTime().toString() === filter.value;
                         });
-                    
                         break;
                     case 'Acceptable':
-                        deliverables = _.remove(deliverables, function (n) {
-                            return n.getAcceptableStatus() !== filter.value;
+                        deliverables = _.filter(deliverables, function (n) {
+                            return n.getAcceptableStatus() === filter.value;
                         });
                         break;
                 }

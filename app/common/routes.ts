@@ -82,7 +82,8 @@ module app {
                                     deferred.resolve(null);
                                 } else {
                                     /** Set to the first definition */
-                                    deferred.resolve(fyDefinitions.first());
+                                    //deferred.resolve(fyDefinitions.first());
+                                    deferred.resolve(null);
                                 }
                             } else {
                                 var definitionId = parseInt($stateParams.id);

@@ -36,9 +36,7 @@ module app {
                 }
             }
             
-
-            //test, Feedback seems to not be running
-            deliverableFeedbackModel.getFyFeedback(fiscalYear);
+            
 
             //data
             vm.deliverableDefinitionsModel = deliverableDefinitionsModel;
@@ -85,12 +83,13 @@ module app {
             var selectedTask: string = (vm.activeTask === allTaskItem ? undefined : vm.activeTask);
             vm.$q.all([
                 vm.deliverableDefinitionsModel.getDeliverableDefinitionsByTaskNumber(vm.fiscalData.fiscalYear, selectedTask),
+                vm.deliverableFeedbackModel.getFyFeedback(vm.fiscalData.fiscalYear)
             ]).then(function (resolvedPromises) {
                 var definitions = resolvedPromises[0];
                 
                 //Set Charts
-                vm.acceptabilityChart = new vm.chartService.AcceptabilityChart('Acceptability (' + selectedTask + ')', definitions, vm.activeChartType,false); 
-                vm.onTimeChart = new vm.chartService.OnTimeChart('On Time (' + selectedTask + ')', definitions, vm.activeChartType,false);
+                vm.acceptabilityChart = new vm.chartService.AcceptabilityChart('Acceptability (' + (selectedTask === undefined ? 'All' : selectedTask) + ')', definitions, vm.activeChartType,false); 
+                vm.onTimeChart = new vm.chartService.OnTimeChart('On Time (' + (selectedTask === undefined ? 'All' : selectedTask) + ')', definitions, vm.activeChartType,false);
 
                 var opt1 = vm.acceptabilityChart.options;
 

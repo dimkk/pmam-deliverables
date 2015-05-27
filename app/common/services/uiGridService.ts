@@ -117,7 +117,6 @@ module app {
                     field: 'getCachedFeedbackByDeliverableId().length',
                     visible: false
                 }
-
             ];
 
             _.each(deliverableFields, function(fieldDefinition) {

@@ -3,9 +3,12 @@ module app {
     'use strict';
     var vm: deliverableFilterController;
     var template = `
+
        <div ng-repeat="filter in vm.activeFilters" ng-if="filter.value" class="pull-right">
-                <label>{{filter.key}} :</label> {{filter.value}}
-                <a href="#" ng-click="vm.removeFilter(filter.key)" class="badge"><i class="fa fa-times"></i></a>
+        
+            <div  class="panel btn-labeled btn-warning">{{filter.key}} : <b>{{filter.value}}</b>
+                <span class="btn-label"><i class="glyphicon glyphicon-remove" ng-click="vm.removeFilter(filter.key)"></i></span>
+            </div>                
             </div>
 `;
     function deliverableFilter() {

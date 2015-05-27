@@ -31,8 +31,10 @@ module app {
             //showGridFooter: true,
             showGroupPanel: true,
             columnDefs: undefined
+            
+            
         };
-        constructor(private $state,private $scope, private $q,  deliverableFeedbackModel: DeliverableFeedbackModel,
+        constructor(private $state,private $scope, private $q, private deliverableFeedbackModel: DeliverableFeedbackModel,
             private deliverablesModel: DeliverablesModel, chartService, private fyDefinitions: DeliverableDefinition[],
             private deliverablesService: DeliverablesService,
             private deliverableDefinitionsModel: DeliverableDefinitionsModel,  private selectedDefinition: DeliverableDefinition, private fiscalYear: number,
@@ -59,6 +61,7 @@ module app {
 
 
             /** Stop Everything if a valid definition isn't available */
+            
             if (!selectedDefinition)
                 vm.selectedDefinition = { title: 'All', id: undefined, deliverableNumber: 'All Deliverables', frequencyDescription: 'NA' };
 
@@ -67,26 +70,22 @@ module app {
             vm.fiscalData = { fiscalMonth: undefined, fiscalYear: fiscalYear };
             $scope.$watch('vm.fiscalData', (newVal, oldVal) => {
                 if (newVal && newVal !== oldVal)
-                    //vm.$state.go('deliverables.instances', vm.createArguments());//vm.$state.go('deliverables.instances', { fy: vm.fiscalData.fiscalYear, task: vm.activeTask, id: (vm.selectedDefinition.id ? vm.selectedDefinition.id : 0), onTime: undefined, availability: undefined});
                     vm.refreshInstancesView();
             }, true);
 
             $scope.$watch('vm.activeTask', (newVal, oldVal) => {
                 if (newVal && newVal !== oldVal)
-                    //vm.$state.go('deliverables.instances', vm.createArguments());//vm.$state.go('deliverables.instances', { fy: vm.fiscalData.fiscalYear, task: vm.activeTask, id: (vm.selectedDefinition.id ? vm.selectedDefinition.id : 0), onTime: undefined, availability: undefined });
                     vm.refreshInstancesView();
             });
 
 
             $scope.$watch('vm.selectedDefinition', (newVal, oldVal) => {
                 if (newVal && newVal !== oldVal)
-                    //vm.$state.go('deliverables.instances', vm.createArguments());// vm.$state.go('deliverables.instances', { fy: vm.fiscalData.fiscalYear, task: vm.activeTask, id: (vm.selectedDefinition.id ? vm.selectedDefinition.id : 0),onTime: undefined,availability:undefined});
                     vm.refreshInstancesView();
             });
 
             $scope.$watch('vm.activeFilters', (newVal, oldVal) => {
                 if (newVal && newVal !== oldVal) {
-                    //vm.$state.go('deliverables.instances', { fy: vm.fiscalData.fiscalYear, task: vm.activeTask, id: (vm.selectedDefinition.id ? vm.selectedDefinition.id : 0), onTime: undefined, availability: undefined });
                     vm.refreshInstancesView();
                 }
             });
@@ -100,16 +99,21 @@ module app {
             //vm.gauge2 = new chartService.Gauge('OTD');
             // deliverableFeedbackModel.getFyFeedback(vm.fiscalData.fiscalYear),
             //deliverableAccessLogModel.getFyAccessLogs(vm.fiscalData.fiscalYear)
-
-            vm.deliverablesModel.getFyDeliverables(vm.fiscalData.fiscalYear)
-                .then(function (resolvedPromise) {
-                vm.getDeliverables(resolvedPromise)
+            vm.$q.all([
+                vm.deliverablesModel.getFyDeliverables(vm.fiscalData.fiscalYear),
+                vm.deliverableFeedbackModel.getFyFeedback(vm.fiscalData.fiscalYear)
+            ]).then(function (resolvedPromises) {
+                vm.getDeliverables(resolvedPromises[0])
                     .then(function (resolvedDeliverables) {
-                        vm.visibleDeliverables = resolvedDeliverables;
-                        vm.deliverableGrid.data = resolvedDeliverables;
-                vm.gotData = true;
+                    vm.visibleDeliverables = resolvedDeliverables;
+                    
+                    vm.deliverableGrid.data = resolvedDeliverables;
+                    
+                    vm.gotData = true;
                 });
+
             });
+            
         }
 
        /** Filters results based on the two known parameters*/
@@ -122,6 +126,7 @@ module app {
             }
             if (vm.availableStatus !== undefined) {
                 data = _.filter(data, function (n) {
+                    
                     if (n.getAcceptableStatus() === vm.availableStatus)
                         return n;
                 });
@@ -130,6 +135,7 @@ module app {
         }
 
         getDeliverables(data) {
+            
             var deferred = vm.$q.defer();
             var filteredDeliverables;
             if (vm.selectedDefinition.title !== 'All') {
@@ -144,13 +150,17 @@ module app {
                 vm.deliverableDefinitionsModel.getDeliverableDefinitionsByTaskNumber(vm.fiscalData.fiscalYear, vm.activeTask)
                     .then(function (resolvedPromise) {
                     filteredDeliverables = _.toArray(vm.deliverablesService.identifyDeliverablesForDefinitions(data, resolvedPromise));
+                    
+                 
 
                     //filter
                     filteredDeliverables = vm.filterDeliverables(filteredDeliverables);
 
                     deferred.resolve(filteredDeliverables);
-            });
-        }
+                });
+            }
+            
+
             return deferred.promise;
         }
         refreshInstancesView() {

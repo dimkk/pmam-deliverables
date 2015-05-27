@@ -22,7 +22,6 @@ module app {
             var vm = this,
                 deliverable = $scope.deliverable,
                 acceptableCount = 0;
-
             switch (deliverable.getAcceptableStatus())
             {
                 case "Acceptable":
@@ -43,7 +42,9 @@ module app {
                     break;
             }
         }
+     
     }
+
 
     angular
         .module('pmam-deliverables')
